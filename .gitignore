@@ -52,3 +52,4 @@ data/**
 
 # ignore supplement tex
 docs/*.tex
+.Rproj.user
