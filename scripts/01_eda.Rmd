@@ -1,0 +1,100 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Exploratory Data Analysis
+
+## Load libraries
+
+```{r}
+# libs for data
+library(data.table)
+library(RSQLite)
+
+# libs for plotting
+library(ggplot2)
+library(patchwork)
+```
+
+### Get `atlastools`
+
+```{r install_atlastools_2, eval=TRUE}
+if (!require(remotes)) {
+  install.packages("remotes", repos = "http://cran.us.r-project.org")
+}
+
+# installation using remotes
+remotes::install_github("pratikunterwegs/atlastools")
+
+library(atlastools)
+```
+
+### Load data from SQL
+
+```{r}
+# set db name
+atlas_data = "data/raw/Three_example_bats.sql"
+```
+
+```{r read_bat_data}
+# prepare the connection
+con <- dbConnect(
+  drv = SQLite(),
+  dbname = atlas_data
+)
+
+# list the tables
+table_name <- dbListTables(con)
+
+# prepare to query all tables
+query <- sprintf('select * from \"%s\"', table_name)
+
+# query the database
+data <- dbGetQuery(conn = con, statement = query)
+
+# disconnect from database
+dbDisconnect(con)
+```
+
+Convert data to csv, and save a local copy in the folder "data".
+
+```{r}
+# convert data to datatable
+setDT(data)
+
+# filename
+data_out_file = "data/raw/data_raw.csv"
+
+# write data for QGIS
+fwrite(data, file = data_out_file)
+```
+
+## Heatmap in space and time
+
+### Spatial heatmap
+
+First bin the data.
+
+```{r}
+# first bin the data
+a = bin_data(data, id_cols = "TAG", axes = c("X", "Y"),
+        binsize = 100
+    )
+```
+
+Plot the spatial heatmap.
+
+```{r}
+# plot heatmap per id
+ggplot() +
+    geom_tile(
+        data = a,
+        aes(X, Y, fill = N)
+    )+
+    scale_fill_viridis_c(
+        option = "G",
+        trans = "log10",
+        direction = -1
+    )
+```
