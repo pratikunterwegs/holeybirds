@@ -1,0 +1,151 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Prepare data by species
+
+## Load libraries
+
+```{r}
+# libs for data
+library(data.table)
+library(stringi)
+library(glue)
+```
+
+### Get `atlastools`
+
+```{r install_atlastools_2, eval=TRUE}
+if (!require(remotes)) {
+  install.packages("remotes", repos = "http://cran.us.r-project.org")
+}
+
+# installation using remotes
+remotes::install_github("pratikunterwegs/atlastools")
+
+library(atlastools)
+```
+
+## List data
+
+```{r}
+# list data files
+data = list.files(path = "data/raw", pattern = ".csv")
+names = stri_replace_all(data, replacement = " ", regex = "\\_")
+
+# split by word
+names = stri_extract_all_words(str = names)
+
+# get genus name and treatment
+species = vapply(names, `[[`, FUN.VALUE = "string", 1)
+treatment = vapply(names, `[[`, FUN.VALUE = "string", 3)
+```
+
+## Check data sizes
+
+```{r}
+# data files again with full names
+data = list.files(path = "data/raw", pattern = ".csv", full.names = TRUE)
+
+# check file sizes
+data_size = vapply(data, function(x) { length(readLines(x)) }, FUN.VALUE = 1L)
+
+# sum rows
+sum(data_size) # about 4 million
+```
+
+## Load data and split by ID
+
+Load and assign species and treatment.
+
+```{r}
+invisible(
+  mapply(function(file, sp, tr) {
+    # read the file
+    df = fread(file)
+    
+    # assign species
+    df[, sp := sp]
+    
+    # assign treatment
+    df[, treat := tr]
+    
+    # get unique tags
+    tags = unique(df$TAG_ID)
+    
+    # split by tag
+    df = split(df, by = "TAG_ID")
+    
+    # looping over tag ID, write to file
+    invisible(
+      mapply(function(dt, tag) {
+        
+        # write to file
+        fwrite(
+          x = dt, 
+          file = glue::glue(
+            "data/processed/data_id/data_{sp}_{tr}_{tag}.csv"
+          ))
+      }, df, tags)
+    )
+  }, data, species, treatment)
+)
+```
+
+## Get basic temporal tracking metrics
+
+```{r}
+# list data
+data = list.files("data/processed/data_id/", full.names = TRUE)
+
+# get metrics
+data_metrics = lapply(data, function(file) {
+  # read file
+  df = fread(file)
+  
+  # convert time
+  df[, time := as.POSIXct(UNIX, tz = "UTC", origin = "1970-01-01")] 
+  # this is consistent with the
+  # time column previously present
+  
+  df_summary = df[, list(nfixes = .N,
+                         days_tracking = as.numeric(
+                           difftime(max(time), min(time), 
+                                    units = "days")
+                           ),
+                         start_tracking = min(time),
+                         end_tracking = max(time)
+                         ),
+                  by = c("sp", "treat", "TAG_ID")]
+  
+  # temporal heatmap
+  df[, day := as.Date(time)]
+  df_tmp_heat = df[, list(nfixes = .N),
+                   by = c("sp", "treat", "TAG_ID", "day")]
+  rm(df)
+  # return a list
+  list(basic = df_summary,
+         heatmap = df_tmp_heat)
+})
+
+# bind and get data
+data_basic = rbindlist(
+  lapply(data_metrics, `[[`, "basic")
+)
+
+# write to file
+fwrite(data_basic, "data/results/data_basic_tracking_metric.csv")
+```
+
+### Write daily fixes to file
+
+```{r}
+# get data from list
+data_daily_heat = rbindlist(
+  lapply(data_metrics, `[[`, "heatmap")
+)
+
+# save data
+fwrite(data_daily_heat, file = "data/results/data_daily_fixes.csv")
+```
