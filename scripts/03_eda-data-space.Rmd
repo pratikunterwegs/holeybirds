@@ -1,0 +1,81 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Exploratory data analysis: Track Quality
+
+## Load libraries
+
+```{r}
+# libs for data
+library(data.table)
+library(glue)
+library(stringi)
+
+# libs for plotting
+library(ggplot2)
+library(patchwork)
+```
+
+## Read data and plot by species
+
+### Prepare species names and paths
+
+```{r}
+# select species
+species = c("Acrocephalus", "Hirundo", "Passer", "Pycnonotus")
+```
+
+```{r}
+# list data
+data = list.files("data/processed/data_id/", full.names = TRUE)
+```
+
+### Prepare plots
+
+```{r}
+# prepare plots by species
+subplots = lapply(species, function(sp) {
+  
+  # subset files
+  files = stri_subset_regex(data, pattern = sp)
+  
+  # read these files
+  tracks = lapply(files, fread)
+  # make a single dataframe
+  tracks = rbindlist(tracks)
+  
+  # now plot as points and lines
+  ggplot(tracks)+
+    geom_point(
+      aes(x, y),
+      shape = 1,
+      size = 0.2
+    )+
+    geom_path(
+      aes(x, y, 
+          colour = treat,
+          group = interaction(TAG_ID, treat)
+      ),
+      show.legend = FALSE,
+      size = 0.2, alpha = 0.1
+    )+
+    facet_wrap(~TAG_ID)+
+    theme(
+      axis.text = element_blank()
+    )+
+    labs(
+      title = glue("Species: {species}")
+    )
+})
+
+# save to file
+invisible(
+  Map(function(gg, name) {
+    ggsave(gg, filename = glue("figures/fig_tracks_{name}.png"),
+           width = 20, height = 20)
+  }, subplots, species)
+)
+```
+
