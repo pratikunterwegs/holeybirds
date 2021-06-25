@@ -27,21 +27,11 @@ library(patchwork)
 files = list.files("data/processed/data_id/", full.names = TRUE)
 ```
 
-### Function to read data by species
-
-```{r}
-read_species = function(path = "data/processed/data_id/", 
-                        sp_name, index) {
-  files = list.files("data/processed/data_id/", full.names = TRUE)
-  file = stringi::stri_subset_regex(files, pattern = sp_name)[index]
-  data.table::fread(file)
-}
-```
-
 ### Explore
 
 ```{r}
-data_raw = read_species(sp_name = "Pycnonotus", index = 19)
+data_raw = read_tracking_data(sp_name = "Passer", 
+                              treatment = "Moulting", index = 6)
 
 # check if filtering works
 data_raw[, c("speed_in", "speed_out", "angle") := list(
@@ -125,7 +115,7 @@ ggplot()+
     alpha = 0.7
     # show.legend = F
   )+
-  facet_wrap(~day)+
+  # facet_wrap(~day)+
   scico::scale_colour_scico(
     palette = "romaO",
     name = "Hour",
