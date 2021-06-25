@@ -1,0 +1,54 @@
+Holeybirds Pre-processing log from 2021-06-25 17:44:45
+
+Pre-processing tag_id = 1004001585; Acrocephalus; Manipulated
+N rows raw = 11514
+-- removed 21 point smoothed speeds above 20 mps.
+-- removed point speeds above 15
+-- median smoothed coordinates, moving window = 9
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 2613
+-- saved to data/processed/data_preprocessed/
+ data_preproc_Acrocephalus_Manipulated_1004001585.csv
+
+***
+
+Pre-processing tag_id = 1004001586; Acrocephalus; Manipulated
+N rows raw = 26211
+-- removed 21 point smoothed speeds above 20 mps.
+-- removed point speeds above 15
+-- median smoothed coordinates, moving window = 9
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 6331
+-- saved to data/processed/data_preprocessed/
+ data_preproc_Acrocephalus_Manipulated_1004001586.csv
+
+***
+
+Pre-processing tag_id = 1004001333; Acrocephalus; Moulting
+N rows raw = 38679
+-- removed 21 point smoothed speeds above 20 mps.
+-- removed point speeds above 15
+-- median smoothed coordinates, moving window = 9
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 9574
+-- saved to data/processed/data_preprocessed/
+ data_preproc_Acrocephalus_Moulting_1004001333.csv
+
+***
+
+Pre-processing tag_id = 1004001360; Acrocephalus; Moulting
+N rows raw = 14870
+-- removed 21 point smoothed speeds above 20 mps.
+-- removed point speeds above 15
+-- median smoothed coordinates, moving window = 9
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 2579
+-- saved to data/processed/data_preprocessed/
+ data_preproc_Acrocephalus_Moulting_1004001360.csv
+
+***
+
