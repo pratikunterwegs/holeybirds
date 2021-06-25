@@ -1,0 +1,166 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Pre-processing tracking data
+
+## Load libraries and prepare files
+
+```{r}
+# libs for data
+library(data.table)
+library(stringi)
+library(glue)
+
+# library for atlas data
+library(atlastools)
+```
+
+Prepare files.
+
+```{r}
+# list files
+files = list.files("data/processed/data_id", full.names = TRUE)[1:4]
+```
+
+## Pre-processing pipeline
+
+This pre-processing pipeline is parameterised based on exploratory data analysis which can be found in the supplementary material.
+
+
+```{r preproc_pipeline}
+# remove old preprocessing log
+if (file.exists("data/log_preprocessing.log")) {
+  message("removing old preprocessing log")
+  file.remove("data/log_preprocessing.log")
+} else {
+  message(glue("No preprocessing log as of {Sys.time()}, new log to be made"))
+}
+
+# some parameters
+min_rows = 1000 # discard data below n rows
+moving_window = 9 # moving window
+smoothed_speed_threshold = 20
+point_speed_threshold = 15
+thinning_interval = 20
+
+# sink date time to log
+sink(file = "data/log_preprocessing.log", append = FALSE)
+glue("Holeybirds Pre-processing log from {Sys.time()}\n\n")
+sink()
+
+# open sinks
+sink(file = "data/log_preprocessing.log", append = TRUE)
+
+# run pre-processing
+for (file in files) {
+    # read in file
+    df = fread(file)
+    
+    tag_id = unique(df$TAG_ID)
+    species = unique(df$sp)
+    treatment = unique(df$treat)
+    
+    # check for rows, if less than min_rows, do not process further
+    # min_rows is passed as an argument below
+    if (nrow(df) > min_rows) {
+      # write messages
+      # informative messages
+      print(glue("Pre-processing tag_id = {tag_id}; {species}; {treatment}
+                 N rows raw = {nrow(df)}
+                 ")
+            )
+      
+      # add speeds
+      df[, c("speed_in", "speed_out") := list(
+        atl_get_speed(data = df, x = "x", time = "UNIX", type = "in"),
+        atl_get_speed(data = df, time = "UNIX", type = "out")
+      )]
+      
+      # check speed quantiles
+      # speed quantiles
+      sapply(df[, c("speed_in", "speed_out")], quantile,
+             na.rm = T, probs = c(0.85, 0.9, 0.95)
+      )
+      
+      # filter on smoothed speed
+      df[, speed_smoothed := frollmean(speed_in, n = 21)]
+      df <- df[!is.na(speed_smoothed) & speed_smoothed < 20, ]
+      print(
+        glue("-- removed 21 point smoothed speeds \\
+             above {smoothed_speed_threshold} mps.
+             ")
+      )
+      
+      # recalculate speeds
+      df[, c("speed_in", "speed_out") := list(
+        atl_get_speed(data = df, x = "x", time = "UNIX", type = "in"),
+        atl_get_speed(data = df, time = "UNIX", type = "out")
+      )]
+      
+      # filter per position now
+      df <- df[speed_in < 15 & speed_out < 15, ]
+      print(
+        glue("-- removed point speeds above {point_speed_threshold}")
+      )
+      
+      # now smooth on a 9 point median smooth
+      atl_median_smooth(
+        data = df, x = "x", y = "y",
+        time = "UNIX", moving_window = moving_window
+      )
+      print(
+        glue("-- median smoothed coordinates, moving window = {moving_window}")
+      )
+      
+      # select columns for thinning
+      data_thin <- df[, c(
+        "TAG_ID", "sp", "treat",
+        "UNIX", "x", "y"
+      )]
+      print(
+        glue("-- selecting columns {stri_flatten(colnames(data_thin), collapse = ', ')}")
+      )
+      
+      # rename time column
+      setnames(data_thin, old = "UNIX", new = "time")
+      
+      # thin data to 20s by aggregation
+      data_thin <- atl_thin_data(
+        data = data_thin, interval = 20,
+        id_columns = c("TAG_ID", "sp", "treat"),
+        method = "aggregate"
+      )
+      print(
+        glue("-- thinned data to {thinning_interval} seconds")
+      )      
+      # save data to file
+      save_file = glue("data/processed/data_preprocessed/data_preproc\\
+                       _{species}_{treatment}_{tag_id}.csv")
+      print(
+        glue("-- N rows pre-processed = {nrow(data_thin)}")
+      )
+      
+      # really save the data
+      fwrite(data_thin, file = save_file)
+      
+      print(
+        glue("-- saved to data/processed/data_preprocessed/
+              data_preproc_{species}_{treatment}_{tag_id}.csv
+             ")
+      )
+      
+      print(
+        glue("\n\n***\n\n")
+      )
+      
+    } else {
+      glue("Too few rowsfor tag_id = {tag_id}; {species}; {treatment}\\
+           N rows raw = {nrow(df)}\n
+           ")
+    }
+  }
+sink()
+```
+
