@@ -15,29 +15,25 @@ library(stringi)
 
 # libs for plotting
 library(ggplot2)
-library(patchwork)
 ```
 
 ## Read data and plot by species
 
 ### Prepare species names and paths
 
-```{r}
-# list data
-files = list.files("data/processed/data_id/", full.names = TRUE)
-```
-
 ### Explore
 
 ```{r}
-data_raw = read_tracking_data(sp_name = "Passer", 
-                              treatment = "Moulting", index = 6)
+data_raw <- read_tracking_data(
+  sp_name = "Hirundo",
+  treatment = "NonMoulting", index = 10
+)
 
 # check if filtering works
 data_raw[, c("speed_in", "speed_out", "angle") := list(
- atl_get_speed(data = data_raw, x = "x", time = "UNIX", type = "in") ,
- atl_get_speed(data = data_raw, time = "UNIX", type = "out"),
- atl_turning_angle(data = data_raw, time = "UNIX")
+  atl_get_speed(data = data_raw, x = "x", time = "UNIX", type = "in"),
+  atl_get_speed(data = data_raw, time = "UNIX", type = "out"),
+  atl_turning_angle(data = data_raw, time = "UNIX")
 )]
 
 # check for poor angles due to same position
@@ -47,42 +43,45 @@ apply(data_raw, 2, function(x) sum(is.na(x)))
 data_raw[, angle := nafill(angle, type = "const", fill = 0)]
 
 # make a copy
-data_proc = copy(data_raw)
+data_proc <- copy(data_raw)
 
 # speed quantiles
-sapply(data_proc[, c("speed_in", "speed_out")], quantile, 
-       na.rm = T, probs = c(0.85, 0.9, 0.95))
+sapply(data_proc[, c("speed_in", "speed_out")], quantile,
+  na.rm = T, probs = c(0.85, 0.9, 0.95)
+)
 
 # filter on smoothed speed
 data_proc[, speed_smoothed := frollmean(speed_in, n = 21)]
-data_proc = data_proc[!is.na(speed_smoothed) & speed_smoothed < 20,]
+data_proc <- data_proc[!is.na(speed_smoothed) & speed_smoothed < 20, ]
 
 # recalculate
 # check if filtering works
 data_proc[, c("speed_in", "speed_out", "angle") := list(
- atl_get_speed(data = data_proc, x = "x", time = "UNIX", type = "in") ,
- atl_get_speed(data = data_proc, time = "UNIX", type = "out"),
- atl_turning_angle(data = data_proc, time = "UNIX")
+  atl_get_speed(data = data_proc, x = "x", time = "UNIX", type = "in"),
+  atl_get_speed(data = data_proc, time = "UNIX", type = "out"),
+  atl_turning_angle(data = data_proc, time = "UNIX")
 )]
 
 # filter per position now
-data_proc = data_proc[speed_in < 15 & speed_out < 15, ]
+data_proc <- data_proc[speed_in < 15 & speed_out < 15, ]
 
 # now smooth
 atl_median_smooth(
-  data = data_proc, x = "x", y = "y", 
+  data = data_proc, x = "x", y = "y",
   time = "UNIX", moving_window = 9
 )
 
 # select columns
-data_thin = data_proc[, c("TAG_ID", "sp", "treat", 
-                          "UNIX", "x", "y")]
+data_thin <- data_proc[, c(
+  "TAG_ID", "sp", "treat",
+  "UNIX", "x", "y"
+)]
 
 # rename
 setnames(data_thin, old = "UNIX", new = "time")
 
 # thin to 20s
-data_thin = atl_thin_data(
+data_thin <- atl_thin_data(
   data = data_thin, interval = 20,
   id_columns = c("TAG_ID", "sp", "treat"),
   method = "aggregate"
@@ -95,27 +94,27 @@ data_thin[, c("day", "hour") := list(
 )]
 
 # plot and check
-ggplot()+
+ggplot() +
   geom_path(
-    data = data_proc,
+    data = data_raw,
     aes(x, y),
     col = "grey",
     alpha = 0.3,
-    size = 0.1
-  )+
+    size = 0.3
+  ) +
   geom_path(
     data = data_thin,
     aes(x, y),
     alpha = 0.2
-  )+
+  ) +
   geom_point(
     data = data_thin,
     aes(x, y, colour = hour),
     shape = 19,
     alpha = 0.7
     # show.legend = F
-  )+
-  # facet_wrap(~day)+
+  ) +
+  facet_wrap(~day) +
   scico::scale_colour_scico(
     palette = "romaO",
     name = "Hour",
@@ -126,12 +125,13 @@ ggplot()+
     # option = "G",
     direction = 1
     # begin = 0.1, end = 0.9,
-  )+
-  ggthemes::theme_map()+
-  ggspatial::annotation_scale(location = "tl", style = "ticks")+
-  coord_sf(crs = 2039,
-           xlim = range(data_proc$x),
-           ylim = range(data_proc$y)
+  ) +
+  ggthemes::theme_map() +
+  ggspatial::annotation_scale(location = "tl", style = "ticks") +
+  coord_sf(
+    crs = 2039,
+    xlim = range(data_proc$x),
+    ylim = range(data_proc$y)
   )
 ```
 
