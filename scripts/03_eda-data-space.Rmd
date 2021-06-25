@@ -23,59 +23,133 @@ library(patchwork)
 ### Prepare species names and paths
 
 ```{r}
-# select species
-species = c("Acrocephalus", "Hirundo", "Passer", "Pycnonotus")
-```
-
-```{r}
 # list data
-data = list.files("data/processed/data_id/", full.names = TRUE)
+files = list.files("data/processed/data_id/", full.names = TRUE)
 ```
 
-### Prepare plots
+### Function to read data by species
 
 ```{r}
-# prepare plots by species
-subplots = lapply(species, function(sp) {
-  
-  # subset files
-  files = stri_subset_regex(data, pattern = sp)
-  
-  # read these files
-  tracks = lapply(files, fread)
-  # make a single dataframe
-  tracks = rbindlist(tracks)
-  
-  # now plot as points and lines
-  ggplot(tracks)+
-    geom_point(
-      aes(x, y),
-      shape = 1,
-      size = 0.2
-    )+
-    geom_path(
-      aes(x, y, 
-          colour = treat,
-          group = interaction(TAG_ID, treat)
-      ),
-      show.legend = FALSE,
-      size = 0.2, alpha = 0.1
-    )+
-    facet_wrap(~TAG_ID)+
-    theme(
-      axis.text = element_blank()
-    )+
-    labs(
-      title = glue("Species: {species}")
-    )
-})
+read_species = function(path = "data/processed/data_id/", 
+                        sp_name, index) {
+  files = list.files("data/processed/data_id/", full.names = TRUE)
+  file = stringi::stri_subset_regex(files, pattern = sp_name)[index]
+  data.table::fread(file)
+}
+```
 
-# save to file
-invisible(
-  Map(function(gg, name) {
-    ggsave(gg, filename = glue("figures/fig_tracks_{name}.png"),
-           width = 20, height = 20)
-  }, subplots, species)
+### Explore
+
+```{r}
+data_raw = read_species(sp_name = "Pycnonotus", index = 19)
+
+# check if filtering works
+data_raw[, c("speed_in", "speed_out", "angle") := list(
+ atl_get_speed(data = data_raw, x = "x", time = "UNIX", type = "in") ,
+ atl_get_speed(data = data_raw, time = "UNIX", type = "out"),
+ atl_turning_angle(data = data_raw, time = "UNIX")
+)]
+
+# check for poor angles due to same position
+apply(data_raw, 2, function(x) sum(is.na(x)))
+
+# fix missingle angles due to same position, assign 0
+data_raw[, angle := nafill(angle, type = "const", fill = 0)]
+
+# make a copy
+data_proc = copy(data_raw)
+
+# speed quantiles
+sapply(data_proc[, c("speed_in", "speed_out")], quantile, 
+       na.rm = T, probs = c(0.85, 0.9, 0.95))
+
+# filter on smoothed speed
+data_proc[, speed_smoothed := frollmean(speed_in, n = 21)]
+data_proc = data_proc[!is.na(speed_smoothed) & speed_smoothed < 20,]
+
+# recalculate
+# check if filtering works
+data_proc[, c("speed_in", "speed_out", "angle") := list(
+ atl_get_speed(data = data_proc, x = "x", time = "UNIX", type = "in") ,
+ atl_get_speed(data = data_proc, time = "UNIX", type = "out"),
+ atl_turning_angle(data = data_proc, time = "UNIX")
+)]
+
+# filter per position now
+data_proc = data_proc[speed_in < 15 & speed_out < 15, ]
+
+# now smooth
+atl_median_smooth(
+  data = data_proc, x = "x", y = "y", 
+  time = "UNIX", moving_window = 9
+)
+
+# select columns
+data_thin = data_proc[, c("TAG_ID", "sp", "treat", 
+                          "UNIX", "x", "y")]
+
+# rename
+setnames(data_thin, old = "UNIX", new = "time")
+
+# thin to 20s
+data_thin = atl_thin_data(
+  data = data_thin, interval = 20,
+  id_columns = c("TAG_ID", "sp", "treat"),
+  method = "aggregate"
+)
+
+# add day and hour
+data_thin[, c("day", "hour") := list(
+  lubridate::date(as.POSIXct(time, origin = "1970-01-01")),
+  lubridate::hour(as.POSIXct(time, origin = "1970-01-01"))
+)]
+
+# plot and check
+ggplot()+
+  geom_path(
+    data = data_proc,
+    aes(x, y),
+    col = "grey",
+    alpha = 0.3,
+    size = 0.1
+  )+
+  geom_path(
+    data = data_thin,
+    aes(x, y),
+    alpha = 0.2
+  )+
+  geom_point(
+    data = data_thin,
+    aes(x, y, colour = hour),
+    shape = 19,
+    alpha = 0.7
+    # show.legend = F
+  )+
+  facet_wrap(~day)+
+  scico::scale_colour_scico(
+    palette = "romaO",
+    name = "Hour",
+    limits = c(0, 23),
+    breaks = c(6, 12, 18),
+    labels = c("6 AM", "Noon", "6 PM"),
+    # trans = "sqrt",
+    # option = "G",
+    direction = 1
+    # begin = 0.1, end = 0.9,
+  )+
+  ggthemes::theme_map()+
+  ggspatial::annotation_scale(location = "tl", style = "ticks")+
+  coord_sf(crs = 2039,
+           xlim = range(data_proc$x),
+           ylim = range(data_proc$y)
+  )
+```
+
+### Save example plot
+
+```{r}
+# save
+ggsave(
+  filename = "figures/fig_Acrocephalus_daily.png"
 )
 ```
-
