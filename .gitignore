@@ -46,6 +46,7 @@ data/**
 !data/raw/00_placeholder.txt
 !/data/processed/
 !data/processed/00_placeholder.txt
+!data/*.log
 
 # docx
 *.docx
