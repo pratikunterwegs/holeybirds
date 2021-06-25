@@ -21,12 +21,15 @@ library(patchwork)
 
 ```{r}
 # load saved data
-data = fread("data/results/data_daily_fixes.csv")
+data <- fread("data/results/data_daily_fixes.csv")
 
 # set factor order
-data$treat = factor(data$treat, 
-                    levels = c("Moulting", "NonMoulting",
-                               "Manipulated", "LongPeriod"))
+data$treat <- factor(data$treat,
+  levels = c(
+    "Moulting", "NonMoulting",
+    "Manipulated", "LongPeriod"
+  )
+)
 ```
 
 ## Make heatmap of daily fixes
@@ -34,46 +37,49 @@ data$treat = factor(data$treat,
 ```{r}
 # make heatmap of daily fixes
 # split data by species
-data = split(data, by = "sp")
+data <- split(data, by = "sp")
 
 # heatmap of daily fixes
-fig_daily_fixes =
+fig_daily_fixes <-
   Map(function(df, name) {
     # do ggplot
-    ggplot(df)+
+    ggplot(df) +
       geom_tile(
-        aes(x = day, y = factor(TAG_ID),
-            fill = nfixes)
-      )+
+        aes(
+          x = day, y = factor(TAG_ID),
+          fill = nfixes
+        )
+      ) +
       scale_fill_viridis_c(
         option = "C", direction = 1,
         labels = function(x) {
           scales::comma(x, accuracy = 1, scale = 1e-3, suffix = "K")
         },
         limits = c(0, 40e3)
-      )+
+      ) +
       scale_x_date(
         limits = as.Date(c("2016-05-31", "2016-12-31"))
-      )+
-      facet_wrap(~treat)+
+      ) +
+      facet_wrap(~treat) +
       theme(
         axis.text.y = element_blank()
-      )+
-      labs(x = "Day", y = "Tags",
-           fill = "# Fixes / day",
-           title = glue("Heatmap daily fixes: {name}")
+      ) +
+      labs(
+        x = "Day", y = "Tags",
+        fill = "# Fixes / day",
+        title = glue("Heatmap daily fixes: {name}")
       )
   }, data, names(data))
 
 # wrap
-fig_daily_fixes = 
+fig_daily_fixes <-
   wrap_plots(fig_daily_fixes) +
-  plot_layout(
-    guides = "collect"
-  ) &
-  plot_annotation(
-    tag_levels = "A"
-  )
+    plot_layout(
+      guides = "collect"
+    ) &
+    plot_annotation(
+      tag_levels = "A"
+    )
 
 # save figure
 ggsave(
