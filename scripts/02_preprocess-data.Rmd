@@ -156,9 +156,11 @@ for (file in files) {
       )
       
     } else {
-      glue("Too few rowsfor tag_id = {tag_id}; {species}; {treatment}\\
-           N rows raw = {nrow(df)}\n
-           ")
+      print(
+        glue("Too few rowsfor tag_id = {tag_id}; {species}; {treatment}\\
+             N rows raw = {nrow(df)}\n
+             ")
+      )
     }
   }
 sink()
