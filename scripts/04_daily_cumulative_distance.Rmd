@@ -1,0 +1,90 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Cumulative daily distance
+
+## Load libraries and prepare files
+
+```{r}
+# libs for data
+library(data.table)
+library(lubridate)
+
+# library for atlas data
+library(atlastools)
+
+# plotting
+library(ggplot2)
+```
+
+## Load data
+
+```{r}
+# load data from file
+data <- fread("data/processed/data_for_analysis.csv")
+```
+
+## Cumulative daily distance
+
+### Calculate distances between points
+
+```{r}
+# get distances bw points
+data <- split(data, by = c("TAG_ID", "sp", "treat", "date"))
+
+# order data by time
+data <- lapply(data, setorderv, "time")
+
+# calculate distances
+data <- lapply(data, function(df) {
+  df[, distance := atl_simple_dist(df)]
+  df$distance <- nafill(df$distance, type = "const", fill = 0)
+  df
+})
+```
+
+### Calculate time
+
+```{r}
+# get interval since start of day --- will be nighttime
+data <- lapply(data, function(df) {
+  df[, posix_time := as.POSIXct(time, origin = "1970-01-01", tz = "UTC")]
+  # difference in minutes between time and start of day
+  df[, min_day := as.numeric(
+      difftime(posix_time, 
+        as_datetime(min(date(posix_time))), units = "mins")
+  )]
+  # round min_day to 10 mins
+  df[, min_day := plyr::round_any(min_day, 10)]
+})
+
+# summarise distance in 10 min intervals and then cuml distance
+data_summary = lapply(data, function(df) {
+    # sum distance in interval
+    df = df[, list(distance = sum(distance)), 
+        by = c("min_day", "date", "sp", "treat", "TAG_ID")]
+    df[, cuml_distance := cumsum(distance)]
+    df
+})
+```
+
+### Plot cumulative daily distance
+
+```{r plot_cuml_dist}
+# explore data as a plot
+data_summary <- rbindlist(data_summary)
+
+ggplot(data_summary[sp != "Hirundo" & treat != "LongPeriod"]) +
+  geom_path(
+    aes(
+      min_day, cuml_distance,
+      group = interaction(TAG_ID, date)
+    ),
+    shape = 1,
+    alpha = 0.3
+  )+
+  scale_y_sqrt()+
+  facet_grid(sp ~ treat, scales = "free_y")
+```
