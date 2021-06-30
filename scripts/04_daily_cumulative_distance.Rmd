@@ -17,18 +17,17 @@ library(atlastools)
 
 # plotting
 library(ggplot2)
+library(colorspace)
 ```
-
-## Load data
 
 ```{r}
 # load data from file
 data <- fread("data/processed/data_for_analysis.csv")
 ```
 
-## Cumulative daily distance
+## Calculate distances and times of day
 
-### Calculate distances between points
+### Calculate distance
 
 ```{r}
 # get distances bw points
@@ -45,7 +44,7 @@ data <- lapply(data, function(df) {
 })
 ```
 
-### Calculate time
+### Calculate time of day
 
 ```{r}
 # get interval since start of day --- will be nighttime
@@ -59,7 +58,13 @@ data <- lapply(data, function(df) {
   # round min_day to 10 mins
   df[, min_day := plyr::round_any(min_day, 10)]
 })
+```
 
+## Cumulative daily distance
+
+### Calculate cumulative daily distance
+
+```{r}
 # summarise distance in 10 min intervals and then cuml distance
 data_summary = lapply(data, function(df) {
     # sum distance in interval
@@ -68,23 +73,158 @@ data_summary = lapply(data, function(df) {
     df[, cuml_distance := cumsum(distance)]
     df
 })
+
+# bind the rows
+data_summary <- rbindlist(data_summary)
+
+# set levels
+data_summary$treat = factor(data_summary$treat,
+                            levels = c("NonMoulting", "Moulting", "Manipulated"))
+
+# save to file
+fwrite(data_summary, file = "data/results/data_daily_cumulative_distance.csv")
 ```
 
-### Plot cumulative daily distance
+### Plot cumulative daily distance over time
 
 ```{r plot_cuml_dist}
-# explore data as a plot
-data_summary <- rbindlist(data_summary)
+# make labeller
+label_condition = c(
+  "NonMoulting" = "Non moulting",
+  "Moulting" = "Moulting",
+  "Manipulated" = "Manipulated"
+)
 
 ggplot(data_summary[sp != "Hirundo" & treat != "LongPeriod"]) +
   geom_path(
     aes(
       min_day, cuml_distance,
-      group = interaction(TAG_ID, date)
+      group = interaction(TAG_ID, date),
+      col = treat
     ),
-    shape = 1,
+    show.legend = F,
     alpha = 0.3
   )+
-  scale_y_sqrt()+
-  facet_grid(sp ~ treat, scales = "free_y")
+  scale_colour_discrete_qualitative(
+    palette = "Harmonic",
+    l1 = 50, h1 = 50,
+    rev = T
+  )+
+  scale_y_sqrt(
+    labels = function(x) { 
+      scales::comma(x, accuracy = 1, scale = 0.001, suffix = "km")
+    },
+    breaks = c(1, 5, 10, 20) * 1e3
+  )+
+  scale_x_continuous(
+    labels = function(x) { sprintf("%ihr", as.integer(x / 60)) },
+    breaks = c(1, 6, 12, 18, 23) * 60
+  )+
+  coord_cartesian(
+    expand = F,
+    ylim = c(0, 30e3)
+  )+
+  theme_test()+
+  theme(
+    axis.text.x = element_text(
+      size = 8
+    )
+  )+
+  facet_grid(
+    sp ~ treat, 
+    labeller = labeller(
+      treat = label_condition
+    )
+  )+
+  labs(
+    x = "Hour of day",
+    y = "Cumulattive distance (km)"
+  )
+
+# save plot to file
+ggsave(
+  filename = "figures/fig_cumulative_daily_distance.png",
+  height = 6, width = 6
+)
 ```
+
+## Total daily distance
+
+### Calculate total daily distance
+
+```{r tot_daily_dist}
+# sum distances per day
+data_dist_summary = rbindlist(data)
+data_dist_summary = data_dist_summary[, list(
+  total_distance = sum(distance)
+), by = c("TAG_ID", "sp", "treat", "date")]
+
+# check for as many rows as there are combinations of the identifiers
+assertthat::assert_that(
+  nrow(data_dist_summary) == length(data),
+  msg = "incorrect number of total daily distances"
+)
+
+# set factor order
+# set levels
+data_dist_summary$treat = factor(data_dist_summary$treat,
+                            levels = c("NonMoulting", "Moulting", "Manipulated"))
+```
+
+### Plot total daily distance
+
+```{r}
+# remove swallows and long term sparrows
+data_dist_summary = data_dist_summary[sp != "Hirundo" & treat != "LongPeriod"]
+
+# make plot
+ggplot(data_dist_summary)+
+  geom_jitter(
+    aes(treat, total_distance),
+    width = 0.1,
+    col = "grey70",
+    alpha = 0.5
+  )+
+  geom_boxplot(
+    aes(
+      treat, total_distance,
+      col = treat
+    ),
+    outlier.shape = 1,
+    show.legend = F,
+    fill = alpha("grey", alpha = 0.3),
+    width = 0.3
+  )+
+  scale_colour_discrete_qualitative(
+    palette = "Harmonic",
+    l1 = 50, h1 = 50,
+    rev = T
+  )+
+  scale_y_sqrt(
+    labels = function(x) { 
+      scales::comma(x, accuracy = 1, scale = 0.001, suffix = "km")
+    },
+    breaks = c(1, 5, 10, 20) * 1e3
+  )+
+  scale_x_discrete(
+    labels = c("Non moulting", "Moulting", "Manipulated")
+  )+
+  theme_test()+
+  theme(
+    axis.text.x = element_text(
+      size = 8
+    )
+  )+
+  facet_grid(~sp)+
+  labs(
+    x = "Wing condition",
+    y = "Total distance (km)"
+  )
+
+# save as figure
+ggsave(
+  filename = "figures/fig_total_distance.png",
+  height = 3, width = 6
+)
+```
+
