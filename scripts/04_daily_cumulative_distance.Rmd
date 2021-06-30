@@ -166,9 +166,11 @@ assertthat::assert_that(
 )
 
 # set factor order
-# set levels
 data_dist_summary$treat = factor(data_dist_summary$treat,
                             levels = c("NonMoulting", "Moulting", "Manipulated"))
+
+# save to file
+fwrite(data_dist_summary, file = "data/results/data_daily_total_distance.csv")
 ```
 
 ### Plot total daily distance
@@ -225,6 +227,118 @@ ggplot(data_dist_summary)+
 ggsave(
   filename = "figures/fig_total_distance.png",
   height = 3, width = 6
+)
+```
+
+## Daily Net Squared Displacement (NSD)
+
+### Calcualte NSD
+
+NSD is the squared (spatial) distance between all locations $(x_i, y_i, t_i)$ and the first location $(x_1, y_1, t_1)$.
+
+```{r}
+# working on data list object
+data = lapply(data, function(df) {
+  
+  # using custom functions from the directory R/
+  df[, nsd := get_nsd(data = df)]
+})
+
+# summarise NSD over min_day
+data_nsd_summary = lapply(data, function(df) {
+  df[, list(
+    nsd_mean = mean(nsd),
+    nsd_sd = sd(nsd)
+  ), by = c("TAG_ID", "sp", "treat", "date", "min_day")]
+})
+
+# bind list and write to file
+data_nsd_summary = rbindlist(data_nsd_summary)
+
+# set factor order
+data_nsd_summary$treat = factor(data_nsd_summary$treat,
+                            levels = c("NonMoulting", "Moulting", "Manipulated"))
+
+fwrite(data_nsd_summary, file = "data/results/data_daily_nsd.csv")
+```
+
+### Summarise for Species and Treatment
+
+Here we take each day and individual as a replicate.
+
+```{r}
+# round min day to 30 minutes
+data_nsd_summary[, min_day_30 := plyr::round_any(min_day, 30)]
+
+data_nsd_concise = data_nsd_summary[, list(
+  nsd_mean = mean(nsd_mean),
+  nsd_median = median(nsd_mean),
+  nsd_sd = sd(nsd_sd)
+), by = c("sp", "treat", "min_day_30")]
+```
+
+
+### Plot daily NSD
+
+```{r}
+# exclude swallows and LT sparrows
+ggplot()+
+  geom_path(
+    data = data_nsd_summary[sp != "Hirundo" & treat != "LongPeriod"],
+    aes(
+      min_day, sqrt(nsd_mean),
+      colour = treat,
+      group = interaction(sp, date, treat, TAG_ID)
+    ),
+    show.legend = F,
+    alpha = 0.3
+  )+
+  geom_line(
+    data = data_nsd_concise[sp != "Hirundo" & treat != "LongPeriod"],
+    aes(
+      x = min_day_30,
+      y = sqrt(nsd_median),
+      group = interaction(sp, treat)
+    ),
+    shape = 0
+  )+
+  scale_colour_discrete_qualitative(
+    palette = "Harmonic",
+    l1 = 50, h1 = 50, c1 = 30,
+    rev = T
+  )+
+  scale_x_continuous(
+    labels = function(x) { sprintf("%ihr", as.integer(x / 60)) },
+    breaks = c(1, 6, 12, 18, 23) * 60
+  )+
+  scale_y_sqrt(
+    labels = function(x) { 
+      scales::comma(x, accuracy = 1, scale = 0.001, suffix = "km")
+    },
+    breaks = c(1, 2, 4) * 1e3
+  )+
+  theme_test()+
+  theme(
+    axis.text.x = element_text(
+      size = 8
+    )
+  )+
+  facet_grid(
+    sp ~ treat, 
+    labeller = labeller(
+      treat = label_condition
+    ),
+    scales = "free_y"
+  )+
+  labs(
+    x = "Hour of day",
+    y = "Net displacement (km)"
+  )
+
+# save as figure
+ggsave(
+  filename = "figures/fig_net_displacement.png",
+  height = 6, width = 6
 )
 ```
 
