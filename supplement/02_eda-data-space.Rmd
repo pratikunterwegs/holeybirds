@@ -25,8 +25,8 @@ library(ggplot2)
 
 ```{r}
 data_raw <- read_tracking_data(
-  sp_name = "Hirundo",
-  treatment = "NonMoulting", index = 10
+  sp_name = "Acrocephalus",
+  treatment = "NonMoulting", index = 8
 )
 
 # check if filtering works
@@ -63,12 +63,12 @@ data_proc[, c("speed_in", "speed_out", "angle") := list(
 )]
 
 # filter per position now
-data_proc <- data_proc[speed_in < 15 & speed_out < 15, ]
+data_proc <- data_proc[speed_in < 10 & speed_out < 10, ]
 
 # now smooth
 atl_median_smooth(
   data = data_proc, x = "x", y = "y",
-  time = "UNIX", moving_window = 9
+  time = "UNIX", moving_window = 11
 )
 
 # select columns
@@ -89,8 +89,8 @@ data_thin <- atl_thin_data(
 
 # add day and hour
 data_thin[, c("day", "hour") := list(
-  lubridate::date(as.POSIXct(time, origin = "1970-01-01")),
-  lubridate::hour(as.POSIXct(time, origin = "1970-01-01"))
+  lubridate::date(as.POSIXct(time, origin = "1970-01-01", tz = "Asia/Jerusalem")),
+  lubridate::hour(as.POSIXct(time, origin = "1970-01-01", tz = "Asia/Jerusalem"))
 )]
 
 # plot and check
