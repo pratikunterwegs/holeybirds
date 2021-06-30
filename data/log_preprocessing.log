@@ -1,13 +1,13 @@
-Holeybirds Pre-processing log from 2021-06-25 17:46:16
+Holeybirds Pre-processing log from 2021-06-30 13:58:28
 
 Pre-processing tag_id = 1004001585; Acrocephalus; Manipulated
 N rows raw = 11514
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 2613
+-- N rows pre-processed = 2284
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_Manipulated_1004001585.csv
 
@@ -17,10 +17,10 @@ Pre-processing tag_id = 1004001586; Acrocephalus; Manipulated
 N rows raw = 26211
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 6331
+-- N rows pre-processed = 5347
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_Manipulated_1004001586.csv
 
@@ -30,10 +30,10 @@ Pre-processing tag_id = 1004001333; Acrocephalus; Moulting
 N rows raw = 38679
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 9574
+-- N rows pre-processed = 8215
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_Moulting_1004001333.csv
 
@@ -43,10 +43,10 @@ Pre-processing tag_id = 1004001360; Acrocephalus; Moulting
 N rows raw = 14870
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 2579
+-- N rows pre-processed = 2330
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_Moulting_1004001360.csv
 
@@ -56,10 +56,10 @@ Pre-processing tag_id = 1004001395; Acrocephalus; Moulting
 N rows raw = 7182
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 2124
+-- N rows pre-processed = 1908
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_Moulting_1004001395.csv
 
@@ -69,10 +69,10 @@ Pre-processing tag_id = 1004001461; Acrocephalus; Moulting
 N rows raw = 37032
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 6836
+-- N rows pre-processed = 6395
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_Moulting_1004001461.csv
 
@@ -82,10 +82,10 @@ Pre-processing tag_id = 1004001479; Acrocephalus; Moulting
 N rows raw = 19346
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 4190
+-- N rows pre-processed = 4006
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_Moulting_1004001479.csv
 
@@ -95,10 +95,10 @@ Pre-processing tag_id = 1004001587; Acrocephalus; Moulting
 N rows raw = 27558
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 6285
+-- N rows pre-processed = 5701
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_Moulting_1004001587.csv
 
@@ -108,10 +108,10 @@ Pre-processing tag_id = 1004001607; Acrocephalus; Moulting
 N rows raw = 29965
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 6579
+-- N rows pre-processed = 5662
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_Moulting_1004001607.csv
 
@@ -121,10 +121,10 @@ Pre-processing tag_id = 1004001114; Acrocephalus; NonMoulting
 N rows raw = 7346
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 2358
+-- N rows pre-processed = 2053
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_NonMoulting_1004001114.csv
 
@@ -134,10 +134,10 @@ Pre-processing tag_id = 1004001117; Acrocephalus; NonMoulting
 N rows raw = 14109
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 3604
+-- N rows pre-processed = 3319
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_NonMoulting_1004001117.csv
 
@@ -147,10 +147,10 @@ Pre-processing tag_id = 1004001181; Acrocephalus; NonMoulting
 N rows raw = 1349
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 708
+-- N rows pre-processed = 670
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_NonMoulting_1004001181.csv
 
@@ -160,10 +160,10 @@ Pre-processing tag_id = 1004001209; Acrocephalus; NonMoulting
 N rows raw = 1627
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 262
+-- N rows pre-processed = 194
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_NonMoulting_1004001209.csv
 
@@ -173,10 +173,10 @@ Pre-processing tag_id = 1004001361; Acrocephalus; NonMoulting
 N rows raw = 18907
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 3552
+-- N rows pre-processed = 3159
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_NonMoulting_1004001361.csv
 
@@ -186,10 +186,10 @@ Pre-processing tag_id = 1004001391; Acrocephalus; NonMoulting
 N rows raw = 7494
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 2258
+-- N rows pre-processed = 2061
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_NonMoulting_1004001391.csv
 
@@ -199,10 +199,10 @@ Pre-processing tag_id = 1004001392; Acrocephalus; NonMoulting
 N rows raw = 20103
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 5772
+-- N rows pre-processed = 5121
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_NonMoulting_1004001392.csv
 
@@ -212,10 +212,10 @@ Pre-processing tag_id = 1004001393; Acrocephalus; NonMoulting
 N rows raw = 31957
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 6971
+-- N rows pre-processed = 6412
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_NonMoulting_1004001393.csv
 
@@ -225,10 +225,10 @@ Pre-processing tag_id = 1004001396; Acrocephalus; NonMoulting
 N rows raw = 43564
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 7972
+-- N rows pre-processed = 6609
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_NonMoulting_1004001396.csv
 
@@ -238,10 +238,10 @@ Pre-processing tag_id = 1004001398; Acrocephalus; NonMoulting
 N rows raw = 25407
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 4278
+-- N rows pre-processed = 3693
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_NonMoulting_1004001398.csv
 
@@ -251,10 +251,10 @@ Pre-processing tag_id = 1004001406; Acrocephalus; NonMoulting
 N rows raw = 47839
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 8896
+-- N rows pre-processed = 7500
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_NonMoulting_1004001406.csv
 
@@ -264,10 +264,10 @@ Pre-processing tag_id = 1004001420; Acrocephalus; NonMoulting
 N rows raw = 26063
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 6255
+-- N rows pre-processed = 5403
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_NonMoulting_1004001420.csv
 
@@ -277,10 +277,10 @@ Pre-processing tag_id = 1004001459; Acrocephalus; NonMoulting
 N rows raw = 107358
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 14978
+-- N rows pre-processed = 12814
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_NonMoulting_1004001459.csv
 
@@ -290,10 +290,10 @@ Pre-processing tag_id = 1004001460; Acrocephalus; NonMoulting
 N rows raw = 36407
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 6482
+-- N rows pre-processed = 5697
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_NonMoulting_1004001460.csv
 
@@ -303,10 +303,10 @@ Pre-processing tag_id = 1004001462; Acrocephalus; NonMoulting
 N rows raw = 89983
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 12999
+-- N rows pre-processed = 10638
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_NonMoulting_1004001462.csv
 
@@ -316,10 +316,10 @@ Pre-processing tag_id = 1004001717; Acrocephalus; NonMoulting
 N rows raw = 6449
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 2561
+-- N rows pre-processed = 2476
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_NonMoulting_1004001717.csv
 
@@ -329,10 +329,10 @@ Pre-processing tag_id = 1004001735; Acrocephalus; NonMoulting
 N rows raw = 6357
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 5088
+-- N rows pre-processed = 5014
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_NonMoulting_1004001735.csv
 
@@ -342,10 +342,10 @@ Pre-processing tag_id = 1004001748; Acrocephalus; NonMoulting
 N rows raw = 40879
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 16341
+-- N rows pre-processed = 15073
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_NonMoulting_1004001748.csv
 
@@ -355,23 +355,25 @@ Pre-processing tag_id = 1004001749; Acrocephalus; NonMoulting
 N rows raw = 2284
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1251
+-- N rows pre-processed = 1196
 -- saved to data/processed/data_preprocessed/
  data_preproc_Acrocephalus_NonMoulting_1004001749.csv
 
 ***
 
+Too few rowsfor tag_id = 1004001183; Hirundo; ManipulatedN rows raw = 885
+
 Pre-processing tag_id = 1004001230; Hirundo; Manipulated
 N rows raw = 4155
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1721
+-- N rows pre-processed = 1522
 -- saved to data/processed/data_preprocessed/
  data_preproc_Hirundo_Manipulated_1004001230.csv
 
@@ -381,10 +383,10 @@ Pre-processing tag_id = 1004001267; Hirundo; Manipulated
 N rows raw = 3240
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1613
+-- N rows pre-processed = 1551
 -- saved to data/processed/data_preprocessed/
  data_preproc_Hirundo_Manipulated_1004001267.csv
 
@@ -394,10 +396,10 @@ Pre-processing tag_id = 1004001271; Hirundo; Manipulated
 N rows raw = 6203
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 3494
+-- N rows pre-processed = 3308
 -- saved to data/processed/data_preprocessed/
  data_preproc_Hirundo_Manipulated_1004001271.csv
 
@@ -407,23 +409,27 @@ Pre-processing tag_id = 1004001283; Hirundo; Manipulated
 N rows raw = 1145
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 357
+-- N rows pre-processed = 292
 -- saved to data/processed/data_preprocessed/
  data_preproc_Hirundo_Manipulated_1004001283.csv
 
 ***
 
+Too few rowsfor tag_id = 1004001405; Hirundo; ManipulatedN rows raw = 675
+
+Too few rowsfor tag_id = 1004001455; Hirundo; ManipulatedN rows raw = 673
+
 Pre-processing tag_id = 1004001711; Hirundo; Manipulated
 N rows raw = 2451
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1152
+-- N rows pre-processed = 1110
 -- saved to data/processed/data_preprocessed/
  data_preproc_Hirundo_Manipulated_1004001711.csv
 
@@ -433,49 +439,57 @@ Pre-processing tag_id = 1004001713; Hirundo; Manipulated
 N rows raw = 4263
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 2057
+-- N rows pre-processed = 1928
 -- saved to data/processed/data_preprocessed/
  data_preproc_Hirundo_Manipulated_1004001713.csv
 
 ***
 
+Too few rowsfor tag_id = 1004001129; Hirundo; MoultingN rows raw = 707
+
+Too few rowsfor tag_id = 1004001290; Hirundo; MoultingN rows raw = 732
+
 Pre-processing tag_id = 1004001402; Hirundo; Moulting
 N rows raw = 1617
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 894
+-- N rows pre-processed = 784
 -- saved to data/processed/data_preprocessed/
  data_preproc_Hirundo_Moulting_1004001402.csv
 
 ***
 
+Too few rowsfor tag_id = 1004001403; Hirundo; MoultingN rows raw = 675
+
 Pre-processing tag_id = 1004001404; Hirundo; Moulting
 N rows raw = 6465
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 3528
+-- N rows pre-processed = 3405
 -- saved to data/processed/data_preprocessed/
  data_preproc_Hirundo_Moulting_1004001404.csv
 
 ***
 
+Too few rowsfor tag_id = 1004001450; Hirundo; MoultingN rows raw = 418
+
 Pre-processing tag_id = 1004001633; Hirundo; Moulting
 N rows raw = 1055
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 745
+-- N rows pre-processed = 671
 -- saved to data/processed/data_preprocessed/
  data_preproc_Hirundo_Moulting_1004001633.csv
 
@@ -485,10 +499,10 @@ Pre-processing tag_id = 1004001710; Hirundo; Moulting
 N rows raw = 18119
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 9590
+-- N rows pre-processed = 9008
 -- saved to data/processed/data_preprocessed/
  data_preproc_Hirundo_Moulting_1004001710.csv
 
@@ -498,10 +512,10 @@ Pre-processing tag_id = 1004000824; Hirundo; NonMoulting
 N rows raw = 5282
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 2412
+-- N rows pre-processed = 2207
 -- saved to data/processed/data_preprocessed/
  data_preproc_Hirundo_NonMoulting_1004000824.csv
 
@@ -511,10 +525,10 @@ Pre-processing tag_id = 1004000825; Hirundo; NonMoulting
 N rows raw = 5787
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 2699
+-- N rows pre-processed = 2468
 -- saved to data/processed/data_preprocessed/
  data_preproc_Hirundo_NonMoulting_1004000825.csv
 
@@ -524,23 +538,25 @@ Pre-processing tag_id = 1004000826; Hirundo; NonMoulting
 N rows raw = 2084
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 805
+-- N rows pre-processed = 646
 -- saved to data/processed/data_preprocessed/
  data_preproc_Hirundo_NonMoulting_1004000826.csv
 
 ***
 
+Too few rowsfor tag_id = 1004000827; Hirundo; NonMoultingN rows raw = 720
+
 Pre-processing tag_id = 1004000829; Hirundo; NonMoulting
 N rows raw = 3585
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1676
+-- N rows pre-processed = 1498
 -- saved to data/processed/data_preprocessed/
  data_preproc_Hirundo_NonMoulting_1004000829.csv
 
@@ -550,10 +566,10 @@ Pre-processing tag_id = 1004001237; Hirundo; NonMoulting
 N rows raw = 1752
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1010
+-- N rows pre-processed = 846
 -- saved to data/processed/data_preprocessed/
  data_preproc_Hirundo_NonMoulting_1004001237.csv
 
@@ -563,10 +579,10 @@ Pre-processing tag_id = 1004001289; Hirundo; NonMoulting
 N rows raw = 2842
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 986
+-- N rows pre-processed = 861
 -- saved to data/processed/data_preprocessed/
  data_preproc_Hirundo_NonMoulting_1004001289.csv
 
@@ -576,10 +592,10 @@ Pre-processing tag_id = 1004001449; Hirundo; NonMoulting
 N rows raw = 1046
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 294
+-- N rows pre-processed = 242
 -- saved to data/processed/data_preprocessed/
  data_preproc_Hirundo_NonMoulting_1004001449.csv
 
@@ -589,10 +605,10 @@ Pre-processing tag_id = 1004001712; Hirundo; NonMoulting
 N rows raw = 2510
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1328
+-- N rows pre-processed = 1278
 -- saved to data/processed/data_preprocessed/
  data_preproc_Hirundo_NonMoulting_1004001712.csv
 
@@ -602,10 +618,10 @@ Pre-processing tag_id = 1004001715; Hirundo; NonMoulting
 N rows raw = 2790
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1382
+-- N rows pre-processed = 1286
 -- saved to data/processed/data_preprocessed/
  data_preproc_Hirundo_NonMoulting_1004001715.csv
 
@@ -615,10 +631,10 @@ Pre-processing tag_id = 1004001386; Passer; LongPeriod
 N rows raw = 83241
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 46124
+-- N rows pre-processed = 45051
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_LongPeriod_1004001386.csv
 
@@ -628,10 +644,10 @@ Pre-processing tag_id = 1004001463; Passer; LongPeriod
 N rows raw = 124106
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 64707
+-- N rows pre-processed = 63537
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_LongPeriod_1004001463.csv
 
@@ -641,10 +657,10 @@ Pre-processing tag_id = 1004001465; Passer; LongPeriod
 N rows raw = 83851
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 40026
+-- N rows pre-processed = 39709
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_LongPeriod_1004001465.csv
 
@@ -654,10 +670,10 @@ Pre-processing tag_id = 1004001564; Passer; LongPeriod
 N rows raw = 40478
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 19440
+-- N rows pre-processed = 18853
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_LongPeriod_1004001564.csv
 
@@ -667,10 +683,10 @@ Pre-processing tag_id = 1004001565; Passer; LongPeriod
 N rows raw = 58140
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 33174
+-- N rows pre-processed = 31223
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_LongPeriod_1004001565.csv
 
@@ -680,10 +696,10 @@ Pre-processing tag_id = 1004001567; Passer; LongPeriod
 N rows raw = 90901
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 48725
+-- N rows pre-processed = 46044
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_LongPeriod_1004001567.csv
 
@@ -693,10 +709,10 @@ Pre-processing tag_id = 1004001568; Passer; LongPeriod
 N rows raw = 122851
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 63720
+-- N rows pre-processed = 60966
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_LongPeriod_1004001568.csv
 
@@ -706,10 +722,10 @@ Pre-processing tag_id = 1004001569; Passer; LongPeriod
 N rows raw = 61615
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 32158
+-- N rows pre-processed = 30815
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_LongPeriod_1004001569.csv
 
@@ -719,10 +735,10 @@ Pre-processing tag_id = 1004001603; Passer; LongPeriod
 N rows raw = 19482
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 13054
+-- N rows pre-processed = 12557
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_LongPeriod_1004001603.csv
 
@@ -732,10 +748,10 @@ Pre-processing tag_id = 1004001604; Passer; LongPeriod
 N rows raw = 63439
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 36285
+-- N rows pre-processed = 35236
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_LongPeriod_1004001604.csv
 
@@ -745,10 +761,10 @@ Pre-processing tag_id = 1004001250; Passer; Manipulated
 N rows raw = 18186
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 5106
+-- N rows pre-processed = 4820
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Manipulated_1004001250.csv
 
@@ -758,10 +774,10 @@ Pre-processing tag_id = 1004001335; Passer; Manipulated
 N rows raw = 37905
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 9808
+-- N rows pre-processed = 8577
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Manipulated_1004001335.csv
 
@@ -771,10 +787,10 @@ Pre-processing tag_id = 1004001336; Passer; Manipulated
 N rows raw = 24050
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 5899
+-- N rows pre-processed = 4901
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Manipulated_1004001336.csv
 
@@ -784,10 +800,10 @@ Pre-processing tag_id = 1004001337; Passer; Manipulated
 N rows raw = 12707
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 2955
+-- N rows pre-processed = 2451
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Manipulated_1004001337.csv
 
@@ -797,10 +813,10 @@ Pre-processing tag_id = 1004001343; Passer; Manipulated
 N rows raw = 1630
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1116
+-- N rows pre-processed = 1043
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Manipulated_1004001343.csv
 
@@ -810,10 +826,10 @@ Pre-processing tag_id = 1004001344; Passer; Manipulated
 N rows raw = 2845
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1967
+-- N rows pre-processed = 1923
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Manipulated_1004001344.csv
 
@@ -823,10 +839,10 @@ Pre-processing tag_id = 1004001346; Passer; Manipulated
 N rows raw = 5107
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 3511
+-- N rows pre-processed = 3451
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Manipulated_1004001346.csv
 
@@ -836,10 +852,10 @@ Pre-processing tag_id = 1004001350; Passer; Manipulated
 N rows raw = 3830
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 2553
+-- N rows pre-processed = 2453
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Manipulated_1004001350.csv
 
@@ -849,10 +865,10 @@ Pre-processing tag_id = 1004001352; Passer; Manipulated
 N rows raw = 11859
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 7832
+-- N rows pre-processed = 7598
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Manipulated_1004001352.csv
 
@@ -862,10 +878,10 @@ Pre-processing tag_id = 1004001375; Passer; Manipulated
 N rows raw = 4426
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 2257
+-- N rows pre-processed = 2011
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Manipulated_1004001375.csv
 
@@ -875,10 +891,10 @@ Pre-processing tag_id = 1004001457; Passer; Manipulated
 N rows raw = 89554
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 10331
+-- N rows pre-processed = 9391
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Manipulated_1004001457.csv
 
@@ -888,10 +904,10 @@ Pre-processing tag_id = 1004001525; Passer; Manipulated
 N rows raw = 48287
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 6030
+-- N rows pre-processed = 5532
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Manipulated_1004001525.csv
 
@@ -901,10 +917,10 @@ Pre-processing tag_id = 1004001562; Passer; Manipulated
 N rows raw = 10047
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 5608
+-- N rows pre-processed = 5351
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Manipulated_1004001562.csv
 
@@ -914,10 +930,10 @@ Pre-processing tag_id = 1004001564; Passer; Manipulated
 N rows raw = 40583
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 19525
+-- N rows pre-processed = 18936
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Manipulated_1004001564.csv
 
@@ -927,10 +943,10 @@ Pre-processing tag_id = 1004001567; Passer; Manipulated
 N rows raw = 91006
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 48806
+-- N rows pre-processed = 46122
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Manipulated_1004001567.csv
 
@@ -940,10 +956,10 @@ Pre-processing tag_id = 1004001568; Passer; Manipulated
 N rows raw = 122982
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 63817
+-- N rows pre-processed = 61059
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Manipulated_1004001568.csv
 
@@ -953,10 +969,10 @@ Pre-processing tag_id = 1004001569; Passer; Manipulated
 N rows raw = 61639
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 32175
+-- N rows pre-processed = 30831
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Manipulated_1004001569.csv
 
@@ -966,10 +982,10 @@ Pre-processing tag_id = 1004001603; Passer; Manipulated
 N rows raw = 19482
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 13054
+-- N rows pre-processed = 12557
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Manipulated_1004001603.csv
 
@@ -979,10 +995,10 @@ Pre-processing tag_id = 1004001604; Passer; Manipulated
 N rows raw = 63439
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 36285
+-- N rows pre-processed = 35236
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Manipulated_1004001604.csv
 
@@ -992,10 +1008,10 @@ Pre-processing tag_id = 1004001177; Passer; Moulting
 N rows raw = 15380
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 5095
+-- N rows pre-processed = 4610
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Moulting_1004001177.csv
 
@@ -1005,10 +1021,10 @@ Pre-processing tag_id = 1004001243; Passer; Moulting
 N rows raw = 32337
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 6440
+-- N rows pre-processed = 6011
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Moulting_1004001243.csv
 
@@ -1018,10 +1034,10 @@ Pre-processing tag_id = 1004001246; Passer; Moulting
 N rows raw = 14494
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 3308
+-- N rows pre-processed = 3013
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Moulting_1004001246.csv
 
@@ -1031,10 +1047,10 @@ Pre-processing tag_id = 1004001334; Passer; Moulting
 N rows raw = 16384
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 4755
+-- N rows pre-processed = 4373
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Moulting_1004001334.csv
 
@@ -1044,10 +1060,10 @@ Pre-processing tag_id = 1004001342; Passer; Moulting
 N rows raw = 8849
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 5872
+-- N rows pre-processed = 5751
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Moulting_1004001342.csv
 
@@ -1057,10 +1073,10 @@ Pre-processing tag_id = 1004001347; Passer; Moulting
 N rows raw = 2493
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1787
+-- N rows pre-processed = 1754
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Moulting_1004001347.csv
 
@@ -1070,10 +1086,10 @@ Pre-processing tag_id = 1004001351; Passer; Moulting
 N rows raw = 7815
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 5067
+-- N rows pre-processed = 4912
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Moulting_1004001351.csv
 
@@ -1083,10 +1099,10 @@ Pre-processing tag_id = 1004001372; Passer; Moulting
 N rows raw = 20697
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 11503
+-- N rows pre-processed = 11187
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Moulting_1004001372.csv
 
@@ -1096,10 +1112,10 @@ Pre-processing tag_id = 1004001374; Passer; Moulting
 N rows raw = 1645
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1024
+-- N rows pre-processed = 992
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Moulting_1004001374.csv
 
@@ -1109,10 +1125,10 @@ Pre-processing tag_id = 1004001386; Passer; Moulting
 N rows raw = 83235
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 46094
+-- N rows pre-processed = 45026
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Moulting_1004001386.csv
 
@@ -1122,10 +1138,10 @@ Pre-processing tag_id = 1004001400; Passer; Moulting
 N rows raw = 79289
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 10593
+-- N rows pre-processed = 8866
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Moulting_1004001400.csv
 
@@ -1135,10 +1151,10 @@ Pre-processing tag_id = 1004001401; Passer; Moulting
 N rows raw = 12519
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 2703
+-- N rows pre-processed = 2443
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Moulting_1004001401.csv
 
@@ -1148,10 +1164,10 @@ Pre-processing tag_id = 1004001407; Passer; Moulting
 N rows raw = 72654
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 8746
+-- N rows pre-processed = 8038
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Moulting_1004001407.csv
 
@@ -1161,10 +1177,10 @@ Pre-processing tag_id = 1004001408; Passer; Moulting
 N rows raw = 114946
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 13867
+-- N rows pre-processed = 12577
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Moulting_1004001408.csv
 
@@ -1174,10 +1190,10 @@ Pre-processing tag_id = 1004001412; Passer; Moulting
 N rows raw = 101158
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 11942
+-- N rows pre-processed = 10985
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Moulting_1004001412.csv
 
@@ -1187,10 +1203,10 @@ Pre-processing tag_id = 1004001414; Passer; Moulting
 N rows raw = 75097
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 7258
+-- N rows pre-processed = 5278
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Moulting_1004001414.csv
 
@@ -1200,10 +1216,10 @@ Pre-processing tag_id = 1004001416; Passer; Moulting
 N rows raw = 118855
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 14653
+-- N rows pre-processed = 13398
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Moulting_1004001416.csv
 
@@ -1213,10 +1229,10 @@ Pre-processing tag_id = 1004001418; Passer; Moulting
 N rows raw = 34016
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 3446
+-- N rows pre-processed = 2396
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Moulting_1004001418.csv
 
@@ -1226,10 +1242,10 @@ Pre-processing tag_id = 1004001463; Passer; Moulting
 N rows raw = 124106
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 64707
+-- N rows pre-processed = 63537
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Moulting_1004001463.csv
 
@@ -1239,10 +1255,10 @@ Pre-processing tag_id = 1004001465; Passer; Moulting
 N rows raw = 83847
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 40023
+-- N rows pre-processed = 39706
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Moulting_1004001465.csv
 
@@ -1252,10 +1268,10 @@ Pre-processing tag_id = 1004001526; Passer; Moulting
 N rows raw = 86063
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 9710
+-- N rows pre-processed = 8128
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Moulting_1004001526.csv
 
@@ -1265,10 +1281,10 @@ Pre-processing tag_id = 1004001565; Passer; Moulting
 N rows raw = 58277
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 33269
+-- N rows pre-processed = 31315
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Moulting_1004001565.csv
 
@@ -1278,10 +1294,10 @@ Pre-processing tag_id = 1004001571; Passer; Moulting
 N rows raw = 5698
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 3044
+-- N rows pre-processed = 3017
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_Moulting_1004001571.csv
 
@@ -1291,10 +1307,10 @@ Pre-processing tag_id = 1004001175; Passer; NonMoulting
 N rows raw = 5945
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 2687
+-- N rows pre-processed = 2494
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_NonMoulting_1004001175.csv
 
@@ -1304,10 +1320,10 @@ Pre-processing tag_id = 1004001180; Passer; NonMoulting
 N rows raw = 33461
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 9986
+-- N rows pre-processed = 9320
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_NonMoulting_1004001180.csv
 
@@ -1317,10 +1333,10 @@ Pre-processing tag_id = 1004001211; Passer; NonMoulting
 N rows raw = 3934
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 912
+-- N rows pre-processed = 829
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_NonMoulting_1004001211.csv
 
@@ -1330,10 +1346,10 @@ Pre-processing tag_id = 1004001214; Passer; NonMoulting
 N rows raw = 12044
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 3511
+-- N rows pre-processed = 3298
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_NonMoulting_1004001214.csv
 
@@ -1343,10 +1359,10 @@ Pre-processing tag_id = 1004001217; Passer; NonMoulting
 N rows raw = 7183
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1853
+-- N rows pre-processed = 1710
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_NonMoulting_1004001217.csv
 
@@ -1356,10 +1372,10 @@ Pre-processing tag_id = 1004001244; Passer; NonMoulting
 N rows raw = 4030
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1422
+-- N rows pre-processed = 1258
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_NonMoulting_1004001244.csv
 
@@ -1369,10 +1385,10 @@ Pre-processing tag_id = 1004001254; Passer; NonMoulting
 N rows raw = 8219
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 2525
+-- N rows pre-processed = 2379
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_NonMoulting_1004001254.csv
 
@@ -1382,10 +1398,10 @@ Pre-processing tag_id = 1004001417; Passer; NonMoulting
 N rows raw = 184551
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 22948
+-- N rows pre-processed = 21205
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_NonMoulting_1004001417.csv
 
@@ -1395,10 +1411,10 @@ Pre-processing tag_id = 1004001675; Passer; NonMoulting
 N rows raw = 4236
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 2465
+-- N rows pre-processed = 2378
 -- saved to data/processed/data_preprocessed/
  data_preproc_Passer_NonMoulting_1004001675.csv
 
@@ -1408,10 +1424,10 @@ Pre-processing tag_id = 1004001399; Pycnonotus; Manipulated
 N rows raw = 67083
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 11046
+-- N rows pre-processed = 9395
 -- saved to data/processed/data_preprocessed/
  data_preproc_Pycnonotus_Manipulated_1004001399.csv
 
@@ -1421,10 +1437,10 @@ Pre-processing tag_id = 1004001415; Pycnonotus; Manipulated
 N rows raw = 37823
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 5533
+-- N rows pre-processed = 4685
 -- saved to data/processed/data_preprocessed/
  data_preproc_Pycnonotus_Manipulated_1004001415.csv
 
@@ -1434,10 +1450,10 @@ Pre-processing tag_id = 1004001582; Pycnonotus; Manipulated
 N rows raw = 52810
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 9754
+-- N rows pre-processed = 8695
 -- saved to data/processed/data_preprocessed/
  data_preproc_Pycnonotus_Manipulated_1004001582.csv
 
@@ -1447,10 +1463,10 @@ Pre-processing tag_id = 1004001590; Pycnonotus; Manipulated
 N rows raw = 42816
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 10828
+-- N rows pre-processed = 9488
 -- saved to data/processed/data_preprocessed/
  data_preproc_Pycnonotus_Manipulated_1004001590.csv
 
@@ -1460,10 +1476,10 @@ Pre-processing tag_id = 1004001608; Pycnonotus; Manipulated
 N rows raw = 24968
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 6487
+-- N rows pre-processed = 5420
 -- saved to data/processed/data_preprocessed/
  data_preproc_Pycnonotus_Manipulated_1004001608.csv
 
@@ -1473,10 +1489,10 @@ Pre-processing tag_id = 1004001610; Pycnonotus; Manipulated
 N rows raw = 33091
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 7983
+-- N rows pre-processed = 6503
 -- saved to data/processed/data_preprocessed/
  data_preproc_Pycnonotus_Manipulated_1004001610.csv
 
@@ -1486,10 +1502,10 @@ Pre-processing tag_id = 1004001390; Pycnonotus; Moulting
 N rows raw = 9475
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1938
+-- N rows pre-processed = 1719
 -- saved to data/processed/data_preprocessed/
  data_preproc_Pycnonotus_Moulting_1004001390.csv
 
@@ -1499,10 +1515,10 @@ Pre-processing tag_id = 1004001410; Pycnonotus; Moulting
 N rows raw = 91493
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 13231
+-- N rows pre-processed = 12386
 -- saved to data/processed/data_preprocessed/
  data_preproc_Pycnonotus_Moulting_1004001410.csv
 
@@ -1512,10 +1528,10 @@ Pre-processing tag_id = 1004001411; Pycnonotus; Moulting
 N rows raw = 122281
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 17322
+-- N rows pre-processed = 16300
 -- saved to data/processed/data_preprocessed/
  data_preproc_Pycnonotus_Moulting_1004001411.csv
 
@@ -1525,10 +1541,10 @@ Pre-processing tag_id = 1004001478; Pycnonotus; Moulting
 N rows raw = 48871
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 8739
+-- N rows pre-processed = 8444
 -- saved to data/processed/data_preprocessed/
  data_preproc_Pycnonotus_Moulting_1004001478.csv
 
@@ -1538,10 +1554,10 @@ Pre-processing tag_id = 1004001480; Pycnonotus; Moulting
 N rows raw = 45871
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 8346
+-- N rows pre-processed = 8112
 -- saved to data/processed/data_preprocessed/
  data_preproc_Pycnonotus_Moulting_1004001480.csv
 
@@ -1551,10 +1567,10 @@ Pre-processing tag_id = 1004001609; Pycnonotus; Moulting
 N rows raw = 31345
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 6733
+-- N rows pre-processed = 5098
 -- saved to data/processed/data_preprocessed/
  data_preproc_Pycnonotus_Moulting_1004001609.csv
 
@@ -1564,10 +1580,10 @@ Pre-processing tag_id = 1004001613; Pycnonotus; Moulting
 N rows raw = 24432
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 5673
+-- N rows pre-processed = 4767
 -- saved to data/processed/data_preprocessed/
  data_preproc_Pycnonotus_Moulting_1004001613.csv
 
@@ -1577,10 +1593,10 @@ Pre-processing tag_id = 1004001636; Pycnonotus; Moulting
 N rows raw = 43510
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 9634
+-- N rows pre-processed = 8617
 -- saved to data/processed/data_preprocessed/
  data_preproc_Pycnonotus_Moulting_1004001636.csv
 
@@ -1590,10 +1606,10 @@ Pre-processing tag_id = 1004001679; Pycnonotus; Moulting
 N rows raw = 5302
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 3791
+-- N rows pre-processed = 3734
 -- saved to data/processed/data_preprocessed/
  data_preproc_Pycnonotus_Moulting_1004001679.csv
 
@@ -1603,10 +1619,10 @@ Pre-processing tag_id = 1004001078; Pycnonotus; NonMoulting
 N rows raw = 3551
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1634
+-- N rows pre-processed = 1572
 -- saved to data/processed/data_preprocessed/
  data_preproc_Pycnonotus_NonMoulting_1004001078.csv
 
@@ -1616,10 +1632,10 @@ Pre-processing tag_id = 1004001079; Pycnonotus; NonMoulting
 N rows raw = 5992
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 2548
+-- N rows pre-processed = 2440
 -- saved to data/processed/data_preprocessed/
  data_preproc_Pycnonotus_NonMoulting_1004001079.csv
 
@@ -1629,10 +1645,10 @@ Pre-processing tag_id = 1004001172; Pycnonotus; NonMoulting
 N rows raw = 12268
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 5270
+-- N rows pre-processed = 5125
 -- saved to data/processed/data_preprocessed/
  data_preproc_Pycnonotus_NonMoulting_1004001172.csv
 
@@ -1642,10 +1658,10 @@ Pre-processing tag_id = 1004001332; Pycnonotus; NonMoulting
 N rows raw = 75947
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 17482
+-- N rows pre-processed = 15154
 -- saved to data/processed/data_preprocessed/
  data_preproc_Pycnonotus_NonMoulting_1004001332.csv
 
@@ -1655,10 +1671,10 @@ Pre-processing tag_id = 1004001679; Pycnonotus; NonMoulting
 N rows raw = 11552
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 8669
+-- N rows pre-processed = 8545
 -- saved to data/processed/data_preprocessed/
  data_preproc_Pycnonotus_NonMoulting_1004001679.csv
 
@@ -1668,10 +1684,10 @@ Pre-processing tag_id = 1004001716; Pycnonotus; NonMoulting
 N rows raw = 1800
 -- removed 21 point smoothed speeds above 20 mps.
 -- removed point speeds above 15
--- median smoothed coordinates, moving window = 9
+-- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 865
+-- N rows pre-processed = 804
 -- saved to data/processed/data_preprocessed/
  data_preproc_Pycnonotus_NonMoulting_1004001716.csv
 
