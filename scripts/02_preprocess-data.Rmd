@@ -40,7 +40,7 @@ if (file.exists("data/log_preprocessing.log")) {
 
 # some parameters
 min_rows = 1000 # discard data below n rows
-moving_window = 9 # moving window
+moving_window = 11 # moving window
 smoothed_speed_threshold = 20
 point_speed_threshold = 15
 thinning_interval = 20
@@ -86,7 +86,7 @@ for (file in files) {
       
       # filter on smoothed speed
       df[, speed_smoothed := frollmean(speed_in, n = 21)]
-      df <- df[!is.na(speed_smoothed) & speed_smoothed < 20, ]
+      df <- df[!is.na(speed_smoothed) & speed_smoothed < 15, ]
       print(
         glue("-- removed 21 point smoothed speeds \\
              above {smoothed_speed_threshold} mps.
@@ -100,7 +100,7 @@ for (file in files) {
       )]
       
       # filter per position now
-      df <- df[speed_in < 15 & speed_out < 15, ]
+      df <- df[speed_in < 10 & speed_out < 10, ]
       print(
         glue("-- removed point speeds above {point_speed_threshold}")
       )
