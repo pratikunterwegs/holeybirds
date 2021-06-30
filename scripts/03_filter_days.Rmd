@@ -35,7 +35,7 @@ data = lapply(files, fread) |> rbindlist()
 
 # assign day and count number of days
 data[, date := date(
-    as.POSIXct(time, origin = "1970-01-01", tz = "UTC")
+    as.POSIXct(time, origin = "1970-01-01", tz = "Asia/Jerusalem")
 )]
 data_day_count = data[, list(.N), by = c("TAG_ID", "sp", "treat", "date")]
 ```

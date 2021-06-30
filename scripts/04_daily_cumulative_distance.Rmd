@@ -49,11 +49,11 @@ data <- lapply(data, function(df) {
 ```{r}
 # get interval since start of day --- will be nighttime
 data <- lapply(data, function(df) {
-  df[, posix_time := as.POSIXct(time, origin = "1970-01-01", tz = "UTC")]
+  df[, posix_time := as.POSIXct(time, origin = "1970-01-01", 
+                                tz = "Asia/Jerusalem")]
   # difference in minutes between time and start of day
   df[, min_day := as.numeric(
-      difftime(posix_time, 
-        as_datetime(min(date(posix_time))), units = "mins")
+     hour(posix_time) * 60 + minute(posix_time)
   )]
   # round min_day to 10 mins
   df[, min_day := plyr::round_any(min_day, 10)]
