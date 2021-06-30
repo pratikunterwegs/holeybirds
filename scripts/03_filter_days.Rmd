@@ -13,6 +13,9 @@ Here we load the pre-processed data, which has been smoothed and thinned to 20 s
 # libs for data
 library(data.table)
 library(lubridate)
+
+# for eda
+library(ggplot2)
 ```
 
 Prepare files.
