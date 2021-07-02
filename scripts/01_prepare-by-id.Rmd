@@ -3,13 +3,14 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Prepare data by species
+# Prepare tracking data by individual
 
 ## Load libraries
 
 ```{r}
 # libs for data
 library(data.table)
+library(readxl)
 library(stringi)
 library(glue)
 ```
@@ -98,6 +99,8 @@ invisible(
 
 ## Get basic temporal tracking metrics
 
+### Read files and get metrics
+
 ```{r}
 # list data
 data <- list.files("data/processed/data_id/", full.names = TRUE)
@@ -158,3 +161,77 @@ data_daily_heat <- rbindlist(
 # save data
 fwrite(data_daily_heat, file = "data/results/data_daily_fixes.csv")
 ```
+
+## Prepare RRV data for individuals
+
+### Basic read-in
+
+```{r read_rrv_files}
+# list files
+files = list.files(path = "data/raw/", pattern = "xlsx", full.names = T)
+
+# remove long term sparrows
+files = files[-grep("Long", files)]
+
+# read data
+data = lapply(files, read_xlsx, skip = 1)
+
+# there are warnings related to empty columns because excel is terrible
+lapply(data, sapply, function(x) sum(is.na(x)))
+
+# colnames
+cols_to_keep = c("Group", "ID", "Tag", "RRV", "Day", "Date", "calculated RRV")
+
+# keep only useful rows and cols
+data = lapply(
+  data, function(df) {
+    setDT(df)
+    
+    # subset columns
+    df = df[, ..cols_to_keep]
+    
+    # remove extra rows by removing NAs
+    na.omit(df)
+  })
+```
+
+### Handle date and column names
+
+```{r}
+# first bind rows
+data = rbindlist(data)
+
+# edit names to match previous individual data
+setnames(data, old = c("Group", "Tag", "calculated RRV"),
+         new = c("treat", "trunc_tag", "rrv_calc"))
+
+# removes cols
+data = data[, !c("ID", "Day")]
+```
+
+### Link RRV to species and individual
+
+
+```{r}
+# read previously summarised data
+data_tracking_summary = fread("data/results/data_basic_tracking_metric.csv")
+
+# select useful columns
+data_tracking_summary = data_tracking_summary[, c("sp", "treat", "TAG_ID")]
+
+# get last four digits of the tag id
+data_tracking_summary[, "tag_4_digit" := stri_sub(TAG_ID, -4, -1)]
+
+# pad the RRV data tag id, ie, make xx01 to 0001
+data[, trunc_tag := stri_pad_left(trunc_tag, width = 4, pad = 0)]
+
+# join the datasets
+data = merge(data, data_tracking_summary, by.x = c("treat", "trunc_tag"),
+             by.y = c("treat", "tag_4_digit"))
+
+# remove old tag and write to file
+data = data[, !"trunc_tag"]
+
+fwrite(data, file = "data/results/data_daily_rrv.csv")
+```
+
