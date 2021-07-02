@@ -1,0 +1,51 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# Try ctmm
+
+## Load libraries and prepare files
+
+```{r}
+# libs for data
+library(data.table)
+library(lubridate)
+
+# library for atlas data
+library(ctmm)
+
+# plotting
+library(ggplot2)
+library(ggspatial)
+library(colorspace)
+```
+
+```{r}
+# load data from file
+data <- fread("data/processed/data_for_analysis.csv")
+```
+
+
+```{r}
+df = data[TAG_ID == "1004001748", c("x", "y", "time", "TAG_ID")]
+
+# make coords
+coords = st_as_sf(df, coords = c("x", "y"), crs = 2039) |>
+  st_transform(4326) |>
+  st_coordinates()
+df[, c("x", "y") := list(coords[,"X"], coords[,"Y"])]
+df$time = as.POSIXct(df$time, origin = "1970-01-01")
+setnames(df, c("location.long", "location.lat", "timestamp", "individual.local.identifier"))
+
+ctm = as.telemetry(df)
+plot(ctm)
+
+vgm = variogram(ctm)
+plot(vgm)
+
+variogram.fit(vgm)
+a = periodogram(ctm)
+a = ctmm.fit(ctm)
+```
+
