@@ -202,8 +202,8 @@ data = lapply(
 data = rbindlist(data)
 
 # edit names to match previous individual data
-setnames(data, old = c("Group", "Tag", "calculated RRV"),
-         new = c("treat", "trunc_tag", "rrv_calc"))
+setnames(data, old = c("Group", "Tag", "calculated RRV", "Date"),
+         new = c("treat", "trunc_tag", "rrv_calc", "date"))
 
 # removes cols
 data = data[, !c("ID", "Day")]
