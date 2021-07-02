@@ -50,6 +50,7 @@ data/**
 
 # docx
 *.docx
+*.xlxs
 
 # ignore supplement tex
 docs/*.tex
