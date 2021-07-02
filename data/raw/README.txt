@@ -1,0 +1,1 @@
+The raw data are currently covered by .gitignore so as not to be available online. This may change as the project moves towards publication.

@@ -43,7 +43,7 @@ data/**
 !/data/*.txt
 !/data/results/
 !/data/raw/
-!data/raw/00_placeholder.txt
+!data/raw/README.txt
 !/data/processed/
 !data/processed/00_placeholder.txt
 !data/*.log
