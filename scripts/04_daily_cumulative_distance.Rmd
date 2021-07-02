@@ -3,7 +3,9 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Cumulative daily distance
+# Cumulative daily distance in relation to RRV
+
+RRV is a score of how gappy the wing is.
 
 ## Load libraries and prepare files
 
@@ -23,6 +25,8 @@ library(colorspace)
 ```{r}
 # load data from file
 data <- fread("data/processed/data_for_analysis.csv")
+
+rrv = fread("data/results/data_daily_rrv.csv")
 ```
 
 ## Calculate distances and times of day
@@ -85,6 +89,21 @@ data_summary$treat = factor(data_summary$treat,
 fwrite(data_summary, file = "data/results/data_daily_cumulative_distance.csv")
 ```
 
+### Connect with RRV
+
+```{r}
+# join on date, species, id, and treatment
+# first fix date
+data_summary$date = as.POSIXct(data_summary$date)
+
+data_summary = merge(
+  data_summary,
+  rrv,
+  by = c("sp", "treat", "TAG_ID", "date")
+)
+```
+
+
 ### Plot cumulative daily distance over time
 
 ```{r plot_cuml_dist}
@@ -100,15 +119,14 @@ ggplot(data_summary[sp != "Hirundo" & treat != "LongPeriod"]) +
     aes(
       min_day, cuml_distance,
       group = interaction(TAG_ID, date),
-      col = treat
+      col = rrv_calc
     ),
-    show.legend = F,
-    alpha = 0.3
+    # show.legend = F,
+    alpha = 0.8
   )+
-  scale_colour_discrete_qualitative(
-    palette = "Harmonic",
-    l1 = 50, h1 = 50,
-    rev = T
+  scale_colour_binned_sequential(
+    palette = "Batlow",
+    breaks = c(0, 2, 5, 10, 15)
   )+
   scale_y_sqrt(
     labels = function(x) { 
@@ -128,15 +146,17 @@ ggplot(data_summary[sp != "Hirundo" & treat != "LongPeriod"]) +
   theme(
     axis.text.x = element_text(
       size = 8
-    )
+    ),
+    legend.key.width = unit(2, units = "mm")
   )+
   facet_grid(
-    sp ~ treat, 
+    ~sp,# ~ treat, 
     labeller = labeller(
       treat = label_condition
     )
   )+
   labs(
+    colour = "Est. RRV",
     x = "Hour of day",
     y = "Cumulattive distance (km)"
   )
@@ -144,7 +164,7 @@ ggplot(data_summary[sp != "Hirundo" & treat != "LongPeriod"]) +
 # save plot to file
 ggsave(
   filename = "figures/fig_cumulative_daily_distance.png",
-  height = 6, width = 6
+  height = 3, width = 6
 )
 ```
 
@@ -178,29 +198,25 @@ fwrite(data_dist_summary, file = "data/results/data_daily_total_distance.csv")
 ```{r}
 # remove swallows and long term sparrows
 data_dist_summary = data_dist_summary[sp != "Hirundo" & treat != "LongPeriod"]
+data_dist_summary$date = as.POSIXct(data_dist_summary$date)
+
+# link with rrv
+data_dist_summary = merge(
+  data_dist_summary,
+  rrv
+)
 
 # make plot
 ggplot(data_dist_summary)+
   geom_jitter(
-    aes(treat, total_distance),
-    width = 0.1,
-    col = "grey70",
-    alpha = 0.5
+    aes(rrv_calc, total_distance,
+        col = rrv_calc),
+    shape = 1,
+    stroke = 1
   )+
-  geom_boxplot(
-    aes(
-      treat, total_distance,
-      col = treat
-    ),
-    outlier.shape = 1,
-    show.legend = F,
-    fill = alpha("grey", alpha = 0.3),
-    width = 0.3
-  )+
-  scale_colour_discrete_qualitative(
-    palette = "Harmonic",
-    l1 = 50, h1 = 50,
-    rev = T
+  scale_colour_binned_sequential(
+    palette = "Batlow",
+    breaks = c(0, 2, 5, 10, 15)
   )+
   scale_y_sqrt(
     labels = function(x) { 
@@ -208,19 +224,21 @@ ggplot(data_dist_summary)+
     },
     breaks = c(1, 5, 10, 20) * 1e3
   )+
-  scale_x_discrete(
-    labels = c("Non moulting", "Moulting", "Manipulated")
-  )+
+  # scale_x_discrete(
+  #   labels = c("Non moulting", "Moulting", "Manipulated")
+  # )+
   theme_test()+
   theme(
     axis.text.x = element_text(
       size = 8
-    )
+    ),
+    legend.key.width = unit(2, units = "mm")
   )+
   facet_grid(~sp)+
   labs(
-    x = "Wing condition",
-    y = "Total distance (km)"
+    x = "Calculated RRV",
+    y = "Total distance (km)",
+    colour = "Est. RRV"
   )
 
 # save as figure
@@ -270,6 +288,14 @@ Here we take each day and individual as a replicate.
 # round min day to 30 minutes
 data_nsd_summary[, min_day_30 := plyr::round_any(min_day, 30)]
 
+# link to rrv
+data_nsd_summary$date = as.POSIXct(data_nsd_summary$date)
+
+data_nsd_summary = merge(
+  data_nsd_summary,
+  rrv
+)
+
 data_nsd_concise = data_nsd_summary[, list(
   nsd_mean = mean(nsd_mean),
   nsd_median = median(nsd_mean),
@@ -287,25 +313,28 @@ ggplot()+
     data = data_nsd_summary[sp != "Hirundo" & treat != "LongPeriod"],
     aes(
       min_day, sqrt(nsd_mean),
-      colour = treat,
+      colour = rrv_calc,
       group = interaction(sp, date, treat, TAG_ID)
     ),
-    show.legend = F,
-    alpha = 0.3
+    alpha = 0.6
   )+
-  geom_line(
-    data = data_nsd_concise[sp != "Hirundo" & treat != "LongPeriod"],
-    aes(
-      x = min_day_30,
-      y = sqrt(nsd_median),
-      group = interaction(sp, treat)
-    ),
-    shape = 0
-  )+
-  scale_colour_discrete_qualitative(
-    palette = "Harmonic",
-    l1 = 50, h1 = 50, c1 = 30,
-    rev = T
+  # geom_line(
+  #   data = data_nsd_concise[sp != "Hirundo" & treat != "LongPeriod"],
+  #   aes(
+  #     x = min_day_30,
+  #     y = sqrt(nsd_median),
+  #     group = interaction(sp, treat)
+  #   ),
+  #   shape = 0
+  # )+
+  # scale_colour_discrete_qualitative(
+  #   palette = "Harmonic",
+  #   l1 = 50, h1 = 50, c1 = 30,
+  #   rev = T
+  # )+
+  scale_colour_binned_sequential(
+    palette = "Batlow",
+    breaks = c(0, 2, 5, 10, 15)
   )+
   scale_x_continuous(
     labels = function(x) { sprintf("%ihr", as.integer(x / 60)) },
@@ -321,10 +350,11 @@ ggplot()+
   theme(
     axis.text.x = element_text(
       size = 8
-    )
+    ),
+    legend.key.width = unit(2, units = "mm")
   )+
   facet_grid(
-    sp ~ treat, 
+    ~ sp, 
     labeller = labeller(
       treat = label_condition
     ),
@@ -332,13 +362,14 @@ ggplot()+
   )+
   labs(
     x = "Hour of day",
-    y = "Net displacement (km)"
+    y = "Net displacement (km)",
+    colour = "Est. RRV"
   )
 
 # save as figure
 ggsave(
   filename = "figures/fig_net_displacement.png",
-  height = 6, width = 6
+  height = 3, width = 6
 )
 ```
 
