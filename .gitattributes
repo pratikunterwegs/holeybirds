@@ -1,0 +1,5 @@
+# count rmd as R
+*.Rmd linguist-language=R
+*.rmd linguist-language=R
+# count ipynb as Python
+*.ipynb linguist-language=Python
