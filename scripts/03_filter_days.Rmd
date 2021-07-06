@@ -22,7 +22,8 @@ Prepare files.
 
 ```{r}
 # list files
-files = list.files("data/processed/data_preprocessed", full.names = TRUE)
+files = list.files("data/processed/data_preprocessed", pattern = "thin", 
+    full.names = TRUE)
 ```
 
 ## Load data and count by day
@@ -57,6 +58,9 @@ ggplot(data_day_count)+
 # filter out days < 500 fixes
 data_day_count = data_day_count[N > 500, ]
 
+# save data daily count
+fwrite(data_day_count, "data/results/data_daily_count_good.csv")
+
 # join to data and remove data
 data = merge(data, data_day_count)
 ```
@@ -70,5 +74,5 @@ The data are sufficiently small to be written to a single file.
 data = data[, !c("count", "N")]
 
 # write data
-fwrite(data, file = "data/processed/data_for_analysis.csv")
+fwrite(data, file = "data/processed/data_thinned_for_analysis.csv")
 ```
