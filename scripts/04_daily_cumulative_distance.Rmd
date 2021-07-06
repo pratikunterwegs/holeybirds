@@ -24,7 +24,7 @@ library(colorspace)
 
 ```{r}
 # load data from file
-data <- fread("data/processed/data_for_analysis.csv")
+data <- fread("data/processed/data_thinned_for_analysis.csv")
 
 rrv = fread("data/results/data_daily_rrv.csv")
 ```
