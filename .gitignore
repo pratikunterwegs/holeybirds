@@ -39,14 +39,17 @@ vignettes/*.pdf
 .Renviron
 
 # large data
-data/**
-!/data/*.txt
-!/data/results/
-!/data/raw/
-!data/raw/README.txt
-!/data/processed/
+data/processed/**
 !data/processed/00_placeholder.txt
-!data/*.log
+
+data/rasters/**
+!data/rasters/README.txt
+
+data/results/**
+!data/results/00_placeholder.txt
+
+!data/00_placeholder.txt
+!data/log_preprocessing.log
 
 # docx
 *.docx
