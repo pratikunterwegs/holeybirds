@@ -118,6 +118,9 @@ for (file in files) {
       save_file = glue("data/processed/data_preprocessed/data_smooth\\
                        _{species}_{treatment}_{tag_id}.csv")
       
+      # really save the data
+      fwrite(df, file = save_file)
+
       # select columns for thinning
       data_thin <- df[, c(
         "TAG_ID", "sp", "treat",
@@ -151,7 +154,7 @@ for (file in files) {
       
       print(
         glue("-- saved to data/processed/data_preprocessed/
-              data_preproc_{species}_{treatment}_{tag_id}.csv
+              data_thin_{species}_{treatment}_{tag_id}.csv
              ")
       )
       
