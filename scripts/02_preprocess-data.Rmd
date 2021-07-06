@@ -113,6 +113,10 @@ for (file in files) {
       print(
         glue("-- median smoothed coordinates, moving window = {moving_window}")
       )
+
+      # save smoothed data to file
+      save_file = glue("data/processed/data_preprocessed/data_smooth\\
+                       _{species}_{treatment}_{tag_id}.csv")
       
       # select columns for thinning
       data_thin <- df[, c(
@@ -136,7 +140,7 @@ for (file in files) {
         glue("-- thinned data to {thinning_interval} seconds")
       )      
       # save data to file
-      save_file = glue("data/processed/data_preprocessed/data_preproc\\
+      save_file = glue("data/processed/data_preprocessed/data_thin\\
                        _{species}_{treatment}_{tag_id}.csv")
       print(
         glue("-- N rows pre-processed = {nrow(data_thin)}")
