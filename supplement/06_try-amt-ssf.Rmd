@@ -1,0 +1,108 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# Try SSF
+
+## Load libraries and prepare files
+
+```{r}
+# libs for data
+library(data.table)
+library(lubridate)
+library(tidyverse)
+library(sf)
+
+# library for atlas data
+library(amt)
+
+# plotting
+library(ggplot2)
+library(ggspatial)
+library(colorspace)
+```
+
+## Load data
+
+```{r}
+files = list.files("data/processed/data_preprocessed", pattern = "smooth",
+                   full.names = T)
+```
+
+
+```{r}
+# read files
+data = fread(files[2])
+setDF(data)
+
+# make tibble
+data = as_tibble(data)
+
+# handle timesteps
+data = mutate(data, time = as.POSIXct(
+  UNIX, origin = "1970-01-01", tz = "Asia/Jerusalem"
+))
+
+# make amt
+data = amt::make_track(
+  tbl = data, .x = x, .y = y, .t = time,
+  
+  # set CRS
+  crs = sp::CRS(
+    st_crs(2039)$proj4string
+  )
+)
+
+# resample to 30 s with a 5 second tolerance
+data_resamp = amt::track_resample(
+  data,
+  rate = seconds(30),
+  tolerance = seconds(5)
+) %>% 
+  
+  # filter bursts with at least 5 points
+  # this is the filtering out of proto-patches essentially
+  amt::filter_min_n_burst(
+    min_n = 5
+  ) %>% 
+  amt::steps_by_burst() %>% 
+  amt::time_of_day(
+    include.crepuscule = F
+  )
+```
+
+### Get covariate layer
+
+```{r}
+# get ndvi
+ndvi = raster("data/rasters/raster_hula_ndvi_transformed.tif")
+
+# assign name
+names(ndvi) = "ndvi"
+```
+
+### Fit model
+
+```{r}
+m1 = data_resamp %>% 
+  amt::random_steps(n = 9) %>% 
+  amt::extract_covariates(ndvi) %>% 
+  amt::time_of_day(include.crepuscule = F) %>% 
+  # mutate(
+  #   log_sl_ = log(sl_)
+  # ) %>% 
+  amt::fit_issf(
+    case_ ~ ndvi + sl_ + ndvi:tod_end_ + sl_:tod_end_ + strata(step_id_)
+  )
+
+# get distribution of step lengths
+step_dist = sl_distr(m1)
+
+# adjust distribution shape based on model
+shape_day = step_dist$params$shape + coef(m1)["sl_"]
+shape_night = step_dist$params$shape + coef(m1)["sl_"] + coef(m1)["sl_:tod_end_night"]
+
+step_dist$params$scale * c(shape_day, shape_night)
+```
+
