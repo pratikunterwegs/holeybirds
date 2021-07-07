@@ -1,0 +1,67 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Prepare data for SSF
+
+Here we prepare the data for SSFs using the `amt` package.
+
+## Load libraries and prepare files
+
+```{r}
+# libs for data
+library(data.table)
+library(lubridate)
+
+# library for atlas data
+library(amt)
+
+# plotting
+library(ggplot2)
+library(colorspace)
+```
+
+```{r}
+# read file names
+files = list.files("data/processed/data_preprocessed", pattern = "smooth",
+    full.names = TRUE    
+)
+```
+
+```{r}
+# define daily data threshold
+daily_data_threshold = 500
+day_start = 6
+day_end = 20
+
+# read smoothed data and remove if not sufficient data
+data = lapply(files, function(file) {
+
+    df = fread(file)
+    df[, time := as.POSIXct(time, origin = "1970-01-01", tz = "Asia/Jerusalem")]
+
+    # get hour and date
+    df[, date := date(time)]
+    df[, hour := hour(time)]
+
+    # remove nighttime roosts
+    df = df[hour > day_start & hour < day_end,]
+
+    # split by date
+    df_list = split(df, by = "date")
+
+    df_list = df_list[sapply(df_list, function(le) {
+        nrow(le) >= daily_data_threshold
+    })]
+
+    if(!is.null(df_list)) {
+        df = rbindlist(df_list)
+        return(df)
+    }
+    else {
+       return(NULL)
+    }
+    
+})
+```
