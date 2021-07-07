@@ -78,8 +78,12 @@ data_resamp = amt::track_resample(
 # get ndvi
 ndvi = raster("data/rasters/raster_hula_ndvi_transformed.tif")
 
+# get landcover
+lc = raster("data/rasters/raster_hula_lc_reclass.tif")
+
 # assign name
 names(ndvi) = "ndvi"
+names(lc) = "landcover"
 ```
 
 ### Fit model
@@ -88,12 +92,15 @@ names(ndvi) = "ndvi"
 m1 = data_resamp %>% 
   amt::random_steps(n = 9) %>% 
   amt::extract_covariates(ndvi) %>% 
+  amt::extract_covariates(lc) %>% 
+  mutate(landcover = factor(landcover)) %>% 
   amt::time_of_day(include.crepuscule = F) %>% 
   # mutate(
   #   log_sl_ = log(sl_)
   # ) %>% 
   amt::fit_issf(
-    case_ ~ ndvi + sl_ + ndvi:tod_end_ + sl_:tod_end_ + strata(step_id_)
+    # case_ ~ ndvi + sl_ + ndvi:tod_end_ + sl_:tod_end_ + strata(step_id_)
+    case_ ~ ndvi + strata(step_id_)
   )
 
 # get distribution of step lengths
