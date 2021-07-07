@@ -13,8 +13,13 @@ Here we prepare the data for SSFs using the `amt` package.
 # libs for data
 library(data.table)
 library(lubridate)
+library(glue)
+library(dplyr)
+library(tidyr)
+library(sf)
+library(purrr)
 
-# library for atlas data
+# library for SSF
 library(amt)
 
 # plotting
@@ -24,44 +29,156 @@ library(colorspace)
 
 ```{r}
 # read file names
-files = list.files("data/processed/data_preprocessed", pattern = "smooth",
-    full.names = TRUE    
-)
+files <- list.files("data/processed/data_preprocessed",
+  pattern = "smooth",
+  full.names = TRUE
+)[1:3]
 ```
+
+## Filter for daytime positions
 
 ```{r}
 # define daily data threshold
-daily_data_threshold = 500
-day_start = 6
-day_end = 20
+daily_data_threshold <- 100
+day_start <- 6
+day_end <- 20
 
 # read smoothed data and remove if not sufficient data
-data = lapply(files, function(file) {
+data <- lapply(files, function(file) {
+  df <- fread(file)
+  message(
+    glue("data has {nrow(df)} rows")
+  )
+  df[, time := as.POSIXct(UNIX, origin = "1970-01-01", tz = "Asia/Jerusalem")]
 
-    df = fread(file)
-    df[, time := as.POSIXct(time, origin = "1970-01-01", tz = "Asia/Jerusalem")]
+  # get hour and date
+  df[, date := date(time)]
+  df[, hour := hour(time)]
 
-    # get hour and date
-    df[, date := date(time)]
-    df[, hour := hour(time)]
+  # remove nighttime roosts
+  df <- df[hour > day_start & hour < day_end, ]
 
-    # remove nighttime roosts
-    df = df[hour > day_start & hour < day_end,]
+  # split by date
+  df_list <- split(df, by = "date")
 
-    # split by date
-    df_list = split(df, by = "date")
+  df_list <- df_list[unlist(lapply(df_list, function(le) {
+    nrow(le) >= daily_data_threshold
+  }))]
 
-    df_list = df_list[sapply(df_list, function(le) {
-        nrow(le) >= daily_data_threshold
-    })]
-
-    if(!is.null(df_list)) {
-        df = rbindlist(df_list)
-        return(df)
-    }
-    else {
-       return(NULL)
-    }
-    
+  if (!is.null(df_list)) {
+    df <- rbindlist(df_list)
+    message(
+      glue("daytime data has {nrow(df)} rows")
+    )
+    return(df)
+  }
+  else {
+    return(NULL)
+  }
 })
+
+# bind list
+data <- rbindlist(data)
+
+data[, `#` := NULL]
 ```
+
+## Prepare for SSF
+
+### Split by id and date
+
+```{r}
+# make tibble and nest by id and date + other identifiers
+setDF(data)
+tracks <- nest(data,
+  data = c(
+    UNIX, time, d, x, y, lat, lon, NDVI, Name, speed_in, speed_out,
+    speed_smoothed, hour
+  )
+)
+```
+
+### Make `amt`
+
+```{r}
+tracks <- mutate(tracks,
+  data = lapply(data, function(df) {
+    amt::make_track(
+      tbl = df,
+      .x = x,
+      .y = y,
+      .t = time,
+      crs = sp::CRS(
+        st_crs(2039)$proj4string
+      )
+    )
+  })
+)
+```
+
+### Resample to 30 seconds
+
+```{r}
+# resample and filter for steps in burst
+tracks = mutate(
+    tracks,
+    data = lapply(data, function(df) {
+        amt::track_resample(
+            df,
+            rate = seconds(30),
+            tolerance = seconds(5)
+        ) %>%
+        amt::filter_min_n_burst(
+            min_n = 5
+        )
+    }),
+)
+
+# filter for no data remaining
+tracks = filter(
+    tracks,
+    purrr::map_lgl(data, function(df) {
+        nrow(df) > 0
+    })
+)
+
+# now make steps by burst
+tracks = mutate(
+    tracks,
+    data = map(data, amt::steps_by_burst)
+)
+```
+
+### Get covariate layer
+
+```{r}
+# get ndvi
+ndvi = raster("data/rasters/raster_hula_ndvi_transformed.tif")
+
+# get landcover
+lc = raster("data/rasters/raster_hula_lc_reclass.tif")
+
+# assign name
+names(ndvi) = "ndvi"
+names(lc) = "landcover"
+```
+
+### Prepare alternate steps
+
+```{r}
+tracks = mutate(
+    tracks,
+    data = map(data, function(df) {
+        df %>%
+        amt::random_steps(n = 9) %>%
+        amt::extract_covariates(ndvi) %>%
+        amt::extract_covariates(lc) %>%
+        mutate(
+            landcover = factor(landcover)
+        )
+
+    })
+)
+```
+
+WIP
