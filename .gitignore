@@ -51,6 +51,9 @@ data/results/**
 !data/00_placeholder.txt
 !data/log_preprocessing.log
 
+data/raw/**
+!data/raw/README.txt
+
 # docx
 *.docx
 *.xlxs
