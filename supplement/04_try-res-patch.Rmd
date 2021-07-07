@@ -3,7 +3,10 @@ output: html_document
 editor_options: 
   chunk_output_type: console
 ---
+
 # Try residence patch method
+
+**NB: RESIDENCE PATCH METHOD NOT GOOD FOR THESE BIRDS**
 
 ## Load libraries and prepare files
 
@@ -21,41 +24,154 @@ library(ggspatial)
 library(colorspace)
 ```
 
+List the files.
+
+```{r}
+files = list.files("data/processed/data_preprocessed",
+                   pattern = "smooth",
+                   full.names = T)
+```
+
+
 ```{r}
 # load data from file
-data <- fread("data/processed/data_for_analysis.csv")
+data <- fread(files[6])
 ```
 
 ### Prepare data
 
 ```{r}
-df = data[TAG_ID == "1004001748", c("x", "y", "time", "TAG_ID")]
+df = data[, c("x", "y", "UNIX", "TAG_ID")]
+df[, time := (
+  as.POSIXct(UNIX, origin = "1970-01-01", tz = "Asia/Jerusalem")
+)]
 setnames(df, old = "TAG_ID", "id")
 
 # get speeds and angles
 df[, c("speed", "angle") := list(
-    atl_get_speed(df),
-    atl_turning_angle(df)
+  atl_get_speed(df),
+  atl_turning_angle(df)
 )]
 
 # fill NAs and NANs
 df$angle = nafill(df$angle, fill = 0)
+
+# smooth speed
+df[, speed := runmed(speed, k = 9)]
+
+# quantile
+quantile(df$speed, probs = 0.9)
+
+# split by day
+df[, date := date(time)]
 ```
 
-### Plot speed
+### Check transit
 
 ```{r}
-ggplot(df)+
-    geom_path(
-        aes(x, y),
-        col = "grey20",
-        size = 0.1
-    )+
-    geom_point(
-        aes(x,y,col=speed)
-    )+
-    scale_colour_binned_sequential(
-        palette = "Viridis",
-        breaks = c(0, 0.5, 1)
-    )
+ggplot()+
+  geom_path(
+    data = df,
+    aes(x, y),
+    col = "grey",
+    size = 0.1
+  )+
+  geom_point(
+    data = df[speed >= 0.2, ],
+    aes(x,y),
+    col = "indianred", shape = 1
+  )+
+  geom_point(
+    data = df[speed < 0.2, ],
+    aes(x,y,col=speed),
+    shape = 19,
+    alpha = 0.5
+  )+
+  scale_colour_continuous_sequential(
+    palette = "Blues",
+    trans = "sqrt",
+    limits = c(0, 1),
+    na.value = "transparent"
+  )+
+  facet_wrap(~date)+
+  ggspatial::annotation_scale()+
+  ggthemes::theme_map()
+  coord_sf(
+    crs = 2039
+  )
+```
+
+## Residence patch by day
+
+```{r}
+# remove transit
+df = df[speed < 0.2, ]
+
+# split by date
+df = split(df, by = "date")
+
+# apply res patch method
+patches = lapply(df, function(d) {
+  d = d[, c("x", "y", "id", "UNIX")]
+  setnames(d, old = "UNIX", new = "time")
+  
+  atl_res_patch(d, buffer_radius = 10, lim_spat_indep = 25, lim_time_indep = 5,
+                min_fixes = 8)
+})
+
+# get patch summary
+patch_summary = lapply(patches, atl_patch_summary, which_data = "summary")
+
+# patch points
+patch_points = lapply(patches, atl_patch_summary, which_data = "points")
+```
+
+## Visualise residence patches
+
+```{r}
+patch_summary = Map(function(data, names) {
+  data$date = names
+  data$hour = hour(as.POSIXct(data$time_start, origin = "1970-01-01", 
+                              tz = "Asia/Jerusalem"))
+  data
+}, patch_summary, names(patch_summary))
+
+patch_summary = rbindlist(patch_summary)
+
+patch_points = Map(function(data, names) {
+  data$date = names
+  data
+}, patch_points, names(patch_points))
+
+patch_points = rbindlist(patch_points)
+
+ggplot(patch_summary[hour > 5 & hour < 20,])+
+  geom_path(
+    data = patch_points,
+    aes(x, y),
+    col = "grey90"
+  )+
+  geom_point(
+    data = patch_points,
+    aes(x, y, col = (patch))
+  )+
+  geom_path(
+    aes(x_median, y_median,
+        group = date)
+  )+
+  geom_point(
+    aes(x_median, y_median,
+        size = duration / 60),
+    shape = 21,
+    fill = "grey",
+    alpha = 0.5,
+    colour = "grey30"
+  )+
+  scale_size(range = c(3, 8))+
+  scale_colour_viridis_c(
+    option = "H"
+  )+
+  facet_wrap(~date)+
+  ggspatial::annotation_scale(style = "ticks")+
+  ggthemes::theme_map()
 ```
