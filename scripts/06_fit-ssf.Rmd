@@ -74,7 +74,7 @@ ssfs = mutate(
     print(
       glue("sp = {ssfs$sp[.y]}; \\
             tag = {ssfs$TAG_ID[.y]}; treatment = {ssfs$treat[.y]}
-            date = {ssfs$date[.y]}
+            track date = {ssfs$date[.y]}
             row in dataframe = {.y}
             formula = {ssfs$ssf_formula[.y]}
             start time: {Sys.time()}
