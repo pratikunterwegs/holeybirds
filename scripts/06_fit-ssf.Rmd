@@ -64,6 +64,7 @@ ssfs = mutate(
       glue("sp = {ssfs$sp[.y]}; \\
             tag = {ssfs$TAG_ID[.y]}; treatment = {ssfs$treat[.y]}
             row in dataframe = {.y}
+            start time: {Sys.time()}
            ")
     )
     
@@ -85,7 +86,7 @@ ssfs = mutate(
         # print success message to the processing log
         print(
           glue("
-            SUCCESS row = {.y}; sp = {ssfs$sp[.y]}; tag = {ssfs$TAG_ID[.y]}
+            SUCCESS at time: {Sys.time()}
             ---
             
             ")
@@ -98,7 +99,7 @@ ssfs = mutate(
         
         # print an error message with information about the data
         print(
-          glue("FAILED row = {.y}; sp = {ssfs$sp[.y]}; tag = {ssfs$TAG_ID[.y]}")
+          glue("FAILED at time: {Sys.time()}")
         )
         # print the error message itself
         print(e)
