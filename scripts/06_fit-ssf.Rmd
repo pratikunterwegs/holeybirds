@@ -34,7 +34,7 @@ Here, we fit a candidate SSF for step length, NDVI, landcover, the interaction o
 
 ```{r}
 # make a copy of the data, renaming data to ssf
-ssfs = rename(tracks[1:10,], ssf = "data")
+ssfs = rename(tracks, ssf = "data")
 ```
 
 ```{r}
