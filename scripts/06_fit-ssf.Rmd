@@ -34,19 +34,75 @@ Here, we fit a candidate SSF for step length, NDVI, landcover, the interaction o
 
 ```{r}
 # make a copy of the data, renaming data to ssf
-ssfs = rename(tracks, ssf = "data")
+ssfs = rename(tracks[1:10,], ssf = "data")
 ```
 
 ```{r}
+# sink output to log
+sink(file = "data/log_ssf_fit.log")
+
 # fit ssfs overwriting the track data
 ssfs = mutate(
   ssfs,
-  ssf = map(ssf, function(df) {
-    df %>% 
-    amt::fit_issf(
-      case_ ~ sl_ + ndvi + sl_:ndvi
+  ssf = imap(ssf, function(.x, .y) {
+    
+    # print some information about the data -- which row, which id, treatment
+    print(
+      glue("sp = {ssfs$sp[.y]}; \\
+            tag = {ssfs$TAG_ID[.y]}; treatment = {ssfs$treat[.y]}
+            row in dataframe = {.y}
+           ")
+    )
+    
+    # pass the model fitting through a try catch
+    # this allows errors to be logged and prevents the process from
+    # breaking when there is an error
+    tryCatch(
+      
+      # the model fitting expression to evaluate
+      expr = {
+        
+        # this is the SSF fit function from amt
+        ssf_fit = 
+          .x %>% 
+          amt::fit_issf(
+            case_ ~ sl_ + ndvi #+ landcover #+ sl_:ndvi + sl_:landcover
+          )
+        
+        # print success message to the processing log
+        print(
+          glue("SUCCESS row = {.y}; sp = {ssfs$sp[.y]}; tag = {ssfs$TAG_ID[.y]}
+               
+               ")
+        )
+        
+        # return the model fit object
+        ssf_fit
+      }, 
+      error = function(e) {
+        
+        # print an error message with information about the data
+        print(
+          glue("FAILED row = {.y}; sp = {ssfs$sp[.y]}; tag = {ssfs$TAG_ID[.y]}")
+        )
+        # print the error message itself
+        print(e)
+        
+        # a trailing blank line
+        print(
+          glue("
+               
+               ")
+        )
+        
+        # return null if there is an error
+        NULL
+      }
     )
   })
 )
+
+# end sinking to log
+sink()
 ```
 
