@@ -41,11 +41,17 @@ ssfs = rename(tracks[1:10,], ssf = "data")
 # sink output to log
 sink(file = "data/log_ssf_fit.log")
 
+ssf_comment = "Trial SSF log writing"
+
 # first print date
 print(
-  glue("SSF fit log from {Sys.time()}
-       
-       ")
+  glue("
+    SSF fit log from {Sys.time()}
+    
+    comment: {ssf_comment}
+    
+  "
+  )
 )
 
 # fit ssfs overwriting the track data
