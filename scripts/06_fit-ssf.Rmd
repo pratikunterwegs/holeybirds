@@ -15,8 +15,7 @@ library(dplyr)
 library(tidyr)
 library(purrr)
 
-# libs for date and messages
-library(lubridate)
+# libs for messages
 library(glue)
 
 # library for SSF
@@ -63,6 +62,7 @@ ssfs = mutate(
     print(
       glue("sp = {ssfs$sp[.y]}; \\
             tag = {ssfs$TAG_ID[.y]}; treatment = {ssfs$treat[.y]}
+            date = {ssfs$date[.y]}
             row in dataframe = {.y}
             start time: {Sys.time()}
            ")
@@ -80,7 +80,7 @@ ssfs = mutate(
         ssf_fit = 
           .x %>% 
           amt::fit_issf(
-            case_ ~ sl_ + ndvi #+ landcover #+ sl_:ndvi + sl_:landcover
+            case_ ~ sl_ + ndvi + sl_:ndvi #+ landcover #+ sl_:landcover
           )
         
         # print success message to the processing log
