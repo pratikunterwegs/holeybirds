@@ -60,11 +60,13 @@ data <- lapply(files, function(file) {
 
   # split by date
   df_list <- split(df, by = "date")
-
+  
+  # remove data with fewer than N rows per day
   df_list <- df_list[unlist(lapply(df_list, function(le) {
     nrow(le) >= daily_data_threshold
   }))]
-
+  
+  # handle potentially empty data
   if (!is.null(df_list)) {
     df <- rbindlist(df_list)
     message(
@@ -79,8 +81,9 @@ data <- lapply(files, function(file) {
 
 # bind list
 data <- rbindlist(data)
-
+# remove unnecessary columns
 data[, `#` := NULL]
+data = data[, !c("speed_in", "speed_out", "speed_smoothed")]
 ```
 
 ## Prepare for SSF
@@ -90,19 +93,18 @@ data[, `#` := NULL]
 ```{r}
 # make tibble and nest by id and date + other identifiers
 setDF(data)
+# nest the tibble, 
 tracks <- nest(data,
-  data = c(
-    UNIX, time, d, x, y, lat, lon, NDVI, Name, speed_in, speed_out,
-    speed_smoothed, hour
-  )
+  data = -matches(c("TAG_ID", "date", "sp", "treat"))
 )
 ```
 
-### Make `amt`
+### Make `amt` objects
 
 ```{r}
+# make amt objects from the nested data
 tracks <- mutate(tracks,
-  data = lapply(data, function(df) {
+  data = map(data, function(df) {
     amt::make_track(
       tbl = df,
       .x = x,
@@ -123,18 +125,22 @@ tracks <- mutate(tracks,
 tracks = mutate(
     tracks,
     data = lapply(data, function(df) {
+      
+        # resampling the track to 30 seconds with 5 second tolerance
         amt::track_resample(
             df,
             rate = seconds(30),
             tolerance = seconds(5)
         ) %>%
+        
+        # filtering for bursts with at least 5 pos
         amt::filter_min_n_burst(
             min_n = 5
         )
     }),
 )
 
-# filter for no data remaining
+# filter out data with no rows remaining
 tracks = filter(
     tracks,
     purrr::map_lgl(data, function(df) {
@@ -166,13 +172,19 @@ names(lc) = "landcover"
 ### Prepare alternate steps
 
 ```{r}
+# prepare alternate steps and extract covariates
 tracks = mutate(
     tracks,
     data = map(data, function(df) {
         df %>%
+        
+        # get 9 random potential steps
         amt::random_steps(n = 9) %>%
+        # get NDVI and landcover
         amt::extract_covariates(ndvi) %>%
         amt::extract_covariates(lc) %>%
+        
+        # make landcover a factor
         mutate(
             landcover = factor(landcover)
         )
@@ -181,4 +193,9 @@ tracks = mutate(
 )
 ```
 
-WIP
+### Save prepared data
+
+```{r}
+save(tracks, file = "data/processed/data_for_ssf.Rds")
+```
+
