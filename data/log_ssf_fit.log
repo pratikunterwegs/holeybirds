@@ -1,52 +1,44 @@
-SSF fit log from 2021-07-08 11:49:30
-       
+SSF fit log from 2021-07-08 11:56:27
+
+comment: Trial SSF log writing
+
 sp = Acrocephalus;  tag = 1004001585; treatment = Manipulated
  row in dataframe = 1
-FAILED row = 1; sp = Acrocephalus; tag = 1004001585
-<simpleError in eval(predvars, data, env): object 'case_' not found>
+SUCCESS row = 1; sp = Acrocephalus; tag = 1004001585
                
 sp = Acrocephalus;  tag = 1004001586; treatment = Manipulated
  row in dataframe = 2
-FAILED row = 2; sp = Acrocephalus; tag = 1004001586
-<simpleError in eval(predvars, data, env): object 'case_' not found>
+SUCCESS row = 2; sp = Acrocephalus; tag = 1004001586
                
 sp = Acrocephalus;  tag = 1004001333; treatment = Moulting
  row in dataframe = 3
-FAILED row = 3; sp = Acrocephalus; tag = 1004001333
-<simpleError in eval(predvars, data, env): object 'case_' not found>
+SUCCESS row = 3; sp = Acrocephalus; tag = 1004001333
                
 sp = Acrocephalus;  tag = 1004001395; treatment = Moulting
  row in dataframe = 4
-FAILED row = 4; sp = Acrocephalus; tag = 1004001395
-<simpleError in eval(predvars, data, env): object 'case_' not found>
+SUCCESS row = 4; sp = Acrocephalus; tag = 1004001395
                
 sp = Acrocephalus;  tag = 1004001461; treatment = Moulting
  row in dataframe = 5
-FAILED row = 5; sp = Acrocephalus; tag = 1004001461
-<simpleError in eval(predvars, data, env): object 'case_' not found>
+SUCCESS row = 5; sp = Acrocephalus; tag = 1004001461
                
 sp = Acrocephalus;  tag = 1004001461; treatment = Moulting
  row in dataframe = 6
-FAILED row = 6; sp = Acrocephalus; tag = 1004001461
-<simpleError in eval(predvars, data, env): object 'case_' not found>
+SUCCESS row = 6; sp = Acrocephalus; tag = 1004001461
                
 sp = Acrocephalus;  tag = 1004001479; treatment = Moulting
  row in dataframe = 7
-FAILED row = 7; sp = Acrocephalus; tag = 1004001479
-<simpleError in eval(predvars, data, env): object 'case_' not found>
+SUCCESS row = 7; sp = Acrocephalus; tag = 1004001479
                
 sp = Acrocephalus;  tag = 1004001587; treatment = Moulting
  row in dataframe = 8
-FAILED row = 8; sp = Acrocephalus; tag = 1004001587
-<simpleError in eval(predvars, data, env): object 'case_' not found>
+SUCCESS row = 8; sp = Acrocephalus; tag = 1004001587
                
 sp = Acrocephalus;  tag = 1004001587; treatment = Moulting
  row in dataframe = 9
-FAILED row = 9; sp = Acrocephalus; tag = 1004001587
-<simpleError in eval(predvars, data, env): object 'case_' not found>
+SUCCESS row = 9; sp = Acrocephalus; tag = 1004001587
                
 sp = Acrocephalus;  tag = 1004001607; treatment = Moulting
  row in dataframe = 10
-FAILED row = 10; sp = Acrocephalus; tag = 1004001607
-<simpleError in eval(predvars, data, env): object 'case_' not found>
+SUCCESS row = 10; sp = Acrocephalus; tag = 1004001607
                
