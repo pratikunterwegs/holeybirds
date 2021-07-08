@@ -22,7 +22,7 @@ library(purrr)
 # library for SSF
 library(amt)
 
-# plotting
+# plot libraries
 library(ggplot2)
 library(colorspace)
 ```
@@ -32,7 +32,7 @@ library(colorspace)
 files <- list.files("data/processed/data_preprocessed",
   pattern = "smooth",
   full.names = TRUE
-)[1:3]
+)
 ```
 
 ## Filter for daytime positions
@@ -70,7 +70,7 @@ data <- lapply(files, function(file) {
   if (!is.null(df_list)) {
     df <- rbindlist(df_list)
     message(
-      glue("daytime data has {nrow(df)} rows")
+      glue("total daytime data has {nrow(df)} rows")
     )
     return(df)
   }
@@ -81,6 +81,7 @@ data <- lapply(files, function(file) {
 
 # bind list
 data <- rbindlist(data)
+
 # remove unnecessary columns
 data[, `#` := NULL]
 data = data[, !c("speed_in", "speed_out", "speed_smoothed")]
@@ -93,6 +94,7 @@ data = data[, !c("speed_in", "speed_out", "speed_smoothed")]
 ```{r}
 # make tibble and nest by id and date + other identifiers
 setDF(data)
+
 # nest the tibble, 
 tracks <- nest(data,
   data = -matches(c("TAG_ID", "date", "sp", "treat"))
@@ -139,12 +141,20 @@ tracks = mutate(
         )
     }),
 )
+```
+
+### Quality filters
+
+Remove data with less than some threshold (currently 50) positions.
+
+```{r}
+min_daily_expected = 50
 
 # filter out data with no rows remaining
 tracks = filter(
     tracks,
     purrr::map_lgl(data, function(df) {
-        nrow(df) > 0
+        nrow(df) > min_daily_expected
     })
 )
 
@@ -174,26 +184,102 @@ names(lc) = "landcover"
 ```{r}
 # prepare alternate steps and extract covariates
 tracks = mutate(
-    tracks,
-    data = map(data, function(df) {
-        df %>%
-        
-        # get 9 random potential steps
-        amt::random_steps(n = 9) %>%
-        # get NDVI and landcover
-        amt::extract_covariates(ndvi) %>%
-        amt::extract_covariates(lc) %>%
-        
-        # make landcover a factor
-        mutate(
-            landcover = factor(landcover)
-        )
-
-    })
+  tracks,
+  data = imap(data, function(.x, .y) {
+    
+    # messages
+    message(
+      glue("operating row {.y}")
+    )
+    
+    .x %>%
+      # get 9 random potential steps
+      amt::random_steps(n = 9) %>%
+      # get NDVI and landcover
+      amt::extract_covariates(ndvi) %>%
+      amt::extract_covariates(lc) %>%
+      # make landcover a factor
+      mutate(
+        landcover = factor(landcover)
+      )
+  })
 )
 ```
 
-### Save prepared data
+## Explore covariates in `amt` tracks
+
+Explore the landcover classes in the tracks, as there needs to be more than one class for factor contrasts.
+
+```{r}
+# count LC classes in track
+tracks = mutate(
+  tracks,
+  n_lc = map_int(data, function(df) {
+    length(unique(df$landcover))
+  })
+)
+```
+
+```{r}
+# barplot of number of landcover classes in data
+ggplot(tracks %>% 
+         filter(treat != "LongPeriod"))+
+  geom_bar(
+    aes(
+      n_lc > 1,
+      fill = n_lc > 1
+    ),
+    show.legend = FALSE
+  )+
+  scale_fill_manual(
+    values = c(
+      "TRUE" = "lightblue",
+      "FALSE" = "indianred"
+    )
+  )+
+  scale_x_discrete(
+    labels = c("1", "> 1"
+    )
+  )+
+  # scale_y_sqrt(
+  #   breaks = c(5, 25, 50, 100, 150)
+  # )+
+  coord_cartesian(
+    ylim = c(0, 110),
+    expand = F
+  )+
+  facet_grid(
+    sp ~ treat
+  )+
+  theme_test(base_size = 8)+
+  labs(
+    x = "# Landcover classes in track",
+    y = "# Daily tracks",
+    caption = "Landcover classes are counted after preparing for SSF, including\
+    adding 9 random steps."
+  )
+
+# save image
+ggsave(
+  filename = "figures/fig_lc_classes_in_ssf_tracks.png",
+  height = 4, width = 3
+)
+```
+
+### Remove tracks without LC contrasts
+
+```{r}
+# remove tracks without landcover contrasts
+tracks = filter(
+  tracks,
+  n_lc > 1
+) %>% 
+  select(-n_lc)
+
+# goes from 434 daily (mostly sparrows) to 405
+```
+
+Data still contains long term sparrow tracking and swallow data.
 
 ```{r}
 save(tracks, file = "data/processed/data_for_ssf.Rds")
