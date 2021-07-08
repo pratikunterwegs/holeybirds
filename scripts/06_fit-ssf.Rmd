@@ -1,0 +1,52 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# Fit SSFs
+
+Here we fit SSFs to the data.
+
+## Load libraries and prepare files
+
+```{r}
+# libs for data
+library(dplyr)
+library(tidyr)
+library(purrr)
+
+# libs for date and messages
+library(lubridate)
+library(glue)
+
+# library for SSF
+library(amt)
+```
+
+```{r}
+# load data saved as Rds object
+load("data/processed/data_for_ssf.Rds")
+```
+
+## Fit candidate SSF
+
+Here, we fit a candidate SSF for step length, NDVI, landcover, the interaction of step length and NDVI and the interaction of step length and landcover. All environmental covariates are taken at the end point of the steps, i.e., to determine which conditions the birds prefer to move to (see Signer et al. 2019).
+
+```{r}
+# make a copy of the data, renaming data to ssf
+ssfs = rename(tracks, ssf = "data")
+```
+
+```{r}
+# fit ssfs overwriting the track data
+ssfs = mutate(
+  ssfs,
+  ssf = map(ssf, function(df) {
+    df %>% 
+    amt::fit_issf(
+      case_ ~ sl_ + ndvi + sl_:ndvi
+    )
+  })
+)
+```
+
