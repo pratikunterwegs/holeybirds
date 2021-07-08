@@ -136,3 +136,9 @@ ssfs = mutate(
 sink()
 ```
 
+### Save SSF data
+
+```{r}
+save(ssfs, file = "data/results/data_fitted_ssfs.Rds")
+```
+
