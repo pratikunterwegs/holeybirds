@@ -1,44 +1,54 @@
-SSF fit log from 2021-07-08 11:56:27
+SSF fit log from 2021-07-08 11:58:02
 
 comment: Trial SSF log writing
 
 sp = Acrocephalus;  tag = 1004001585; treatment = Manipulated
  row in dataframe = 1
 SUCCESS row = 1; sp = Acrocephalus; tag = 1004001585
-               
+---
+
 sp = Acrocephalus;  tag = 1004001586; treatment = Manipulated
  row in dataframe = 2
 SUCCESS row = 2; sp = Acrocephalus; tag = 1004001586
-               
+---
+
 sp = Acrocephalus;  tag = 1004001333; treatment = Moulting
  row in dataframe = 3
 SUCCESS row = 3; sp = Acrocephalus; tag = 1004001333
-               
+---
+
 sp = Acrocephalus;  tag = 1004001395; treatment = Moulting
  row in dataframe = 4
 SUCCESS row = 4; sp = Acrocephalus; tag = 1004001395
-               
+---
+
 sp = Acrocephalus;  tag = 1004001461; treatment = Moulting
  row in dataframe = 5
 SUCCESS row = 5; sp = Acrocephalus; tag = 1004001461
-               
+---
+
 sp = Acrocephalus;  tag = 1004001461; treatment = Moulting
  row in dataframe = 6
 SUCCESS row = 6; sp = Acrocephalus; tag = 1004001461
-               
+---
+
 sp = Acrocephalus;  tag = 1004001479; treatment = Moulting
  row in dataframe = 7
 SUCCESS row = 7; sp = Acrocephalus; tag = 1004001479
-               
+---
+
 sp = Acrocephalus;  tag = 1004001587; treatment = Moulting
  row in dataframe = 8
 SUCCESS row = 8; sp = Acrocephalus; tag = 1004001587
-               
+---
+
 sp = Acrocephalus;  tag = 1004001587; treatment = Moulting
  row in dataframe = 9
 SUCCESS row = 9; sp = Acrocephalus; tag = 1004001587
-               
+---
+
 sp = Acrocephalus;  tag = 1004001607; treatment = Moulting
  row in dataframe = 10
 SUCCESS row = 10; sp = Acrocephalus; tag = 1004001607
-               
+---
+
