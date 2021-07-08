@@ -37,6 +37,18 @@ ssfs = rename(tracks, ssf = "data")
 ```
 
 ```{r}
+# specify the model formula
+ssf_formula = "case_ ~ sl_ + ndvi + sl_:ndvi"
+
+# add formula to dataframe
+ssfs = mutate(
+  ssfs,
+  ssf_formula = ssf_formula
+)
+```
+
+
+```{r}
 # sink output to log
 sink(file = "data/log_ssf_fit.log")
 
@@ -64,6 +76,7 @@ ssfs = mutate(
             tag = {ssfs$TAG_ID[.y]}; treatment = {ssfs$treat[.y]}
             date = {ssfs$date[.y]}
             row in dataframe = {.y}
+            formula = {ssfs$ssf_formula[.y]}
             start time: {Sys.time()}
            ")
     )
@@ -80,7 +93,7 @@ ssfs = mutate(
         ssf_fit = 
           .x %>% 
           amt::fit_issf(
-            case_ ~ sl_ + ndvi + sl_:ndvi #+ landcover #+ sl_:landcover
+            formula = as.formula(ssfs$ssf_formula[.y])
           )
         
         # print success message to the processing log
