@@ -1,120 +1,8 @@
-Holeybirds Pre-processing log from 2021-07-09 16:45:53
+Holeybirds Pre-processing log from 2021-07-09 16:56:07
 
 Pre-processing tag_id = 1004001585; Acrocephalus; Manipulated
 N rows daytime raw = 11514
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 779
--- saved to data/processed/data_preprocessed/
- data_thin_Acrocephalus_Manipulated_1004001585.csv
-
-***
-
-Pre-processing tag_id = 1004001586; Acrocephalus; Manipulated
-N rows daytime raw = 26211
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 1625
--- saved to data/processed/data_preprocessed/
- data_thin_Acrocephalus_Manipulated_1004001586.csv
-
-***
-
-Pre-processing tag_id = 1004001333; Acrocephalus; Moulting
-N rows daytime raw = 38679
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 1829
--- saved to data/processed/data_preprocessed/
- data_thin_Acrocephalus_Moulting_1004001333.csv
-
-***
-
-Pre-processing tag_id = 1004001360; Acrocephalus; Moulting
-N rows daytime raw = 14870
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 334
--- saved to data/processed/data_preprocessed/
- data_thin_Acrocephalus_Moulting_1004001360.csv
-
-***
-
-Pre-processing tag_id = 1004001395; Acrocephalus; Moulting
-N rows daytime raw = 7182
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 751
--- saved to data/processed/data_preprocessed/
- data_thin_Acrocephalus_Moulting_1004001395.csv
-
-***
-
-Pre-processing tag_id = 1004001461; Acrocephalus; Moulting
-N rows daytime raw = 37032
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 1226
--- saved to data/processed/data_preprocessed/
- data_thin_Acrocephalus_Moulting_1004001461.csv
-
-***
-
-Pre-processing tag_id = 1004001479; Acrocephalus; Moulting
-N rows daytime raw = 19346
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 530
--- saved to data/processed/data_preprocessed/
- data_thin_Acrocephalus_Moulting_1004001479.csv
-
-***
-
-Pre-processing tag_id = 1004001587; Acrocephalus; Moulting
-N rows daytime raw = 27558
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 1687
--- saved to data/processed/data_preprocessed/
- data_thin_Acrocephalus_Moulting_1004001587.csv
-
-***
-
-Pre-processing tag_id = 1004001607; Acrocephalus; Moulting
-N rows daytime raw = 29965
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
@@ -122,19 +10,131 @@ N rows daytime raw = 29965
 -- thinned data to 20 seconds
 -- N rows pre-processed = 1202
 -- saved to data/processed/data_preprocessed/
+ data_thin_Acrocephalus_Manipulated_1004001585.csv
+
+***
+
+Pre-processing tag_id = 1004001586; Acrocephalus; Manipulated
+N rows daytime raw = 26211
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 2358
+-- saved to data/processed/data_preprocessed/
+ data_thin_Acrocephalus_Manipulated_1004001586.csv
+
+***
+
+Pre-processing tag_id = 1004001333; Acrocephalus; Moulting
+N rows daytime raw = 38679
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 2729
+-- saved to data/processed/data_preprocessed/
+ data_thin_Acrocephalus_Moulting_1004001333.csv
+
+***
+
+Pre-processing tag_id = 1004001360; Acrocephalus; Moulting
+N rows daytime raw = 14870
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 549
+-- saved to data/processed/data_preprocessed/
+ data_thin_Acrocephalus_Moulting_1004001360.csv
+
+***
+
+Pre-processing tag_id = 1004001395; Acrocephalus; Moulting
+N rows daytime raw = 7182
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 917
+-- saved to data/processed/data_preprocessed/
+ data_thin_Acrocephalus_Moulting_1004001395.csv
+
+***
+
+Pre-processing tag_id = 1004001461; Acrocephalus; Moulting
+N rows daytime raw = 37032
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 2060
+-- saved to data/processed/data_preprocessed/
+ data_thin_Acrocephalus_Moulting_1004001461.csv
+
+***
+
+Pre-processing tag_id = 1004001479; Acrocephalus; Moulting
+N rows daytime raw = 19346
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 716
+-- saved to data/processed/data_preprocessed/
+ data_thin_Acrocephalus_Moulting_1004001479.csv
+
+***
+
+Pre-processing tag_id = 1004001587; Acrocephalus; Moulting
+N rows daytime raw = 27558
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 2316
+-- saved to data/processed/data_preprocessed/
+ data_thin_Acrocephalus_Moulting_1004001587.csv
+
+***
+
+Pre-processing tag_id = 1004001607; Acrocephalus; Moulting
+N rows daytime raw = 29965
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 1905
+-- saved to data/processed/data_preprocessed/
  data_thin_Acrocephalus_Moulting_1004001607.csv
 
 ***
 
 Pre-processing tag_id = 1004001114; Acrocephalus; NonMoulting
 N rows daytime raw = 7346
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 480
+-- N rows pre-processed = 731
 -- saved to data/processed/data_preprocessed/
  data_thin_Acrocephalus_NonMoulting_1004001114.csv
 
@@ -142,28 +142,37 @@ N rows daytime raw = 7346
 
 Pre-processing tag_id = 1004001117; Acrocephalus; NonMoulting
 N rows daytime raw = 14109
--- removed nighttime positions between 20PM and 6AM
-Too few rows (< 1000) remaining
-        
-Pre-processing tag_id = 1004001181; Acrocephalus; NonMoulting
-N rows daytime raw = 1349
--- removed nighttime positions between 20PM and 6AM
-Too few rows (< 1000) remaining
-        
-Pre-processing tag_id = 1004001209; Acrocephalus; NonMoulting
-N rows daytime raw = 1627
--- removed nighttime positions between 20PM and 6AM
-Too few rows (< 1000) remaining
-        
-Pre-processing tag_id = 1004001361; Acrocephalus; NonMoulting
-N rows daytime raw = 18907
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 604
+-- N rows pre-processed = 483
+-- saved to data/processed/data_preprocessed/
+ data_thin_Acrocephalus_NonMoulting_1004001117.csv
+
+***
+
+Pre-processing tag_id = 1004001181; Acrocephalus; NonMoulting
+N rows daytime raw = 1349
+-- removed nighttime positions between 20PM and 5AM
+Too few rows (< 1000) remaining
+        
+Pre-processing tag_id = 1004001209; Acrocephalus; NonMoulting
+N rows daytime raw = 1627
+-- removed nighttime positions between 20PM and 5AM
+Too few rows (< 1000) remaining
+        
+Pre-processing tag_id = 1004001361; Acrocephalus; NonMoulting
+N rows daytime raw = 18907
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 1062
 -- saved to data/processed/data_preprocessed/
  data_thin_Acrocephalus_NonMoulting_1004001361.csv
 
@@ -171,13 +180,13 @@ N rows daytime raw = 18907
 
 Pre-processing tag_id = 1004001391; Acrocephalus; NonMoulting
 N rows daytime raw = 7494
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 619
+-- N rows pre-processed = 751
 -- saved to data/processed/data_preprocessed/
  data_thin_Acrocephalus_NonMoulting_1004001391.csv
 
@@ -185,13 +194,13 @@ N rows daytime raw = 7494
 
 Pre-processing tag_id = 1004001392; Acrocephalus; NonMoulting
 N rows daytime raw = 20103
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1233
+-- N rows pre-processed = 1877
 -- saved to data/processed/data_preprocessed/
  data_thin_Acrocephalus_NonMoulting_1004001392.csv
 
@@ -199,13 +208,13 @@ N rows daytime raw = 20103
 
 Pre-processing tag_id = 1004001393; Acrocephalus; NonMoulting
 N rows daytime raw = 31957
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 3033
+-- N rows pre-processed = 3885
 -- saved to data/processed/data_preprocessed/
  data_thin_Acrocephalus_NonMoulting_1004001393.csv
 
@@ -213,13 +222,13 @@ N rows daytime raw = 31957
 
 Pre-processing tag_id = 1004001396; Acrocephalus; NonMoulting
 N rows daytime raw = 43564
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1446
+-- N rows pre-processed = 2059
 -- saved to data/processed/data_preprocessed/
  data_thin_Acrocephalus_NonMoulting_1004001396.csv
 
@@ -227,13 +236,13 @@ N rows daytime raw = 43564
 
 Pre-processing tag_id = 1004001398; Acrocephalus; NonMoulting
 N rows daytime raw = 25407
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1355
+-- N rows pre-processed = 1708
 -- saved to data/processed/data_preprocessed/
  data_thin_Acrocephalus_NonMoulting_1004001398.csv
 
@@ -241,13 +250,13 @@ N rows daytime raw = 25407
 
 Pre-processing tag_id = 1004001406; Acrocephalus; NonMoulting
 N rows daytime raw = 47839
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 2295
+-- N rows pre-processed = 3282
 -- saved to data/processed/data_preprocessed/
  data_thin_Acrocephalus_NonMoulting_1004001406.csv
 
@@ -255,13 +264,13 @@ N rows daytime raw = 47839
 
 Pre-processing tag_id = 1004001420; Acrocephalus; NonMoulting
 N rows daytime raw = 26063
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1938
+-- N rows pre-processed = 2521
 -- saved to data/processed/data_preprocessed/
  data_thin_Acrocephalus_NonMoulting_1004001420.csv
 
@@ -269,13 +278,13 @@ N rows daytime raw = 26063
 
 Pre-processing tag_id = 1004001459; Acrocephalus; NonMoulting
 N rows daytime raw = 107358
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 5120
+-- N rows pre-processed = 6559
 -- saved to data/processed/data_preprocessed/
  data_thin_Acrocephalus_NonMoulting_1004001459.csv
 
@@ -283,13 +292,13 @@ N rows daytime raw = 107358
 
 Pre-processing tag_id = 1004001460; Acrocephalus; NonMoulting
 N rows daytime raw = 36407
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 2253
+-- N rows pre-processed = 2725
 -- saved to data/processed/data_preprocessed/
  data_thin_Acrocephalus_NonMoulting_1004001460.csv
 
@@ -297,13 +306,13 @@ N rows daytime raw = 36407
 
 Pre-processing tag_id = 1004001462; Acrocephalus; NonMoulting
 N rows daytime raw = 89983
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 3207
+-- N rows pre-processed = 4259
 -- saved to data/processed/data_preprocessed/
  data_thin_Acrocephalus_NonMoulting_1004001462.csv
 
@@ -311,13 +320,13 @@ N rows daytime raw = 89983
 
 Pre-processing tag_id = 1004001717; Acrocephalus; NonMoulting
 N rows daytime raw = 6449
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 708
+-- N rows pre-processed = 1012
 -- saved to data/processed/data_preprocessed/
  data_thin_Acrocephalus_NonMoulting_1004001717.csv
 
@@ -325,13 +334,13 @@ N rows daytime raw = 6449
 
 Pre-processing tag_id = 1004001735; Acrocephalus; NonMoulting
 N rows daytime raw = 6357
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1544
+-- N rows pre-processed = 1916
 -- saved to data/processed/data_preprocessed/
  data_thin_Acrocephalus_NonMoulting_1004001735.csv
 
@@ -339,13 +348,13 @@ N rows daytime raw = 6357
 
 Pre-processing tag_id = 1004001748; Acrocephalus; NonMoulting
 N rows daytime raw = 40879
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 6054
+-- N rows pre-processed = 7412
 -- saved to data/processed/data_preprocessed/
  data_thin_Acrocephalus_NonMoulting_1004001748.csv
 
@@ -353,23 +362,32 @@ N rows daytime raw = 40879
 
 Pre-processing tag_id = 1004001749; Acrocephalus; NonMoulting
 N rows daytime raw = 2284
--- removed nighttime positions between 20PM and 6AM
-Too few rows (< 1000) remaining
-        
-Pre-processing tag_id = 1004001183; Hirundo; Manipulated
-N rows daytime raw = 885
--- removed nighttime positions between 20PM and 6AM
-Too few rows (< 1000) remaining
-        
-Pre-processing tag_id = 1004001230; Hirundo; Manipulated
-N rows daytime raw = 4155
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 697
+-- N rows pre-processed = 583
+-- saved to data/processed/data_preprocessed/
+ data_thin_Acrocephalus_NonMoulting_1004001749.csv
+
+***
+
+Pre-processing tag_id = 1004001183; Hirundo; Manipulated
+N rows daytime raw = 885
+-- removed nighttime positions between 20PM and 5AM
+Too few rows (< 1000) remaining
+        
+Pre-processing tag_id = 1004001230; Hirundo; Manipulated
+N rows daytime raw = 4155
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 800
 -- saved to data/processed/data_preprocessed/
  data_thin_Hirundo_Manipulated_1004001230.csv
 
@@ -377,18 +395,18 @@ N rows daytime raw = 4155
 
 Pre-processing tag_id = 1004001267; Hirundo; Manipulated
 N rows daytime raw = 3240
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 Too few rows (< 1000) remaining
         
 Pre-processing tag_id = 1004001271; Hirundo; Manipulated
 N rows daytime raw = 6203
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1198
+-- N rows pre-processed = 1731
 -- saved to data/processed/data_preprocessed/
  data_thin_Hirundo_Manipulated_1004001271.csv
 
@@ -396,33 +414,42 @@ N rows daytime raw = 6203
 
 Pre-processing tag_id = 1004001283; Hirundo; Manipulated
 N rows daytime raw = 1145
--- removed nighttime positions between 20PM and 6AM
-Too few rows (< 1000) remaining
-        
-Pre-processing tag_id = 1004001405; Hirundo; Manipulated
-N rows daytime raw = 675
--- removed nighttime positions between 20PM and 6AM
-Too few rows (< 1000) remaining
-        
-Pre-processing tag_id = 1004001455; Hirundo; Manipulated
-N rows daytime raw = 673
--- removed nighttime positions between 20PM and 6AM
-Too few rows (< 1000) remaining
-        
-Pre-processing tag_id = 1004001711; Hirundo; Manipulated
-N rows daytime raw = 2451
--- removed nighttime positions between 20PM and 6AM
-Too few rows (< 1000) remaining
-        
-Pre-processing tag_id = 1004001713; Hirundo; Manipulated
-N rows daytime raw = 4263
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 599
+-- N rows pre-processed = 239
+-- saved to data/processed/data_preprocessed/
+ data_thin_Hirundo_Manipulated_1004001283.csv
+
+***
+
+Pre-processing tag_id = 1004001405; Hirundo; Manipulated
+N rows daytime raw = 675
+-- removed nighttime positions between 20PM and 5AM
+Too few rows (< 1000) remaining
+        
+Pre-processing tag_id = 1004001455; Hirundo; Manipulated
+N rows daytime raw = 673
+-- removed nighttime positions between 20PM and 5AM
+Too few rows (< 1000) remaining
+        
+Pre-processing tag_id = 1004001711; Hirundo; Manipulated
+N rows daytime raw = 2451
+-- removed nighttime positions between 20PM and 5AM
+Too few rows (< 1000) remaining
+        
+Pre-processing tag_id = 1004001713; Hirundo; Manipulated
+N rows daytime raw = 4263
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 799
 -- saved to data/processed/data_preprocessed/
  data_thin_Hirundo_Manipulated_1004001713.csv
 
@@ -430,23 +457,23 @@ N rows daytime raw = 4263
 
 Pre-processing tag_id = 1004001129; Hirundo; Moulting
 N rows daytime raw = 707
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 Too few rows (< 1000) remaining
         
 Pre-processing tag_id = 1004001290; Hirundo; Moulting
 N rows daytime raw = 732
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 Too few rows (< 1000) remaining
         
 Pre-processing tag_id = 1004001402; Hirundo; Moulting
 N rows daytime raw = 1617
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 756
+-- N rows pre-processed = 784
 -- saved to data/processed/data_preprocessed/
  data_thin_Hirundo_Moulting_1004001402.csv
 
@@ -454,18 +481,18 @@ N rows daytime raw = 1617
 
 Pre-processing tag_id = 1004001403; Hirundo; Moulting
 N rows daytime raw = 675
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 Too few rows (< 1000) remaining
         
 Pre-processing tag_id = 1004001404; Hirundo; Moulting
 N rows daytime raw = 6465
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 625
+-- N rows pre-processed = 1120
 -- saved to data/processed/data_preprocessed/
  data_thin_Hirundo_Moulting_1004001404.csv
 
@@ -473,23 +500,23 @@ N rows daytime raw = 6465
 
 Pre-processing tag_id = 1004001450; Hirundo; Moulting
 N rows daytime raw = 418
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 Too few rows (< 1000) remaining
         
 Pre-processing tag_id = 1004001633; Hirundo; Moulting
 N rows daytime raw = 1055
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 Too few rows (< 1000) remaining
         
 Pre-processing tag_id = 1004001710; Hirundo; Moulting
 N rows daytime raw = 18119
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 5535
+-- N rows pre-processed = 6195
 -- saved to data/processed/data_preprocessed/
  data_thin_Hirundo_Moulting_1004001710.csv
 
@@ -497,13 +524,13 @@ N rows daytime raw = 18119
 
 Pre-processing tag_id = 1004000824; Hirundo; NonMoulting
 N rows daytime raw = 5282
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1262
+-- N rows pre-processed = 1517
 -- saved to data/processed/data_preprocessed/
  data_thin_Hirundo_NonMoulting_1004000824.csv
 
@@ -511,13 +538,13 @@ N rows daytime raw = 5282
 
 Pre-processing tag_id = 1004000825; Hirundo; NonMoulting
 N rows daytime raw = 5787
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1438
+-- N rows pre-processed = 1771
 -- saved to data/processed/data_preprocessed/
  data_thin_Hirundo_NonMoulting_1004000825.csv
 
@@ -525,23 +552,32 @@ N rows daytime raw = 5787
 
 Pre-processing tag_id = 1004000826; Hirundo; NonMoulting
 N rows daytime raw = 2084
--- removed nighttime positions between 20PM and 6AM
-Too few rows (< 1000) remaining
-        
-Pre-processing tag_id = 1004000827; Hirundo; NonMoulting
-N rows daytime raw = 720
--- removed nighttime positions between 20PM and 6AM
-Too few rows (< 1000) remaining
-        
-Pre-processing tag_id = 1004000829; Hirundo; NonMoulting
-N rows daytime raw = 3585
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1300
+-- N rows pre-processed = 388
+-- saved to data/processed/data_preprocessed/
+ data_thin_Hirundo_NonMoulting_1004000826.csv
+
+***
+
+Pre-processing tag_id = 1004000827; Hirundo; NonMoulting
+N rows daytime raw = 720
+-- removed nighttime positions between 20PM and 5AM
+Too few rows (< 1000) remaining
+        
+Pre-processing tag_id = 1004000829; Hirundo; NonMoulting
+N rows daytime raw = 3585
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 1498
 -- saved to data/processed/data_preprocessed/
  data_thin_Hirundo_NonMoulting_1004000829.csv
 
@@ -549,13 +585,13 @@ N rows daytime raw = 3585
 
 Pre-processing tag_id = 1004001237; Hirundo; NonMoulting
 N rows daytime raw = 1752
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 811
+-- N rows pre-processed = 842
 -- saved to data/processed/data_preprocessed/
  data_thin_Hirundo_NonMoulting_1004001237.csv
 
@@ -563,13 +599,13 @@ N rows daytime raw = 1752
 
 Pre-processing tag_id = 1004001289; Hirundo; NonMoulting
 N rows daytime raw = 2842
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 436
+-- N rows pre-processed = 671
 -- saved to data/processed/data_preprocessed/
  data_thin_Hirundo_NonMoulting_1004001289.csv
 
@@ -577,28 +613,37 @@ N rows daytime raw = 2842
 
 Pre-processing tag_id = 1004001449; Hirundo; NonMoulting
 N rows daytime raw = 1046
--- removed nighttime positions between 20PM and 6AM
-Too few rows (< 1000) remaining
-        
-Pre-processing tag_id = 1004001712; Hirundo; NonMoulting
-N rows daytime raw = 2510
--- removed nighttime positions between 20PM and 6AM
-Too few rows (< 1000) remaining
-        
-Pre-processing tag_id = 1004001715; Hirundo; NonMoulting
-N rows daytime raw = 2790
--- removed nighttime positions between 20PM and 6AM
-Too few rows (< 1000) remaining
-        
-Pre-processing tag_id = 1004001386; Passer; LongPeriod
-N rows daytime raw = 83241
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 10143
+-- N rows pre-processed = 242
+-- saved to data/processed/data_preprocessed/
+ data_thin_Hirundo_NonMoulting_1004001449.csv
+
+***
+
+Pre-processing tag_id = 1004001712; Hirundo; NonMoulting
+N rows daytime raw = 2510
+-- removed nighttime positions between 20PM and 5AM
+Too few rows (< 1000) remaining
+        
+Pre-processing tag_id = 1004001715; Hirundo; NonMoulting
+N rows daytime raw = 2790
+-- removed nighttime positions between 20PM and 5AM
+Too few rows (< 1000) remaining
+        
+Pre-processing tag_id = 1004001386; Passer; LongPeriod
+N rows daytime raw = 83241
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 14483
 -- saved to data/processed/data_preprocessed/
  data_thin_Passer_LongPeriod_1004001386.csv
 
@@ -606,13 +651,13 @@ N rows daytime raw = 83241
 
 Pre-processing tag_id = 1004001463; Passer; LongPeriod
 N rows daytime raw = 124106
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 21454
+-- N rows pre-processed = 28497
 -- saved to data/processed/data_preprocessed/
  data_thin_Passer_LongPeriod_1004001463.csv
 
@@ -620,13 +665,13 @@ N rows daytime raw = 124106
 
 Pre-processing tag_id = 1004001465; Passer; LongPeriod
 N rows daytime raw = 83851
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 12082
+-- N rows pre-processed = 16205
 -- saved to data/processed/data_preprocessed/
  data_thin_Passer_LongPeriod_1004001465.csv
 
@@ -634,13 +679,13 @@ N rows daytime raw = 83851
 
 Pre-processing tag_id = 1004001564; Passer; LongPeriod
 N rows daytime raw = 40478
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 4402
+-- N rows pre-processed = 6962
 -- saved to data/processed/data_preprocessed/
  data_thin_Passer_LongPeriod_1004001564.csv
 
@@ -648,13 +693,13 @@ N rows daytime raw = 40478
 
 Pre-processing tag_id = 1004001565; Passer; LongPeriod
 N rows daytime raw = 58140
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 10275
+-- N rows pre-processed = 13726
 -- saved to data/processed/data_preprocessed/
  data_thin_Passer_LongPeriod_1004001565.csv
 
@@ -662,13 +707,13 @@ N rows daytime raw = 58140
 
 Pre-processing tag_id = 1004001567; Passer; LongPeriod
 N rows daytime raw = 90901
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 20565
+-- N rows pre-processed = 24770
 -- saved to data/processed/data_preprocessed/
  data_thin_Passer_LongPeriod_1004001567.csv
 
@@ -676,13 +721,13 @@ N rows daytime raw = 90901
 
 Pre-processing tag_id = 1004001568; Passer; LongPeriod
 N rows daytime raw = 122851
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 22978
+-- N rows pre-processed = 29074
 -- saved to data/processed/data_preprocessed/
  data_thin_Passer_LongPeriod_1004001568.csv
 
@@ -690,13 +735,13 @@ N rows daytime raw = 122851
 
 Pre-processing tag_id = 1004001569; Passer; LongPeriod
 N rows daytime raw = 61615
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 8813
+-- N rows pre-processed = 12279
 -- saved to data/processed/data_preprocessed/
  data_thin_Passer_LongPeriod_1004001569.csv
 
@@ -704,13 +749,13 @@ N rows daytime raw = 61615
 
 Pre-processing tag_id = 1004001603; Passer; LongPeriod
 N rows daytime raw = 19482
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 4897
+-- N rows pre-processed = 5973
 -- saved to data/processed/data_preprocessed/
  data_thin_Passer_LongPeriod_1004001603.csv
 
@@ -718,13 +763,13 @@ N rows daytime raw = 19482
 
 Pre-processing tag_id = 1004001604; Passer; LongPeriod
 N rows daytime raw = 63439
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 9806
+-- N rows pre-processed = 13098
 -- saved to data/processed/data_preprocessed/
  data_thin_Passer_LongPeriod_1004001604.csv
 
@@ -732,13 +777,13 @@ N rows daytime raw = 63439
 
 Pre-processing tag_id = 1004001250; Passer; Manipulated
 N rows daytime raw = 18186
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1476
+-- N rows pre-processed = 1818
 -- saved to data/processed/data_preprocessed/
  data_thin_Passer_Manipulated_1004001250.csv
 
@@ -746,13 +791,13 @@ N rows daytime raw = 18186
 
 Pre-processing tag_id = 1004001335; Passer; Manipulated
 N rows daytime raw = 37905
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1304
+-- N rows pre-processed = 2239
 -- saved to data/processed/data_preprocessed/
  data_thin_Passer_Manipulated_1004001335.csv
 
@@ -760,13 +805,13 @@ N rows daytime raw = 37905
 
 Pre-processing tag_id = 1004001336; Passer; Manipulated
 N rows daytime raw = 24050
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 521
+-- N rows pre-processed = 1112
 -- saved to data/processed/data_preprocessed/
  data_thin_Passer_Manipulated_1004001336.csv
 
@@ -774,13 +819,13 @@ N rows daytime raw = 24050
 
 Pre-processing tag_id = 1004001337; Passer; Manipulated
 N rows daytime raw = 12707
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 848
+-- N rows pre-processed = 1210
 -- saved to data/processed/data_preprocessed/
  data_thin_Passer_Manipulated_1004001337.csv
 
@@ -788,537 +833,40 @@ N rows daytime raw = 12707
 
 Pre-processing tag_id = 1004001343; Passer; Manipulated
 N rows daytime raw = 1630
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 Too few rows (< 1000) remaining
         
 Pre-processing tag_id = 1004001344; Passer; Manipulated
 N rows daytime raw = 2845
--- removed nighttime positions between 20PM and 6AM
-Too few rows (< 1000) remaining
-        
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 844
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Manipulated_1004001344.csv
+
+***
+
 Pre-processing tag_id = 1004001346; Passer; Manipulated
 N rows daytime raw = 5107
--- removed nighttime positions between 20PM and 6AM
-Too few rows (< 1000) remaining
-        
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 610
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Manipulated_1004001346.csv
+
+***
+
 Pre-processing tag_id = 1004001350; Passer; Manipulated
 N rows daytime raw = 3830
--- removed nighttime positions between 20PM and 6AM
-Too few rows (< 1000) remaining
-        
-Pre-processing tag_id = 1004001352; Passer; Manipulated
-N rows daytime raw = 11859
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 2559
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Manipulated_1004001352.csv
-
-***
-
-Pre-processing tag_id = 1004001375; Passer; Manipulated
-N rows daytime raw = 4426
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 1049
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Manipulated_1004001375.csv
-
-***
-
-Pre-processing tag_id = 1004001457; Passer; Manipulated
-N rows daytime raw = 89554
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 2965
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Manipulated_1004001457.csv
-
-***
-
-Pre-processing tag_id = 1004001525; Passer; Manipulated
-N rows daytime raw = 48287
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 1269
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Manipulated_1004001525.csv
-
-***
-
-Pre-processing tag_id = 1004001562; Passer; Manipulated
-N rows daytime raw = 10047
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 1505
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Manipulated_1004001562.csv
-
-***
-
-Pre-processing tag_id = 1004001564; Passer; Manipulated
-N rows daytime raw = 40583
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 4461
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Manipulated_1004001564.csv
-
-***
-
-Pre-processing tag_id = 1004001567; Passer; Manipulated
-N rows daytime raw = 91006
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 20610
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Manipulated_1004001567.csv
-
-***
-
-Pre-processing tag_id = 1004001568; Passer; Manipulated
-N rows daytime raw = 122982
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 23030
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Manipulated_1004001568.csv
-
-***
-
-Pre-processing tag_id = 1004001569; Passer; Manipulated
-N rows daytime raw = 61639
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 8831
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Manipulated_1004001569.csv
-
-***
-
-Pre-processing tag_id = 1004001603; Passer; Manipulated
-N rows daytime raw = 19482
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 4897
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Manipulated_1004001603.csv
-
-***
-
-Pre-processing tag_id = 1004001604; Passer; Manipulated
-N rows daytime raw = 63439
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 9806
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Manipulated_1004001604.csv
-
-***
-
-Pre-processing tag_id = 1004001177; Passer; Moulting
-N rows daytime raw = 15380
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 993
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Moulting_1004001177.csv
-
-***
-
-Pre-processing tag_id = 1004001243; Passer; Moulting
-N rows daytime raw = 32337
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 1377
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Moulting_1004001243.csv
-
-***
-
-Pre-processing tag_id = 1004001246; Passer; Moulting
-N rows daytime raw = 14494
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 1058
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Moulting_1004001246.csv
-
-***
-
-Pre-processing tag_id = 1004001334; Passer; Moulting
-N rows daytime raw = 16384
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 797
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Moulting_1004001334.csv
-
-***
-
-Pre-processing tag_id = 1004001342; Passer; Moulting
-N rows daytime raw = 8849
--- removed nighttime positions between 20PM and 6AM
-Too few rows (< 1000) remaining
-        
-Pre-processing tag_id = 1004001347; Passer; Moulting
-N rows daytime raw = 2493
--- removed nighttime positions between 20PM and 6AM
-Too few rows (< 1000) remaining
-        
-Pre-processing tag_id = 1004001351; Passer; Moulting
-N rows daytime raw = 7815
--- removed nighttime positions between 20PM and 6AM
-Too few rows (< 1000) remaining
-        
-Pre-processing tag_id = 1004001372; Passer; Moulting
-N rows daytime raw = 20697
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 871
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Moulting_1004001372.csv
-
-***
-
-Pre-processing tag_id = 1004001374; Passer; Moulting
-N rows daytime raw = 1645
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 811
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Moulting_1004001374.csv
-
-***
-
-Pre-processing tag_id = 1004001386; Passer; Moulting
-N rows daytime raw = 83235
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 10142
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Moulting_1004001386.csv
-
-***
-
-Pre-processing tag_id = 1004001400; Passer; Moulting
-N rows daytime raw = 79289
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 3586
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Moulting_1004001400.csv
-
-***
-
-Pre-processing tag_id = 1004001401; Passer; Moulting
-N rows daytime raw = 12519
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 940
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Moulting_1004001401.csv
-
-***
-
-Pre-processing tag_id = 1004001407; Passer; Moulting
-N rows daytime raw = 72654
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 2636
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Moulting_1004001407.csv
-
-***
-
-Pre-processing tag_id = 1004001408; Passer; Moulting
-N rows daytime raw = 114946
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 4292
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Moulting_1004001408.csv
-
-***
-
-Pre-processing tag_id = 1004001412; Passer; Moulting
-N rows daytime raw = 101158
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 3830
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Moulting_1004001412.csv
-
-***
-
-Pre-processing tag_id = 1004001414; Passer; Moulting
-N rows daytime raw = 75097
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 2367
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Moulting_1004001414.csv
-
-***
-
-Pre-processing tag_id = 1004001416; Passer; Moulting
-N rows daytime raw = 118855
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 5061
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Moulting_1004001416.csv
-
-***
-
-Pre-processing tag_id = 1004001418; Passer; Moulting
-N rows daytime raw = 34016
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 996
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Moulting_1004001418.csv
-
-***
-
-Pre-processing tag_id = 1004001463; Passer; Moulting
-N rows daytime raw = 124106
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 21454
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Moulting_1004001463.csv
-
-***
-
-Pre-processing tag_id = 1004001465; Passer; Moulting
-N rows daytime raw = 83847
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 12082
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Moulting_1004001465.csv
-
-***
-
-Pre-processing tag_id = 1004001526; Passer; Moulting
-N rows daytime raw = 86063
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 3350
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Moulting_1004001526.csv
-
-***
-
-Pre-processing tag_id = 1004001565; Passer; Moulting
-N rows daytime raw = 58277
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 10362
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Moulting_1004001565.csv
-
-***
-
-Pre-processing tag_id = 1004001571; Passer; Moulting
-N rows daytime raw = 5698
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 1126
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_Moulting_1004001571.csv
-
-***
-
-Pre-processing tag_id = 1004001175; Passer; NonMoulting
-N rows daytime raw = 5945
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 686
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_NonMoulting_1004001175.csv
-
-***
-
-Pre-processing tag_id = 1004001180; Passer; NonMoulting
-N rows daytime raw = 33461
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 1292
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_NonMoulting_1004001180.csv
-
-***
-
-Pre-processing tag_id = 1004001211; Passer; NonMoulting
-N rows daytime raw = 3934
--- removed nighttime positions between 20PM and 6AM
-Too few rows (< 1000) remaining
-        
-Pre-processing tag_id = 1004001214; Passer; NonMoulting
-N rows daytime raw = 12044
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 2372
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_NonMoulting_1004001214.csv
-
-***
-
-Pre-processing tag_id = 1004001217; Passer; NonMoulting
-N rows daytime raw = 7183
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 1154
--- saved to data/processed/data_preprocessed/
- data_thin_Passer_NonMoulting_1004001217.csv
-
-***
-
-Pre-processing tag_id = 1004001244; Passer; NonMoulting
-N rows daytime raw = 4030
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
@@ -1326,19 +874,570 @@ N rows daytime raw = 4030
 -- thinned data to 20 seconds
 -- N rows pre-processed = 624
 -- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Manipulated_1004001350.csv
+
+***
+
+Pre-processing tag_id = 1004001352; Passer; Manipulated
+N rows daytime raw = 11859
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 3357
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Manipulated_1004001352.csv
+
+***
+
+Pre-processing tag_id = 1004001375; Passer; Manipulated
+N rows daytime raw = 4426
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 1156
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Manipulated_1004001375.csv
+
+***
+
+Pre-processing tag_id = 1004001457; Passer; Manipulated
+N rows daytime raw = 89554
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 4003
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Manipulated_1004001457.csv
+
+***
+
+Pre-processing tag_id = 1004001525; Passer; Manipulated
+N rows daytime raw = 48287
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 1797
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Manipulated_1004001525.csv
+
+***
+
+Pre-processing tag_id = 1004001562; Passer; Manipulated
+N rows daytime raw = 10047
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 2273
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Manipulated_1004001562.csv
+
+***
+
+Pre-processing tag_id = 1004001564; Passer; Manipulated
+N rows daytime raw = 40583
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 7045
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Manipulated_1004001564.csv
+
+***
+
+Pre-processing tag_id = 1004001567; Passer; Manipulated
+N rows daytime raw = 91006
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 24848
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Manipulated_1004001567.csv
+
+***
+
+Pre-processing tag_id = 1004001568; Passer; Manipulated
+N rows daytime raw = 122982
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 29177
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Manipulated_1004001568.csv
+
+***
+
+Pre-processing tag_id = 1004001569; Passer; Manipulated
+N rows daytime raw = 61639
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 12297
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Manipulated_1004001569.csv
+
+***
+
+Pre-processing tag_id = 1004001603; Passer; Manipulated
+N rows daytime raw = 19482
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 5973
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Manipulated_1004001603.csv
+
+***
+
+Pre-processing tag_id = 1004001604; Passer; Manipulated
+N rows daytime raw = 63439
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 13098
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Manipulated_1004001604.csv
+
+***
+
+Pre-processing tag_id = 1004001177; Passer; Moulting
+N rows daytime raw = 15380
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 1259
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Moulting_1004001177.csv
+
+***
+
+Pre-processing tag_id = 1004001243; Passer; Moulting
+N rows daytime raw = 32337
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 1759
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Moulting_1004001243.csv
+
+***
+
+Pre-processing tag_id = 1004001246; Passer; Moulting
+N rows daytime raw = 14494
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 1192
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Moulting_1004001246.csv
+
+***
+
+Pre-processing tag_id = 1004001334; Passer; Moulting
+N rows daytime raw = 16384
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 1253
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Moulting_1004001334.csv
+
+***
+
+Pre-processing tag_id = 1004001342; Passer; Moulting
+N rows daytime raw = 8849
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 958
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Moulting_1004001342.csv
+
+***
+
+Pre-processing tag_id = 1004001347; Passer; Moulting
+N rows daytime raw = 2493
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 674
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Moulting_1004001347.csv
+
+***
+
+Pre-processing tag_id = 1004001351; Passer; Moulting
+N rows daytime raw = 7815
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 1266
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Moulting_1004001351.csv
+
+***
+
+Pre-processing tag_id = 1004001372; Passer; Moulting
+N rows daytime raw = 20697
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 2291
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Moulting_1004001372.csv
+
+***
+
+Pre-processing tag_id = 1004001374; Passer; Moulting
+N rows daytime raw = 1645
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 839
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Moulting_1004001374.csv
+
+***
+
+Pre-processing tag_id = 1004001386; Passer; Moulting
+N rows daytime raw = 83235
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 14477
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Moulting_1004001386.csv
+
+***
+
+Pre-processing tag_id = 1004001400; Passer; Moulting
+N rows daytime raw = 79289
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 4364
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Moulting_1004001400.csv
+
+***
+
+Pre-processing tag_id = 1004001401; Passer; Moulting
+N rows daytime raw = 12519
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 1157
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Moulting_1004001401.csv
+
+***
+
+Pre-processing tag_id = 1004001407; Passer; Moulting
+N rows daytime raw = 72654
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 3422
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Moulting_1004001407.csv
+
+***
+
+Pre-processing tag_id = 1004001408; Passer; Moulting
+N rows daytime raw = 114946
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 5567
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Moulting_1004001408.csv
+
+***
+
+Pre-processing tag_id = 1004001412; Passer; Moulting
+N rows daytime raw = 101158
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 4887
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Moulting_1004001412.csv
+
+***
+
+Pre-processing tag_id = 1004001414; Passer; Moulting
+N rows daytime raw = 75097
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 2920
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Moulting_1004001414.csv
+
+***
+
+Pre-processing tag_id = 1004001416; Passer; Moulting
+N rows daytime raw = 118855
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 6396
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Moulting_1004001416.csv
+
+***
+
+Pre-processing tag_id = 1004001418; Passer; Moulting
+N rows daytime raw = 34016
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 1181
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Moulting_1004001418.csv
+
+***
+
+Pre-processing tag_id = 1004001463; Passer; Moulting
+N rows daytime raw = 124106
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 28497
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Moulting_1004001463.csv
+
+***
+
+Pre-processing tag_id = 1004001465; Passer; Moulting
+N rows daytime raw = 83847
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 16202
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Moulting_1004001465.csv
+
+***
+
+Pre-processing tag_id = 1004001526; Passer; Moulting
+N rows daytime raw = 86063
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 4116
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Moulting_1004001526.csv
+
+***
+
+Pre-processing tag_id = 1004001565; Passer; Moulting
+N rows daytime raw = 58277
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 13817
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Moulting_1004001565.csv
+
+***
+
+Pre-processing tag_id = 1004001571; Passer; Moulting
+N rows daytime raw = 5698
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 1371
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_Moulting_1004001571.csv
+
+***
+
+Pre-processing tag_id = 1004001175; Passer; NonMoulting
+N rows daytime raw = 5945
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 900
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_NonMoulting_1004001175.csv
+
+***
+
+Pre-processing tag_id = 1004001180; Passer; NonMoulting
+N rows daytime raw = 33461
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 1789
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_NonMoulting_1004001180.csv
+
+***
+
+Pre-processing tag_id = 1004001211; Passer; NonMoulting
+N rows daytime raw = 3934
+-- removed nighttime positions between 20PM and 5AM
+Too few rows (< 1000) remaining
+        
+Pre-processing tag_id = 1004001214; Passer; NonMoulting
+N rows daytime raw = 12044
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 2393
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_NonMoulting_1004001214.csv
+
+***
+
+Pre-processing tag_id = 1004001217; Passer; NonMoulting
+N rows daytime raw = 7183
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 1204
+-- saved to data/processed/data_preprocessed/
+ data_thin_Passer_NonMoulting_1004001217.csv
+
+***
+
+Pre-processing tag_id = 1004001244; Passer; NonMoulting
+N rows daytime raw = 4030
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 692
+-- saved to data/processed/data_preprocessed/
  data_thin_Passer_NonMoulting_1004001244.csv
 
 ***
 
 Pre-processing tag_id = 1004001254; Passer; NonMoulting
 N rows daytime raw = 8219
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 2178
+-- N rows pre-processed = 2379
 -- saved to data/processed/data_preprocessed/
  data_thin_Passer_NonMoulting_1004001254.csv
 
@@ -1346,13 +1445,13 @@ N rows daytime raw = 8219
 
 Pre-processing tag_id = 1004001417; Passer; NonMoulting
 N rows daytime raw = 184551
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 6860
+-- N rows pre-processed = 8865
 -- saved to data/processed/data_preprocessed/
  data_thin_Passer_NonMoulting_1004001417.csv
 
@@ -1360,13 +1459,13 @@ N rows daytime raw = 184551
 
 Pre-processing tag_id = 1004001675; Passer; NonMoulting
 N rows daytime raw = 4236
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1123
+-- N rows pre-processed = 1446
 -- saved to data/processed/data_preprocessed/
  data_thin_Passer_NonMoulting_1004001675.csv
 
@@ -1374,13 +1473,13 @@ N rows daytime raw = 4236
 
 Pre-processing tag_id = 1004001399; Pycnonotus; Manipulated
 N rows daytime raw = 67083
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 4227
+-- N rows pre-processed = 5072
 -- saved to data/processed/data_preprocessed/
  data_thin_Pycnonotus_Manipulated_1004001399.csv
 
@@ -1388,13 +1487,13 @@ N rows daytime raw = 67083
 
 Pre-processing tag_id = 1004001415; Pycnonotus; Manipulated
 N rows daytime raw = 37823
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 2427
+-- N rows pre-processed = 3066
 -- saved to data/processed/data_preprocessed/
  data_thin_Pycnonotus_Manipulated_1004001415.csv
 
@@ -1402,13 +1501,13 @@ N rows daytime raw = 37823
 
 Pre-processing tag_id = 1004001582; Pycnonotus; Manipulated
 N rows daytime raw = 52810
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 5036
+-- N rows pre-processed = 6325
 -- saved to data/processed/data_preprocessed/
  data_thin_Pycnonotus_Manipulated_1004001582.csv
 
@@ -1416,13 +1515,13 @@ N rows daytime raw = 52810
 
 Pre-processing tag_id = 1004001590; Pycnonotus; Manipulated
 N rows daytime raw = 42816
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 3318
+-- N rows pre-processed = 4512
 -- saved to data/processed/data_preprocessed/
  data_thin_Pycnonotus_Manipulated_1004001590.csv
 
@@ -1430,13 +1529,13 @@ N rows daytime raw = 42816
 
 Pre-processing tag_id = 1004001608; Pycnonotus; Manipulated
 N rows daytime raw = 24968
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 2758
+-- N rows pre-processed = 3191
 -- saved to data/processed/data_preprocessed/
  data_thin_Pycnonotus_Manipulated_1004001608.csv
 
@@ -1444,13 +1543,13 @@ N rows daytime raw = 24968
 
 Pre-processing tag_id = 1004001610; Pycnonotus; Manipulated
 N rows daytime raw = 33091
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 3652
+-- N rows pre-processed = 4363
 -- saved to data/processed/data_preprocessed/
  data_thin_Pycnonotus_Manipulated_1004001610.csv
 
@@ -1458,211 +1557,9 @@ N rows daytime raw = 33091
 
 Pre-processing tag_id = 1004001390; Pycnonotus; Moulting
 N rows daytime raw = 9475
--- removed nighttime positions between 20PM and 6AM
+-- removed nighttime positions between 20PM and 5AM
 -- removed 21 point smoothed speeds above 15 mps.
 -- removed point speeds above 10
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
--- N rows pre-processed = 1391
--- saved to data/processed/data_preprocessed/
- data_thin_Pycnonotus_Moulting_1004001390.csv
-
-***
-
-Pre-processing tag_id = 1004001410; Pycnonotus; Moulting
-N rows daytime raw = 91493
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 6305
--- saved to data/processed/data_preprocessed/
- data_thin_Pycnonotus_Moulting_1004001410.csv
-
-***
-
-Pre-processing tag_id = 1004001411; Pycnonotus; Moulting
-N rows daytime raw = 122281
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 8499
--- saved to data/processed/data_preprocessed/
- data_thin_Pycnonotus_Moulting_1004001411.csv
-
-***
-
-Pre-processing tag_id = 1004001478; Pycnonotus; Moulting
-N rows daytime raw = 48871
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 3998
--- saved to data/processed/data_preprocessed/
- data_thin_Pycnonotus_Moulting_1004001478.csv
-
-***
-
-Pre-processing tag_id = 1004001480; Pycnonotus; Moulting
-N rows daytime raw = 45871
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 4089
--- saved to data/processed/data_preprocessed/
- data_thin_Pycnonotus_Moulting_1004001480.csv
-
-***
-
-Pre-processing tag_id = 1004001609; Pycnonotus; Moulting
-N rows daytime raw = 31345
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 2851
--- saved to data/processed/data_preprocessed/
- data_thin_Pycnonotus_Moulting_1004001609.csv
-
-***
-
-Pre-processing tag_id = 1004001613; Pycnonotus; Moulting
-N rows daytime raw = 24432
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 2524
--- saved to data/processed/data_preprocessed/
- data_thin_Pycnonotus_Moulting_1004001613.csv
-
-***
-
-Pre-processing tag_id = 1004001636; Pycnonotus; Moulting
-N rows daytime raw = 43510
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 3218
--- saved to data/processed/data_preprocessed/
- data_thin_Pycnonotus_Moulting_1004001636.csv
-
-***
-
-Pre-processing tag_id = 1004001679; Pycnonotus; Moulting
-N rows daytime raw = 5302
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 2109
--- saved to data/processed/data_preprocessed/
- data_thin_Pycnonotus_Moulting_1004001679.csv
-
-***
-
-Pre-processing tag_id = 1004001078; Pycnonotus; NonMoulting
-N rows daytime raw = 3551
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 1049
--- saved to data/processed/data_preprocessed/
- data_thin_Pycnonotus_NonMoulting_1004001078.csv
-
-***
-
-Pre-processing tag_id = 1004001079; Pycnonotus; NonMoulting
-N rows daytime raw = 5992
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 1633
--- saved to data/processed/data_preprocessed/
- data_thin_Pycnonotus_NonMoulting_1004001079.csv
-
-***
-
-Pre-processing tag_id = 1004001172; Pycnonotus; NonMoulting
-N rows daytime raw = 12268
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 1998
--- saved to data/processed/data_preprocessed/
- data_thin_Pycnonotus_NonMoulting_1004001172.csv
-
-***
-
-Pre-processing tag_id = 1004001332; Pycnonotus; NonMoulting
-N rows daytime raw = 75947
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 8831
--- saved to data/processed/data_preprocessed/
- data_thin_Pycnonotus_NonMoulting_1004001332.csv
-
-***
-
-Pre-processing tag_id = 1004001679; Pycnonotus; NonMoulting
-N rows daytime raw = 11552
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 4122
--- saved to data/processed/data_preprocessed/
- data_thin_Pycnonotus_NonMoulting_1004001679.csv
-
-***
-
-Pre-processing tag_id = 1004001716; Pycnonotus; NonMoulting
-N rows daytime raw = 1800
--- removed nighttime positions between 20PM and 6AM
--- removed 21 point smoothed speeds above 15 mps.
--- removed point speeds above 10
--- median smoothed coordinates, moving window = 11
--- selecting columns TAG_ID, sp, treat, UNIX, x, y
--- thinned data to 20 seconds
--- N rows pre-processed = 552
--- saved to data/processed/data_preprocessed/
- data_thin_Pycnonotus_NonMoulting_1004001716.csv
-
-***
-
