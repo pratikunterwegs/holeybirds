@@ -44,6 +44,8 @@ moving_window = 11 # moving window
 smoothed_speed_threshold = 15
 point_speed_threshold = 10
 thinning_interval = 20
+hour_start = 6
+hour_end = 20
 
 # sink date time to log
 sink(file = "data/log_preprocessing.log", append = FALSE)
@@ -62,16 +64,30 @@ for (file in files) {
     species = unique(df$sp)
     treatment = unique(df$treat)
     
-    # check for rows, if less than min_rows, do not process further
-    # min_rows is passed as an argument below
-    if (nrow(df) > min_rows) {
-      # write messages
+    # write messages
       # informative messages
       print(glue("Pre-processing tag_id = {tag_id}; {species}; {treatment}
-                 N rows raw = {nrow(df)}
+                 N rows daytime raw = {nrow(df)}
                  ")
             )
       
+    # filter on time of day -- this is being redone for safety
+    # the column 'd' already marks daytime positions
+    df[, hour := hour(
+      as.POSIXct(UNIX, origin = "1970-01-01", tz = "Asia/Jerusalem")
+    )]
+    
+    df = df[hour > hour_start & hour < hour_end, ]
+    
+    print(
+      glue("
+          -- removed nighttime positions between {hour_end}PM and {hour_start}AM
+             ")
+    )
+    
+    # check for rows, if less than min_rows, do not process further
+    # min_rows is passed as an argument below
+    if (nrow(df) > min_rows) {
       # add speeds
       df[, c("speed_in", "speed_out") := list(
         atl_get_speed(data = df, x = "x", time = "UNIX", type = "in"),
@@ -166,8 +182,8 @@ for (file in files) {
       
     } else {
       print(
-        glue("Too few rowsfor tag_id = {tag_id}; {species}; {treatment}\\
-             N rows raw = {nrow(df)}\n
+        glue("Too few rows (< {min_rows}) remaining
+        
              ")
       )
     }
