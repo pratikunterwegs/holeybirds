@@ -1,3244 +1,3244 @@
-SSF fit log from 2021-07-08 12:21:24
+SSF fit log from 2021-07-09 14:46:55
 
 comment: Trial SSF log writing
 
 sp = Acrocephalus;  tag = 1004001585; treatment = Manipulated
- date = 2016-09-17
+ track date = 2016-09-17
  row in dataframe = 1
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:24
-SUCCESS at time: 2021-07-08 12:21:24
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001586; treatment = Manipulated
- date = 2016-09-14
+ track date = 2016-09-14
  row in dataframe = 2
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:24
-SUCCESS at time: 2021-07-08 12:21:24
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001333; treatment = Moulting
- date = 2016-08-03
+ track date = 2016-08-03
  row in dataframe = 3
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:24
-SUCCESS at time: 2021-07-08 12:21:24
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001395; treatment = Moulting
- date = 2016-08-06
+ track date = 2016-08-06
  row in dataframe = 4
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:24
-SUCCESS at time: 2021-07-08 12:21:24
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001461; treatment = Moulting
- date = 2016-08-25
+ track date = 2016-08-25
  row in dataframe = 5
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:24
-SUCCESS at time: 2021-07-08 12:21:24
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001461; treatment = Moulting
- date = 2016-08-27
+ track date = 2016-08-27
  row in dataframe = 6
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:24
-SUCCESS at time: 2021-07-08 12:21:24
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001479; treatment = Moulting
- date = 2016-08-31
+ track date = 2016-08-31
  row in dataframe = 7
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:25
-SUCCESS at time: 2021-07-08 12:21:25
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001587; treatment = Moulting
- date = 2016-09-16
+ track date = 2016-09-16
  row in dataframe = 8
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:25
-SUCCESS at time: 2021-07-08 12:21:25
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001587; treatment = Moulting
- date = 2016-09-17
+ track date = 2016-09-17
  row in dataframe = 9
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:25
-SUCCESS at time: 2021-07-08 12:21:25
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001607; treatment = Moulting
- date = 2016-09-27
+ track date = 2016-09-27
  row in dataframe = 10
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:25
-SUCCESS at time: 2021-07-08 12:21:25
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001361; treatment = NonMoulting
- date = 2016-08-10
+ track date = 2016-08-10
  row in dataframe = 11
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:25
-SUCCESS at time: 2021-07-08 12:21:25
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001393; treatment = NonMoulting
- date = 2016-08-05
+ track date = 2016-08-05
  row in dataframe = 12
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:25
-SUCCESS at time: 2021-07-08 12:21:25
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001393; treatment = NonMoulting
- date = 2016-08-06
+ track date = 2016-08-06
  row in dataframe = 13
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:25
-SUCCESS at time: 2021-07-08 12:21:25
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001393; treatment = NonMoulting
- date = 2016-08-07
+ track date = 2016-08-07
  row in dataframe = 14
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:25
-SUCCESS at time: 2021-07-08 12:21:26
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001393; treatment = NonMoulting
- date = 2016-08-08
+ track date = 2016-08-08
  row in dataframe = 15
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:26
-SUCCESS at time: 2021-07-08 12:21:26
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001393; treatment = NonMoulting
- date = 2016-08-09
+ track date = 2016-08-09
  row in dataframe = 16
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:26
-SUCCESS at time: 2021-07-08 12:21:26
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001396; treatment = NonMoulting
- date = 2016-08-10
+ track date = 2016-08-10
  row in dataframe = 17
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:26
-SUCCESS at time: 2021-07-08 12:21:26
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001398; treatment = NonMoulting
- date = 2016-08-05
+ track date = 2016-08-05
  row in dataframe = 18
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:26
-SUCCESS at time: 2021-07-08 12:21:26
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001398; treatment = NonMoulting
- date = 2016-08-06
+ track date = 2016-08-06
  row in dataframe = 19
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:26
-SUCCESS at time: 2021-07-08 12:21:26
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001406; treatment = NonMoulting
- date = 2016-08-18
+ track date = 2016-08-18
  row in dataframe = 20
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:26
-SUCCESS at time: 2021-07-08 12:21:26
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001406; treatment = NonMoulting
- date = 2016-08-19
+ track date = 2016-08-19
  row in dataframe = 21
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:26
-SUCCESS at time: 2021-07-08 12:21:26
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001406; treatment = NonMoulting
- date = 2016-08-20
+ track date = 2016-08-20
  row in dataframe = 22
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:26
-SUCCESS at time: 2021-07-08 12:21:26
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001459; treatment = NonMoulting
- date = 2016-08-24
+ track date = 2016-08-24
  row in dataframe = 23
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:26
-SUCCESS at time: 2021-07-08 12:21:27
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001459; treatment = NonMoulting
- date = 2016-08-25
+ track date = 2016-08-25
  row in dataframe = 24
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:27
-SUCCESS at time: 2021-07-08 12:21:31
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001459; treatment = NonMoulting
- date = 2016-08-26
+ track date = 2016-08-26
  row in dataframe = 25
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:31
-SUCCESS at time: 2021-07-08 12:21:31
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001459; treatment = NonMoulting
- date = 2016-08-27
+ track date = 2016-08-27
  row in dataframe = 26
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:31
-SUCCESS at time: 2021-07-08 12:21:31
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001459; treatment = NonMoulting
- date = 2016-08-28
+ track date = 2016-08-28
  row in dataframe = 27
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:31
-SUCCESS at time: 2021-07-08 12:21:31
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001459; treatment = NonMoulting
- date = 2016-08-29
+ track date = 2016-08-29
  row in dataframe = 28
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:31
-SUCCESS at time: 2021-07-08 12:21:31
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001459; treatment = NonMoulting
- date = 2016-08-30
+ track date = 2016-08-30
  row in dataframe = 29
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:31
-SUCCESS at time: 2021-07-08 12:21:31
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001460; treatment = NonMoulting
- date = 2016-08-25
+ track date = 2016-08-25
  row in dataframe = 30
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:31
-SUCCESS at time: 2021-07-08 12:21:32
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001460; treatment = NonMoulting
- date = 2016-08-26
+ track date = 2016-08-26
  row in dataframe = 31
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:32
-SUCCESS at time: 2021-07-08 12:21:32
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001460; treatment = NonMoulting
- date = 2016-08-27
+ track date = 2016-08-27
  row in dataframe = 32
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:32
-SUCCESS at time: 2021-07-08 12:21:32
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001460; treatment = NonMoulting
- date = 2016-08-28
+ track date = 2016-08-28
  row in dataframe = 33
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:32
-SUCCESS at time: 2021-07-08 12:21:32
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001462; treatment = NonMoulting
- date = 2016-08-25
+ track date = 2016-08-25
  row in dataframe = 34
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:32
-SUCCESS at time: 2021-07-08 12:21:32
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001462; treatment = NonMoulting
- date = 2016-08-26
+ track date = 2016-08-26
  row in dataframe = 35
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:32
-SUCCESS at time: 2021-07-08 12:21:32
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001462; treatment = NonMoulting
- date = 2016-08-27
+ track date = 2016-08-27
  row in dataframe = 36
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:32
-SUCCESS at time: 2021-07-08 12:21:32
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:55
 ---
 
 sp = Acrocephalus;  tag = 1004001462; treatment = NonMoulting
- date = 2016-08-28
+ track date = 2016-08-28
  row in dataframe = 37
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:32
-SUCCESS at time: 2021-07-08 12:21:32
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:55
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Acrocephalus;  tag = 1004001462; treatment = NonMoulting
- date = 2016-08-29
+ track date = 2016-08-29
  row in dataframe = 38
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:32
-SUCCESS at time: 2021-07-08 12:21:32
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Acrocephalus;  tag = 1004001462; treatment = NonMoulting
- date = 2016-08-30
+ track date = 2016-08-30
  row in dataframe = 39
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:32
-SUCCESS at time: 2021-07-08 12:21:32
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Hirundo;  tag = 1004001271; treatment = Manipulated
- date = 2016-09-21
+ track date = 2016-09-21
  row in dataframe = 40
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:32
-SUCCESS at time: 2021-07-08 12:21:32
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Hirundo;  tag = 1004001713; treatment = Manipulated
- date = 2016-10-14
+ track date = 2016-10-14
  row in dataframe = 41
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:32
-SUCCESS at time: 2021-07-08 12:21:33
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Hirundo;  tag = 1004001710; treatment = Moulting
- date = 2016-10-14
+ track date = 2016-10-14
  row in dataframe = 42
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:33
-SUCCESS at time: 2021-07-08 12:21:33
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Hirundo;  tag = 1004001710; treatment = Moulting
- date = 2016-10-15
+ track date = 2016-10-15
  row in dataframe = 43
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:33
-SUCCESS at time: 2021-07-08 12:21:37
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Hirundo;  tag = 1004001710; treatment = Moulting
- date = 2016-10-16
+ track date = 2016-10-16
  row in dataframe = 44
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:37
-SUCCESS at time: 2021-07-08 12:21:38
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Hirundo;  tag = 1004001710; treatment = Moulting
- date = 2016-10-17
+ track date = 2016-10-17
  row in dataframe = 45
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:38
-SUCCESS at time: 2021-07-08 12:21:38
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Hirundo;  tag = 1004000824; treatment = NonMoulting
- date = 2016-06-09
+ track date = 2016-06-09
  row in dataframe = 46
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:38
-SUCCESS at time: 2021-07-08 12:21:38
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001386; treatment = LongPeriod
- date = 2016-08-12
+ track date = 2016-08-12
  row in dataframe = 47
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:38
-SUCCESS at time: 2021-07-08 12:21:38
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001386; treatment = LongPeriod
- date = 2016-08-13
+ track date = 2016-08-13
  row in dataframe = 48
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:38
-SUCCESS at time: 2021-07-08 12:21:38
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001386; treatment = LongPeriod
- date = 2016-08-14
+ track date = 2016-08-14
  row in dataframe = 49
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:38
-SUCCESS at time: 2021-07-08 12:21:38
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001386; treatment = LongPeriod
- date = 2016-08-15
+ track date = 2016-08-15
  row in dataframe = 50
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:38
-SUCCESS at time: 2021-07-08 12:21:38
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001386; treatment = LongPeriod
- date = 2016-08-17
+ track date = 2016-08-17
  row in dataframe = 51
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:38
-SUCCESS at time: 2021-07-08 12:21:39
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001386; treatment = LongPeriod
- date = 2016-08-18
+ track date = 2016-08-18
  row in dataframe = 52
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:39
-SUCCESS at time: 2021-07-08 12:21:39
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001386; treatment = LongPeriod
- date = 2016-08-20
+ track date = 2016-08-20
  row in dataframe = 53
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:39
-SUCCESS at time: 2021-07-08 12:21:39
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001386; treatment = LongPeriod
- date = 2016-08-25
+ track date = 2016-08-25
  row in dataframe = 54
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:39
-SUCCESS at time: 2021-07-08 12:21:39
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001463; treatment = LongPeriod
- date = 2016-08-24
+ track date = 2016-08-24
  row in dataframe = 55
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:39
-SUCCESS at time: 2021-07-08 12:21:39
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001463; treatment = LongPeriod
- date = 2016-08-25
+ track date = 2016-08-25
  row in dataframe = 56
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:39
-SUCCESS at time: 2021-07-08 12:21:44
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001463; treatment = LongPeriod
- date = 2016-08-26
+ track date = 2016-08-26
  row in dataframe = 57
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:44
-SUCCESS at time: 2021-07-08 12:21:44
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001463; treatment = LongPeriod
- date = 2016-08-27
+ track date = 2016-08-27
  row in dataframe = 58
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:44
-SUCCESS at time: 2021-07-08 12:21:44
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001463; treatment = LongPeriod
- date = 2016-08-29
+ track date = 2016-08-29
  row in dataframe = 59
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:44
-SUCCESS at time: 2021-07-08 12:21:44
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001463; treatment = LongPeriod
- date = 2016-08-30
+ track date = 2016-08-30
  row in dataframe = 60
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:44
-SUCCESS at time: 2021-07-08 12:21:44
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001463; treatment = LongPeriod
- date = 2016-08-31
+ track date = 2016-08-31
  row in dataframe = 61
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:44
-SUCCESS at time: 2021-07-08 12:21:45
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001463; treatment = LongPeriod
- date = 2016-09-01
+ track date = 2016-09-01
  row in dataframe = 62
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:45
-SUCCESS at time: 2021-07-08 12:21:45
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001463; treatment = LongPeriod
- date = 2016-09-02
+ track date = 2016-09-02
  row in dataframe = 63
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:45
-SUCCESS at time: 2021-07-08 12:21:51
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001463; treatment = LongPeriod
- date = 2016-09-03
+ track date = 2016-09-03
  row in dataframe = 64
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:51
-SUCCESS at time: 2021-07-08 12:21:51
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001463; treatment = LongPeriod
- date = 2016-09-04
+ track date = 2016-09-04
  row in dataframe = 65
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:51
-SUCCESS at time: 2021-07-08 12:21:54
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001463; treatment = LongPeriod
- date = 2016-09-05
+ track date = 2016-09-05
  row in dataframe = 66
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:54
-SUCCESS at time: 2021-07-08 12:21:54
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001463; treatment = LongPeriod
- date = 2016-09-06
+ track date = 2016-09-06
  row in dataframe = 67
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:54
-SUCCESS at time: 2021-07-08 12:21:54
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001463; treatment = LongPeriod
- date = 2016-09-07
+ track date = 2016-09-07
  row in dataframe = 68
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:54
-SUCCESS at time: 2021-07-08 12:21:54
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001463; treatment = LongPeriod
- date = 2016-09-08
+ track date = 2016-09-08
  row in dataframe = 69
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:54
-SUCCESS at time: 2021-07-08 12:21:54
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001463; treatment = LongPeriod
- date = 2016-09-09
+ track date = 2016-09-09
  row in dataframe = 70
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:54
-SUCCESS at time: 2021-07-08 12:21:54
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001463; treatment = LongPeriod
- date = 2016-09-10
+ track date = 2016-09-10
  row in dataframe = 71
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:54
-SUCCESS at time: 2021-07-08 12:21:54
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001463; treatment = LongPeriod
- date = 2016-09-12
+ track date = 2016-09-12
  row in dataframe = 72
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:54
-SUCCESS at time: 2021-07-08 12:21:54
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001463; treatment = LongPeriod
- date = 2016-09-13
+ track date = 2016-09-13
  row in dataframe = 73
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:54
-SUCCESS at time: 2021-07-08 12:21:55
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001463; treatment = LongPeriod
- date = 2016-09-15
+ track date = 2016-09-15
  row in dataframe = 74
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:55
-SUCCESS at time: 2021-07-08 12:21:55
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001463; treatment = LongPeriod
- date = 2016-09-16
+ track date = 2016-09-16
  row in dataframe = 75
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:55
-SUCCESS at time: 2021-07-08 12:21:55
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001463; treatment = LongPeriod
- date = 2016-09-17
+ track date = 2016-09-17
  row in dataframe = 76
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:55
-SUCCESS at time: 2021-07-08 12:21:58
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001463; treatment = LongPeriod
- date = 2016-09-19
+ track date = 2016-09-19
  row in dataframe = 77
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:58
-SUCCESS at time: 2021-07-08 12:21:58
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001463; treatment = LongPeriod
- date = 2016-09-20
+ track date = 2016-09-20
  row in dataframe = 78
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:58
-SUCCESS at time: 2021-07-08 12:21:59
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001465; treatment = LongPeriod
- date = 2016-08-24
+ track date = 2016-08-24
  row in dataframe = 79
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:59
-SUCCESS at time: 2021-07-08 12:21:59
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001465; treatment = LongPeriod
- date = 2016-08-25
+ track date = 2016-08-25
  row in dataframe = 80
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:59
-SUCCESS at time: 2021-07-08 12:21:59
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001465; treatment = LongPeriod
- date = 2016-08-26
+ track date = 2016-08-26
  row in dataframe = 81
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:59
-SUCCESS at time: 2021-07-08 12:21:59
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001465; treatment = LongPeriod
- date = 2016-08-27
+ track date = 2016-08-27
  row in dataframe = 82
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:21:59
-SUCCESS at time: 2021-07-08 12:22:03
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001465; treatment = LongPeriod
- date = 2016-08-29
+ track date = 2016-08-29
  row in dataframe = 83
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:03
-SUCCESS at time: 2021-07-08 12:22:03
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001465; treatment = LongPeriod
- date = 2016-08-30
+ track date = 2016-08-30
  row in dataframe = 84
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:03
-SUCCESS at time: 2021-07-08 12:22:03
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001465; treatment = LongPeriod
- date = 2016-08-31
+ track date = 2016-08-31
  row in dataframe = 85
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:03
-SUCCESS at time: 2021-07-08 12:22:10
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001465; treatment = LongPeriod
- date = 2016-09-01
+ track date = 2016-09-01
  row in dataframe = 86
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:10
-SUCCESS at time: 2021-07-08 12:22:13
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001465; treatment = LongPeriod
- date = 2016-09-02
+ track date = 2016-09-02
  row in dataframe = 87
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:13
-SUCCESS at time: 2021-07-08 12:22:17
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001465; treatment = LongPeriod
- date = 2016-09-03
+ track date = 2016-09-03
  row in dataframe = 88
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:17
-SUCCESS at time: 2021-07-08 12:22:22
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001465; treatment = LongPeriod
- date = 2016-09-04
+ track date = 2016-09-04
  row in dataframe = 89
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:22
-SUCCESS at time: 2021-07-08 12:22:28
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001465; treatment = LongPeriod
- date = 2016-09-05
+ track date = 2016-09-05
  row in dataframe = 90
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:28
-SUCCESS at time: 2021-07-08 12:22:28
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001465; treatment = LongPeriod
- date = 2016-09-06
+ track date = 2016-09-06
  row in dataframe = 91
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:28
-SUCCESS at time: 2021-07-08 12:22:28
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001465; treatment = LongPeriod
- date = 2016-09-07
+ track date = 2016-09-07
  row in dataframe = 92
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:28
-SUCCESS at time: 2021-07-08 12:22:29
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001465; treatment = LongPeriod
- date = 2016-09-08
+ track date = 2016-09-08
  row in dataframe = 93
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:29
-SUCCESS at time: 2021-07-08 12:22:29
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001465; treatment = LongPeriod
- date = 2016-09-09
+ track date = 2016-09-09
  row in dataframe = 94
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:29
-SUCCESS at time: 2021-07-08 12:22:29
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001564; treatment = LongPeriod
- date = 2016-09-12
+ track date = 2016-09-12
  row in dataframe = 95
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:29
-SUCCESS at time: 2021-07-08 12:22:29
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001564; treatment = LongPeriod
- date = 2016-09-14
+ track date = 2016-09-14
  row in dataframe = 96
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:29
-SUCCESS at time: 2021-07-08 12:22:30
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001564; treatment = LongPeriod
- date = 2016-09-15
+ track date = 2016-09-15
  row in dataframe = 97
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:30
-SUCCESS at time: 2021-07-08 12:22:30
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001564; treatment = LongPeriod
- date = 2016-09-16
+ track date = 2016-09-16
  row in dataframe = 98
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:30
-SUCCESS at time: 2021-07-08 12:22:30
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001564; treatment = LongPeriod
- date = 2016-09-17
+ track date = 2016-09-17
  row in dataframe = 99
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:30
-SUCCESS at time: 2021-07-08 12:22:30
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001564; treatment = LongPeriod
- date = 2016-09-19
+ track date = 2016-09-19
  row in dataframe = 100
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:30
-SUCCESS at time: 2021-07-08 12:22:30
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001565; treatment = LongPeriod
- date = 2016-09-09
+ track date = 2016-09-09
  row in dataframe = 101
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:30
-SUCCESS at time: 2021-07-08 12:22:30
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001565; treatment = LongPeriod
- date = 2016-09-10
+ track date = 2016-09-10
  row in dataframe = 102
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:30
-SUCCESS at time: 2021-07-08 12:22:31
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001565; treatment = LongPeriod
- date = 2016-09-12
+ track date = 2016-09-12
  row in dataframe = 103
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:31
-SUCCESS at time: 2021-07-08 12:22:31
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001565; treatment = LongPeriod
- date = 2016-09-13
+ track date = 2016-09-13
  row in dataframe = 104
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:31
-SUCCESS at time: 2021-07-08 12:22:31
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001565; treatment = LongPeriod
- date = 2016-09-14
+ track date = 2016-09-14
  row in dataframe = 105
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:31
-SUCCESS at time: 2021-07-08 12:22:31
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:56
 ---
 
 sp = Passer;  tag = 1004001565; treatment = LongPeriod
- date = 2016-09-16
+ track date = 2016-09-16
  row in dataframe = 106
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:31
-SUCCESS at time: 2021-07-08 12:22:31
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:56
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001565; treatment = LongPeriod
- date = 2016-09-17
+ track date = 2016-09-17
  row in dataframe = 107
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:31
-SUCCESS at time: 2021-07-08 12:22:31
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001565; treatment = LongPeriod
- date = 2016-09-20
+ track date = 2016-09-20
  row in dataframe = 108
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:31
-SUCCESS at time: 2021-07-08 12:22:31
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001565; treatment = LongPeriod
- date = 2016-10-07
+ track date = 2016-10-07
  row in dataframe = 109
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:31
-SUCCESS at time: 2021-07-08 12:22:31
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001567; treatment = LongPeriod
- date = 2016-09-10
+ track date = 2016-09-10
  row in dataframe = 110
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:31
-SUCCESS at time: 2021-07-08 12:22:31
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001567; treatment = LongPeriod
- date = 2016-09-12
+ track date = 2016-09-12
  row in dataframe = 111
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:31
-SUCCESS at time: 2021-07-08 12:22:31
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001567; treatment = LongPeriod
- date = 2016-09-13
+ track date = 2016-09-13
  row in dataframe = 112
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:31
-SUCCESS at time: 2021-07-08 12:22:31
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001567; treatment = LongPeriod
- date = 2016-09-16
+ track date = 2016-09-16
  row in dataframe = 113
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:31
-SUCCESS at time: 2021-07-08 12:22:31
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001567; treatment = LongPeriod
- date = 2016-09-17
+ track date = 2016-09-17
  row in dataframe = 114
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:31
-SUCCESS at time: 2021-07-08 12:22:31
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001567; treatment = LongPeriod
- date = 2016-09-19
+ track date = 2016-09-19
  row in dataframe = 115
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:31
-SUCCESS at time: 2021-07-08 12:22:32
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001567; treatment = LongPeriod
- date = 2016-09-20
+ track date = 2016-09-20
  row in dataframe = 116
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:32
-SUCCESS at time: 2021-07-08 12:22:32
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001567; treatment = LongPeriod
- date = 2016-09-21
+ track date = 2016-09-21
  row in dataframe = 117
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:32
-SUCCESS at time: 2021-07-08 12:22:32
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001567; treatment = LongPeriod
- date = 2016-10-07
+ track date = 2016-10-07
  row in dataframe = 118
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:32
-SUCCESS at time: 2021-07-08 12:22:43
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001567; treatment = LongPeriod
- date = 2016-10-09
+ track date = 2016-10-09
  row in dataframe = 119
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:43
-SUCCESS at time: 2021-07-08 12:22:48
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001567; treatment = LongPeriod
- date = 2016-10-10
+ track date = 2016-10-10
  row in dataframe = 120
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:48
-SUCCESS at time: 2021-07-08 12:22:48
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001567; treatment = LongPeriod
- date = 2016-10-12
+ track date = 2016-10-12
  row in dataframe = 121
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:22:48
-SUCCESS at time: 2021-07-08 12:23:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001568; treatment = LongPeriod
- date = 2016-09-09
+ track date = 2016-09-09
  row in dataframe = 122
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:11
-SUCCESS at time: 2021-07-08 12:23:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001568; treatment = LongPeriod
- date = 2016-09-10
+ track date = 2016-09-10
  row in dataframe = 123
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:11
-SUCCESS at time: 2021-07-08 12:23:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001568; treatment = LongPeriod
- date = 2016-09-11
+ track date = 2016-09-11
  row in dataframe = 124
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:11
-SUCCESS at time: 2021-07-08 12:23:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001568; treatment = LongPeriod
- date = 2016-09-12
+ track date = 2016-09-12
  row in dataframe = 125
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:11
-SUCCESS at time: 2021-07-08 12:23:12
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001568; treatment = LongPeriod
- date = 2016-09-13
+ track date = 2016-09-13
  row in dataframe = 126
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:12
-SUCCESS at time: 2021-07-08 12:23:12
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001568; treatment = LongPeriod
- date = 2016-09-14
+ track date = 2016-09-14
  row in dataframe = 127
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:12
-SUCCESS at time: 2021-07-08 12:23:15
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001568; treatment = LongPeriod
- date = 2016-09-15
+ track date = 2016-09-15
  row in dataframe = 128
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:15
-SUCCESS at time: 2021-07-08 12:23:15
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001568; treatment = LongPeriod
- date = 2016-09-16
+ track date = 2016-09-16
  row in dataframe = 129
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:15
-SUCCESS at time: 2021-07-08 12:23:19
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001568; treatment = LongPeriod
- date = 2016-09-17
+ track date = 2016-09-17
  row in dataframe = 130
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:19
-SUCCESS at time: 2021-07-08 12:23:19
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001568; treatment = LongPeriod
- date = 2016-09-20
+ track date = 2016-09-20
  row in dataframe = 131
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:19
-SUCCESS at time: 2021-07-08 12:23:19
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001568; treatment = LongPeriod
- date = 2016-09-21
+ track date = 2016-09-21
  row in dataframe = 132
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:19
-SUCCESS at time: 2021-07-08 12:23:19
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001568; treatment = LongPeriod
- date = 2016-09-23
+ track date = 2016-09-23
  row in dataframe = 133
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:19
-SUCCESS at time: 2021-07-08 12:23:19
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001568; treatment = LongPeriod
- date = 2016-09-27
+ track date = 2016-09-27
  row in dataframe = 134
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:19
-SUCCESS at time: 2021-07-08 12:23:19
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001568; treatment = LongPeriod
- date = 2016-10-07
+ track date = 2016-10-07
  row in dataframe = 135
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:19
-SUCCESS at time: 2021-07-08 12:23:20
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001568; treatment = LongPeriod
- date = 2016-10-08
+ track date = 2016-10-08
  row in dataframe = 136
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:20
-SUCCESS at time: 2021-07-08 12:23:25
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001568; treatment = LongPeriod
- date = 2016-10-09
+ track date = 2016-10-09
  row in dataframe = 137
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:25
-SUCCESS at time: 2021-07-08 12:23:25
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001568; treatment = LongPeriod
- date = 2016-10-10
+ track date = 2016-10-10
  row in dataframe = 138
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:25
-SUCCESS at time: 2021-07-08 12:23:26
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001568; treatment = LongPeriod
- date = 2016-10-11
+ track date = 2016-10-11
  row in dataframe = 139
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:26
-SUCCESS at time: 2021-07-08 12:23:29
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001568; treatment = LongPeriod
- date = 2016-10-12
+ track date = 2016-10-12
  row in dataframe = 140
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:29
-SUCCESS at time: 2021-07-08 12:23:37
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001568; treatment = LongPeriod
- date = 2016-10-13
+ track date = 2016-10-13
  row in dataframe = 141
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:37
-SUCCESS at time: 2021-07-08 12:23:37
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001568; treatment = LongPeriod
- date = 2016-10-14
+ track date = 2016-10-14
  row in dataframe = 142
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:37
-SUCCESS at time: 2021-07-08 12:23:37
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001568; treatment = LongPeriod
- date = 2016-10-15
+ track date = 2016-10-15
  row in dataframe = 143
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:37
-SUCCESS at time: 2021-07-08 12:23:38
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001568; treatment = LongPeriod
- date = 2016-10-16
+ track date = 2016-10-16
  row in dataframe = 144
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:38
-SUCCESS at time: 2021-07-08 12:23:38
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001568; treatment = LongPeriod
- date = 2016-10-17
+ track date = 2016-10-17
  row in dataframe = 145
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:38
-SUCCESS at time: 2021-07-08 12:23:38
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001569; treatment = LongPeriod
- date = 2016-09-10
+ track date = 2016-09-10
  row in dataframe = 146
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:38
-SUCCESS at time: 2021-07-08 12:23:38
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001569; treatment = LongPeriod
- date = 2016-09-11
+ track date = 2016-09-11
  row in dataframe = 147
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:38
-SUCCESS at time: 2021-07-08 12:23:38
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001569; treatment = LongPeriod
- date = 2016-09-12
+ track date = 2016-09-12
  row in dataframe = 148
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:38
-SUCCESS at time: 2021-07-08 12:23:38
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001569; treatment = LongPeriod
- date = 2016-09-13
+ track date = 2016-09-13
  row in dataframe = 149
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:38
-SUCCESS at time: 2021-07-08 12:23:39
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001569; treatment = LongPeriod
- date = 2016-09-14
+ track date = 2016-09-14
  row in dataframe = 150
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:39
-SUCCESS at time: 2021-07-08 12:23:39
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001569; treatment = LongPeriod
- date = 2016-09-15
+ track date = 2016-09-15
  row in dataframe = 151
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:39
-SUCCESS at time: 2021-07-08 12:23:39
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001569; treatment = LongPeriod
- date = 2016-09-16
+ track date = 2016-09-16
  row in dataframe = 152
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:39
-SUCCESS at time: 2021-07-08 12:23:39
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001569; treatment = LongPeriod
- date = 2016-09-17
+ track date = 2016-09-17
  row in dataframe = 153
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:39
-SUCCESS at time: 2021-07-08 12:23:39
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001569; treatment = LongPeriod
- date = 2016-09-20
+ track date = 2016-09-20
  row in dataframe = 154
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:39
-SUCCESS at time: 2021-07-08 12:23:40
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001604; treatment = LongPeriod
- date = 2016-09-26
+ track date = 2016-09-26
  row in dataframe = 155
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:40
-SUCCESS at time: 2021-07-08 12:23:40
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001604; treatment = LongPeriod
- date = 2016-10-12
+ track date = 2016-10-12
  row in dataframe = 156
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:40
-SUCCESS at time: 2021-07-08 12:23:40
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001604; treatment = LongPeriod
- date = 2016-10-14
+ track date = 2016-10-14
  row in dataframe = 157
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:40
-SUCCESS at time: 2021-07-08 12:23:41
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001250; treatment = Manipulated
- date = 2016-07-12
+ track date = 2016-07-12
  row in dataframe = 158
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:41
-SUCCESS at time: 2021-07-08 12:23:41
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001335; treatment = Manipulated
- date = 2016-07-29
+ track date = 2016-07-29
  row in dataframe = 159
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:41
-SUCCESS at time: 2021-07-08 12:23:41
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001337; treatment = Manipulated
- date = 2016-07-26
+ track date = 2016-07-26
  row in dataframe = 160
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:41
-SUCCESS at time: 2021-07-08 12:23:41
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001457; treatment = Manipulated
- date = 2016-08-24
+ track date = 2016-08-24
  row in dataframe = 161
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:41
-SUCCESS at time: 2021-07-08 12:23:47
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001457; treatment = Manipulated
- date = 2016-08-25
+ track date = 2016-08-25
  row in dataframe = 162
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:23:47
-SUCCESS at time: 2021-07-08 12:24:06
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001457; treatment = Manipulated
- date = 2016-08-26
+ track date = 2016-08-26
  row in dataframe = 163
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:06
-SUCCESS at time: 2021-07-08 12:24:06
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001457; treatment = Manipulated
- date = 2016-08-27
+ track date = 2016-08-27
  row in dataframe = 164
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:06
-SUCCESS at time: 2021-07-08 12:24:06
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001525; treatment = Manipulated
- date = 2016-09-06
+ track date = 2016-09-06
  row in dataframe = 165
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:06
-SUCCESS at time: 2021-07-08 12:24:06
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001525; treatment = Manipulated
- date = 2016-09-07
+ track date = 2016-09-07
  row in dataframe = 166
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:06
-SUCCESS at time: 2021-07-08 12:24:10
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001562; treatment = Manipulated
- date = 2016-09-10
+ track date = 2016-09-10
  row in dataframe = 167
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:10
-SUCCESS at time: 2021-07-08 12:24:10
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001564; treatment = Manipulated
- date = 2016-09-12
+ track date = 2016-09-12
  row in dataframe = 168
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:10
-SUCCESS at time: 2021-07-08 12:24:10
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001564; treatment = Manipulated
- date = 2016-09-14
+ track date = 2016-09-14
  row in dataframe = 169
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:10
-SUCCESS at time: 2021-07-08 12:24:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001564; treatment = Manipulated
- date = 2016-09-15
+ track date = 2016-09-15
  row in dataframe = 170
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:11
-SUCCESS at time: 2021-07-08 12:24:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001564; treatment = Manipulated
- date = 2016-09-16
+ track date = 2016-09-16
  row in dataframe = 171
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:11
-SUCCESS at time: 2021-07-08 12:24:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001564; treatment = Manipulated
- date = 2016-09-17
+ track date = 2016-09-17
  row in dataframe = 172
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:11
-SUCCESS at time: 2021-07-08 12:24:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001564; treatment = Manipulated
- date = 2016-09-19
+ track date = 2016-09-19
  row in dataframe = 173
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:11
-SUCCESS at time: 2021-07-08 12:24:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001567; treatment = Manipulated
- date = 2016-09-10
+ track date = 2016-09-10
  row in dataframe = 174
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:11
-SUCCESS at time: 2021-07-08 12:24:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001567; treatment = Manipulated
- date = 2016-09-12
+ track date = 2016-09-12
  row in dataframe = 175
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:11
-SUCCESS at time: 2021-07-08 12:24:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:57
 ---
 
 sp = Passer;  tag = 1004001567; treatment = Manipulated
- date = 2016-09-13
+ track date = 2016-09-13
  row in dataframe = 176
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:11
-SUCCESS at time: 2021-07-08 12:24:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:57
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001567; treatment = Manipulated
- date = 2016-09-16
+ track date = 2016-09-16
  row in dataframe = 177
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:11
-SUCCESS at time: 2021-07-08 12:24:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001567; treatment = Manipulated
- date = 2016-09-17
+ track date = 2016-09-17
  row in dataframe = 178
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:11
-SUCCESS at time: 2021-07-08 12:24:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001567; treatment = Manipulated
- date = 2016-09-19
+ track date = 2016-09-19
  row in dataframe = 179
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:11
-SUCCESS at time: 2021-07-08 12:24:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001567; treatment = Manipulated
- date = 2016-09-20
+ track date = 2016-09-20
  row in dataframe = 180
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:11
-SUCCESS at time: 2021-07-08 12:24:12
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001567; treatment = Manipulated
- date = 2016-09-21
+ track date = 2016-09-21
  row in dataframe = 181
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:12
-SUCCESS at time: 2021-07-08 12:24:12
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001567; treatment = Manipulated
- date = 2016-10-07
+ track date = 2016-10-07
  row in dataframe = 182
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:12
-SUCCESS at time: 2021-07-08 12:24:23
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001567; treatment = Manipulated
- date = 2016-10-10
+ track date = 2016-10-10
  row in dataframe = 183
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:23
-SUCCESS at time: 2021-07-08 12:24:23
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001567; treatment = Manipulated
- date = 2016-10-11
+ track date = 2016-10-11
  row in dataframe = 184
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:23
-SUCCESS at time: 2021-07-08 12:24:44
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001568; treatment = Manipulated
- date = 2016-09-09
+ track date = 2016-09-09
  row in dataframe = 185
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:44
-SUCCESS at time: 2021-07-08 12:24:44
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001568; treatment = Manipulated
- date = 2016-09-10
+ track date = 2016-09-10
  row in dataframe = 186
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:44
-SUCCESS at time: 2021-07-08 12:24:44
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001568; treatment = Manipulated
- date = 2016-09-11
+ track date = 2016-09-11
  row in dataframe = 187
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:44
-SUCCESS at time: 2021-07-08 12:24:45
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001568; treatment = Manipulated
- date = 2016-09-12
+ track date = 2016-09-12
  row in dataframe = 188
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:45
-SUCCESS at time: 2021-07-08 12:24:45
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001568; treatment = Manipulated
- date = 2016-09-13
+ track date = 2016-09-13
  row in dataframe = 189
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:45
-SUCCESS at time: 2021-07-08 12:24:45
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001568; treatment = Manipulated
- date = 2016-09-14
+ track date = 2016-09-14
  row in dataframe = 190
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:45
-SUCCESS at time: 2021-07-08 12:24:48
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001568; treatment = Manipulated
- date = 2016-09-15
+ track date = 2016-09-15
  row in dataframe = 191
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:48
-SUCCESS at time: 2021-07-08 12:24:48
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001568; treatment = Manipulated
- date = 2016-09-16
+ track date = 2016-09-16
  row in dataframe = 192
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:48
-SUCCESS at time: 2021-07-08 12:24:52
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001568; treatment = Manipulated
- date = 2016-09-17
+ track date = 2016-09-17
  row in dataframe = 193
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:52
-SUCCESS at time: 2021-07-08 12:24:52
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001568; treatment = Manipulated
- date = 2016-09-20
+ track date = 2016-09-20
  row in dataframe = 194
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:52
-SUCCESS at time: 2021-07-08 12:24:52
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001568; treatment = Manipulated
- date = 2016-09-21
+ track date = 2016-09-21
  row in dataframe = 195
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:52
-SUCCESS at time: 2021-07-08 12:24:52
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001568; treatment = Manipulated
- date = 2016-09-23
+ track date = 2016-09-23
  row in dataframe = 196
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:52
-SUCCESS at time: 2021-07-08 12:24:52
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001568; treatment = Manipulated
- date = 2016-09-27
+ track date = 2016-09-27
  row in dataframe = 197
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:52
-SUCCESS at time: 2021-07-08 12:24:52
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001568; treatment = Manipulated
- date = 2016-10-07
+ track date = 2016-10-07
  row in dataframe = 198
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:52
-SUCCESS at time: 2021-07-08 12:24:53
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001568; treatment = Manipulated
- date = 2016-10-08
+ track date = 2016-10-08
  row in dataframe = 199
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:53
-SUCCESS at time: 2021-07-08 12:24:58
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001568; treatment = Manipulated
- date = 2016-10-09
+ track date = 2016-10-09
  row in dataframe = 200
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:58
-SUCCESS at time: 2021-07-08 12:24:59
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001568; treatment = Manipulated
- date = 2016-10-10
+ track date = 2016-10-10
  row in dataframe = 201
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:59
-SUCCESS at time: 2021-07-08 12:24:59
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001568; treatment = Manipulated
- date = 2016-10-11
+ track date = 2016-10-11
  row in dataframe = 202
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:24:59
-SUCCESS at time: 2021-07-08 12:25:03
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001568; treatment = Manipulated
- date = 2016-10-12
+ track date = 2016-10-12
  row in dataframe = 203
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:03
-SUCCESS at time: 2021-07-08 12:25:10
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001568; treatment = Manipulated
- date = 2016-10-13
+ track date = 2016-10-13
  row in dataframe = 204
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:10
-SUCCESS at time: 2021-07-08 12:25:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001568; treatment = Manipulated
- date = 2016-10-14
+ track date = 2016-10-14
  row in dataframe = 205
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:11
-SUCCESS at time: 2021-07-08 12:25:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001568; treatment = Manipulated
- date = 2016-10-15
+ track date = 2016-10-15
  row in dataframe = 206
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:11
-SUCCESS at time: 2021-07-08 12:25:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001568; treatment = Manipulated
- date = 2016-10-16
+ track date = 2016-10-16
  row in dataframe = 207
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:11
-SUCCESS at time: 2021-07-08 12:25:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001568; treatment = Manipulated
- date = 2016-10-17
+ track date = 2016-10-17
  row in dataframe = 208
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:11
-SUCCESS at time: 2021-07-08 12:25:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001569; treatment = Manipulated
- date = 2016-09-10
+ track date = 2016-09-10
  row in dataframe = 209
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:11
-SUCCESS at time: 2021-07-08 12:25:12
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001569; treatment = Manipulated
- date = 2016-09-11
+ track date = 2016-09-11
  row in dataframe = 210
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:12
-SUCCESS at time: 2021-07-08 12:25:12
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001569; treatment = Manipulated
- date = 2016-09-12
+ track date = 2016-09-12
  row in dataframe = 211
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:12
-SUCCESS at time: 2021-07-08 12:25:12
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001569; treatment = Manipulated
- date = 2016-09-13
+ track date = 2016-09-13
  row in dataframe = 212
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:12
-SUCCESS at time: 2021-07-08 12:25:12
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001569; treatment = Manipulated
- date = 2016-09-14
+ track date = 2016-09-14
  row in dataframe = 213
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:12
-SUCCESS at time: 2021-07-08 12:25:12
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001569; treatment = Manipulated
- date = 2016-09-15
+ track date = 2016-09-15
  row in dataframe = 214
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:12
-SUCCESS at time: 2021-07-08 12:25:13
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001569; treatment = Manipulated
- date = 2016-09-16
+ track date = 2016-09-16
  row in dataframe = 215
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:13
-SUCCESS at time: 2021-07-08 12:25:13
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001569; treatment = Manipulated
- date = 2016-09-17
+ track date = 2016-09-17
  row in dataframe = 216
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:13
-SUCCESS at time: 2021-07-08 12:25:13
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001569; treatment = Manipulated
- date = 2016-09-20
+ track date = 2016-09-20
  row in dataframe = 217
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:13
-SUCCESS at time: 2021-07-08 12:25:13
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001604; treatment = Manipulated
- date = 2016-09-26
+ track date = 2016-09-26
  row in dataframe = 218
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:13
-SUCCESS at time: 2021-07-08 12:25:13
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001604; treatment = Manipulated
- date = 2016-10-12
+ track date = 2016-10-12
  row in dataframe = 219
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:13
-SUCCESS at time: 2021-07-08 12:25:14
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001604; treatment = Manipulated
- date = 2016-10-14
+ track date = 2016-10-14
  row in dataframe = 220
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:14
-SUCCESS at time: 2021-07-08 12:25:14
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001243; treatment = Moulting
- date = 2016-07-16
+ track date = 2016-07-16
  row in dataframe = 221
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:14
-SUCCESS at time: 2021-07-08 12:25:14
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001246; treatment = Moulting
- date = 2016-07-13
+ track date = 2016-07-13
  row in dataframe = 222
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:14
-SUCCESS at time: 2021-07-08 12:25:14
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001334; treatment = Moulting
- date = 2016-07-25
+ track date = 2016-07-25
  row in dataframe = 223
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:14
-SUCCESS at time: 2021-07-08 12:25:14
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001372; treatment = Moulting
- date = 2016-08-04
+ track date = 2016-08-04
  row in dataframe = 224
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:14
-SUCCESS at time: 2021-07-08 12:25:14
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001386; treatment = Moulting
- date = 2016-08-12
+ track date = 2016-08-12
  row in dataframe = 225
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:14
-SUCCESS at time: 2021-07-08 12:25:14
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001386; treatment = Moulting
- date = 2016-08-13
+ track date = 2016-08-13
  row in dataframe = 226
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:14
-SUCCESS at time: 2021-07-08 12:25:14
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001386; treatment = Moulting
- date = 2016-08-14
+ track date = 2016-08-14
  row in dataframe = 227
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:14
-SUCCESS at time: 2021-07-08 12:25:15
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001386; treatment = Moulting
- date = 2016-08-15
+ track date = 2016-08-15
  row in dataframe = 228
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:15
-SUCCESS at time: 2021-07-08 12:25:15
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001386; treatment = Moulting
- date = 2016-08-17
+ track date = 2016-08-17
  row in dataframe = 229
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:15
-SUCCESS at time: 2021-07-08 12:25:15
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001386; treatment = Moulting
- date = 2016-08-18
+ track date = 2016-08-18
  row in dataframe = 230
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:15
-SUCCESS at time: 2021-07-08 12:25:15
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001386; treatment = Moulting
- date = 2016-08-20
+ track date = 2016-08-20
  row in dataframe = 231
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:15
-SUCCESS at time: 2021-07-08 12:25:15
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001386; treatment = Moulting
- date = 2016-08-25
+ track date = 2016-08-25
  row in dataframe = 232
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:15
-SUCCESS at time: 2021-07-08 12:25:15
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001400; treatment = Moulting
- date = 2016-08-05
+ track date = 2016-08-05
  row in dataframe = 233
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:15
-SUCCESS at time: 2021-07-08 12:25:15
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001400; treatment = Moulting
- date = 2016-08-06
+ track date = 2016-08-06
  row in dataframe = 234
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:15
-SUCCESS at time: 2021-07-08 12:25:15
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001400; treatment = Moulting
- date = 2016-08-07
+ track date = 2016-08-07
  row in dataframe = 235
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:15
-SUCCESS at time: 2021-07-08 12:25:25
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001400; treatment = Moulting
- date = 2016-08-08
+ track date = 2016-08-08
  row in dataframe = 236
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:25
-SUCCESS at time: 2021-07-08 12:25:31
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001401; treatment = Moulting
- date = 2016-08-06
+ track date = 2016-08-06
  row in dataframe = 237
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:31
-SUCCESS at time: 2021-07-08 12:25:31
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001407; treatment = Moulting
- date = 2016-08-18
+ track date = 2016-08-18
  row in dataframe = 238
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:31
-SUCCESS at time: 2021-07-08 12:25:36
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001407; treatment = Moulting
- date = 2016-08-19
+ track date = 2016-08-19
  row in dataframe = 239
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:36
-SUCCESS at time: 2021-07-08 12:25:36
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001407; treatment = Moulting
- date = 2016-08-20
+ track date = 2016-08-20
  row in dataframe = 240
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:36
-SUCCESS at time: 2021-07-08 12:25:47
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:58
 ---
 
 sp = Passer;  tag = 1004001407; treatment = Moulting
- date = 2016-08-21
+ track date = 2016-08-21
  row in dataframe = 241
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:47
-SUCCESS at time: 2021-07-08 12:25:47
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:58
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001408; treatment = Moulting
- date = 2016-08-18
+ track date = 2016-08-18
  row in dataframe = 242
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:47
-SUCCESS at time: 2021-07-08 12:25:47
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001408; treatment = Moulting
- date = 2016-08-19
+ track date = 2016-08-19
  row in dataframe = 243
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:47
-SUCCESS at time: 2021-07-08 12:25:48
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001408; treatment = Moulting
- date = 2016-08-20
+ track date = 2016-08-20
  row in dataframe = 244
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:48
-SUCCESS at time: 2021-07-08 12:25:55
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001408; treatment = Moulting
- date = 2016-08-21
+ track date = 2016-08-21
  row in dataframe = 245
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:55
-SUCCESS at time: 2021-07-08 12:25:55
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001408; treatment = Moulting
- date = 2016-08-22
+ track date = 2016-08-22
  row in dataframe = 246
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:25:55
-SUCCESS at time: 2021-07-08 12:26:00
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001408; treatment = Moulting
- date = 2016-08-23
+ track date = 2016-08-23
  row in dataframe = 247
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:00
-SUCCESS at time: 2021-07-08 12:26:00
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001412; treatment = Moulting
- date = 2016-08-18
+ track date = 2016-08-18
  row in dataframe = 248
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:00
-SUCCESS at time: 2021-07-08 12:26:04
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001412; treatment = Moulting
- date = 2016-08-19
+ track date = 2016-08-19
  row in dataframe = 249
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:04
-SUCCESS at time: 2021-07-08 12:26:04
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001412; treatment = Moulting
- date = 2016-08-20
+ track date = 2016-08-20
  row in dataframe = 250
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:04
-SUCCESS at time: 2021-07-08 12:26:17
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001412; treatment = Moulting
- date = 2016-08-21
+ track date = 2016-08-21
  row in dataframe = 251
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:17
-SUCCESS at time: 2021-07-08 12:26:22
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001412; treatment = Moulting
- date = 2016-08-22
+ track date = 2016-08-22
  row in dataframe = 252
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:22
-SUCCESS at time: 2021-07-08 12:26:22
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001414; treatment = Moulting
- date = 2016-08-18
+ track date = 2016-08-18
  row in dataframe = 253
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:22
-SUCCESS at time: 2021-07-08 12:26:22
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001414; treatment = Moulting
- date = 2016-08-19
+ track date = 2016-08-19
  row in dataframe = 254
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:22
-SUCCESS at time: 2021-07-08 12:26:23
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001414; treatment = Moulting
- date = 2016-08-20
+ track date = 2016-08-20
  row in dataframe = 255
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:23
-SUCCESS at time: 2021-07-08 12:26:23
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001416; treatment = Moulting
- date = 2016-08-18
+ track date = 2016-08-18
  row in dataframe = 256
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:23
-SUCCESS at time: 2021-07-08 12:26:30
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001416; treatment = Moulting
- date = 2016-08-19
+ track date = 2016-08-19
  row in dataframe = 257
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:30
-SUCCESS at time: 2021-07-08 12:26:33
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001416; treatment = Moulting
- date = 2016-08-20
+ track date = 2016-08-20
  row in dataframe = 258
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:33
-SUCCESS at time: 2021-07-08 12:26:40
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001416; treatment = Moulting
- date = 2016-08-21
+ track date = 2016-08-21
  row in dataframe = 259
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:40
-SUCCESS at time: 2021-07-08 12:26:42
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001416; treatment = Moulting
- date = 2016-08-22
+ track date = 2016-08-22
  row in dataframe = 260
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:42
-SUCCESS at time: 2021-07-08 12:26:50
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001416; treatment = Moulting
- date = 2016-08-23
+ track date = 2016-08-23
  row in dataframe = 261
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:50
-SUCCESS at time: 2021-07-08 12:26:50
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001418; treatment = Moulting
- date = 2016-08-18
+ track date = 2016-08-18
  row in dataframe = 262
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:50
-SUCCESS at time: 2021-07-08 12:26:50
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001418; treatment = Moulting
- date = 2016-08-19
+ track date = 2016-08-19
  row in dataframe = 263
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:50
-SUCCESS at time: 2021-07-08 12:26:50
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001463; treatment = Moulting
- date = 2016-08-24
+ track date = 2016-08-24
  row in dataframe = 264
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:50
-SUCCESS at time: 2021-07-08 12:26:50
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001463; treatment = Moulting
- date = 2016-08-25
+ track date = 2016-08-25
  row in dataframe = 265
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:50
-SUCCESS at time: 2021-07-08 12:26:55
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001463; treatment = Moulting
- date = 2016-08-26
+ track date = 2016-08-26
  row in dataframe = 266
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:55
-SUCCESS at time: 2021-07-08 12:26:55
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001463; treatment = Moulting
- date = 2016-08-27
+ track date = 2016-08-27
  row in dataframe = 267
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:55
-SUCCESS at time: 2021-07-08 12:26:55
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001463; treatment = Moulting
- date = 2016-08-29
+ track date = 2016-08-29
  row in dataframe = 268
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:55
-SUCCESS at time: 2021-07-08 12:26:55
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001463; treatment = Moulting
- date = 2016-08-30
+ track date = 2016-08-30
  row in dataframe = 269
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:55
-SUCCESS at time: 2021-07-08 12:26:55
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001463; treatment = Moulting
- date = 2016-08-31
+ track date = 2016-08-31
  row in dataframe = 270
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:55
-SUCCESS at time: 2021-07-08 12:26:56
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001463; treatment = Moulting
- date = 2016-09-01
+ track date = 2016-09-01
  row in dataframe = 271
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:56
-SUCCESS at time: 2021-07-08 12:26:56
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001463; treatment = Moulting
- date = 2016-09-02
+ track date = 2016-09-02
  row in dataframe = 272
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:26:56
-SUCCESS at time: 2021-07-08 12:27:02
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001463; treatment = Moulting
- date = 2016-09-03
+ track date = 2016-09-03
  row in dataframe = 273
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:02
-SUCCESS at time: 2021-07-08 12:27:02
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001463; treatment = Moulting
- date = 2016-09-04
+ track date = 2016-09-04
  row in dataframe = 274
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:02
-SUCCESS at time: 2021-07-08 12:27:05
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001463; treatment = Moulting
- date = 2016-09-05
+ track date = 2016-09-05
  row in dataframe = 275
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:05
-SUCCESS at time: 2021-07-08 12:27:05
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001463; treatment = Moulting
- date = 2016-09-06
+ track date = 2016-09-06
  row in dataframe = 276
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:05
-SUCCESS at time: 2021-07-08 12:27:05
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001463; treatment = Moulting
- date = 2016-09-07
+ track date = 2016-09-07
  row in dataframe = 277
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:05
-SUCCESS at time: 2021-07-08 12:27:05
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001463; treatment = Moulting
- date = 2016-09-08
+ track date = 2016-09-08
  row in dataframe = 278
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:05
-SUCCESS at time: 2021-07-08 12:27:05
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001463; treatment = Moulting
- date = 2016-09-09
+ track date = 2016-09-09
  row in dataframe = 279
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:05
-SUCCESS at time: 2021-07-08 12:27:05
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001463; treatment = Moulting
- date = 2016-09-10
+ track date = 2016-09-10
  row in dataframe = 280
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:05
-SUCCESS at time: 2021-07-08 12:27:05
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001463; treatment = Moulting
- date = 2016-09-12
+ track date = 2016-09-12
  row in dataframe = 281
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:05
-SUCCESS at time: 2021-07-08 12:27:05
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001463; treatment = Moulting
- date = 2016-09-13
+ track date = 2016-09-13
  row in dataframe = 282
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:05
-SUCCESS at time: 2021-07-08 12:27:06
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001463; treatment = Moulting
- date = 2016-09-15
+ track date = 2016-09-15
  row in dataframe = 283
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:06
-SUCCESS at time: 2021-07-08 12:27:06
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001463; treatment = Moulting
- date = 2016-09-16
+ track date = 2016-09-16
  row in dataframe = 284
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:06
-SUCCESS at time: 2021-07-08 12:27:06
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001463; treatment = Moulting
- date = 2016-09-17
+ track date = 2016-09-17
  row in dataframe = 285
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:06
-SUCCESS at time: 2021-07-08 12:27:09
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001463; treatment = Moulting
- date = 2016-09-19
+ track date = 2016-09-19
  row in dataframe = 286
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:09
-SUCCESS at time: 2021-07-08 12:27:09
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001463; treatment = Moulting
- date = 2016-09-20
+ track date = 2016-09-20
  row in dataframe = 287
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:09
-SUCCESS at time: 2021-07-08 12:27:10
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001465; treatment = Moulting
- date = 2016-08-24
+ track date = 2016-08-24
  row in dataframe = 288
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:10
-SUCCESS at time: 2021-07-08 12:27:10
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001465; treatment = Moulting
- date = 2016-08-25
+ track date = 2016-08-25
  row in dataframe = 289
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:10
-SUCCESS at time: 2021-07-08 12:27:10
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001465; treatment = Moulting
- date = 2016-08-26
+ track date = 2016-08-26
  row in dataframe = 290
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:10
-SUCCESS at time: 2021-07-08 12:27:10
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001465; treatment = Moulting
- date = 2016-08-27
+ track date = 2016-08-27
  row in dataframe = 291
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:10
-SUCCESS at time: 2021-07-08 12:27:14
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001465; treatment = Moulting
- date = 2016-08-29
+ track date = 2016-08-29
  row in dataframe = 292
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:14
-SUCCESS at time: 2021-07-08 12:27:14
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001465; treatment = Moulting
- date = 2016-08-30
+ track date = 2016-08-30
  row in dataframe = 293
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:14
-SUCCESS at time: 2021-07-08 12:27:14
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001465; treatment = Moulting
- date = 2016-08-31
+ track date = 2016-08-31
  row in dataframe = 294
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:14
-SUCCESS at time: 2021-07-08 12:27:20
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:46:59
 ---
 
 sp = Passer;  tag = 1004001465; treatment = Moulting
- date = 2016-09-01
+ track date = 2016-09-01
  row in dataframe = 295
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:20
-SUCCESS at time: 2021-07-08 12:27:23
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:46:59
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001465; treatment = Moulting
- date = 2016-09-02
+ track date = 2016-09-02
  row in dataframe = 296
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:23
-SUCCESS at time: 2021-07-08 12:27:27
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001465; treatment = Moulting
- date = 2016-09-03
+ track date = 2016-09-03
  row in dataframe = 297
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:27
-SUCCESS at time: 2021-07-08 12:27:33
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001465; treatment = Moulting
- date = 2016-09-04
+ track date = 2016-09-04
  row in dataframe = 298
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:33
-SUCCESS at time: 2021-07-08 12:27:38
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001465; treatment = Moulting
- date = 2016-09-05
+ track date = 2016-09-05
  row in dataframe = 299
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:38
-SUCCESS at time: 2021-07-08 12:27:38
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001465; treatment = Moulting
- date = 2016-09-06
+ track date = 2016-09-06
  row in dataframe = 300
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:38
-SUCCESS at time: 2021-07-08 12:27:39
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001465; treatment = Moulting
- date = 2016-09-07
+ track date = 2016-09-07
  row in dataframe = 301
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:39
-SUCCESS at time: 2021-07-08 12:27:39
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001465; treatment = Moulting
- date = 2016-09-08
+ track date = 2016-09-08
  row in dataframe = 302
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:39
-SUCCESS at time: 2021-07-08 12:27:39
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001465; treatment = Moulting
- date = 2016-09-09
+ track date = 2016-09-09
  row in dataframe = 303
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:39
-SUCCESS at time: 2021-07-08 12:27:39
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001526; treatment = Moulting
- date = 2016-09-06
+ track date = 2016-09-06
  row in dataframe = 304
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:39
-SUCCESS at time: 2021-07-08 12:27:40
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001526; treatment = Moulting
- date = 2016-09-07
+ track date = 2016-09-07
  row in dataframe = 305
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:40
-SUCCESS at time: 2021-07-08 12:27:40
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001526; treatment = Moulting
- date = 2016-09-08
+ track date = 2016-09-08
  row in dataframe = 306
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:40
-SUCCESS at time: 2021-07-08 12:27:43
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001526; treatment = Moulting
- date = 2016-09-09
+ track date = 2016-09-09
  row in dataframe = 307
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:43
-SUCCESS at time: 2021-07-08 12:27:43
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001526; treatment = Moulting
- date = 2016-09-10
+ track date = 2016-09-10
  row in dataframe = 308
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:43
-SUCCESS at time: 2021-07-08 12:27:43
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001565; treatment = Moulting
- date = 2016-09-09
+ track date = 2016-09-09
  row in dataframe = 309
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:43
-SUCCESS at time: 2021-07-08 12:27:44
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001565; treatment = Moulting
- date = 2016-09-10
+ track date = 2016-09-10
  row in dataframe = 310
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:44
-SUCCESS at time: 2021-07-08 12:27:44
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001565; treatment = Moulting
- date = 2016-09-12
+ track date = 2016-09-12
  row in dataframe = 311
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:44
-SUCCESS at time: 2021-07-08 12:27:44
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001565; treatment = Moulting
- date = 2016-09-13
+ track date = 2016-09-13
  row in dataframe = 312
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:44
-SUCCESS at time: 2021-07-08 12:27:44
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001565; treatment = Moulting
- date = 2016-09-14
+ track date = 2016-09-14
  row in dataframe = 313
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:44
-SUCCESS at time: 2021-07-08 12:27:44
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001565; treatment = Moulting
- date = 2016-09-16
+ track date = 2016-09-16
  row in dataframe = 314
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:44
-SUCCESS at time: 2021-07-08 12:27:44
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001565; treatment = Moulting
- date = 2016-09-17
+ track date = 2016-09-17
  row in dataframe = 315
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:44
-SUCCESS at time: 2021-07-08 12:27:44
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001565; treatment = Moulting
- date = 2016-09-20
+ track date = 2016-09-20
  row in dataframe = 316
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:44
-SUCCESS at time: 2021-07-08 12:27:44
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001565; treatment = Moulting
- date = 2016-10-07
+ track date = 2016-10-07
  row in dataframe = 317
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:44
-SUCCESS at time: 2021-07-08 12:27:44
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001571; treatment = Moulting
- date = 2016-09-10
+ track date = 2016-09-10
  row in dataframe = 318
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:44
-SUCCESS at time: 2021-07-08 12:27:44
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001571; treatment = Moulting
- date = 2016-09-11
+ track date = 2016-09-11
  row in dataframe = 319
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:44
-SUCCESS at time: 2021-07-08 12:27:44
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001211; treatment = NonMoulting
- date = 2016-07-08
+ track date = 2016-07-08
  row in dataframe = 320
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:44
-SUCCESS at time: 2021-07-08 12:27:44
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001214; treatment = NonMoulting
- date = 2016-07-08
+ track date = 2016-07-08
  row in dataframe = 321
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:44
-SUCCESS at time: 2021-07-08 12:27:50
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001214; treatment = NonMoulting
- date = 2016-07-09
+ track date = 2016-07-09
  row in dataframe = 322
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:50
-SUCCESS at time: 2021-07-08 12:27:52
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001214; treatment = NonMoulting
- date = 2016-07-10
+ track date = 2016-07-10
  row in dataframe = 323
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:52
-SUCCESS at time: 2021-07-08 12:27:53
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001217; treatment = NonMoulting
- date = 2016-07-08
+ track date = 2016-07-08
  row in dataframe = 324
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:53
-SUCCESS at time: 2021-07-08 12:27:53
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001217; treatment = NonMoulting
- date = 2016-07-09
+ track date = 2016-07-09
  row in dataframe = 325
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:53
-SUCCESS at time: 2021-07-08 12:27:53
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001254; treatment = NonMoulting
- date = 2016-07-12
+ track date = 2016-07-12
  row in dataframe = 326
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:53
-SUCCESS at time: 2021-07-08 12:27:53
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001254; treatment = NonMoulting
- date = 2016-07-16
+ track date = 2016-07-16
  row in dataframe = 327
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:53
-SUCCESS at time: 2021-07-08 12:27:53
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001417; treatment = NonMoulting
- date = 2016-08-18
+ track date = 2016-08-18
  row in dataframe = 328
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:53
-SUCCESS at time: 2021-07-08 12:27:54
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001417; treatment = NonMoulting
- date = 2016-08-19
+ track date = 2016-08-19
  row in dataframe = 329
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:54
-SUCCESS at time: 2021-07-08 12:27:54
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001417; treatment = NonMoulting
- date = 2016-08-20
+ track date = 2016-08-20
  row in dataframe = 330
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:54
-SUCCESS at time: 2021-07-08 12:27:58
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001417; treatment = NonMoulting
- date = 2016-08-21
+ track date = 2016-08-21
  row in dataframe = 331
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:58
-SUCCESS at time: 2021-07-08 12:27:58
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001417; treatment = NonMoulting
- date = 2016-08-22
+ track date = 2016-08-22
  row in dataframe = 332
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:58
-SUCCESS at time: 2021-07-08 12:27:59
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001417; treatment = NonMoulting
- date = 2016-08-23
+ track date = 2016-08-23
  row in dataframe = 333
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:27:59
-SUCCESS at time: 2021-07-08 12:28:03
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001417; treatment = NonMoulting
- date = 2016-08-24
+ track date = 2016-08-24
  row in dataframe = 334
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:03
-SUCCESS at time: 2021-07-08 12:28:03
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001417; treatment = NonMoulting
- date = 2016-08-25
+ track date = 2016-08-25
  row in dataframe = 335
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:03
-SUCCESS at time: 2021-07-08 12:28:15
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001417; treatment = NonMoulting
- date = 2016-08-26
+ track date = 2016-08-26
  row in dataframe = 336
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:15
-SUCCESS at time: 2021-07-08 12:28:16
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Passer;  tag = 1004001675; treatment = NonMoulting
- date = 2016-10-15
+ track date = 2016-10-15
  row in dataframe = 337
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:16
-SUCCESS at time: 2021-07-08 12:28:16
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Pycnonotus;  tag = 1004001399; treatment = Manipulated
- date = 2016-08-05
+ track date = 2016-08-05
  row in dataframe = 338
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:16
-SUCCESS at time: 2021-07-08 12:28:16
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Pycnonotus;  tag = 1004001399; treatment = Manipulated
- date = 2016-08-06
+ track date = 2016-08-06
  row in dataframe = 339
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:16
-SUCCESS at time: 2021-07-08 12:28:25
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Pycnonotus;  tag = 1004001399; treatment = Manipulated
- date = 2016-08-07
+ track date = 2016-08-07
  row in dataframe = 340
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:25
-SUCCESS at time: 2021-07-08 12:28:30
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Pycnonotus;  tag = 1004001399; treatment = Manipulated
- date = 2016-08-08
+ track date = 2016-08-08
  row in dataframe = 341
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:30
-SUCCESS at time: 2021-07-08 12:28:38
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Pycnonotus;  tag = 1004001415; treatment = Manipulated
- date = 2016-08-19
+ track date = 2016-08-19
  row in dataframe = 342
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:38
-SUCCESS at time: 2021-07-08 12:28:38
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Pycnonotus;  tag = 1004001415; treatment = Manipulated
- date = 2016-08-20
+ track date = 2016-08-20
  row in dataframe = 343
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:38
-SUCCESS at time: 2021-07-08 12:28:43
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Pycnonotus;  tag = 1004001415; treatment = Manipulated
- date = 2016-08-21
+ track date = 2016-08-21
  row in dataframe = 344
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:43
-SUCCESS at time: 2021-07-08 12:28:43
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Pycnonotus;  tag = 1004001582; treatment = Manipulated
- date = 2016-09-11
+ track date = 2016-09-11
  row in dataframe = 345
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:43
-SUCCESS at time: 2021-07-08 12:28:43
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Pycnonotus;  tag = 1004001582; treatment = Manipulated
- date = 2016-09-12
+ track date = 2016-09-12
  row in dataframe = 346
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:43
-SUCCESS at time: 2021-07-08 12:28:43
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Pycnonotus;  tag = 1004001582; treatment = Manipulated
- date = 2016-09-13
+ track date = 2016-09-13
  row in dataframe = 347
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:43
-SUCCESS at time: 2021-07-08 12:28:47
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Pycnonotus;  tag = 1004001582; treatment = Manipulated
- date = 2016-09-14
+ track date = 2016-09-14
  row in dataframe = 348
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:47
-SUCCESS at time: 2021-07-08 12:28:47
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Pycnonotus;  tag = 1004001582; treatment = Manipulated
- date = 2016-09-15
+ track date = 2016-09-15
  row in dataframe = 349
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:47
-SUCCESS at time: 2021-07-08 12:28:47
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Pycnonotus;  tag = 1004001582; treatment = Manipulated
- date = 2016-09-16
+ track date = 2016-09-16
  row in dataframe = 350
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:47
-SUCCESS at time: 2021-07-08 12:28:47
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Pycnonotus;  tag = 1004001582; treatment = Manipulated
- date = 2016-09-17
+ track date = 2016-09-17
  row in dataframe = 351
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:47
-SUCCESS at time: 2021-07-08 12:28:51
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Pycnonotus;  tag = 1004001590; treatment = Manipulated
- date = 2016-09-20
+ track date = 2016-09-20
  row in dataframe = 352
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:51
-SUCCESS at time: 2021-07-08 12:28:52
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Pycnonotus;  tag = 1004001590; treatment = Manipulated
- date = 2016-09-21
+ track date = 2016-09-21
  row in dataframe = 353
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:52
-SUCCESS at time: 2021-07-08 12:28:52
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Pycnonotus;  tag = 1004001608; treatment = Manipulated
- date = 2016-09-21
+ track date = 2016-09-21
  row in dataframe = 354
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:52
-SUCCESS at time: 2021-07-08 12:28:52
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Pycnonotus;  tag = 1004001608; treatment = Manipulated
- date = 2016-09-22
+ track date = 2016-09-22
  row in dataframe = 355
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:52
-SUCCESS at time: 2021-07-08 12:28:52
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Pycnonotus;  tag = 1004001608; treatment = Manipulated
- date = 2016-09-23
+ track date = 2016-09-23
  row in dataframe = 356
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:52
-SUCCESS at time: 2021-07-08 12:28:52
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Pycnonotus;  tag = 1004001610; treatment = Manipulated
- date = 2016-09-22
+ track date = 2016-09-22
  row in dataframe = 357
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:52
-SUCCESS at time: 2021-07-08 12:28:52
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:00
 ---
 
 sp = Pycnonotus;  tag = 1004001610; treatment = Manipulated
- date = 2016-09-23
+ track date = 2016-09-23
  row in dataframe = 358
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:52
-SUCCESS at time: 2021-07-08 12:28:52
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:00
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001610; treatment = Manipulated
- date = 2016-09-27
+ track date = 2016-09-27
  row in dataframe = 359
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:52
-SUCCESS at time: 2021-07-08 12:28:52
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001390; treatment = Moulting
- date = 2016-08-04
+ track date = 2016-08-04
  row in dataframe = 360
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:52
-SUCCESS at time: 2021-07-08 12:28:52
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001390; treatment = Moulting
- date = 2016-08-05
+ track date = 2016-08-05
  row in dataframe = 361
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:52
-SUCCESS at time: 2021-07-08 12:28:52
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001390; treatment = Moulting
- date = 2016-08-06
+ track date = 2016-08-06
  row in dataframe = 362
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:52
-SUCCESS at time: 2021-07-08 12:28:52
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001410; treatment = Moulting
- date = 2016-08-19
+ track date = 2016-08-19
  row in dataframe = 363
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:28:52
-SUCCESS at time: 2021-07-08 12:29:01
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001410; treatment = Moulting
- date = 2016-08-20
+ track date = 2016-08-20
  row in dataframe = 364
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:29:01
-SUCCESS at time: 2021-07-08 12:29:29
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001410; treatment = Moulting
- date = 2016-08-21
+ track date = 2016-08-21
  row in dataframe = 365
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:29:29
-SUCCESS at time: 2021-07-08 12:29:39
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001410; treatment = Moulting
- date = 2016-08-22
+ track date = 2016-08-22
  row in dataframe = 366
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:29:39
-SUCCESS at time: 2021-07-08 12:29:56
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001410; treatment = Moulting
- date = 2016-08-23
+ track date = 2016-08-23
  row in dataframe = 367
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:29:56
-SUCCESS at time: 2021-07-08 12:30:02
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001411; treatment = Moulting
- date = 2016-08-19
+ track date = 2016-08-19
  row in dataframe = 368
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:30:02
-SUCCESS at time: 2021-07-08 12:30:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001411; treatment = Moulting
- date = 2016-08-20
+ track date = 2016-08-20
  row in dataframe = 369
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:30:11
-SUCCESS at time: 2021-07-08 12:31:00
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001411; treatment = Moulting
- date = 2016-08-21
+ track date = 2016-08-21
  row in dataframe = 370
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:31:00
-SUCCESS at time: 2021-07-08 12:31:19
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001411; treatment = Moulting
- date = 2016-08-22
+ track date = 2016-08-22
  row in dataframe = 371
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:31:19
-SUCCESS at time: 2021-07-08 12:31:53
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001411; treatment = Moulting
- date = 2016-08-23
+ track date = 2016-08-23
  row in dataframe = 372
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:31:53
-SUCCESS at time: 2021-07-08 12:32:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001411; treatment = Moulting
- date = 2016-08-24
+ track date = 2016-08-24
  row in dataframe = 373
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:32:11
-SUCCESS at time: 2021-07-08 12:32:24
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001411; treatment = Moulting
- date = 2016-08-25
+ track date = 2016-08-25
  row in dataframe = 374
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:32:24
-SUCCESS at time: 2021-07-08 12:32:24
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001478; treatment = Moulting
- date = 2016-08-30
+ track date = 2016-08-30
  row in dataframe = 375
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:32:24
-SUCCESS at time: 2021-07-08 12:32:30
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001478; treatment = Moulting
- date = 2016-08-31
+ track date = 2016-08-31
  row in dataframe = 376
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:32:30
-SUCCESS at time: 2021-07-08 12:32:42
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001478; treatment = Moulting
- date = 2016-09-01
+ track date = 2016-09-01
  row in dataframe = 377
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:32:42
-SUCCESS at time: 2021-07-08 12:32:45
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001478; treatment = Moulting
- date = 2016-09-02
+ track date = 2016-09-02
  row in dataframe = 378
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:32:45
-SUCCESS at time: 2021-07-08 12:32:49
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001478; treatment = Moulting
- date = 2016-09-03
+ track date = 2016-09-03
  row in dataframe = 379
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:32:49
-SUCCESS at time: 2021-07-08 12:32:52
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001480; treatment = Moulting
- date = 2016-08-30
+ track date = 2016-08-30
  row in dataframe = 380
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:32:52
-SUCCESS at time: 2021-07-08 12:32:52
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001480; treatment = Moulting
- date = 2016-08-31
+ track date = 2016-08-31
  row in dataframe = 381
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:32:52
-SUCCESS at time: 2021-07-08 12:33:15
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001480; treatment = Moulting
- date = 2016-09-01
+ track date = 2016-09-01
  row in dataframe = 382
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:33:15
-SUCCESS at time: 2021-07-08 12:33:25
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001480; treatment = Moulting
- date = 2016-09-02
+ track date = 2016-09-02
  row in dataframe = 383
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:33:25
-SUCCESS at time: 2021-07-08 12:34:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001609; treatment = Moulting
- date = 2016-09-26
+ track date = 2016-09-26
  row in dataframe = 384
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:34:11
-SUCCESS at time: 2021-07-08 12:34:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001609; treatment = Moulting
- date = 2016-09-27
+ track date = 2016-09-27
  row in dataframe = 385
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:34:11
-SUCCESS at time: 2021-07-08 12:34:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001613; treatment = Moulting
- date = 2016-09-27
+ track date = 2016-09-27
  row in dataframe = 386
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:34:11
-SUCCESS at time: 2021-07-08 12:34:11
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001613; treatment = Moulting
- date = 2016-09-28
+ track date = 2016-09-28
  row in dataframe = 387
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:34:11
-SUCCESS at time: 2021-07-08 12:34:12
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001613; treatment = Moulting
- date = 2016-09-29
+ track date = 2016-09-29
  row in dataframe = 388
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:34:12
-SUCCESS at time: 2021-07-08 12:34:12
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001636; treatment = Moulting
- date = 2016-09-27
+ track date = 2016-09-27
  row in dataframe = 389
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:34:12
-SUCCESS at time: 2021-07-08 12:34:12
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001636; treatment = Moulting
- date = 2016-09-28
+ track date = 2016-09-28
  row in dataframe = 390
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:34:12
-SUCCESS at time: 2021-07-08 12:34:12
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001636; treatment = Moulting
- date = 2016-09-29
+ track date = 2016-09-29
  row in dataframe = 391
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:34:12
-SUCCESS at time: 2021-07-08 12:34:12
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001636; treatment = Moulting
- date = 2016-09-30
+ track date = 2016-09-30
  row in dataframe = 392
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:34:12
-SUCCESS at time: 2021-07-08 12:34:12
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001679; treatment = Moulting
- date = 2016-10-15
+ track date = 2016-10-15
  row in dataframe = 393
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:34:12
-SUCCESS at time: 2021-07-08 12:34:12
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001079; treatment = NonMoulting
- date = 2016-06-09
+ track date = 2016-06-09
  row in dataframe = 394
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:34:12
-SUCCESS at time: 2021-07-08 12:34:15
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001172; treatment = NonMoulting
- date = 2016-07-01
+ track date = 2016-07-01
  row in dataframe = 395
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:34:15
-SUCCESS at time: 2021-07-08 12:34:15
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001332; treatment = NonMoulting
- date = 2016-07-25
+ track date = 2016-07-25
  row in dataframe = 396
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:34:15
-SUCCESS at time: 2021-07-08 12:34:16
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001332; treatment = NonMoulting
- date = 2016-07-26
+ track date = 2016-07-26
  row in dataframe = 397
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:34:16
-SUCCESS at time: 2021-07-08 12:34:16
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001332; treatment = NonMoulting
- date = 2016-07-27
+ track date = 2016-07-27
  row in dataframe = 398
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:34:16
-SUCCESS at time: 2021-07-08 12:34:16
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001332; treatment = NonMoulting
- date = 2016-07-28
+ track date = 2016-07-28
  row in dataframe = 399
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:34:16
-SUCCESS at time: 2021-07-08 12:34:21
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001332; treatment = NonMoulting
- date = 2016-07-29
+ track date = 2016-07-29
  row in dataframe = 400
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:34:21
-SUCCESS at time: 2021-07-08 12:34:21
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001332; treatment = NonMoulting
- date = 2016-07-30
+ track date = 2016-07-30
  row in dataframe = 401
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:34:21
-SUCCESS at time: 2021-07-08 12:34:21
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001332; treatment = NonMoulting
- date = 2016-07-31
+ track date = 2016-07-31
  row in dataframe = 402
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:34:21
-SUCCESS at time: 2021-07-08 12:34:21
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001332; treatment = NonMoulting
- date = 2016-08-01
+ track date = 2016-08-01
  row in dataframe = 403
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:34:21
-SUCCESS at time: 2021-07-08 12:34:22
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001332; treatment = NonMoulting
- date = 2016-08-02
+ track date = 2016-08-02
  row in dataframe = 404
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:34:22
-SUCCESS at time: 2021-07-08 12:34:22
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
 sp = Pycnonotus;  tag = 1004001679; treatment = NonMoulting
- date = 2016-10-15
+ track date = 2016-10-15
  row in dataframe = 405
- formula = case_ ~ sl_ + ndvi + sl_:ndvi
- start time: 2021-07-08 12:34:22
-SUCCESS at time: 2021-07-08 12:34:22
+ formula = case_ ~ ndvi + landcover + strata(step_id_)
+ start time: 2021-07-09 14:47:01
+SUCCESS at time: 2021-07-09 14:47:01
 ---
 
