@@ -136,11 +136,11 @@ ggplot(data_summary[sp != "Hirundo" & treat != "LongPeriod"]) +
   )+
   scale_x_continuous(
     labels = function(x) { sprintf("%ihr", as.integer(x / 60)) },
-    breaks = c(7, 10, 12, 15, 18, 20) * 60
+    breaks = c(5, 10, 15, 20) * 60
   )+
   coord_cartesian(
     expand = F,
-    xlim = c(6 * 60, NA),
+    xlim = c(5 * 60, NA),
     ylim = c(0, 15e3)
   )+
   theme_test()+
