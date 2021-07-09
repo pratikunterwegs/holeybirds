@@ -44,7 +44,7 @@ moving_window = 11 # moving window
 smoothed_speed_threshold = 15
 point_speed_threshold = 10
 thinning_interval = 20
-hour_start = 6
+hour_start = 5
 hour_end = 20
 
 # sink date time to log
@@ -77,7 +77,7 @@ for (file in files) {
       as.POSIXct(UNIX, origin = "1970-01-01", tz = "Asia/Jerusalem")
     )]
     
-    df = df[hour > hour_start & hour < hour_end, ]
+    df = df[hour >= hour_start & hour < hour_end, ]
     
     print(
       glue("
