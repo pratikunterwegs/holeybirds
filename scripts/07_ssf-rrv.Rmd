@@ -1,0 +1,126 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Compare SSF params with RRV
+
+Here we compare SSF coefficients with RRV scores.
+
+## Load libraries and prepare files
+
+```{r}
+# libs for data
+library(dplyr)
+library(tidyr)
+library(purrr)
+library(readr)
+
+# libs for messages
+library(glue)
+
+# library for SSF data
+library(amt)
+
+# plotting libs
+library(ggplot2)
+library(colorspace)
+```
+
+Load data from saved `Rds` object, and RRV data.
+
+```{r}
+# add ssf data
+load("data/results/data_fitted_ssfs.Rds")
+
+# load rrv data
+rrv = read_csv("data/results/data_daily_rrv.csv")
+```
+
+## SSF parameters
+
+```{r}
+# select track identifiers
+ssf_params = select(
+  ssfs,
+  -matches("ssf")
+)
+
+# select model parameter for ndvi preference
+ssf_params = mutate(
+  ssf_params,
+  coefs_ndvi = map(ssfs$ssf, function(l) {
+    # convert model to data frame
+    broom::tidy(
+      l$model
+    ) %>% 
+    # select ndvi
+    filter(
+      term == "ndvi"
+    )
+  }),
+  shape = map_dbl(ssfs$ssf, function(l) {
+    l$sl_$params$shape
+  })
+)
+
+# select Pvalue as well
+ssf_params = mutate(
+  ssf_params,
+  coef_ndvi = map_dbl(
+    coefs_ndvi,
+    `[[`, "estimate"
+  ),
+  pval_ndvi = map_dbl(
+    coefs_ndvi,
+    `[[`, "p.value"
+  )
+)
+```
+
+## Link SSF coefficients and RRV
+
+```{r}
+# make rrv date as date
+rrv = mutate(
+  rrv,
+  date = lubridate::date(date)
+)
+
+# link ssf params and rrv
+ssf_params = left_join(
+  ssf_params,
+  rrv
+)
+```
+
+## Visualise coefficient NDVI and RRV
+
+```{r}
+ssf_params = filter(
+  ssf_params,
+  treat != "LongPeriod"
+)
+
+# plot
+ggplot()+
+  geom_jitter(
+    data = ssf_params,
+    aes(
+      rrv_calc, shape
+    )
+  )+
+  geom_smooth(
+    data = ssf_params,
+    aes(
+      rrv_calc, shape
+    ),
+    method = "glm"
+  )+
+  ylim(0.25, 1.5)+
+  theme(
+    legend.position = "top"
+  )
+```
+
