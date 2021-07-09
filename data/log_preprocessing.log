@@ -1563,3 +1563,205 @@ N rows daytime raw = 9475
 -- median smoothed coordinates, moving window = 11
 -- selecting columns TAG_ID, sp, treat, UNIX, x, y
 -- thinned data to 20 seconds
+-- N rows pre-processed = 1683
+-- saved to data/processed/data_preprocessed/
+ data_thin_Pycnonotus_Moulting_1004001390.csv
+
+***
+
+Pre-processing tag_id = 1004001410; Pycnonotus; Moulting
+N rows daytime raw = 91493
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 7452
+-- saved to data/processed/data_preprocessed/
+ data_thin_Pycnonotus_Moulting_1004001410.csv
+
+***
+
+Pre-processing tag_id = 1004001411; Pycnonotus; Moulting
+N rows daytime raw = 122281
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 9883
+-- saved to data/processed/data_preprocessed/
+ data_thin_Pycnonotus_Moulting_1004001411.csv
+
+***
+
+Pre-processing tag_id = 1004001478; Pycnonotus; Moulting
+N rows daytime raw = 48871
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 5089
+-- saved to data/processed/data_preprocessed/
+ data_thin_Pycnonotus_Moulting_1004001478.csv
+
+***
+
+Pre-processing tag_id = 1004001480; Pycnonotus; Moulting
+N rows daytime raw = 45871
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 4829
+-- saved to data/processed/data_preprocessed/
+ data_thin_Pycnonotus_Moulting_1004001480.csv
+
+***
+
+Pre-processing tag_id = 1004001609; Pycnonotus; Moulting
+N rows daytime raw = 31345
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 3278
+-- saved to data/processed/data_preprocessed/
+ data_thin_Pycnonotus_Moulting_1004001609.csv
+
+***
+
+Pre-processing tag_id = 1004001613; Pycnonotus; Moulting
+N rows daytime raw = 24432
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 3138
+-- saved to data/processed/data_preprocessed/
+ data_thin_Pycnonotus_Moulting_1004001613.csv
+
+***
+
+Pre-processing tag_id = 1004001636; Pycnonotus; Moulting
+N rows daytime raw = 43510
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 4272
+-- saved to data/processed/data_preprocessed/
+ data_thin_Pycnonotus_Moulting_1004001636.csv
+
+***
+
+Pre-processing tag_id = 1004001679; Pycnonotus; Moulting
+N rows daytime raw = 5302
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 2501
+-- saved to data/processed/data_preprocessed/
+ data_thin_Pycnonotus_Moulting_1004001679.csv
+
+***
+
+Pre-processing tag_id = 1004001078; Pycnonotus; NonMoulting
+N rows daytime raw = 3551
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 1151
+-- saved to data/processed/data_preprocessed/
+ data_thin_Pycnonotus_NonMoulting_1004001078.csv
+
+***
+
+Pre-processing tag_id = 1004001079; Pycnonotus; NonMoulting
+N rows daytime raw = 5992
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 1837
+-- saved to data/processed/data_preprocessed/
+ data_thin_Pycnonotus_NonMoulting_1004001079.csv
+
+***
+
+Pre-processing tag_id = 1004001172; Pycnonotus; NonMoulting
+N rows daytime raw = 12268
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 2738
+-- saved to data/processed/data_preprocessed/
+ data_thin_Pycnonotus_NonMoulting_1004001172.csv
+
+***
+
+Pre-processing tag_id = 1004001332; Pycnonotus; NonMoulting
+N rows daytime raw = 75947
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 10714
+-- saved to data/processed/data_preprocessed/
+ data_thin_Pycnonotus_NonMoulting_1004001332.csv
+
+***
+
+Pre-processing tag_id = 1004001679; Pycnonotus; NonMoulting
+N rows daytime raw = 11552
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 5030
+-- saved to data/processed/data_preprocessed/
+ data_thin_Pycnonotus_NonMoulting_1004001679.csv
+
+***
+
+Pre-processing tag_id = 1004001716; Pycnonotus; NonMoulting
+N rows daytime raw = 1800
+-- removed nighttime positions between 20PM and 5AM
+-- removed 21 point smoothed speeds above 15 mps.
+-- removed point speeds above 10
+-- median smoothed coordinates, moving window = 11
+-- selecting columns TAG_ID, sp, treat, UNIX, x, y
+-- thinned data to 20 seconds
+-- N rows pre-processed = 641
+-- saved to data/processed/data_preprocessed/
+ data_thin_Pycnonotus_NonMoulting_1004001716.csv
+
+***
+
