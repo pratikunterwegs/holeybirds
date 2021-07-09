@@ -40,7 +40,7 @@ files <- list.files("data/processed/data_preprocessed",
 ```{r}
 # define daily data threshold
 daily_data_threshold <- 100
-day_start <- 6
+day_start <- 5
 day_end <- 20
 
 # read smoothed data and remove if not sufficient data
@@ -55,7 +55,8 @@ data <- lapply(files, function(file) {
   df[, date := date(time)]
   df[, hour := hour(time)]
 
-  # remove nighttime roosts
+  # remove nighttime roosts --- this has ALREADY BEEN DONE
+  # keeping this in for safety
   df <- df[hour > day_start & hour < day_end, ]
 
   # split by date
@@ -120,9 +121,16 @@ tracks <- mutate(tracks,
 )
 ```
 
-### Resample to 30 seconds
+### Resample to 10 seconds
 
 ```{r}
+# define resample seconds and tolerance
+resample_interval_s = 10
+resample_tolerance = 5
+
+# min burst
+min_n_burst = 5 # min 5 positions in a row
+
 # resample and filter for steps in burst
 tracks = mutate(
     tracks,
@@ -131,13 +139,13 @@ tracks = mutate(
         # resampling the track to 30 seconds with 5 second tolerance
         amt::track_resample(
             df,
-            rate = seconds(30),
-            tolerance = seconds(5)
+            rate = seconds(resample_interval_s),
+            tolerance = seconds(resample_tolerance)
         ) %>%
         
         # filtering for bursts with at least 5 pos
         amt::filter_min_n_burst(
-            min_n = 5
+            min_n = min_n_burst
         )
     }),
 )
@@ -182,6 +190,9 @@ names(lc) = "landcover"
 ### Prepare alternate steps
 
 ```{r}
+# define alternate steps
+n_alt_steps = 29
+
 # prepare alternate steps and extract covariates
 tracks = mutate(
   tracks,
@@ -194,7 +205,7 @@ tracks = mutate(
     
     .x %>%
       # get 9 random potential steps
-      amt::random_steps(n = 9) %>%
+      amt::random_steps(n = n_alt_steps) %>%
       # get NDVI and landcover
       amt::extract_covariates(ndvi) %>%
       amt::extract_covariates(lc) %>%
