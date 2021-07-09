@@ -50,14 +50,10 @@ ssf_params = select(
 # select model parameter for ndvi preference
 ssf_params = mutate(
   ssf_params,
-  coefs_ndvi = map(ssfs$ssf, function(l) {
+  coefs = map(ssfs$ssf, function(l) {
     # convert model to data frame
     broom::tidy(
       l$model
-    ) %>% 
-    # select ndvi
-    filter(
-      term == "ndvi"
     )
   }),
   shape = map_dbl(ssfs$ssf, function(l) {
@@ -65,18 +61,8 @@ ssf_params = mutate(
   })
 )
 
-# select Pvalue as well
-ssf_params = mutate(
-  ssf_params,
-  coef_ndvi = map_dbl(
-    coefs_ndvi,
-    `[[`, "estimate"
-  ),
-  pval_ndvi = map_dbl(
-    coefs_ndvi,
-    `[[`, "p.value"
-  )
-)
+# unnest
+ssf_params = unnest(ssf_params, cols = coefs)
 ```
 
 ## Link SSF coefficients and RRV
@@ -105,20 +91,35 @@ ssf_params = filter(
 
 # plot
 ggplot()+
-  geom_jitter(
-    data = ssf_params,
+  geom_boxplot(
+    data = ssf_params %>% 
+      mutate(rrv_calc = cut(rrv_calc, breaks = seq(0, 20, 5), include.lowest = T)) %>% 
+      filter(!is.na(rrv_calc),
+             term == "landcover4"),
     aes(
-      rrv_calc, shape
+      factor(rrv_calc), estimate
     )
   )+
-  geom_smooth(
-    data = ssf_params,
-    aes(
-      rrv_calc, shape
-    ),
-    method = "glm"
+  # geom_jitter(
+  #   data = ssf_params,
+  #   aes(
+  #     rrv_calc, estimate,
+  #     col = p.value <= 0.05
+  #   )
+  # )+
+  # geom_smooth(
+  #   data = ssf_params,
+  #   aes(
+  #     rrv_calc, shape
+  #   ),
+  #   method = "glm"
+  # )+
+  # ylim(0.25, 1.5)+
+  scale_y_continuous(
+    trans=ggallin::ssqrt_trans,
+    limits = c(-20, 20)
   )+
-  ylim(0.25, 1.5)+
+  facet_grid(sp~term)+
   theme(
     legend.position = "top"
   )
