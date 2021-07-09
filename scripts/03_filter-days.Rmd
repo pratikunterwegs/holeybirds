@@ -52,16 +52,19 @@ ggplot(data_day_count)+
     )
 ```
 
-### Filter IDs with fewer than 500 daily fixes
+### Filter IDs with fewer than N daily fixes
 
 ```{r filter_id_day}
+# minimum daily fixes -- multiply by 20 for tracking duration in seconds
+min_daily_fixes = 100
+
 # filter out days < 500 fixes
-data_day_count = data_day_count[N > 500, ]
+data_day_count = data_day_count[N > min_daily_fixes, ]
 
 # save data daily count
 fwrite(data_day_count, "data/results/data_daily_count_good.csv")
 
-# join to data and remove data
+# join to data and remove data with too few fixes
 data = merge(data, data_day_count)
 ```
 
