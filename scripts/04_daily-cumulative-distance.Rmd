@@ -256,6 +256,7 @@ ggsave(
 NSD is the squared (spatial) distance between all locations $(x_i, y_i, t_i)$ and the first location $(x_1, y_1, t_1)$.
 
 ```{r}
+source("R/net_square_displacement.R")
 # working on data list object
 data = lapply(data, function(df) {
   
