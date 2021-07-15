@@ -89,13 +89,20 @@ ssf_params = filter(
   treat != "LongPeriod"
 )
 
+data = ssf_params %>% 
+      mutate(rrv_calc = cut(rrv_calc, 
+                            breaks = seq(0, 20, 5), 
+                            include.lowest = T)
+      ) %>% 
+      filter(
+        !is.na(rrv_calc)#,
+        # term == "landcover4"
+        )
+
 # plot
 ggplot()+
   geom_boxplot(
-    data = ssf_params %>% 
-      mutate(rrv_calc = cut(rrv_calc, breaks = seq(0, 20, 5), include.lowest = T)) %>% 
-      filter(!is.na(rrv_calc),
-             term == "landcover4"),
+    data = data,
     aes(
       factor(rrv_calc), estimate
     )
