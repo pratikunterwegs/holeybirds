@@ -125,7 +125,7 @@ tracks <- mutate(tracks,
 
 ```{r}
 # define resample seconds and tolerance
-resample_interval_s = 10
+resample_interval_s = 60
 resample_tolerance = 5
 
 # min burst
