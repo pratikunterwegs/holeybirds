@@ -33,7 +33,7 @@ files = list.files("data/processed/data_preprocessed", pattern = "smooth",
 
 ```{r}
 # read files
-data = fread(files[2])
+data = fread(files[1])
 setDF(data)
 
 # make tibble
@@ -57,7 +57,7 @@ data = amt::make_track(
 # resample to 30 s with a 5 second tolerance
 data_resamp = amt::track_resample(
   data,
-  rate = seconds(30),
+  rate = seconds(60),
   tolerance = seconds(5)
 ) %>% 
   
@@ -89,18 +89,20 @@ names(lc) = "landcover"
 ### Fit model
 
 ```{r}
-m1 = data_resamp %>% 
-  amt::random_steps(n = 9) %>% 
+data_resamp = data_resamp %>% 
+  amt::random_steps(n = 29) %>% 
   amt::extract_covariates(ndvi) %>% 
   amt::extract_covariates(lc) %>% 
-  mutate(landcover = factor(landcover)) %>% 
-  amt::time_of_day(include.crepuscule = F) %>% 
+  mutate(landcover = factor(landcover))
+
+
   # mutate(
   #   log_sl_ = log(sl_)
   # ) %>% 
+m1 = data_resamp %>% 
   amt::fit_issf(
     # case_ ~ ndvi + sl_ + ndvi:tod_end_ + sl_:tod_end_ + strata(step_id_)
-    case_ ~ ndvi + strata(step_id_)
+    case_ ~ sl_ + ndvi + landcover + strata(step_id_) + sl_:landcover
   )
 
 # get distribution of step lengths
@@ -111,5 +113,35 @@ shape_day = step_dist$params$shape + coef(m1)["sl_"]
 shape_night = step_dist$params$shape + coef(m1)["sl_"] + coef(m1)["sl_:tod_end_night"]
 
 step_dist$params$scale * c(shape_day, shape_night)
+```
+
+### Utilisation distribution
+
+```{r}
+# set values NA to 0
+raster::values(lc)[is.na(raster::values(lc))] = 0
+```
+
+Does not work on LC data as it is too coarse.
+
+```{r}
+mk = amt::movement_kernel(
+  scale = step_dist$params$scale,
+  shape = step_dist$params$shape + m1$model$coefficients["sl_"],
+  template = ndvi
+)
+
+hk = amt::habitat_kernel(
+  coef = list(ndvi = coef(m1)["ndvi"]), resources = ndvi, exp = TRUE
+)
+
+ssud = amt::simulate_ud(
+  movement_kernel = mk,
+  habitat_kernel = hk,
+  start = as.numeric(
+    data_resamp[1, c("x1_", "y1_")]
+  ),
+  n = 1e7
+)
 ```
 
