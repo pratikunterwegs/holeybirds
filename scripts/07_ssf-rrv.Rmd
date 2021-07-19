@@ -41,6 +41,14 @@ rrv = read_csv("data/results/data_daily_rrv.csv")
 ## SSF parameters
 
 ```{r}
+# filter for bad fits
+ssfs = filter(
+  ssfs,
+  !map_lgl(
+    ssf, is.null
+  )
+)
+
 # select track identifiers
 ssf_params = select(
   ssfs,
@@ -51,9 +59,15 @@ ssf_params = select(
 ssf_params = mutate(
   ssf_params,
   coefs = map(ssfs$ssf, function(l) {
-    # convert model to data frame
-    broom::tidy(
-      l$model
+    tryCatch(
+      expr = {
+        broom::tidy(
+          l$model
+        )
+      },
+      error = function(e) {
+        return(NULL)
+      }
     )
   }),
   shape = map_dbl(ssfs$ssf, function(l) {
@@ -83,52 +97,93 @@ ssf_params = left_join(
 
 ## Visualise coefficient NDVI and RRV
 
+### Correct SL in LC classes
+
 ```{r}
-ssf_params = filter(
+# filter coefficients
+data = filter(
   ssf_params,
-  treat != "LongPeriod"
+  treat != "LongPeriod",
+  !is.na(estimate),
+  between(estimate, -50, 50)
 )
 
-data = ssf_params %>% 
-      mutate(rrv_calc = cut(rrv_calc, 
-                            breaks = seq(0, 20, 5), 
-                            include.lowest = T)
-      ) %>% 
-      filter(
-        !is.na(rrv_calc)#,
-        # term == "landcover4"
-        )
+# get sl coefficient for all models
+data = data %>% 
+  group_by(
+    TAG_ID, date
+  ) %>% 
+  mutate(
+    sl_coef = estimate[term == "sl_"]
+  )
+
+# get corrected SL for each landcover
+data = ungroup(data)
+data =
+  mutate(
+    data,
+    estimate_corrected = case_when(
+      str_detect(term, "sl_:landcover") ~ estimate + shape + sl_coef,
+      str_detect(term, "sl_") ~ estimate + shape,
+      TRUE ~ estimate
+    )
+  )
+
+
+```
+
+### Plot SL in LC classes over RRV
+
+```{r}
+# labels
+sl_labels = c(
+  "sl_" = "Step length",
+  "sl_:landcover2" = "SL - disturbed",
+  "sl_:landcover3" = "SL - natural",
+  "sl_:landcover4" = "SL - agriculture",
+  "sl_:landcover5" = "SL - water"
+)
 
 # plot
-ggplot()+
-  geom_boxplot(
-    data = data,
+fig_sl_lc = 
+  ggplot(
+  data = filter(data, p.value <= 0.05,
+                stringr::str_detect(term, "sl"))
+  )+
+  geom_point(
     aes(
-      factor(rrv_calc), estimate
+      rrv_calc, estimate_corrected,
+      shape = sp
     )
   )+
-  # geom_jitter(
-  #   data = ssf_params,
-  #   aes(
-  #     rrv_calc, estimate,
-  #     col = p.value <= 0.05
-  #   )
-  # )+
-  # geom_smooth(
-  #   data = ssf_params,
-  #   aes(
-  #     rrv_calc, shape
-  #   ),
-  #   method = "glm"
-  # )+
-  # ylim(0.25, 1.5)+
-  scale_y_continuous(
-    trans=ggallin::ssqrt_trans,
-    limits = c(-20, 20)
+  geom_smooth(
+    aes(
+      rrv_calc, estimate_corrected
+    ),
+    se = F,
+    method = "glm"
   )+
-  facet_grid(sp~term)+
+  facet_wrap(
+    ~term, ncol = 5,
+    labeller = labeller(
+      term = sl_labels
+    )
+  )+
   theme(
     legend.position = "top"
+  )+
+  # ylim(-0.5, 0.5)+
+  labs(
+    x = "Calc. RRV",
+    y = "Relative Selection Strength",
+    col = "Species",
+    shape = NULL
   )
+
+# save figure
+ggsave(
+  fig_sl_lc,
+  filename = "figures/fig_sl_lc_rrv.png"
+)
 ```
 
