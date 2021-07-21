@@ -180,7 +180,7 @@ tracks = mutate(
 ndvi = raster("data/rasters/raster_hula_ndvi_transformed.tif")
 
 # get landcover
-lc = raster("data/rasters/raster_hula_lc_reclass.tif")
+lc = raster("data/rasters/hula_reverse_classified_sentinel_transformed.tif")
 
 # assign name
 names(ndvi) = "ndvi"
