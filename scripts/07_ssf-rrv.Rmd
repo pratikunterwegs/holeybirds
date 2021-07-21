@@ -16,6 +16,7 @@ library(dplyr)
 library(tidyr)
 library(purrr)
 library(readr)
+library(stringr)
 
 # libs for messages
 library(glue)
@@ -111,7 +112,7 @@ data = filter(
 # get sl coefficient for all models
 data = data %>% 
   group_by(
-    TAG_ID, date
+    TAG_ID, date, sp, treat
   ) %>% 
   mutate(
     sl_coef = estimate[term == "sl_"]
@@ -132,22 +133,81 @@ data =
 
 ```
 
+### Selection strength for landcover
+
+```{r}
+# select terms
+data_lc_selection = data %>% 
+  filter(
+    !stringr::str_detect(term, "sl"),
+    !stringr::str_detect(term, "(1)|(4)"),
+    p.value <= 0.05
+  )
+# labels
+lc_labels = c(
+  "landcover1" = "Disturbed",
+  "landcover2" = "Open",
+  "landcover3" = "Vegetated",
+  "landcover4" = "Water",
+  "ndvi" = "NDVI"
+)
+
+# plot
+fig_rss_lc = 
+  ggplot(data_lc_selection)+
+  geom_point(
+    aes(
+      rrv_calc, estimate_corrected,
+      shape = sp
+    )
+  )+
+  geom_smooth(
+    aes(
+      rrv_calc, estimate_corrected
+    ),
+    se = F,
+    method = "glm"
+  )+
+  facet_wrap(
+    ~term,
+    labeller = labeller(
+      term = lc_labels
+    )
+  )+
+  theme(
+    legend.position = "top"
+  )+
+  labs(
+    x = "Calc. RRV",
+    y = "Relative Selection Strength",
+    shape = NULL
+  )
+
+# save figure
+ggsave(
+  fig_rss_lc,
+  filename = "figures/fig_rss_lc_rrv.png"
+); dev.off()
+```
+
+
 ### Plot SL in LC classes over RRV
 
 ```{r}
 # labels
 sl_labels = c(
-  "sl_" = "Step length",
-  "sl_:landcover2" = "SL - disturbed",
-  "sl_:landcover3" = "SL - natural",
-  "sl_:landcover4" = "SL - agriculture",
-  "sl_:landcover5" = "SL - water"
+  "sl_" = "SL - settlement",
+  "sl_:landcover1" = "SL - disturbed",
+  "sl_:landcover2" = "SL - open",
+  "sl_:landcover3" = "SL - vegetated",
+  "sl_:landcover4" = "SL - water"
 )
 
 # plot
-fig_sl_lc = 
+fig_sl_lc =
   ggplot(
   data = filter(data, p.value <= 0.05,
+                # term != "sl_:landcover4",
                 stringr::str_detect(term, "sl"))
   )+
   geom_point(
@@ -172,7 +232,9 @@ fig_sl_lc =
   theme(
     legend.position = "top"
   )+
-  # ylim(-0.5, 0.5)+
+  coord_cartesian(
+    ylim = c(NA, 1.5)
+  )+
   labs(
     x = "Calc. RRV",
     y = "Relative Selection Strength",
@@ -184,6 +246,6 @@ fig_sl_lc =
 ggsave(
   fig_sl_lc,
   filename = "figures/fig_sl_lc_rrv.png"
-)
+); dev.off()
 ```
 
