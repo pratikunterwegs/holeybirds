@@ -79,7 +79,8 @@ data_resamp = amt::track_resample(
 ndvi = raster("data/rasters/raster_hula_ndvi_transformed.tif")
 
 # get landcover
-lc = raster("data/rasters/raster_hula_lc_reclass.tif")
+lc = raster("data/rasters/hula_reverse_classified_sentinel_transformed.tif")
+values(lc) = values(lc) + 1
 
 # assign name
 names(ndvi) = "ndvi"
@@ -90,7 +91,7 @@ names(lc) = "landcover"
 
 ```{r}
 data_resamp = data_resamp %>% 
-  amt::random_steps(n = 29) %>% 
+  amt::random_steps(n = 19) %>% 
   amt::extract_covariates(ndvi) %>% 
   amt::extract_covariates(lc) %>% 
   mutate(landcover = factor(landcover))
@@ -123,12 +124,15 @@ raster::values(lc)[is.na(raster::values(lc))] = 0
 ```
 
 Does not work on LC data as it is too coarse.
+Trying on finer LC data but interpretations are different.
+
+### SSUD
 
 ```{r}
 mk = amt::movement_kernel(
   scale = step_dist$params$scale,
   shape = step_dist$params$shape + m1$model$coefficients["sl_"],
-  template = ndvi
+  template = lc
 )
 
 hk = amt::habitat_kernel(
@@ -142,6 +146,31 @@ ssud = amt::simulate_ud(
     data_resamp[1, c("x1_", "y1_")]
   ),
   n = 1e7
+)
+
+# remove zero values
+values(ssud)[values(ssud) < 1e-5] = NA
+
+writeRaster(
+  ssud,
+  filename = "data/testssud.tif",
+  overwrite = T
+)
+```
+
+### TUD
+
+```{r}
+# made tud
+tud = amt::simulate_tud(
+  mk, hk, as.numeric(data_resamp[floor(nrow(data_resamp)/2), c("x1_", "y1_")]),
+  n = 72, n_rep = 1e2
+)
+
+writeRaster(
+  tud,
+  filename = "data/testtud.tif",
+  overwrite = T
 )
 ```
 
