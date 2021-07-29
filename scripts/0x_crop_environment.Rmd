@@ -33,3 +33,21 @@ writeRaster(ndvi, filename = "data/rasters/raster_hula_ndvi_transformed_crop.tif
             overwrite = T)
 writeRaster(srtm, filename = "data/rasters/raster_hula_srtm_transformed_crop.tif")
 ```
+
+Categorise NDVI
+
+```{r}
+# round values to nearest 0.1
+ndvi_cat = ndvi
+values(ndvi_cat) = plyr::round_any(values(ndvi_cat), 0.3)
+
+# set values below 0 to zero
+ndvi_cat[ndvi_cat < 0] = 0
+
+# save
+
+writeRaster(ndvi_cat, 
+            filename = "data/rasters/raster_hula_ndvi_cat.tif",
+            overwrite = T)
+```
+
