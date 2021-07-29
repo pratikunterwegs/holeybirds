@@ -1,0 +1,35 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Preparing a Digital Vegetation Layer
+
+```{r}
+# load libs
+library(raster)
+library(gdalUtils)
+library(sf)
+```
+
+```{r}
+srtm = raster("data/rasters/raster_hula_srtm_30_transformed.tif")
+ndvi = raster("data/rasters/raster_hula_ndvi_transformed.tif")
+```
+
+```{r}
+hula = st_read("data/spatial/hula_extent/hula_valley.shp") %>% 
+  st_transform(2039)
+```
+
+Crop srtm and ndvi.
+
+```{r}
+srtm = raster::crop(srtm, as(hula, "Spatial"))
+ndvi = raster::crop(ndvi, as(hula, "Spatial"))
+
+# save cropped ndvi
+writeRaster(ndvi, filename = "data/rasters/raster_hula_ndvi_transformed_crop.tif",
+            overwrite = T)
+writeRaster(srtm, filename = "data/rasters/raster_hula_srtm_transformed_crop.tif")
+```
