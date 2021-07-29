@@ -54,6 +54,8 @@ data/results/**
 data/raw/**
 !data/raw/README.txt
 
+!*.log
+
 # docx
 *.docx
 *.xlxs
