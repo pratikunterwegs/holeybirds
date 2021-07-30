@@ -195,33 +195,28 @@ steps = select(data_resamp, x1_, y1_, x2_, y2_)
 # make sf lines
 steps$geometry = pmap(steps, function(x1_, y1_, x2_, y2_) {
   # make linear path
-  step_path = st_as_sfc(
-    sprintf("LINESTRING(%f %f, %f %f)", x1_, y1_, x2_, y2_)
+  step_path = st_linestring(
+    matrix(c(x1_, y1_, x2_, y2_), nrow = 2, byrow = T)
   )
   
-  # make sample points
-  step_sample_points = st_line_sample(step_path, density = 1, type = "regular")
-  
-  # cast to simple point
-  step_sample_points = step_sample_points %>% 
-    st_cast("POINT")
-  
-  # count points and remove first and last
-  if (length(step_sample_points) > 3) {
-    step_sample_points = step_sample_points[2:(length(step_sample_points) - 1)]
-    step_sample_points = st_union(step_sample_points)
-    step_geom = st_cast(step_sample_points, "LINESTRING")
-    
-    return(step_geom)
-  } else {
-    return(step_path)
-  }
+  step_path
 })
 
-# make sf all around
-ndvi_path = vapply(steps$geometry, function(x) {
-  ndvi_velox$extract(sp = x, fun = mean)
-}, FUN.VALUE = 1.0)
+# MAKE SFC
+steps$geometry = st_sfc(steps$geometry, crs = 2039)
+
+# sample it every 10m
+steps$geometry = st_line_sample(steps$geometry, density = 1 / 10)
+
+# remake to line
+steps$geometry = st_cast(steps$geometry, "LINESTRING")
+
+# THIS CAN NOW BE PASSED TO VELOX, MAKE SF FIRST
+
+# # make sf all around
+# ndvi_path = vapply(steps$geometry[1:10], function(x) {
+#   ndvi_velox$extract(sp = x, fun = mean)
+# }, FUN.VALUE = 1.0)
 ```
 
 
