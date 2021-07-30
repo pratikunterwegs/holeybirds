@@ -12,42 +12,30 @@ library(gdalUtils)
 library(sf)
 ```
 
+## Load data
+
 ```{r}
-srtm = raster("data/rasters/raster_hula_srtm_30_transformed.tif")
-ndvi = raster("data/rasters/raster_hula_ndvi_transformed.tif")
+ndvi = raster("data/rasters/raster_hula_ndvi.tif")
+lc = raster("data/rasters/hula_vector_classified_sentinel.tif")
+```
+
+Crop data.
+
+```{r}
+hula = st_read("data/spatial/hula_extent/hula_valley.shp")
 ```
 
 ```{r}
-hula = st_read("data/spatial/hula_extent/hula_valley.shp") %>% 
-  st_transform(2039)
-```
-
-Crop srtm and ndvi.
-
-```{r}
-srtm = raster::crop(srtm, as(hula, "Spatial"))
 ndvi = raster::crop(ndvi, as(hula, "Spatial"))
-
-# save cropped ndvi
-writeRaster(ndvi, filename = "data/rasters/raster_hula_ndvi_transformed_crop.tif",
-            overwrite = T)
-writeRaster(srtm, filename = "data/rasters/raster_hula_srtm_transformed_crop.tif")
+lc = raster::crop(lc, as(hula, "Spatial"))
 ```
 
-Categorise NDVI
+Save cropped to file.
 
 ```{r}
-# round values to nearest 0.1
-ndvi_cat = ndvi
-values(ndvi_cat) = plyr::round_any(values(ndvi_cat), 0.3)
-
-# set values below 0 to zero
-ndvi_cat[ndvi_cat < 0] = 0
-
-# save
-
-writeRaster(ndvi_cat, 
-            filename = "data/rasters/raster_hula_ndvi_cat.tif",
-            overwrite = T)
+writeRaster(ndvi, filename = "data/rasters/raster_hula_ndvi_crop.tif")
+writeRaster(lc, filename = "data/rasters/raster_hula_lc10_crop.tif")
 ```
+
+## WIP: Write raster transform code.
 
