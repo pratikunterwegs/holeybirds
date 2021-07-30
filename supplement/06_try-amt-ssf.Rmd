@@ -12,6 +12,15 @@ editor_options:
 library(data.table)
 library(lubridate)
 library(tidyverse)
+library(raster)
+
+# check for velox and install
+library(devtools)
+if (!"velox" %in% installed.packages()) {
+  install_github("hunzikp/velox")
+} else {
+  library(velox)
+}
 library(sf)
 
 # library for atlas data
@@ -28,26 +37,33 @@ library(colorspace)
 ```{r}
 files = list.files("data/processed/data_preprocessed", pattern = "smooth",
                    full.names = T)
+rrv = read_csv("data/results/data_daily_rrv.csv")
 ```
 
 
 ```{r}
 # read files
-data = fread(files[1])
+data = fread(files[60])
 setDF(data)
 
 # make tibble
 data = as_tibble(data)
 
 # handle timesteps
-data = mutate(data, time = as.POSIXct(
-  UNIX, origin = "1970-01-01", tz = "Asia/Jerusalem"
-))
+data = mutate(
+  data, 
+  time = as.POSIXct(
+    UNIX, origin = "1970-01-01", tz = "Asia/Jerusalem"
+  ),
+  date = date(time)
+) %>% 
+  filter(
+    d == "D"
+  )
 
 # make amt
 data = amt::make_track(
   tbl = data, .x = x, .y = y, .t = time,
-  
   # set CRS
   crs = sp::CRS(
     st_crs(2039)$proj4string
@@ -57,8 +73,8 @@ data = amt::make_track(
 # resample to 30 s with a 5 second tolerance
 data_resamp = amt::track_resample(
   data,
-  rate = seconds(60),
-  tolerance = seconds(5)
+  rate = seconds(30),
+  tolerance = seconds(3)
 ) %>% 
   
   # filter bursts with at least 5 points
@@ -72,38 +88,147 @@ data_resamp = amt::track_resample(
   )
 ```
 
-### Get covariate layer
+## Get covariate layer
 
 ```{r}
 # get ndvi
-ndvi = raster("data/rasters/raster_hula_ndvi_transformed.tif")
-
+ndvi = raster("data/rasters/raster_hula_ndvi_transformed_crop.tif")
 # get landcover
-lc = raster("data/rasters/hula_reverse_classified_sentinel_transformed.tif")
-values(lc) = values(lc) + 1
+lc = raster("data/rasters/raster_hula_lc10_transformed_crop.tif")
 
 # assign name
 names(ndvi) = "ndvi"
 names(lc) = "landcover"
 ```
 
-### Fit model
+## Prepare for amt
 
 ```{r}
+# make random steps
 data_resamp = data_resamp %>% 
-  amt::random_steps(n = 19) %>% 
-  amt::extract_covariates(ndvi) %>% 
-  amt::extract_covariates(lc) %>% 
-  mutate(landcover = factor(landcover))
+  amt::random_steps(n = 19)
+```
+
+```{r}
+# radius in metres
+use_radius = 10
+```
+
+## Extract destination mean NDVI and proportion LC
+
+### Make buffers
+
+```{r}
+step_end_buffer = select(data_resamp, x2_, y2_, case_, step_id_) %>% 
+  st_as_sf(coords = c("x2_", "y2_"), crs = 2039) %>% 
+  st_buffer(dist = use_radius)
+```
+
+### Extract from buffers
+
+```{r}
+# ndvi operation
+ndvi_velox = velox(ndvi)
+mean_ndvi = ndvi_velox$extract(
+  sp = step_end_buffer, df = TRUE,
+  fun = function(x) mean(x, na.rm = T)
+)
+mean_ndvi = rename(mean_ndvi, ndvi = out)
+
+# landcover operation
+lc_velox = velox(lc)
+lc_vals = lc_velox$extract(sp = step_end_buffer, df = TRUE)
+lc_prop =
+  lc_vals %>% 
+  rename(lc = "do.call..rbind...out.") %>% 
+  count(ID_sp, lc) %>% 
+  group_by(ID_sp) %>% 
+  mutate(
+    lc = sprintf("lc_%i", lc),
+    prop = n / sum(n)
+  ) %>% 
+    select(-n) %>% 
+    pivot_wider(
+      names_from = lc,
+      values_from = prop,
+      values_fill = list(prop = 0)
+    ) %>% 
+  ungroup()
+```
+
+### Join with buffers
+
+```{r}
+# create key
+step_end_buffer$ID_sp = seq(nrow(step_end_buffer))
+# join
+step_end_buffer = inner_join(
+  step_end_buffer, mean_ndvi
+) %>% 
+  inner_join(
+    lc_prop
+  )
+```
+
+### Join with data
+
+```{r}
+data_resamp = mutate(data_resamp,
+                     ID_sp = seq(nrow(data_resamp))) %>% 
+  inner_join(mean_ndvi) %>% 
+  inner_join(lc_prop) %>% 
+  select(-ID_sp)
+```
+
+## Extract step characteristics
+
+We want to know how much of the step (x1,y1) to (x2,y2) is over open areas, LC 0 and LC 2.
+
+### Make step spatial lines
+
+Make lines and sample points along them.
+
+```{r}
+# get end points
+steps = select(data_resamp, x1_, y1_, x2_, y2_)
+
+# make sf lines
+steps$geometry = pmap(steps, function(x1_, y1_, x2_, y2_) {
+  # make linear path
+  step_path = st_as_sfc(
+    sprintf("LINESTRING(%f %f, %f %f)", x1_, y1_, x2_, y2_)
+  )
+  
+  # make sample points
+  step_sample_points = st_line_sample(step_path, density = 1, type = "regular")
+  
+  # cast to simple point
+  step_sample_points = step_sample_points %>% 
+    st_cast("POINT")
+  
+  # count points and remove first and last
+  if (length(step_sample_points) > 3) {
+    step_sample_points = step_sample_points[2:(length(step_sample_points) - 1)]
+    step_sample_points = st_union(step_sample_points)
+    step_geom = st_cast(step_sample_points, "LINESTRING")
+    
+    return(step_geom)
+  } else {
+    return(step_path)
+  }
+})
+
+# make sf all around
+ndvi_path = vapply(steps$geometry, function(x) {
+  ndvi_velox$extract(sp = x, fun = mean)
+}, FUN.VALUE = 1.0)
+```
 
 
-  # mutate(
-  #   log_sl_ = log(sl_)
-  # ) %>% 
+```{r}
 m1 = data_resamp %>% 
   amt::fit_issf(
-    # case_ ~ ndvi + sl_ + ndvi:tod_end_ + sl_:tod_end_ + strata(step_id_)
-    case_ ~ sl_ + ndvi + landcover + strata(step_id_) + sl_:landcover
+    case_ ~ ndvi + lc_0 + lc_1 + lc_2 + lc_3 + lc_4 + lc_5 + strata(step_id_)
   )
 
 # get distribution of step lengths
