@@ -1,5 +1,8 @@
 library(raster)
 library(tmap)
+library(sf)
+
+#### Training Data from HaMaraag LC ####
 
 # get landcover
 lc = raster("data/rasters/raster_hula_lc.tif")
@@ -34,14 +37,6 @@ lc_map =
                "LC 3: Natural", "LC 4: Agriculture", "LC 5: Water"),
     title = "Reclassified landcover, Hula Valley"
   )
-
-# save map
-tmap_save(
-  lc_map,
-  filename = "figures/fig_lc_hula_reclass.png"
-)
-
-## Extract training data
 
 # first get raster extent and convert to sf extent
 lc_extent = extent(lc_reclass)
@@ -96,3 +91,61 @@ st_write(
   driver = "ESRI Shapefile",
   append = FALSE
 )
+
+# save map
+tmap_save(
+  lc_map,
+  filename = "figures/fig_lc_hula_reclass.png"
+)
+
+#### Training Data from Vectorised LC ####
+
+# get hula landcover types for retraining
+hula_lc_vector = st_read(
+  dsn = "data/spatial/hula_lc_vector"
+)
+
+tm_shape(hula_lc_vector)+
+  tm_polygons(col = "Name")
+
+## sample across LC
+lc_samples_vector = st_sample(
+  hula_lc_vector, size = 10000, type = "hexagonal"
+)
+
+# first get intersection of points with polygon
+row_id = st_covered_by(lc_samples_vector, hula_lc_vector) |>
+  sapply(first)
+
+# make df with LC type
+lc_training_data_vector = tibble(
+  landcover = hula_lc_vector$Name[row_id]
+)
+
+# make sf
+lc_training_data_vector = st_sf(
+  lc_training_data_vector,
+  geometry = lc_samples_vector
+)
+
+# rename cols
+lc_training_data_vector = mutate(
+  lc_training_data_vector,
+  land_cover_class = landcover,
+  landcover = as.numeric(as.factor(landcover)) - 1
+)
+
+lc_training_data_vector = st_transform(
+  lc_training_data_vector,
+  4326
+)
+
+# save as shapefile for GEE
+st_write(
+  lc_training_data_vector,
+  dsn = "data/spatial/lc_training_data_vector",
+  layer = "lc_training_data_vector",
+  driver = "ESRI Shapefile",
+  append = FALSE
+)
+
