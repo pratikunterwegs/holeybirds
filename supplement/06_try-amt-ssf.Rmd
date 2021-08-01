@@ -43,7 +43,7 @@ rrv = read_csv("data/results/data_daily_rrv.csv")
 
 ```{r}
 # read files
-data = fread(files[60])
+data = fread(files[1])
 setDF(data)
 
 # make tibble
@@ -82,10 +82,7 @@ data_resamp = amt::track_resample(
   amt::filter_min_n_burst(
     min_n = 5
   ) %>% 
-  amt::steps_by_burst() %>% 
-  amt::time_of_day(
-    include.crepuscule = F
-  )
+  amt::steps_by_burst()
 ```
 
 ## Get covariate layer
@@ -205,20 +202,39 @@ steps$geometry = pmap(steps, function(x1_, y1_, x2_, y2_) {
 # MAKE SFC
 steps$geometry = st_sfc(steps$geometry, crs = 2039)
 
+# get length
+steps$path_length = st_length(steps$geometry)
+
 # sample it every 10m
-steps$geometry = st_line_sample(steps$geometry, density = 1 / 10)
+steps$path_samples = st_line_sample(steps$geometry, density = 1 / 10)
 
-# remake to line
-steps$geometry = st_cast(steps$geometry, "LINESTRING")
+# path ends appear to be ignored
+# many paths are very short
+steps$path_samples = st_buffer(steps$path_samples, 5)
 
-# THIS CAN NOW BE PASSED TO VELOX, MAKE SF FIRST
-
-# # make sf all around
-# ndvi_path = vapply(steps$geometry[1:10], function(x) {
-#   ndvi_velox$extract(sp = x, fun = mean)
-# }, FUN.VALUE = 1.0)
+# make sf
+steps = st_sf(steps, sf_column_name = "path_samples")
 ```
 
+### Extract mean NDVI along path
+
+```{r}
+# THIS CAN NOW BE PASSED TO VELOX -- some should give NAs due to EMPTY
+ndvi_path = ndvi_velox$extract(sp = steps, fun = mean)
+```
+
+### Extract proportion open along path
+
+```{r}
+# NEEDS TO BE ADDED
+```
+
+The question is, how to handle NA or similar values which are due to very short paths.
+Take the mean of start and end, should be essentially the same.
+
+## Fitting SSF
+
+Modify formula -- one for all, or model selection? Go per Thjurfell et al. 2014 Move Ecol.
 
 ```{r}
 m1 = data_resamp %>% 
