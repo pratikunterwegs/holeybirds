@@ -73,8 +73,8 @@ data = amt::make_track(
 # resample to 30 s with a 5 second tolerance
 data_resamp = amt::track_resample(
   data,
-  rate = seconds(30),
-  tolerance = seconds(3)
+  rate = seconds(60),
+  tolerance = seconds(5)
 ) %>% 
   
   # filter bursts with at least 5 points
@@ -108,7 +108,7 @@ data_resamp = data_resamp %>%
 
 ```{r}
 # radius in metres
-use_radius = 10
+use_radius = 25
 ```
 
 ## Extract destination mean NDVI and proportion LC
@@ -158,6 +158,7 @@ lc_prop =
 ```{r}
 # create key
 step_end_buffer$ID_sp = seq(nrow(step_end_buffer))
+
 # join
 step_end_buffer = inner_join(
   step_end_buffer, mean_ndvi
@@ -187,10 +188,10 @@ Make lines and sample points along them.
 
 ```{r}
 # get end points
-steps = select(data_resamp, x1_, y1_, x2_, y2_)
+steps = select(data_resamp, x1_, y1_, x2_, y2_, step_id_, sl_)
 
 # make sf lines
-steps$geometry = pmap(steps, function(x1_, y1_, x2_, y2_) {
+steps$geometry = pmap(steps, function(x1_, y1_, x2_, y2_, step_id_, sl_) {
   # make linear path
   step_path = st_linestring(
     matrix(c(x1_, y1_, x2_, y2_), nrow = 2, byrow = T)
@@ -202,44 +203,215 @@ steps$geometry = pmap(steps, function(x1_, y1_, x2_, y2_) {
 # MAKE SFC
 steps$geometry = st_sfc(steps$geometry, crs = 2039)
 
-# get length
-steps$path_length = st_length(steps$geometry)
+# assign ID_sp
+steps$ID_sp = seq(nrow(steps))
+
+# filter paths > 10 m, the long steps
+steps_long = filter(steps, sl_ >= 10) %>% 
+  select(-sl_)
 
 # sample it every 10m
-steps$path_samples = st_line_sample(steps$geometry, density = 1 / 10)
+steps_long = steps_long %>% 
+  mutate(path_samples = st_line_sample(
+    geometry, 
+    density = 1 / 10)
+  ) %>% 
+  filter(!st_is_empty(path_samples)) %>% 
+  select(-geometry)
 
-# path ends appear to be ignored
-# many paths are very short
-steps$path_samples = st_buffer(steps$path_samples, 5)
+# make 5 m buffer
+steps_long = steps_long %>% 
+  mutate(path_samples = st_buffer(path_samples, dist = 5),
+         path_samples = st_sfc(path_samples))
 
-# make sf
-steps = st_sf(steps, sf_column_name = "path_samples")
+# cast to multipolygon
+steps_long = steps_long %>% 
+  mutate(path_samples = st_cast(path_samples, "MULTIPOLYGON"))
+
+# make sf and add temp id
+steps_long = st_as_sf(steps_long, sf_column_name = "path_samples") %>% 
+  mutate(id_temp_ = seq(nrow(.)))
 ```
 
 ### Extract mean NDVI along path
 
 ```{r}
 # THIS CAN NOW BE PASSED TO VELOX -- some should give NAs due to EMPTY
-ndvi_path = ndvi_velox$extract(sp = steps, fun = mean)
+ndvi_path = ndvi_velox$extract(sp = steps_long$path_samples, 
+                               fun = function(x) mean(x, na.rm = T), 
+                               df = TRUE) %>% 
+  as_tibble() %>% 
+  rename(ndvi_step = out,
+         id_temp_ = ID_sp)
 ```
 
 ### Extract proportion open along path
 
 ```{r}
-# NEEDS TO BE ADDED
+# get counts for 
+lc_vals_path = lc_velox$extract(sp = steps_long$path_samples, df = TRUE)
+lc_prop_path =
+  lc_vals_path %>% 
+  rename(lc = "do.call..rbind...out.") %>% 
+  count(ID_sp, lc) %>% 
+  group_by(ID_sp) %>% 
+  mutate(
+    lc = sprintf("lc_%i", lc),
+    prop = n / sum(n)
+  ) %>% 
+    select(-n) %>% 
+    pivot_wider(
+      names_from = lc,
+      values_from = prop,
+      values_fill = list(prop = 0)
+    ) %>% 
+  ungroup()
+
+# add missing samples
+lc_prop_path = full_join(
+  lc_prop_path,
+  tibble(ID_sp = seq(nrow(steps_long)))
+)
+
+# get step openness
+data_openness = lc_prop_path %>% 
+  # select open classes - open agri, urban, water
+  select(matches("(2)|(0)|(5)")) %>% 
+  # sum the proportion
+  rowSums(na.rm = TRUE) %>% 
+  tibble(
+    id_temp_ = seq(length(.)),
+    step_openness = .
+  )
+
+# add assert
+assertthat::assert_that(
+  nrow(data_openness) == nrow(steps_long),
+  msg = "step openness values fewer than long steps"
+)
 ```
 
-The question is, how to handle NA or similar values which are due to very short paths.
-Take the mean of start and end, should be essentially the same.
+### Join to step_id_ data
+
+```{r}
+# add to steps long
+steps_long = steps_long %>% 
+  st_drop_geometry() %>% 
+  # add ndvi path
+  left_join(ndvi_path, by = "id_temp_") %>% 
+  left_join(data_openness, by = "id_temp_")
+
+# remove excess data
+steps_long = steps_long %>% 
+  select(-id_temp_)
+
+# bind with all steps
+steps = steps %>% 
+  select(-geometry) %>% 
+  
+  # join to long steps
+  left_join(
+    steps_long
+  )
+```
+
+### Join to main data of SSF predictors
+
+```{r}
+# join to get full predictor data
+data_resamp = left_join(
+  data_resamp,
+  steps
+)
+```
+
+This predictor data has large chunks missing where steps are small. Handle this missing data by assigning the NDVI of the destination to the step where missing.
+
+### Handle short steps
+
+```{r}
+# first NDVI
+data_resamp = data_resamp %>% 
+  mutate(
+    ndvi_step = if_else(is.na(ndvi_step), ndvi, ndvi_step)
+  )
+
+# handle step openness
+dest_openness = data_resamp %>% 
+  # select open classes - open agri, urban, water
+  select(matches("lc_(2)|(0)|(5)")) %>% 
+  # sum the proportion
+  rowSums(na.rm = TRUE)
+
+# assign dest openness if step openness is NA
+data_resamp = data_resamp %>% 
+  mutate(
+    step_openness = if_else(is.na(step_openness), dest_openness, step_openness)
+  )
+```
+
+## Explore step openness
+
+Explore how step openness differs between real and potential steps.
+
+```{r}
+# summarise for each step and case
+data_step_open = data_resamp %>% 
+  as_tibble() %>% 
+  dplyr::select(step_id_, case_, step_openness) %>% 
+  dplyr::group_by(
+    step_id_, case_
+  ) %>% 
+  dplyr::summarise(
+    step_openness = mean(step_openness),
+    sd_openness = sd(step_openness)
+  )
+
+# plot
+ggplot(data_step_open,
+       aes(step_id_, step_openness, col = case_))+
+  geom_point()+
+  geom_path()
+```
+
 
 ## Fitting SSF
+
+### Prepare final predictors
+
+```{r}
+# add a very small movement distance (1e-5 metres --- less than a centimetre)
+# to prevent infinite values
+data_resamp = mutate(data_resamp,
+                     log_sl = log(sl_ + 1e-5)) %>% 
+  filter(!is.na(log_sl), !is.infinite(log_sl))
+
+# add natural types
+data_lc_natural = data_resamp %>% 
+  select(matches("lc_(3)|(4)|(5)")) %>% 
+  rowSums()
+
+data_resamp = mutate(data_resamp,
+                     p_natural = data_lc_natural)
+
+# add urban and open if absent
+for (colname in c("lc_0", "lc_2")) {
+  if (!colname %in% colnames(data_resamp)) {
+    data_resamp[[colname]] = 0
+  }
+}
+```
+
 
 Modify formula -- one for all, or model selection? Go per Thjurfell et al. 2014 Move Ecol.
 
 ```{r}
 m1 = data_resamp %>% 
   amt::fit_issf(
-    case_ ~ ndvi + lc_0 + lc_1 + lc_2 + lc_3 + lc_4 + lc_5 + strata(step_id_)
+    case_ ~ log_sl + ndvi + p_natural +
+      ndvi_step + step_openness + 
+      log_sl:step_openness +
+      strata(step_id_)
   )
 
 # get distribution of step lengths
@@ -252,7 +424,7 @@ shape_night = step_dist$params$shape + coef(m1)["sl_"] + coef(m1)["sl_:tod_end_n
 step_dist$params$scale * c(shape_day, shape_night)
 ```
 
-### Utilisation distribution
+## Utilisation distribution -- DISCONTINUED
 
 ```{r}
 # set values NA to 0
