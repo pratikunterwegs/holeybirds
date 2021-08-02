@@ -448,10 +448,39 @@ tracks = mutate(
 )
 ```
 
+### Prepare final predictors
+
+```{r}
+# add a very small movement distance (1e-5 metres --- less than a centimetre)
+# to prevent infinite values
+tracks = mutate(
+  tracks,
+  data = map(data, function(df) {
+    df = mutate(df, log_sl = log(sl_ + 1e-5)) %>%
+      filter(!is.na(log_sl), !is.infinite(log_sl))
+
+    # add natural types
+    data_lc_natural = df %>% 
+      select(matches("lc_(3)|(4)|(5)")) %>% 
+      rowSums()
+
+    df = mutate(df, p_natural = data_lc_natural)
+
+    # add urban and open if absent
+    for (colname in c("lc_0", "lc_2")) {
+      if (!colname %in% colnames(data_resamp)) {
+        data_resamp[[colname]] = 0
+      }
+    }
+
+    # return df
+    df
+  })
+)
+```
 
 Data still contains long term sparrow tracking and swallow data.
 
 ```{r}
 save(tracks, file = "data/processed/data_for_ssf.Rds")
 ```
-
