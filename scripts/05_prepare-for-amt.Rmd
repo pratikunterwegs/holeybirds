@@ -468,8 +468,8 @@ tracks = mutate(
 
     # add urban and open if absent
     for (colname in c("lc_0", "lc_2")) {
-      if (!colname %in% colnames(data_resamp)) {
-        data_resamp[[colname]] = 0
+      if (!colname %in% colnames(df)) {
+        df[[colname]] = 0
       }
     }
 
