@@ -33,22 +33,23 @@ data[, c("date", "hour") := list(
 )]
 
 # levels
-data$treat = factor(data$treat,
-                    levels = c("NonMoulting", "Moulting", "Manipulated"))
+data$treat <- factor(data$treat,
+  levels = c("NonMoulting", "Moulting", "Manipulated")
+)
 
 # remove swallows and long term sparrows
-data = data[sp != "Hirundo" & treat != "LongPeriod"]
+data <- data[sp != "Hirundo" & treat != "LongPeriod"]
 ```
 
 ## Plot single species positions
 
 ```{r}
-data = split(data, by = "sp")
+data <- split(data, by = "sp")
 
 lapply(data, function(df) {
-  species = unique(df$sp)
+  species <- unique(df$sp)
   # plot and check
-  fig_positions = 
+  fig_positions <-
     ggplot() +
     geom_path(
       data = df,
@@ -68,20 +69,20 @@ lapply(data, function(df) {
       rev = T,
       name = "Wing condition",
       labels = c("Non moulting", "Moulting", "Manipulated")
-    )+
+    ) +
     ggthemes::theme_map() +
     theme(
       plot.background = element_rect(
         fill = "white",
         colour = NA
       )
-    )+
+    ) +
     ggspatial::annotation_scale(location = "tl", style = "ticks") +
     coord_sf(
       crs = 2039,
       xlim = range(df$x),
       ylim = range(df$y)
-    )+
+    ) +
     guides(
       colour = guide_legend(
         override.aes = list(
@@ -89,7 +90,7 @@ lapply(data, function(df) {
         )
       )
     )
-  
+
   # save
   ggsave(
     plot = fig_positions,
