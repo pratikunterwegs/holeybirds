@@ -154,10 +154,10 @@ tracks = mutate(
     ) #%>%
     
     # filtering for bursts with at least 5 pos
-        amt::filter_min_n_burst(
-            min_n = min_n_burst
-        )
-    }),
+    # amt::filter_min_n_burst(
+    #     min_n = min_n_burst
+    # )
+  })
 )
 ```
 
