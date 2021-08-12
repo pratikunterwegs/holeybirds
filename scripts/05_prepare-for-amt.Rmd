@@ -166,20 +166,28 @@ tracks = mutate(
 Remove data with less than some threshold (currently 50) positions.
 
 ```{r}
-min_daily_expected = 50
+min_daily_expected = 25
 
 # filter out data with no rows remaining
 tracks = filter(
-    tracks,
-    purrr::map_lgl(data, function(df) {
-        nrow(df) > min_daily_expected
-    })
+  tracks,
+  purrr::map_lgl(data, function(df) {
+    nrow(df) > min_daily_expected
+  })
 )
 
 # now make steps by burst
 tracks = mutate(
-    tracks,
-    data = map(data, amt::steps_by_burst)
+  tracks,
+  data = map(data, amt::steps_by_burst)
+)
+
+## remove with less than 5 steps
+tracks = filter(
+  tracks,
+  purrr::map_lgl(data, function(df) {
+    nrow(df) >= 10
+  })
 )
 ```
 
