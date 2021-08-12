@@ -151,9 +151,9 @@ tracks = mutate(
       df,
       rate = seconds(resample_interval_s),
       tolerance = seconds(resample_tolerance)
-        ) %>%
-        
-        # filtering for bursts with at least 5 pos
+    ) #%>%
+    
+    # filtering for bursts with at least 5 pos
         amt::filter_min_n_burst(
             min_n = min_n_burst
         )
