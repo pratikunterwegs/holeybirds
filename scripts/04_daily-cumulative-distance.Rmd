@@ -26,7 +26,7 @@ library(colorspace)
 # load data from file
 data <- fread("data/processed/data_thinned_for_analysis.csv")
 
-rrv = fread("data/results/data_daily_rrv.csv")
+rrv <- fread("data/results/data_daily_rrv.csv")
 ```
 
 ## Calculate distances and times of day
@@ -53,11 +53,13 @@ data <- lapply(data, function(df) {
 ```{r}
 # get interval since start of day --- will be nighttime
 data <- lapply(data, function(df) {
-  df[, posix_time := as.POSIXct(time, origin = "1970-01-01", 
-                                tz = "Asia/Jerusalem")]
+  df[, posix_time := as.POSIXct(time,
+    origin = "1970-01-01",
+    tz = "Asia/Jerusalem"
+  )]
   # difference in minutes between time and start of day
   df[, min_day := as.numeric(
-     hour(posix_time) * 60 + minute(posix_time)
+    hour(posix_time) * 60 + minute(posix_time)
   )]
   # round min_day to 10 mins
   df[, min_day := plyr::round_any(min_day, 10)]
@@ -70,20 +72,22 @@ data <- lapply(data, function(df) {
 
 ```{r}
 # summarise distance in 10 min intervals and then cuml distance
-data_summary = lapply(data, function(df) {
-    # sum distance in interval
-    df = df[, list(distance = sum(distance)), 
-        by = c("min_day", "date", "sp", "treat", "TAG_ID")]
-    df[, cuml_distance := cumsum(distance)]
-    df
+data_summary <- lapply(data, function(df) {
+  # sum distance in interval
+  df <- df[, list(distance = sum(distance)),
+    by = c("min_day", "date", "sp", "treat", "TAG_ID")
+  ]
+  df[, cuml_distance := cumsum(distance)]
+  df
 })
 
 # bind the rows
 data_summary <- rbindlist(data_summary)
 
 # set levels
-data_summary$treat = factor(data_summary$treat,
-                            levels = c("NonMoulting", "Moulting", "Manipulated"))
+data_summary$treat <- factor(data_summary$treat,
+  levels = c("NonMoulting", "Moulting", "Manipulated")
+)
 
 # save to file
 fwrite(data_summary, file = "data/results/data_daily_cumulative_distance.csv")
@@ -94,9 +98,9 @@ fwrite(data_summary, file = "data/results/data_daily_cumulative_distance.csv")
 ```{r}
 # join on date, species, id, and treatment
 # first fix date
-data_summary$date = as.POSIXct(data_summary$date)
+data_summary$date <- as.POSIXct(data_summary$date)
 
-data_summary = merge(
+data_summary <- merge(
   data_summary,
   rrv,
   by = c("sp", "treat", "TAG_ID", "date")
@@ -108,7 +112,7 @@ data_summary = merge(
 
 ```{r plot_cuml_dist}
 # make labeller
-label_condition = c(
+label_condition <- c(
   "NonMoulting" = "Non moulting",
   "Moulting" = "Moulting",
   "Manipulated" = "Manipulated"
@@ -123,39 +127,41 @@ ggplot(data_summary[sp != "Hirundo" & treat != "LongPeriod"]) +
     ),
     # show.legend = F,
     alpha = 0.8
-  )+
+  ) +
   scale_colour_binned_sequential(
     palette = "Batlow",
     breaks = c(0, 2, 5, 10, 15)
-  )+
+  ) +
   scale_y_sqrt(
-    labels = function(x) { 
+    labels = function(x) {
       scales::comma(x, accuracy = 1, scale = 0.001, suffix = "km")
     },
     breaks = c(1, 5, 10, 20) * 1e3
-  )+
+  ) +
   scale_x_continuous(
-    labels = function(x) { sprintf("%ihr", as.integer(x / 60)) },
+    labels = function(x) {
+      sprintf("%ihr", as.integer(x / 60))
+    },
     breaks = c(5, 10, 15, 20) * 60
-  )+
+  ) +
   coord_cartesian(
     expand = F,
     xlim = c(5 * 60, NA),
     ylim = c(0, 15e3)
-  )+
-  theme_test()+
+  ) +
+  theme_test() +
   theme(
     axis.text.x = element_text(
       size = 8
     ),
     legend.key.width = unit(2, units = "mm")
-  )+
+  ) +
   facet_grid(
-    ~sp,# ~ treat, 
+    ~sp, # ~ treat,
     labeller = labeller(
       treat = label_condition
     )
-  )+
+  ) +
   labs(
     colour = "Est. RRV",
     x = "Hour of day",
@@ -175,8 +181,8 @@ ggsave(
 
 ```{r tot_daily_dist}
 # sum distances per day
-data_dist_summary = rbindlist(data)
-data_dist_summary = data_dist_summary[, list(
+data_dist_summary <- rbindlist(data)
+data_dist_summary <- data_dist_summary[, list(
   total_distance = sum(distance)
 ), by = c("TAG_ID", "sp", "treat", "date")]
 
@@ -187,8 +193,9 @@ assertthat::assert_that(
 )
 
 # set factor order
-data_dist_summary$treat = factor(data_dist_summary$treat,
-                            levels = c("NonMoulting", "Moulting", "Manipulated"))
+data_dist_summary$treat <- factor(data_dist_summary$treat,
+  levels = c("NonMoulting", "Moulting", "Manipulated")
+)
 
 # save to file
 fwrite(data_dist_summary, file = "data/results/data_daily_total_distance.csv")
@@ -198,44 +205,45 @@ fwrite(data_dist_summary, file = "data/results/data_daily_total_distance.csv")
 
 ```{r}
 # remove swallows and long term sparrows
-data_dist_summary = data_dist_summary[sp != "Hirundo" & treat != "LongPeriod"]
-data_dist_summary$date = as.POSIXct(data_dist_summary$date)
+data_dist_summary <- data_dist_summary[sp != "Hirundo" & treat != "LongPeriod"]
+data_dist_summary$date <- as.POSIXct(data_dist_summary$date)
 
 # link with rrv
-data_dist_summary = merge(
+data_dist_summary <- merge(
   data_dist_summary,
   rrv
 )
 
 # make plot
-ggplot(data_dist_summary)+
+ggplot(data_dist_summary) +
   geom_jitter(
     aes(rrv_calc, total_distance,
-        col = rrv_calc),
+      col = rrv_calc
+    ),
     shape = 1,
     stroke = 1
-  )+
+  ) +
   scale_colour_binned_sequential(
     palette = "Batlow",
     breaks = c(0, 2, 5, 10, 15)
-  )+
+  ) +
   scale_y_sqrt(
-    labels = function(x) { 
+    labels = function(x) {
       scales::comma(x, accuracy = 1, scale = 0.001, suffix = "km")
     },
     breaks = c(1, 5, 10, 20) * 1e3
-  )+
+  ) +
   # scale_x_discrete(
   #   labels = c("Non moulting", "Moulting", "Manipulated")
   # )+
-  theme_test()+
+  theme_test() +
   theme(
     axis.text.x = element_text(
       size = 8
     ),
     legend.key.width = unit(2, units = "mm")
-  )+
-  facet_grid(~sp)+
+  ) +
+  facet_grid(~sp) +
   labs(
     x = "Calculated RRV",
     y = "Total distance (km)",
@@ -258,14 +266,14 @@ NSD is the squared (spatial) distance between all locations $(x_i, y_i, t_i)$ an
 ```{r}
 source("R/net_square_displacement.R")
 # working on data list object
-data = lapply(data, function(df) {
-  
+data <- lapply(data, function(df) {
+
   # using custom functions from the directory R/
   df[, nsd := get_nsd(data = df)]
 })
 
 # summarise NSD over min_day
-data_nsd_summary = lapply(data, function(df) {
+data_nsd_summary <- lapply(data, function(df) {
   df[, list(
     nsd_mean = mean(nsd),
     nsd_sd = sd(nsd)
@@ -273,11 +281,12 @@ data_nsd_summary = lapply(data, function(df) {
 })
 
 # bind list and write to file
-data_nsd_summary = rbindlist(data_nsd_summary)
+data_nsd_summary <- rbindlist(data_nsd_summary)
 
 # set factor order
-data_nsd_summary$treat = factor(data_nsd_summary$treat,
-                            levels = c("NonMoulting", "Moulting", "Manipulated"))
+data_nsd_summary$treat <- factor(data_nsd_summary$treat,
+  levels = c("NonMoulting", "Moulting", "Manipulated")
+)
 
 fwrite(data_nsd_summary, file = "data/results/data_daily_nsd.csv")
 ```
@@ -291,14 +300,14 @@ Here we take each day and individual as a replicate.
 data_nsd_summary[, min_day_30 := plyr::round_any(min_day, 30)]
 
 # link to rrv
-data_nsd_summary$date = as.POSIXct(data_nsd_summary$date)
+data_nsd_summary$date <- as.POSIXct(data_nsd_summary$date)
 
-data_nsd_summary = merge(
+data_nsd_summary <- merge(
   data_nsd_summary,
   rrv
 )
 
-data_nsd_concise = data_nsd_summary[, list(
+data_nsd_concise <- data_nsd_summary[, list(
   nsd_mean = mean(nsd_mean),
   nsd_median = median(nsd_mean),
   nsd_sd = sd(nsd_sd)
@@ -310,7 +319,7 @@ data_nsd_concise = data_nsd_summary[, list(
 
 ```{r}
 # exclude swallows and LT sparrows
-ggplot()+
+ggplot() +
   geom_path(
     data = data_nsd_summary[sp != "Hirundo" & treat != "LongPeriod"],
     aes(
@@ -319,7 +328,7 @@ ggplot()+
       group = interaction(sp, date, treat, TAG_ID)
     ),
     alpha = 0.6
-  )+
+  ) +
   # geom_line(
   #   data = data_nsd_concise[sp != "Hirundo" & treat != "LongPeriod"],
   #   aes(
@@ -337,31 +346,33 @@ ggplot()+
   scale_colour_binned_sequential(
     palette = "Batlow",
     breaks = c(0, 2, 5, 10, 15)
-  )+
+  ) +
   scale_x_continuous(
-    labels = function(x) { sprintf("%ihr", as.integer(x / 60)) },
+    labels = function(x) {
+      sprintf("%ihr", as.integer(x / 60))
+    },
     breaks = c(1, 6, 12, 18, 23) * 60
-  )+
+  ) +
   scale_y_sqrt(
-    labels = function(x) { 
+    labels = function(x) {
       scales::comma(x, accuracy = 1, scale = 0.001, suffix = "km")
     },
     breaks = c(1, 2, 4) * 1e3
-  )+
-  theme_test()+
+  ) +
+  theme_test() +
   theme(
     axis.text.x = element_text(
       size = 8
     ),
     legend.key.width = unit(2, units = "mm")
-  )+
+  ) +
   facet_grid(
-    ~ sp, 
+    ~sp,
     labeller = labeller(
       treat = label_condition
     ),
     scales = "free_y"
-  )+
+  ) +
   labs(
     x = "Hour of day",
     y = "Net displacement (km)",

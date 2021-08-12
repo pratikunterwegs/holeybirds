@@ -22,8 +22,10 @@ Prepare files.
 
 ```{r}
 # list files
-files = list.files("data/processed/data_preprocessed", pattern = "thin", 
-    full.names = TRUE)
+files <- list.files("data/processed/data_preprocessed",
+  pattern = "thin",
+  full.names = TRUE
+)
 ```
 
 ## Load data and count by day
@@ -32,40 +34,40 @@ files = list.files("data/processed/data_preprocessed", pattern = "thin",
 
 ```{r read_preprocd_data}
 # read data and bind into single dataframe
-data = lapply(files, fread) |> rbindlist()
+data <- lapply(files, fread) |> rbindlist()
 
 # assign day and count number of days
 data[, date := date(
-    as.POSIXct(time, origin = "1970-01-01", tz = "Asia/Jerusalem")
+  as.POSIXct(time, origin = "1970-01-01", tz = "Asia/Jerusalem")
 )]
-data_day_count = data[, list(.N), by = c("TAG_ID", "sp", "treat", "date")]
+data_day_count <- data[, list(.N), by = c("TAG_ID", "sp", "treat", "date")]
 ```
 
 ```{r hist_daily_counts}
-ggplot(data_day_count)+
-    geom_histogram(
-        aes(N),
-        fill = "grey"
-    )+
-    geom_vline(
-        xintercept = 500
-    )
+ggplot(data_day_count) +
+  geom_histogram(
+    aes(N),
+    fill = "grey"
+  ) +
+  geom_vline(
+    xintercept = 500
+  )
 ```
 
 ### Filter IDs with fewer than N daily fixes
 
 ```{r filter_id_day}
 # minimum daily fixes -- multiply by 20 for tracking duration in seconds
-min_daily_fixes = 100
+min_daily_fixes <- 100
 
 # filter out days < 500 fixes
-data_day_count = data_day_count[N > min_daily_fixes, ]
+data_day_count <- data_day_count[N > min_daily_fixes, ]
 
 # save data daily count
 fwrite(data_day_count, "data/results/data_daily_count_good.csv")
 
 # join to data and remove data with too few fixes
-data = merge(data, data_day_count)
+data <- merge(data, data_day_count)
 ```
 
 ### Write to file
@@ -74,7 +76,7 @@ The data are sufficiently small to be written to a single file.
 
 ```{r write_data}
 # remove columns count and N
-data = data[, !c("count", "N")]
+data <- data[, !c("count", "N")]
 
 # write data
 fwrite(data, file = "data/processed/data_thinned_for_analysis.csv")
