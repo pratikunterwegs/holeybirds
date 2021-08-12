@@ -57,7 +57,7 @@ data <- lapply(files, function(file) {
     glue("data has {nrow(df)} rows")
   )
   df[, time := as.POSIXct(UNIX, origin = "1970-01-01", tz = "Asia/Jerusalem")]
-
+  
   # get hour and date
   df[, date := date(time)]
   df[, hour := hour(time)]
