@@ -143,8 +143,20 @@ ggplot(filter(data, abs(estimate_corrected) < 50)) +
       col = p.value <= 0.05,
       alpha = p.value <= 0.05
     ),
+    width = 0.1,
     show.legend = T
   ) +
+  geom_smooth(
+    # data = filter(data, p.value < 0.05),
+    aes(
+      rrv_calc, estimate_corrected
+    ),
+    show.legend = T,
+    se = F,
+    method = "glm",
+    col = "grey20",
+    size = 0.4
+  )+
   scale_colour_viridis_d(
     option = "H",
     direction = -1,
@@ -155,10 +167,16 @@ ggplot(filter(data, abs(estimate_corrected) < 50)) +
     values = c(0.5, 1),
     guide = F
   ) +
-  scale_y_continuous(
-    trans = ggallin::ssqrt_trans
+  scale_x_continuous(
+    limits = c(1, 15)
+    # trans = ggallin::ssqrt_trans
   ) +
-  facet_grid(sp ~ term, scales = "free_y") +
+  scale_y_continuous(
+    # limits = c(1, NA)
+    # trans = ggallin::ssqrt_trans
+  ) +
+  facet_grid(term ~ sp, scales = "free_y") +
+  theme_test()+
   theme(
     legend.position = "top"
   ) +
