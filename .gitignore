@@ -54,6 +54,14 @@ data/results/**
 data/raw/**
 !data/raw/README.txt
 
+# ignore training data
+*lc_training*
+
+*hula_lc_vector*
+*hula_valley*
+
+!*.log
+
 # docx
 *.docx
 *.xlxs

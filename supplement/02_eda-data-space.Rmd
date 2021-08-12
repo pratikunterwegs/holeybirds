@@ -15,6 +15,7 @@ library(stringi)
 
 # libs for plotting
 library(ggplot2)
+library(atlastools)
 ```
 
 ## Read data and plot by species
@@ -24,122 +25,189 @@ library(ggplot2)
 ### Explore
 
 ```{r}
-data_raw <- read_tracking_data(
+data_raw <- holeybirds::read_tracking_data(
   sp_name = "Acrocephalus",
   treatment = "NonMoulting", index = 8
-)
+)[d == "D"]
 
-# check if filtering works
-data_raw[, c("speed_in", "speed_out", "angle") := list(
-  atl_get_speed(data = data_raw, x = "x", time = "UNIX", type = "in"),
-  atl_get_speed(data = data_raw, time = "UNIX", type = "out"),
-  atl_turning_angle(data = data_raw, time = "UNIX")
+data_raw[, c("day", "hour") := list(
+  lubridate::date(as.POSIXct(UNIX, origin = "1970-01-01", tz = "Asia/Jerusalem")),
+  lubridate::hour(as.POSIXct(UNIX, origin = "1970-01-01", tz = "Asia/Jerusalem"))
 )]
 
-# check for poor angles due to same position
-apply(data_raw, 2, function(x) sum(is.na(x)))
+# split by day
+data_raw = split(data_raw, by = "day")
 
-# fix missingle angles due to same position, assign 0
-data_raw[, angle := nafill(angle, type = "const", fill = 0)]
+# remove data with few rows
+data_raw = data_raw[vapply(data_raw, function(df) { nrow(df) > 500 }, FUN.VALUE = T)]
+
+data_raw = lapply(data_raw, function(df) {
+  # check if filtering works
+  df[, c("speed_in", "speed_out", "angle") := list(
+    atl_get_speed(data = df, x = "x", time = "UNIX", type = "in"),
+    atl_get_speed(data = df, time = "UNIX", type = "out"),
+    atl_turning_angle(data = df, time = "UNIX")
+  )]
+  # fix missingle angles due to same position, assign 0
+  df[, angle := nafill(angle, type = "const", fill = 0)]
+})
 
 # make a copy
 data_proc <- copy(data_raw)
 
-# speed quantiles
-sapply(data_proc[, c("speed_in", "speed_out")], quantile,
-  na.rm = T, probs = c(0.85, 0.9, 0.95)
-)
+# filter on speed
+data_proc = lapply(data_proc, function(df) {
+  atl_filter_covariates(
+    df,
+    filters = c(
+      "(speed_in < 3 & speed_out < 3) | angle < 20"
+    )
+  )
+})
 
-# filter on smoothed speed
-data_proc[, speed_smoothed := frollmean(speed_in, n = 21)]
-data_proc <- data_proc[!is.na(speed_smoothed) & speed_smoothed < 20, ]
+data_proc = data_proc[vapply(data_proc, function(df) { nrow(df) > 500 }, FUN.VALUE = T)]
 
-# recalculate
-# check if filtering works
-data_proc[, c("speed_in", "speed_out", "angle") := list(
-  atl_get_speed(data = data_proc, x = "x", time = "UNIX", type = "in"),
-  atl_get_speed(data = data_proc, time = "UNIX", type = "out"),
-  atl_turning_angle(data = data_proc, time = "UNIX")
-)]
+# warn for all data lost
+if(purrr::is_empty(data_proc)) {
+  warning("data proc is empty, all data cleaned away")
+}
 
-# filter per position now
-data_proc <- data_proc[speed_in < 10 & speed_out < 10, ]
+d = copy(data_proc[[1]])
+
+ggplot(d, aes(x, y))+
+  geom_point()+
+  geom_path()
 
 # now smooth
-atl_median_smooth(
-  data = data_proc, x = "x", y = "y",
-  time = "UNIX", moving_window = 11
-)
+data_proc = lapply(data_proc, atl_median_smooth, x = "x", y = "y",
+  time = "UNIX", moving_window = 5)
 
-# select columns
-data_thin <- data_proc[, c(
-  "TAG_ID", "sp", "treat",
-  "UNIX", "x", "y"
-)]
+# try aggregate
+data_agg = lapply(data_proc, function(df) {
+  df = df[, c("UNIX", "x", "y", "sp", "treat", "TAG_ID")]
+  setnames(df, "UNIX", "time")
+  df = atl_thin_data(data = df, interval = 120, 
+                     id_columns = c("TAG_ID", "sp", "treat"),
+                     method = "aggregate")
+})
 
-# rename
-setnames(data_thin, old = "UNIX", new = "time")
+# plot aggregated data
+plots = Map(function(df_raw, df_preproc) {
+  ggplot(df_preproc, aes(x, y))+
+    geom_path(
+      data = df_raw,
+      alpha = 0.2,
+      col = "red"
+    )+
+    geom_point(
+      col = "steelblue",
+      shape = 1
+    )+
+    geom_path(
+      col = "steelblue"
+    )
+}, data_raw, data_proc)
 
-# thin to 20s
-data_thin <- atl_thin_data(
-  data = data_thin, interval = 20,
-  id_columns = c("TAG_ID", "sp", "treat"),
-  method = "aggregate"
-)
-
-# add day and hour
-data_thin[, c("day", "hour") := list(
-  lubridate::date(as.POSIXct(time, origin = "1970-01-01", tz = "Asia/Jerusalem")),
-  lubridate::hour(as.POSIXct(time, origin = "1970-01-01", tz = "Asia/Jerusalem"))
-)]
-
-# plot and check
-ggplot() +
-  geom_path(
-    data = data_raw,
-    aes(x, y),
-    col = "grey",
-    alpha = 0.3,
-    size = 0.3
-  ) +
-  geom_path(
-    data = data_thin,
-    aes(x, y),
-    alpha = 0.2
-  ) +
-  geom_point(
-    data = data_thin,
-    aes(x, y, colour = hour),
-    shape = 19,
-    alpha = 0.7
-    # show.legend = F
-  ) +
-  facet_wrap(~day) +
-  scico::scale_colour_scico(
-    palette = "romaO",
-    name = "Hour",
-    limits = c(0, 23),
-    breaks = c(6, 12, 18),
-    labels = c("6 AM", "Noon", "6 PM"),
-    # trans = "sqrt",
-    # option = "G",
-    direction = 1
-    # begin = 0.1, end = 0.9,
-  ) +
-  ggthemes::theme_map() +
-  ggspatial::annotation_scale(location = "tl", style = "ticks") +
-  coord_sf(
-    crs = 2039,
-    xlim = range(data_proc$x),
-    ylim = range(data_proc$y)
-  )
+plots |> patchwork::wrap_plots()
 ```
 
-### Save example plot
+### Recurse
 
 ```{r}
-# save
-ggsave(
-  filename = "figures/fig_Acrocephalus_daily.png"
-)
+library(recurse)
+# get residence times
+data_residence <- lapply(data_proc, function(dt) {
+
+  # do basic recurse -- refer to Bracis et al. (2018) Ecography
+  dt$res_time = getRecursions(
+    x = dt[, c("x", "y", "UNIX", "TAG_ID")],
+    radius = 10,
+    timeunits = "mins"
+  )$residenceTime
+
+  # print message when done
+  message(sprintf("TAG %s residence times done", unique(dt$TAG_ID)))
+  
+  dt
+})
+```
+
+### Plot residence time
+
+```{r}
+# plot aggregated data
+plots = Map(function(df_raw, df_preproc) {
+  ggplot(df_preproc, aes(x, y))+
+    geom_point(
+      data = df_raw,
+      aes(x, y),
+      alpha = 0.1
+    )+
+    geom_path(
+      col = "grey"
+    )+
+    geom_point(
+      aes(col = res_time),
+      shape = 16
+    )+
+    scale_colour_viridis_c(
+      option = "H",
+      trans = "sqrt",
+      breaks = c(2, 10, 20, 60),
+      limits = c(2, NA),
+      na.value = "grey"
+    )+
+    theme_void()
+}, data_raw, data_residence)
+
+plots |> patchwork::wrap_plots()
+```
+
+
+```{r res_patch}
+# make residence patches
+data_patch = copy(data_residence)
+data_patch = lapply(data_patch, function(df) {
+  df[, id := "TAG_ID"]
+  df$time = NULL
+  df$time = df$UNIX
+  
+  df = atl_filter_covariates(
+    df,
+    filters = c(
+      "res_time >= 2"
+    )
+  )
+  
+  b = atl_res_patch(a, buffer_radius = 3, lim_spat_indep = 10, lim_time_indep = 5)
+  
+  b
+})
+
+# make plots
+plots = Map(function(df_raw, data_rp) {
+  ggplot(df_raw)+
+    geom_point(
+      aes(x, y),
+      alpha = 0.1
+    )+
+    geom_path(
+      data = data_rp,
+      aes(x_median, y_median),
+      col = "red",
+      size = 1
+    )+
+    geom_point(
+      data = b,
+      aes(x_median, y_median, 
+          fill = duration / 60),
+      shape = 21
+    )+
+    scale_fill_viridis_c(
+      option = "H"
+    )+
+    theme_void()
+}, data_raw, data_patch)
+
+plots |> patchwork::wrap_plots()
 ```

@@ -38,7 +38,7 @@ ssfs = rename(tracks, ssf = "data")
 
 ```{r}
 # specify the model formula
-ssf_formula = "case_ ~ ndvi + landcover + strata(step_id_)"
+ssf_formula = "case_ ~ sl_ + ndvi + landcover + strata(step_id_) + sl_:landcover"
 
 # add formula to dataframe
 ssfs = mutate(

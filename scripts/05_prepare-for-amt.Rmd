@@ -19,6 +19,13 @@ library(tidyr)
 library(sf)
 library(purrr)
 
+library(devtools)
+if (!"velox" %in% installed.packages()) {
+  install_github("hunzikp/velox")
+} else {
+  library(velox)
+}
+
 # library for SSF
 library(amt)
 
@@ -30,18 +37,18 @@ library(colorspace)
 ```{r}
 # read file names
 files <- list.files("data/processed/data_preprocessed",
-  pattern = "smooth",
-  full.names = TRUE
-)
+                    full.names = TRUE
+)[1:3]
 ```
 
-## Filter for daytime positions
+## Filter for stationary daytime positions
 
 ```{r}
 # define daily data threshold
 daily_data_threshold <- 100
 day_start <- 5
 day_end <- 20
+stationary_time = 2 # minutes
 
 # read smoothed data and remove if not sufficient data
 data <- lapply(files, function(file) {
@@ -50,22 +57,21 @@ data <- lapply(files, function(file) {
     glue("data has {nrow(df)} rows")
   )
   df[, time := as.POSIXct(UNIX, origin = "1970-01-01", tz = "Asia/Jerusalem")]
-
-  # get hour and date
-  df[, date := date(time)]
-  df[, hour := hour(time)]
-
+  
   # remove nighttime roosts --- this has ALREADY BEEN DONE
   # keeping this in for safety
-  df <- df[hour > day_start & hour < day_end, ]
-
+  df <- df[hour >= day_start & hour < day_end, ]
+  
+  # remove data where bird is moving
+  df <- df[res_time > stationary_time]
+  
   # split by date
   df_list <- split(df, by = "date")
   
   # remove data with fewer than N rows per day
-  df_list <- df_list[unlist(lapply(df_list, function(le) {
+  df_list <- df_list[vapply(df_list, function(le) {
     nrow(le) >= daily_data_threshold
-  }))]
+  }, FUN.VALUE = TRUE)]
   
   # handle potentially empty data
   if (!is.null(df_list)) {
@@ -85,7 +91,7 @@ data <- rbindlist(data)
 
 # remove unnecessary columns
 data[, `#` := NULL]
-data = data[, !c("speed_in", "speed_out", "speed_smoothed")]
+data = data[, !c("speed_in", "speed_out")]
 ```
 
 ## Prepare for SSF
@@ -98,7 +104,7 @@ setDF(data)
 
 # nest the tibble, 
 tracks <- nest(data,
-  data = -matches(c("TAG_ID", "date", "sp", "treat"))
+               data = -matches(c("TAG_ID", "date", "sp", "treat"))
 )
 ```
 
@@ -107,47 +113,47 @@ tracks <- nest(data,
 ```{r}
 # make amt objects from the nested data
 tracks <- mutate(tracks,
-  data = map(data, function(df) {
-    amt::make_track(
-      tbl = df,
-      .x = x,
-      .y = y,
-      .t = time,
-      crs = sp::CRS(
-        st_crs(2039)$proj4string
-      )
-    )
-  })
+                 data = map(data, function(df) {
+                   amt::make_track(
+                     tbl = df,
+                     .x = x,
+                     .y = y,
+                     .t = time,
+                     crs = sp::CRS(
+                       st_crs(2039)$proj4string
+                     )
+                   )
+                 })
 )
 ```
 
-### Resample to 10 seconds
+### Resample to 60 seconds
 
 ```{r}
 # define resample seconds and tolerance
-resample_interval_s = 10
-resample_tolerance = 5
+resample_interval_s = 30
+resample_tolerance = 2
 
 # min burst
-min_n_burst = 5 # min 5 positions in a row
+min_n_burst = 3 # min 5 positions in a row
 
 # resample and filter for steps in burst
 tracks = mutate(
-    tracks,
-    data = lapply(data, function(df) {
-      
-        # resampling the track to 30 seconds with 5 second tolerance
-        amt::track_resample(
-            df,
-            rate = seconds(resample_interval_s),
-            tolerance = seconds(resample_tolerance)
-        ) %>%
-        
-        # filtering for bursts with at least 5 pos
-        amt::filter_min_n_burst(
-            min_n = min_n_burst
-        )
-    }),
+  tracks,
+  data = lapply(data, function(df) {
+    
+    # resampling the track to 30 seconds with 5 second tolerance
+    amt::track_resample(
+      df,
+      rate = seconds(resample_interval_s),
+      tolerance = seconds(resample_tolerance)
+    ) #%>%
+    
+    # filtering for bursts with at least 5 pos
+    # amt::filter_min_n_burst(
+    #     min_n = min_n_burst
+    # )
+  })
 )
 ```
 
@@ -156,20 +162,28 @@ tracks = mutate(
 Remove data with less than some threshold (currently 50) positions.
 
 ```{r}
-min_daily_expected = 50
+min_daily_expected = 25
 
 # filter out data with no rows remaining
 tracks = filter(
-    tracks,
-    purrr::map_lgl(data, function(df) {
-        nrow(df) > min_daily_expected
-    })
+  tracks,
+  purrr::map_lgl(data, function(df) {
+    nrow(df) > min_daily_expected
+  })
 )
 
 # now make steps by burst
 tracks = mutate(
-    tracks,
-    data = map(data, amt::steps_by_burst)
+  tracks,
+  data = map(data, amt::steps_by_burst)
+)
+
+## remove with less than 5 steps
+tracks = filter(
+  tracks,
+  purrr::map_lgl(data, function(df) {
+    nrow(df) >= 10
+  })
 )
 ```
 
@@ -177,10 +191,10 @@ tracks = mutate(
 
 ```{r}
 # get ndvi
-ndvi = raster("data/rasters/raster_hula_ndvi_transformed.tif")
+ndvi = raster("data/rasters/raster_hula_ndvi_transformed_crop.tif")
 
 # get landcover
-lc = raster("data/rasters/raster_hula_lc_reclass.tif")
+lc = raster("data/rasters/raster_hula_lc10_transformed_crop.tif")
 
 # assign name
 names(ndvi) = "ndvi"
@@ -205,89 +219,281 @@ tracks = mutate(
     
     .x %>%
       # get 9 random potential steps
-      amt::random_steps(n = n_alt_steps) %>%
-      # get NDVI and landcover
-      amt::extract_covariates(ndvi) %>%
-      amt::extract_covariates(lc) %>%
-      # make landcover a factor
+      amt::random_steps(n = n_alt_steps)
+  })
+)
+```
+
+### Get destination covariates
+
+```{r}
+# radius in metres
+use_radius = 25
+
+# prepare NDVI and LC velox
+ndvi_velox = velox(ndvi)
+lc_velox = velox(lc)
+```
+
+```{r}
+tracks = mutate(
+  tracks,
+  data = imap(data, function(.x, .y) {
+    # print message
+    message(sprintf("working on row %i", .y))
+    
+    # make buffers at destination
+    step_end_buffer = select(.x, x2_, y2_, case_, step_id_) %>% 
+      st_as_sf(coords = c("x2_", "y2_"), crs = 2039) %>% 
+      st_buffer(dist = use_radius)
+    
+    # get ndvi values
+    mean_ndvi = ndvi_velox$extract(
+      sp = step_end_buffer, df = TRUE,
+      fun = function(x) mean(x, na.rm = T)
+    )
+    mean_ndvi = rename(mean_ndvi, ndvi = out)
+    
+    # landcover operation
+    lc_vals = lc_velox$extract(sp = step_end_buffer, df = TRUE)
+    lc_prop =
+      lc_vals %>% 
+      
+      # rename column
+      rename(lc = "do.call..rbind...out.") %>% 
+      count(ID_sp, lc) %>% 
+      group_by(ID_sp) %>% 
+      
+      # count the landcover classes and get proportion
       mutate(
-        landcover = factor(landcover)
+        lc = sprintf("lc_%i", lc),
+        prop = n / sum(n)
+      ) %>% 
+      select(-n) %>% 
+      
+      # pivot to wide format
+      pivot_wider(
+        names_from = lc,
+        values_from = prop,
+        values_fill = list(prop = 0)
+      ) %>% 
+      ungroup()
+    
+    # create key
+    step_end_buffer$ID_sp = seq(nrow(step_end_buffer))
+    
+    # join
+    step_end_buffer = inner_join(
+      step_end_buffer, mean_ndvi,
+      by = "ID_sp"
+    ) %>% 
+      inner_join(
+        lc_prop, by = "ID_sp"
+      )
+    
+    # join destination data with steps data
+    .x = mutate(.x,
+                ID_sp = seq(nrow(.x))) %>% 
+      inner_join(mean_ndvi, by = "ID_sp") %>% 
+      inner_join(lc_prop, by = "ID_sp") %>% 
+      select(-ID_sp)
+  }
+  )
+)
+```
+
+### Get step characteristics
+
+```{r}
+tracks = mutate(
+  tracks,
+  data = imap(data, function(.x, .y) {
+    
+    # print message
+    message(sprintf("working on row %i", .y))
+    
+    # get end points
+    steps = select(.x, x1_, y1_, x2_, y2_, step_id_, sl_)
+    
+    # make sf lines
+    steps$geometry = pmap(steps, function(x1_, y1_, x2_, y2_, step_id_, sl_) {
+      # make linear path
+      step_path = st_linestring(
+        matrix(c(x1_, y1_, x2_, y2_), nrow = 2, byrow = T)
+      )
+      step_path
+    })
+    
+    # MAKE SFC
+    steps$geometry = st_sfc(steps$geometry, crs = 2039)
+    
+    # assign ID_sp
+    steps$ID_sp = seq(nrow(steps))
+    
+    # filter paths > 10 m, the long steps
+    steps_long = filter(steps, sl_ >= 10) %>% 
+      select(-sl_)
+    
+    # check steps long length
+    if (nrow(steps_long) > 0) {
+      
+      # sample it every 10m
+      steps_long = steps_long %>% 
+        mutate(path_samples = st_line_sample(
+          geometry, 
+          density = 1 / 10)
+        ) %>% 
+        filter(!st_is_empty(path_samples)) %>% 
+        select(-geometry)
+      
+      # make 5 m buffer
+      steps_long = steps_long %>% 
+        mutate(path_samples = st_buffer(path_samples, dist = 5),
+               path_samples = st_sfc(path_samples))
+      
+      # cast to multipolygon
+      steps_long = steps_long %>% 
+        mutate(path_samples = st_cast(path_samples, "MULTIPOLYGON"))
+      
+      # make sf and add temp id
+      steps_long = st_as_sf(steps_long, sf_column_name = "path_samples") %>% 
+        mutate(id_temp_ = seq(nrow(.)))
+      
+      # THIS CAN NOW BE PASSED TO VELOX -- some should give NAs due to EMPTY
+      ndvi_path = ndvi_velox$extract(sp = steps_long$path_samples, 
+                                     fun = function(x) mean(x, na.rm = T), 
+                                     df = TRUE) %>% 
+        as_tibble() %>% 
+        rename(ndvi_step = out,
+               id_temp_ = ID_sp)
+      
+      # get counts for 
+      lc_vals_path = lc_velox$extract(sp = steps_long$path_samples, df = TRUE)
+      lc_prop_path =
+        lc_vals_path %>% 
+        rename(lc = "do.call..rbind...out.") %>% 
+        count(ID_sp, lc) %>% 
+        group_by(ID_sp) %>% 
+        mutate(
+          lc = sprintf("lc_%i", lc),
+          prop = n / sum(n)
+        ) %>% 
+        select(-n) %>% 
+        pivot_wider(
+          names_from = lc,
+          values_from = prop,
+          values_fill = list(prop = 0)
+        ) %>% 
+        ungroup()
+      
+      # add missing samples
+      lc_prop_path = full_join(
+        lc_prop_path,
+        tibble(ID_sp = seq(nrow(steps_long))),
+        by = "ID_sp"
+      )
+      
+      # get step openness
+      data_openness = lc_prop_path %>% 
+        # select open classes - open agri, urban, water
+        select(matches("(2)|(0)|(5)")) %>% 
+        # sum the proportion
+        rowSums(na.rm = TRUE) %>% 
+        tibble(
+          id_temp_ = seq(length(.)),
+          step_openness = .
+        )
+      
+      # add assert
+      assertthat::assert_that(
+        nrow(data_openness) == nrow(steps_long),
+        msg = "step openness values fewer than long steps"
+      )
+      
+      # add to steps long
+      steps_long = steps_long %>% 
+        st_drop_geometry() %>% 
+        # add ndvi path
+        left_join(ndvi_path, by = "id_temp_") %>% 
+        left_join(data_openness, by = "id_temp_")
+      
+      # remove excess data
+      steps_long = steps_long %>% 
+        select(-id_temp_)
+      
+      # bind with all steps
+      steps = steps %>% 
+        select(-geometry) %>% 
+        
+        # join to long steps
+        left_join(
+          steps_long
+        )
+    } else {
+      steps = mutate(
+        steps,
+        ndvi_step = NA_real_,
+        step_openness = NA_real_)
+    }
+    
+    # join to get full predictor data
+    .x = left_join(
+      .x,
+      steps
+    )
+    
+    # handle the short steps
+    # first NDVI
+    .x = .x %>% 
+      mutate(
+        ndvi_step = if_else(is.na(ndvi_step), ndvi, ndvi_step)
+      )
+    
+    # handle step openness
+    dest_openness = .x %>% 
+      # select open classes - open agri, urban, water
+      select(matches("lc_(2)|(0)|(5)")) %>% 
+      # sum the proportion
+      rowSums(na.rm = TRUE)
+    
+    # assign dest openness if step openness is NA
+    .x = .x %>% 
+      mutate(
+        step_openness = if_else(is.na(step_openness), dest_openness, step_openness)
       )
   })
 )
 ```
 
-## Explore covariates in `amt` tracks
-
-Explore the landcover classes in the tracks, as there needs to be more than one class for factor contrasts.
+### Prepare final predictors
 
 ```{r}
-# count LC classes in track
+# add a very small movement distance (1e-5 metres --- less than a centimetre)
+# to prevent infinite values
 tracks = mutate(
   tracks,
-  n_lc = map_int(data, function(df) {
-    length(unique(df$landcover))
+  data = map(data, function(df) {
+    df = mutate(df, log_sl = log(sl_ + 1e-5)) %>%
+      filter(!is.na(log_sl), !is.infinite(log_sl))
+    
+    # add natural types
+    data_lc_natural = df %>% 
+      select(matches("lc_(3)|(4)|(5)")) %>% 
+      rowSums()
+    
+    df = mutate(df, p_natural = data_lc_natural)
+    
+    # add urban and open if absent
+    for (colname in c("lc_0", "lc_2")) {
+      if (!colname %in% colnames(df)) {
+        df[[colname]] = 0
+      }
+    }
+    
+    # return df
+    df
   })
 )
-```
-
-```{r}
-# barplot of number of landcover classes in data
-ggplot(tracks %>% 
-         filter(treat != "LongPeriod"))+
-  geom_bar(
-    aes(
-      n_lc > 1,
-      fill = n_lc > 1
-    ),
-    show.legend = FALSE
-  )+
-  scale_fill_manual(
-    values = c(
-      "TRUE" = "lightblue",
-      "FALSE" = "indianred"
-    )
-  )+
-  scale_x_discrete(
-    labels = c("1", "> 1"
-    )
-  )+
-  # scale_y_sqrt(
-  #   breaks = c(5, 25, 50, 100, 150)
-  # )+
-  coord_cartesian(
-    ylim = c(0, 110),
-    expand = F
-  )+
-  facet_grid(
-    sp ~ treat
-  )+
-  theme_test(base_size = 8)+
-  labs(
-    x = "# Landcover classes in track",
-    y = "# Daily tracks",
-    caption = "Landcover classes are counted after preparing for SSF, including\
-    adding 9 random steps."
-  )
-
-# save image
-ggsave(
-  filename = "figures/fig_lc_classes_in_ssf_tracks.png",
-  height = 4, width = 3
-)
-```
-
-### Remove tracks without LC contrasts
-
-```{r}
-# remove tracks without landcover contrasts
-tracks = filter(
-  tracks,
-  n_lc > 1
-) %>% 
-  select(-n_lc)
-
-# goes from 434 daily (mostly sparrows) to 405
 ```
 
 Data still contains long term sparrow tracking and swallow data.
@@ -295,4 +501,3 @@ Data still contains long term sparrow tracking and swallow data.
 ```{r}
 save(tracks, file = "data/processed/data_for_ssf.Rds")
 ```
-
