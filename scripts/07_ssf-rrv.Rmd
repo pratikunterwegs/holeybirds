@@ -89,6 +89,10 @@ rrv <- mutate(
   date = lubridate::date(date)
 )
 
+# edit date class to characters
+rrv$date = as.character(rrv$date)
+ssf_params$date = as.character(ssf_params$date)
+
 # link ssf params and rrv
 ssf_params <- left_join(
   ssf_params,
@@ -152,7 +156,7 @@ ggplot(filter(data, abs(estimate_corrected) < 50)) +
     guide = F
   ) +
   scale_y_continuous(
-    # trans = ggallin::ssqrt_trans
+    trans = ggallin::ssqrt_trans
   ) +
   facet_grid(sp ~ term, scales = "free_y") +
   theme(
