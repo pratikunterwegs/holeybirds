@@ -37,18 +37,18 @@ library(colorspace)
 ```{r}
 # read file names
 files <- list.files("data/processed/data_preprocessed",
-  pattern = "smooth",
-  full.names = TRUE
-)
+                    full.names = TRUE
+)[1:3]
 ```
 
-## Filter for daytime positions
+## Filter for stationary daytime positions
 
 ```{r}
 # define daily data threshold
 daily_data_threshold <- 100
 day_start <- 5
 day_end <- 20
+stationary_time = 2 # minutes
 
 # read smoothed data and remove if not sufficient data
 data <- lapply(files, function(file) {
@@ -58,10 +58,6 @@ data <- lapply(files, function(file) {
   )
   df[, time := as.POSIXct(UNIX, origin = "1970-01-01", tz = "Asia/Jerusalem")]
   
-  # get hour and date
-  df[, date := date(time)]
-  df[, hour := hour(time)]
-
   # remove nighttime roosts --- this has ALREADY BEEN DONE
   # keeping this in for safety
   df <- df[hour >= day_start & hour < day_end, ]
@@ -117,17 +113,17 @@ tracks <- nest(data,
 ```{r}
 # make amt objects from the nested data
 tracks <- mutate(tracks,
-  data = map(data, function(df) {
-    amt::make_track(
-      tbl = df,
-      .x = x,
-      .y = y,
-      .t = time,
-      crs = sp::CRS(
-        st_crs(2039)$proj4string
-      )
-    )
-  })
+                 data = map(data, function(df) {
+                   amt::make_track(
+                     tbl = df,
+                     .x = x,
+                     .y = y,
+                     .t = time,
+                     crs = sp::CRS(
+                       st_crs(2039)$proj4string
+                     )
+                   )
+                 })
 )
 ```
 
@@ -196,6 +192,7 @@ tracks = filter(
 ```{r}
 # get ndvi
 ndvi = raster("data/rasters/raster_hula_ndvi_transformed_crop.tif")
+
 # get landcover
 lc = raster("data/rasters/raster_hula_lc10_transformed_crop.tif")
 
@@ -284,7 +281,7 @@ tracks = mutate(
     
     # create key
     step_end_buffer$ID_sp = seq(nrow(step_end_buffer))
-
+    
     # join
     step_end_buffer = inner_join(
       step_end_buffer, mean_ndvi,
@@ -337,98 +334,107 @@ tracks = mutate(
     steps_long = filter(steps, sl_ >= 10) %>% 
       select(-sl_)
     
-    # sample it every 10m
-    steps_long = steps_long %>% 
-      mutate(path_samples = st_line_sample(
-        geometry, 
-        density = 1 / 10)
-      ) %>% 
-      filter(!st_is_empty(path_samples)) %>% 
-      select(-geometry)
-    
-    # make 5 m buffer
-    steps_long = steps_long %>% 
-      mutate(path_samples = st_buffer(path_samples, dist = 5),
-             path_samples = st_sfc(path_samples))
-    
-    # cast to multipolygon
-    steps_long = steps_long %>% 
-      mutate(path_samples = st_cast(path_samples, "MULTIPOLYGON"))
-    
-    # make sf and add temp id
-    steps_long = st_as_sf(steps_long, sf_column_name = "path_samples") %>% 
-      mutate(id_temp_ = seq(nrow(.)))
-    
-    # THIS CAN NOW BE PASSED TO VELOX -- some should give NAs due to EMPTY
-    ndvi_path = ndvi_velox$extract(sp = steps_long$path_samples, 
-                                   fun = function(x) mean(x, na.rm = T), 
-                                   df = TRUE) %>% 
-      as_tibble() %>% 
-      rename(ndvi_step = out,
-             id_temp_ = ID_sp)
-    
-    # get counts for 
-    lc_vals_path = lc_velox$extract(sp = steps_long$path_samples, df = TRUE)
-    lc_prop_path =
-      lc_vals_path %>% 
-      rename(lc = "do.call..rbind...out.") %>% 
-      count(ID_sp, lc) %>% 
-      group_by(ID_sp) %>% 
-      mutate(
-        lc = sprintf("lc_%i", lc),
-        prop = n / sum(n)
-      ) %>% 
-      select(-n) %>% 
-      pivot_wider(
-        names_from = lc,
-        values_from = prop,
-        values_fill = list(prop = 0)
-      ) %>% 
-      ungroup()
-    
-    # add missing samples
-    lc_prop_path = full_join(
-      lc_prop_path,
-      tibble(ID_sp = seq(nrow(steps_long))),
-      by = "ID_sp"
-    )
-    
-    # get step openness
-    data_openness = lc_prop_path %>% 
-      # select open classes - open agri, urban, water
-      select(matches("(2)|(0)|(5)")) %>% 
-      # sum the proportion
-      rowSums(na.rm = TRUE) %>% 
-      tibble(
-        id_temp_ = seq(length(.)),
-        step_openness = .
-      )
-    
-    # add assert
-    assertthat::assert_that(
-      nrow(data_openness) == nrow(steps_long),
-      msg = "step openness values fewer than long steps"
-    )
-    
-    # add to steps long
-    steps_long = steps_long %>% 
-      st_drop_geometry() %>% 
-      # add ndvi path
-      left_join(ndvi_path, by = "id_temp_") %>% 
-      left_join(data_openness, by = "id_temp_")
-    
-    # remove excess data
-    steps_long = steps_long %>% 
-      select(-id_temp_)
-    
-    # bind with all steps
-    steps = steps %>% 
-      select(-geometry) %>% 
+    # check steps long length
+    if (nrow(steps_long) > 0) {
       
-      # join to long steps
-      left_join(
-        steps_long
+      # sample it every 10m
+      steps_long = steps_long %>% 
+        mutate(path_samples = st_line_sample(
+          geometry, 
+          density = 1 / 10)
+        ) %>% 
+        filter(!st_is_empty(path_samples)) %>% 
+        select(-geometry)
+      
+      # make 5 m buffer
+      steps_long = steps_long %>% 
+        mutate(path_samples = st_buffer(path_samples, dist = 5),
+               path_samples = st_sfc(path_samples))
+      
+      # cast to multipolygon
+      steps_long = steps_long %>% 
+        mutate(path_samples = st_cast(path_samples, "MULTIPOLYGON"))
+      
+      # make sf and add temp id
+      steps_long = st_as_sf(steps_long, sf_column_name = "path_samples") %>% 
+        mutate(id_temp_ = seq(nrow(.)))
+      
+      # THIS CAN NOW BE PASSED TO VELOX -- some should give NAs due to EMPTY
+      ndvi_path = ndvi_velox$extract(sp = steps_long$path_samples, 
+                                     fun = function(x) mean(x, na.rm = T), 
+                                     df = TRUE) %>% 
+        as_tibble() %>% 
+        rename(ndvi_step = out,
+               id_temp_ = ID_sp)
+      
+      # get counts for 
+      lc_vals_path = lc_velox$extract(sp = steps_long$path_samples, df = TRUE)
+      lc_prop_path =
+        lc_vals_path %>% 
+        rename(lc = "do.call..rbind...out.") %>% 
+        count(ID_sp, lc) %>% 
+        group_by(ID_sp) %>% 
+        mutate(
+          lc = sprintf("lc_%i", lc),
+          prop = n / sum(n)
+        ) %>% 
+        select(-n) %>% 
+        pivot_wider(
+          names_from = lc,
+          values_from = prop,
+          values_fill = list(prop = 0)
+        ) %>% 
+        ungroup()
+      
+      # add missing samples
+      lc_prop_path = full_join(
+        lc_prop_path,
+        tibble(ID_sp = seq(nrow(steps_long))),
+        by = "ID_sp"
       )
+      
+      # get step openness
+      data_openness = lc_prop_path %>% 
+        # select open classes - open agri, urban, water
+        select(matches("(2)|(0)|(5)")) %>% 
+        # sum the proportion
+        rowSums(na.rm = TRUE) %>% 
+        tibble(
+          id_temp_ = seq(length(.)),
+          step_openness = .
+        )
+      
+      # add assert
+      assertthat::assert_that(
+        nrow(data_openness) == nrow(steps_long),
+        msg = "step openness values fewer than long steps"
+      )
+      
+      # add to steps long
+      steps_long = steps_long %>% 
+        st_drop_geometry() %>% 
+        # add ndvi path
+        left_join(ndvi_path, by = "id_temp_") %>% 
+        left_join(data_openness, by = "id_temp_")
+      
+      # remove excess data
+      steps_long = steps_long %>% 
+        select(-id_temp_)
+      
+      # bind with all steps
+      steps = steps %>% 
+        select(-geometry) %>% 
+        
+        # join to long steps
+        left_join(
+          steps_long
+        )
+    } else {
+      steps = mutate(
+        steps,
+        ndvi_step = NA_real_,
+        step_openness = NA_real_)
+    }
     
     # join to get full predictor data
     .x = left_join(
@@ -469,21 +475,21 @@ tracks = mutate(
   data = map(data, function(df) {
     df = mutate(df, log_sl = log(sl_ + 1e-5)) %>%
       filter(!is.na(log_sl), !is.infinite(log_sl))
-
+    
     # add natural types
     data_lc_natural = df %>% 
       select(matches("lc_(3)|(4)|(5)")) %>% 
       rowSums()
-
+    
     df = mutate(df, p_natural = data_lc_natural)
-
+    
     # add urban and open if absent
     for (colname in c("lc_0", "lc_2")) {
       if (!colname %in% colnames(df)) {
         df[[colname]] = 0
       }
     }
-
+    
     # return df
     df
   })
