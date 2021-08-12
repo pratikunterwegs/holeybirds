@@ -95,7 +95,7 @@ data <- rbindlist(data)
 
 # remove unnecessary columns
 data[, `#` := NULL]
-data = data[, !c("speed_in", "speed_out", "speed_smoothed")]
+data = data[, !c("speed_in", "speed_out")]
 ```
 
 ## Prepare for SSF
