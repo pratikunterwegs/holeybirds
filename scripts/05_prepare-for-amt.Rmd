@@ -73,9 +73,9 @@ data <- lapply(files, function(file) {
   df_list <- split(df, by = "date")
   
   # remove data with fewer than N rows per day
-  df_list <- df_list[unlist(lapply(df_list, function(le) {
+  df_list <- df_list[vapply(df_list, function(le) {
     nrow(le) >= daily_data_threshold
-  }))]
+  }, FUN.VALUE = TRUE)]
   
   # handle potentially empty data
   if (!is.null(df_list)) {
