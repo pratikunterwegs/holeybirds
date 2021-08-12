@@ -182,6 +182,10 @@ tracks = mutate(
 tracks = filter(
   tracks,
   purrr::map_lgl(data, function(df) {
+    
+    # first filter for poor turning angles
+    df = filter(df, !is.na(ta_))
+    
     nrow(df) >= 10
   })
 )
