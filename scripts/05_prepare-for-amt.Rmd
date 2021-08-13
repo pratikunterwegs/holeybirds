@@ -181,10 +181,10 @@ ggplot(tracks)+
 
 ### Quality filters
 
-Remove data with less than some threshold (currently 50) positions.
+Remove data with less than some threshold (currently 20) positions.
 
 ```{r}
-min_daily_expected <- 25
+min_daily_expected <- 20
 
 # filter out data with no rows remaining
 tracks <- filter(
@@ -231,7 +231,7 @@ names(lc) <- "landcover"
 
 ```{r}
 # define alternate steps
-n_alt_steps <- 29
+n_alt_steps <- 19
 
 # prepare alternate steps and extract covariates
 tracks <- mutate(
@@ -254,7 +254,7 @@ tracks <- mutate(
 
 ```{r}
 # radius in metres
-use_radius <- 25
+use_radius <- 10
 
 # prepare NDVI and LC velox
 ndvi_velox <- velox(ndvi)
