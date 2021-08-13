@@ -456,7 +456,8 @@ tracks <- mutate(
         select(-geometry) %>%
         # join to long steps
         left_join(
-          steps_long
+          steps_long,
+          by = c("x1_", "y1_", "x2_", "y2_", "step_id_", "ID_sp")
         )
     } else {
       steps <- mutate(
@@ -469,7 +470,8 @@ tracks <- mutate(
     # join to get full predictor data
     .x <- left_join(
       .x,
-      steps
+      steps,
+      by = c("x1_", "x2_", "y1_", "y2_", "sl_", "step_id_")
     )
 
     # handle the short steps
