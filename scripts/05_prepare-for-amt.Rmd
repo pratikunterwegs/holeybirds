@@ -63,7 +63,7 @@ data <- lapply(files, function(file) {
   df <- df[hour >= day_start & hour < day_end, ]
 
   # remove data where bird is moving
-  df <- df[res_time > stationary_time]
+  # df <- df[res_time > stationary_time]
 
   # split by date
   df_list <- split(df, by = "date")
