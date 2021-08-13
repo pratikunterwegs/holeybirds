@@ -156,6 +156,29 @@ tracks <- mutate(
 )
 ```
 
+### Examine remaining data
+
+```{r}
+# count rows in data
+tracks = mutate(
+  tracks,
+  nrow = map_int(data, nrow)
+)
+```
+
+```{r}
+# histogram of remaining data
+ggplot(tracks)+
+  geom_histogram(
+    aes(
+      nrow,
+      fill = ..x.. > 20
+    )
+  )+
+  facet_grid(sp ~ treat)
+```
+
+
 ### Quality filters
 
 Remove data with less than some threshold (currently 50) positions.
