@@ -42,7 +42,7 @@ for (file in files) {
   
   # get raw data
   file_raw = files_raw[grep(tag, files_raw)]
-  file_raw = file_raw[grep(treat, file_raw)]
+  file_raw = file_raw[grep(treat, file_raw)][1]
   
   message(
     glue::glue(
@@ -59,42 +59,67 @@ for (file in files) {
     tag == unique(data_raw$TAG_ID)
   )
   
-  p = ggplot()+
+  p = ggplot(
+    data = data,
+    aes(x, y, group = date)
+  )+
+    geom_path(
+      data = data_raw,
+      col = "grey",
+      alpha = 0.2
+    )+
     geom_point(
       data = data_raw,
-      aes(x, y),
-      size = 0.1,
-      col = "grey50"
+      col = "grey50",
+      shape = 1,
+      size = 0.3,
+      alpha = 0.5
     )+
     geom_path(
-      data = data_raw,
-      aes(x, y),
-      size = 0.1,
-      colour = "grey"
-    )+
-    geom_path(
-      data = data,
-      aes(x, y, col = factor(date)),
+      col = "indianred",
       size = 0.1
     )+
     geom_point(
-      data = data,
-      aes(x, y, col = factor(date)),
-      size = 0.5,
-      show.legend = F
+      aes(col = res_time),
+      shape = 16
     )+
-    scale_colour_viridis_d(
+    scale_colour_viridis_c(
       option = "H",
-      na.value = "grey"
+      trans = "sqrt",
+      breaks = c(2, 10, 30, 120)
+    )+
+    ggspatial::annotation_scale(
+      style = "ticks",
+      width_hint = 0.05,
+      location = "br"
     )+
     coord_sf(
       crs = 2039
+    )+
+    ggthemes::theme_map()+
+    theme(
+      legend.background = element_blank(),
+      legend.key.width = unit(2, "mm"),
+      plot.background = element_rect(
+        fill = "white",
+        colour = NA
+      )
+    )+
+    labs(
+      title = glue::glue("sp: {sp} tag: {tag}
+                         treat: {treat}
+                         "),
+      col = "res time (min)"
     )
   
-  p = ggplotly(p)
-  htmlwidgets::saveWidget(p, 
-    file = sprintf("figures/figures_preprocessing/fig_preproc_%s_%s_%s.html", 
-                   sp, tag, treat))
+  ggsave(
+    p,
+    filename = glue::glue("figures/figures_preprocessing/fig_\\
+                          {sp}_{tag}_{treat}.png"),
+    height = 9,
+    width = 16
+  )
+  
 }
 ```
 
