@@ -1,0 +1,273 @@
+---
+editor_options:
+  chunk_output_type: console
+---
+
+# Investigate SSF steps
+
+## Prepare data
+
+### Load data and libraries
+
+```{r}
+# for data
+library(tidyverse)
+
+# for plotting
+library(ggplot2)
+library(colorspace)
+```
+
+```{r}
+# load from saved rds
+load("data/processed/data_for_ssf.Rds")
+```
+
+### Expand data
+
+```{r}
+# unnest data and remove position data
+tracks = unnest(
+  tracks,
+  cols = data
+)
+
+tracks = select(
+  tracks,
+  sp, TAG_ID, treat, date, burst_, sl_, ta_,
+  case_,
+  matches("lc_"), matches("ndvi"),
+  step_openness, p_natural
+) %>% 
+  select(-lc_NA)
+```
+
+### Load RRV data
+
+```{r}
+rrv = read_csv("data/results/data_daily_rrv.csv") %>% 
+  mutate(date = as.character(date))
+```
+
+```{r}
+# make date character
+tracks = mutate(tracks, date = as.character(date))
+
+# join with rrv data
+tracks = left_join(
+  tracks, rrv, by = c("sp", "TAG_ID", "treat", "date")
+)
+
+# remove long term tracks data
+tracks = filter(tracks, treat != "LongPeriod")
+```
+
+## Step selection and NDVI
+
+### Selection for destination NDVI
+
+```{r}
+# select ndvi related metrics
+tracks_ndvi = select(
+  tracks,
+  matches("ndvi"),
+  case_, sp, treat, date, rrv_calc, RRV
+)
+
+# plot
+fig_ndvi_selection = 
+  ggplot(tracks)+
+  stat_bin_2d(
+    geom = "tile",
+    aes(case_, ndvi, fill = ..density..),
+    binwidth = c(0.2, 0.01),
+    alpha = 1
+  )+
+  geom_boxplot(
+    aes(
+      case_, ndvi
+    ),
+    outlier.colour = NA,
+    # colour = "grey",
+    fill = alpha("white", alpha = 0.2),
+    width = 0.3
+  )+
+  scale_fill_continuous_sequential(
+    palette = "Greens"
+  )+
+  scale_x_discrete(
+    breaks = c(F, T),
+    label = c("Not\nselected", "Selected")
+  )+
+  facet_grid(sp ~ treat)+
+  theme_test()+
+  theme(
+    legend.key.width = unit(2, units = "mm")
+  )+
+  labs(
+    x = NULL,
+    y = "NDVI destination",
+    fill = "Density"
+  )
+```
+
+### Selection for path NDVI
+
+```{r}
+fig_ndvi_step_selection =
+  ggplot(filter(tracks, ndvi != ndvi_step))+
+  stat_bin_2d(
+    geom = "tile",
+    aes(case_, ndvi_step, fill = ..density..),
+    binwidth = c(0.2, 0.01),
+    alpha = 1
+  )+
+  geom_boxplot(
+    aes(
+      case_, ndvi
+    ),
+    outlier.colour = NA,
+    # colour = "grey",
+    fill = alpha("white", alpha = 0.2),
+    width = 0.3
+  )+
+  scale_fill_continuous_sequential(
+    palette = "Greens 2"
+  )+
+  scale_x_discrete(
+    breaks = c(F, T),
+    label = c("Not\nselected", "Selected")
+  )+
+  facet_grid(sp ~ treat)+
+  theme_test()+
+  theme(
+    legend.key.width = unit(2, units = "mm")
+  )+
+  labs(
+    x = NULL,
+    y = "NDVI step",
+    fill = "Density"
+  )
+
+# wrap plots
+fig_ndvi_selection =
+  patchwork::wrap_plots(
+  fig_ndvi_selection,
+  fig_ndvi_step_selection
+)
+
+ggsave(fig_ndvi_selection, filename = "figures/fig_ndvi_selection.png")
+```
+
+## Step selection and habitat cover
+
+```{r}
+# get openness of the path and proportional natural habitat at destination
+tracks_cover = select(
+  tracks,
+  p_natural, step_openness, lc_2, lc_3,
+  case_, sp, treat, date, rrv_calc, RRV
+)
+
+# natural habitats
+fig_pnat_selection =
+ggplot(tracks_cover)+
+  stat_bin_2d(
+    geom = "tile",
+    aes(case_, p_natural, fill = ..density..),
+    binwidth = c(0.2, 0.05),
+    alpha = 1
+  )+
+  geom_boxplot(
+    aes(
+      case_, p_natural
+    ),
+    outlier.colour = NA,
+    # colour = "grey",
+    fill = alpha("white", alpha = 0.2),
+    width = 0.3
+  )+
+  geom_vline(
+    xintercept = 1.5,
+    col = "red",
+    lty = 2
+  )+
+  scale_fill_continuous_sequential(
+    palette = "Blues"
+  )+
+  scale_x_discrete(
+    breaks = c(F, T),
+    label = c("Not\nselected", "Selected")
+  )+
+  scale_y_continuous(
+    labels = scales::percent
+  )+
+  facet_grid(sp ~ treat)+
+  theme_test()+
+  theme(
+    legend.key.width = unit(2, units = "mm")
+  )+
+  labs(
+    x = NULL,
+    y = "% natural land cover",
+    fill = "Density"
+  )
+```
+
+```{r}
+# path openness
+fig_openness_selection = 
+ggplot(tracks_cover)+
+  stat_bin_2d(
+    geom = "tile",
+    aes(case_, step_openness, fill = ..density..),
+    binwidth = c(0.2, 0.05),
+    alpha = 1
+  )+
+  geom_boxplot(
+    aes(
+      case_, p_natural
+    ),
+    outlier.colour = NA,
+    # colour = "grey",
+    fill = alpha("white", alpha = 0.2),
+    width = 0.3
+  )+
+  geom_vline(
+    xintercept = 1.5,
+    col = "red",
+    lty = 2
+  )+
+  scale_fill_continuous_sequential(
+    palette = "Reds 2"
+  )+
+  scale_x_discrete(
+    breaks = c(F, T),
+    label = c("Not\nselected", "Selected")
+  )+
+  scale_y_continuous(
+    labels = scales::percent
+  )+
+  facet_grid(sp ~ treat)+
+  theme_test()+
+  theme(
+    legend.key.width = unit(2, units = "mm")
+  )+
+  labs(
+    x = NULL,
+    y = "Openness of step",
+    fill = "Density"
+  )
+```
+
+```{r}
+# wrap plots
+fig_lc_selection =
+  patchwork::wrap_plots(
+  fig_pnat_selection,
+  fig_openness_selection
+)
+
+ggsave(fig_lc_selection, filename = "figures/fig_lc_selection.png")
+```
+
