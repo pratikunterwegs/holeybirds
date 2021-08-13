@@ -15,19 +15,19 @@ library(sf)
 ## Load data
 
 ```{r}
-ndvi = raster("data/rasters/raster_hula_ndvi.tif")
-lc = raster("data/rasters/hula_vector_classified_sentinel.tif")
+ndvi <- raster("data/rasters/raster_hula_ndvi.tif")
+lc <- raster("data/rasters/hula_vector_classified_sentinel.tif")
 ```
 
 Crop data.
 
 ```{r}
-hula = st_read("data/spatial/hula_extent/hula_valley.shp")
+hula <- st_read("data/spatial/hula_extent/hula_valley.shp")
 ```
 
 ```{r}
-ndvi = raster::crop(ndvi, as(hula, "Spatial"))
-lc = raster::crop(lc, as(hula, "Spatial"))
+ndvi <- raster::crop(ndvi, as(hula, "Spatial"))
+lc <- raster::crop(lc, as(hula, "Spatial"))
 ```
 
 Save cropped to file.

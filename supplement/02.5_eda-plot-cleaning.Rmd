@@ -1,0 +1,125 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Visualise data cleaning
+
+```{r}
+library(data.table)
+library(ggplot2)
+library(patchwork)
+library(ggspatial)
+```
+
+```{r}
+# read file names
+files <- list.files("data/processed/data_preprocessed",
+  full.names = TRUE
+)
+
+# raw data
+files_raw = list.files(
+  "data/processed/data_id",
+  full.names = TRUE
+)
+```
+
+```{r}
+for (file in files) {
+  # read processed data
+  data = fread(file)
+  # get tag
+  tag = unique(data$TAG_ID)
+  treat = unique(data$treat)
+  sp = unique(data$sp)
+  
+  message(
+    glue::glue(
+      "sp = {sp} tag = {tag} treat = {treat}"
+    )
+  )
+  
+  # get raw data
+  file_raw = files_raw[grep(tag, files_raw)]
+  file_raw = file_raw[grep(treat, file_raw)][1]
+  
+  message(
+    glue::glue(
+      "file-raw = {file_raw}"
+    )
+  )
+  
+  data_raw = fread(file_raw)
+  data_raw[, time := as.POSIXct(UNIX, tz = "Asia/Jerusalem", origin = "1970-01-01")]
+  data_raw[, date := lubridate::date(time)]
+  
+  # assert correct tag
+  assertthat::assert_that(
+    tag == unique(data_raw$TAG_ID)
+  )
+  
+  p = ggplot(
+    data = data,
+    aes(x, y, group = date)
+  )+
+    geom_path(
+      data = data_raw,
+      col = "grey",
+      alpha = 0.2
+    )+
+    geom_point(
+      data = data_raw,
+      col = "grey50",
+      shape = 1,
+      size = 0.3,
+      alpha = 0.5
+    )+
+    geom_path(
+      col = "indianred",
+      size = 0.1
+    )+
+    geom_point(
+      aes(col = res_time),
+      shape = 16
+    )+
+    scale_colour_viridis_c(
+      option = "H",
+      trans = "sqrt",
+      breaks = c(2, 10, 30, 120)
+    )+
+    ggspatial::annotation_scale(
+      style = "ticks",
+      width_hint = 0.05,
+      location = "br"
+    )+
+    coord_sf(
+      crs = 2039
+    )+
+    ggthemes::theme_map()+
+    theme(
+      legend.background = element_blank(),
+      legend.key.width = unit(2, "mm"),
+      plot.background = element_rect(
+        fill = "white",
+        colour = NA
+      )
+    )+
+    labs(
+      title = glue::glue("sp: {sp} tag: {tag}
+                         treat: {treat}
+                         "),
+      col = "res time (min)"
+    )
+  
+  ggsave(
+    p,
+    filename = glue::glue("figures/figures_preprocessing/fig_\\
+                          {sp}_{tag}_{treat}.png"),
+    height = 9,
+    width = 16
+  )
+  
+}
+```
+

@@ -36,14 +36,14 @@ Load data from saved `Rds` object, and RRV data.
 load("data/results/data_fitted_ssfs.Rds")
 
 # load rrv data
-rrv = read_csv("data/results/data_daily_rrv.csv")
+rrv <- read_csv("data/results/data_daily_rrv.csv")
 ```
 
 ## SSF parameters
 
 ```{r}
 # filter for bad fits
-ssfs = filter(
+ssfs <- filter(
   ssfs,
   !map_lgl(
     ssf, is.null
@@ -51,13 +51,13 @@ ssfs = filter(
 )
 
 # select track identifiers
-ssf_params = select(
+ssf_params <- select(
   ssfs,
   -matches("ssf")
 )
 
 # select model parameter for ndvi preference
-ssf_params = mutate(
+ssf_params <- mutate(
   ssf_params,
   coefs = map(ssfs$ssf, function(l) {
     tryCatch(
@@ -77,175 +77,120 @@ ssf_params = mutate(
 )
 
 # unnest
-ssf_params = unnest(ssf_params, cols = coefs)
+ssf_params <- unnest(ssf_params, cols = coefs)
 ```
 
 ## Link SSF coefficients and RRV
 
 ```{r}
 # make rrv date as date
-rrv = mutate(
+rrv <- mutate(
   rrv,
   date = lubridate::date(date)
 )
 
+# edit date class to characters
+rrv$date = as.character(rrv$date)
+ssf_params$date = as.character(ssf_params$date)
+
 # link ssf params and rrv
-ssf_params = left_join(
+ssf_params <- left_join(
   ssf_params,
   rrv
 )
 ```
 
-## Visualise coefficient NDVI and RRV
-
-### Correct SL in LC classes
+## Correct SL in LC classes
 
 ```{r}
 # filter coefficients
-data = filter(
+data <- filter(
   ssf_params,
   treat != "LongPeriod",
-  !is.na(estimate),
-  between(estimate, -50, 50)
+  !is.na(estimate)
 )
 
 # get sl coefficient for all models
-data = data %>% 
+data <- data %>%
   group_by(
     TAG_ID, date, sp, treat
-  ) %>% 
+  ) %>%
   mutate(
-    sl_coef = estimate[term == "sl_"]
+    sl_coef = estimate[term == "log_sl"]
   )
 
 # get corrected SL for each landcover
-data = ungroup(data)
-data =
+data <- ungroup(data)
+data <-
   mutate(
     data,
     estimate_corrected = case_when(
-      str_detect(term, "sl_:landcover") ~ estimate + shape + sl_coef,
-      str_detect(term, "sl_") ~ estimate + shape,
+      str_detect(term, "sl:") ~ estimate + shape + sl_coef,
+      str_detect(term, "log_sl") ~ estimate + shape,
       TRUE ~ estimate
     )
   )
-
-
 ```
 
-### Selection strength for landcover
+## Relative Selection Strengths
 
 ```{r}
-# select terms
-data_lc_selection = data %>% 
-  filter(
-    !stringr::str_detect(term, "sl"),
-    !stringr::str_detect(term, "(1)|(4)"),
-    p.value <= 0.05
-  )
-# labels
-lc_labels = c(
-  "landcover1" = "Disturbed",
-  "landcover2" = "Open",
-  "landcover3" = "Vegetated",
-  "landcover4" = "Water",
-  "ndvi" = "NDVI"
-)
-
-# plot
-fig_rss_lc = 
-  ggplot(data_lc_selection)+
-  geom_point(
+ggplot(filter(data, abs(estimate_corrected) < 50)) +
+  geom_jitter(
     aes(
       rrv_calc, estimate_corrected,
-      shape = sp
-    )
-  )+
+      shape = sp,
+      col = p.value <= 0.05,
+      alpha = p.value <= 0.05
+    ),
+    width = 0.1,
+    show.legend = T
+  ) +
   geom_smooth(
+    # data = filter(data, p.value < 0.05),
     aes(
       rrv_calc, estimate_corrected
     ),
+    show.legend = T,
     se = F,
-    method = "glm"
+    method = "glm",
+    col = "grey20",
+    size = 0.4
   )+
-  facet_wrap(
-    ~term,
-    labeller = labeller(
-      term = lc_labels
-    )
-  )+
+  scale_colour_viridis_d(
+    option = "H",
+    direction = -1,
+    begin = 0.1,
+    end = 0.8
+  ) +
+  scale_alpha_manual(
+    values = c(0.5, 1),
+    guide = F
+  ) +
+  scale_x_continuous(
+    limits = c(1, 15)
+    # trans = ggallin::ssqrt_trans
+  ) +
+  scale_y_continuous(
+    # limits = c(1, NA)
+    # trans = ggallin::ssqrt_trans
+  ) +
+  facet_grid(term ~ sp, scales = "free_y") +
+  theme_test()+
   theme(
     legend.position = "top"
-  )+
+  ) +
   labs(
-    x = "Calc. RRV",
+    x = "Calculated RRV",
     y = "Relative Selection Strength",
-    shape = NULL
+    shape = "Sp.",
+    col = "p < 0.05", alpha = NULL
   )
+  ```
 
-# save figure
-ggsave(
-  fig_rss_lc,
-  filename = "figures/fig_rss_lc_rrv.png"
-); dev.off()
-```
-
-
-### Plot SL in LC classes over RRV
+## Selection and RRV
 
 ```{r}
-# labels
-sl_labels = c(
-  "sl_" = "SL - settlement",
-  "sl_:landcover1" = "SL - disturbed",
-  "sl_:landcover2" = "SL - open",
-  "sl_:landcover3" = "SL - vegetated",
-  "sl_:landcover4" = "SL - water"
-)
-
-# plot
-fig_sl_lc =
-  ggplot(
-  data = filter(data, p.value <= 0.05,
-                # term != "sl_:landcover4",
-                stringr::str_detect(term, "sl"))
-  )+
-  geom_point(
-    aes(
-      rrv_calc, estimate_corrected,
-      shape = sp
-    )
-  )+
-  geom_smooth(
-    aes(
-      rrv_calc, estimate_corrected
-    ),
-    se = F,
-    method = "glm"
-  )+
-  facet_wrap(
-    ~term, ncol = 5,
-    labeller = labeller(
-      term = sl_labels
-    )
-  )+
-  theme(
-    legend.position = "top"
-  )+
-  coord_cartesian(
-    ylim = c(NA, 1.5)
-  )+
-  labs(
-    x = "Calc. RRV",
-    y = "Relative Selection Strength",
-    col = "Species",
-    shape = NULL
-  )
-
-# save figure
-ggsave(
-  fig_sl_lc,
-  filename = "figures/fig_sl_lc_rrv.png"
-); dev.off()
+library()
 ```
 

@@ -168,45 +168,48 @@ fwrite(data_daily_heat, file = "data/results/data_daily_fixes.csv")
 
 ```{r read_rrv_files}
 # list files
-files = list.files(path = "data/raw/", pattern = "xlsx", full.names = T)
+files <- list.files(path = "data/raw/", pattern = "xlsx", full.names = T)
 
 # remove long term sparrows
-files = files[-grep("Long", files)]
+files <- files[-grep("Long", files)]
 
 # read data
-data = lapply(files, read_xlsx, skip = 1)
+data <- lapply(files, read_xlsx, skip = 1)
 
 # there are warnings related to empty columns because excel is terrible
 lapply(data, sapply, function(x) sum(is.na(x)))
 
 # colnames
-cols_to_keep = c("Group", "ID", "Tag", "RRV", "Day", "Date", "calculated RRV")
+cols_to_keep <- c("Group", "ID", "Tag", "RRV", "Day", "Date", "calculated RRV")
 
 # keep only useful rows and cols
-data = lapply(
+data <- lapply(
   data, function(df) {
     setDT(df)
-    
+
     # subset columns
-    df = df[, ..cols_to_keep]
-    
+    df <- df[, ..cols_to_keep]
+
     # remove extra rows by removing NAs
     na.omit(df)
-  })
+  }
+)
 ```
 
 ### Handle date and column names
 
 ```{r}
 # first bind rows
-data = rbindlist(data)
+data <- rbindlist(data)
 
 # edit names to match previous individual data
-setnames(data, old = c("Group", "Tag", "calculated RRV", "Date"),
-         new = c("treat", "trunc_tag", "rrv_calc", "date"))
+setnames(data,
+  old = c("Group", "Tag", "calculated RRV", "Date"),
+  new = c("treat", "trunc_tag", "rrv_calc", "date")
+)
 
 # removes cols
-data = data[, !c("ID", "Day")]
+data <- data[, !c("ID", "Day")]
 ```
 
 ### Link RRV to species and individual
@@ -214,10 +217,10 @@ data = data[, !c("ID", "Day")]
 
 ```{r}
 # read previously summarised data
-data_tracking_summary = fread("data/results/data_basic_tracking_metric.csv")
+data_tracking_summary <- fread("data/results/data_basic_tracking_metric.csv")
 
 # select useful columns
-data_tracking_summary = data_tracking_summary[, c("sp", "treat", "TAG_ID")]
+data_tracking_summary <- data_tracking_summary[, c("sp", "treat", "TAG_ID")]
 
 # get last four digits of the tag id
 data_tracking_summary[, "tag_4_digit" := stri_sub(TAG_ID, -4, -1)]
@@ -226,11 +229,13 @@ data_tracking_summary[, "tag_4_digit" := stri_sub(TAG_ID, -4, -1)]
 data[, trunc_tag := stri_pad_left(trunc_tag, width = 4, pad = 0)]
 
 # join the datasets
-data = merge(data, data_tracking_summary, by.x = c("treat", "trunc_tag"),
-             by.y = c("treat", "tag_4_digit"))
+data <- merge(data, data_tracking_summary,
+  by.x = c("treat", "trunc_tag"),
+  by.y = c("treat", "tag_4_digit")
+)
 
 # remove old tag and write to file
-data = data[, !"trunc_tag"]
+data <- data[, !"trunc_tag"]
 
 fwrite(data, file = "data/results/data_daily_rrv.csv")
 ```
