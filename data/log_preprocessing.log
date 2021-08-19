@@ -1,20 +1,13 @@
-Holeybirds Pre-processing log from 2021-08-12 13:32:15
+Holeybirds Pre-processing log from 2021-08-19 14:54:00
 
 Pre-processing tag_id = 1004001585; Acrocephalus; Manipulated
 N rows raw = 11514
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 6 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-12 done
--- Res time for date 2016-09-13 done
--- Res time for date 2016-09-14 done
--- Res time for date 2016-09-15 done
--- Res time for date 2016-09-16 done
--- Res time for date 2016-09-17 done
--- Residence times assigned
--- N rows pre-processed = 2054
+-- Pre-processing 6 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 3145
 -- saved to data/processed/data_preprocessed/
     data_preproc_Acrocephalus_Manipulated_1004001585.csv
 
@@ -23,20 +16,11 @@ N rows raw = 11514
 Pre-processing tag_id = 1004001586; Acrocephalus; Manipulated
 N rows raw = 26211
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 8 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-12 done
--- Res time for date 2016-09-13 done
--- Res time for date 2016-09-14 done
--- Res time for date 2016-09-15 done
--- Res time for date 2016-09-16 done
--- Res time for date 2016-09-17 done
--- Res time for date 2016-09-18 done
--- Res time for date 2016-09-19 done
--- Residence times assigned
--- N rows pre-processed = 3435
+-- Pre-processing 8 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 5862
 -- saved to data/processed/data_preprocessed/
     data_preproc_Acrocephalus_Manipulated_1004001586.csv
 
@@ -45,22 +29,11 @@ N rows raw = 26211
 Pre-processing tag_id = 1004001333; Acrocephalus; Moulting
 N rows raw = 38679
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 10 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-25 done
--- Res time for date 2016-07-26 done
--- Res time for date 2016-07-27 done
--- Res time for date 2016-07-28 done
--- Res time for date 2016-07-29 done
--- Res time for date 2016-07-30 done
--- Res time for date 2016-07-31 done
--- Res time for date 2016-08-01 done
--- Res time for date 2016-08-02 done
--- Res time for date 2016-08-03 done
--- Residence times assigned
--- N rows pre-processed = 3663
+-- Pre-processing 10 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 3326
 -- saved to data/processed/data_preprocessed/
     data_preproc_Acrocephalus_Moulting_1004001333.csv
 
@@ -69,15 +42,11 @@ N rows raw = 38679
 Pre-processing tag_id = 1004001360; Acrocephalus; Moulting
 N rows raw = 14870
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 3 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-10 done
--- Res time for date 2016-08-11 done
--- Res time for date 2016-08-12 done
--- Residence times assigned
--- N rows pre-processed = 825
+-- Pre-processing 3 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 2017
 -- saved to data/processed/data_preprocessed/
     data_preproc_Acrocephalus_Moulting_1004001360.csv
 
@@ -86,15 +55,11 @@ N rows raw = 14870
 Pre-processing tag_id = 1004001395; Acrocephalus; Moulting
 N rows raw = 7182
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 3 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-05 done
--- Res time for date 2016-08-06 done
--- Res time for date 2016-08-07 done
--- Residence times assigned
--- N rows pre-processed = 1099
+-- Pre-processing 3 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 1473
 -- saved to data/processed/data_preprocessed/
     data_preproc_Acrocephalus_Moulting_1004001395.csv
 
@@ -103,16 +68,11 @@ N rows raw = 7182
 Pre-processing tag_id = 1004001461; Acrocephalus; Moulting
 N rows raw = 37032
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 4 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-25 done
--- Res time for date 2016-08-26 done
--- Res time for date 2016-08-27 done
--- Res time for date 2016-08-28 done
--- Residence times assigned
--- N rows pre-processed = 3067
+-- Pre-processing 4 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 7302
 -- saved to data/processed/data_preprocessed/
     data_preproc_Acrocephalus_Moulting_1004001461.csv
 
@@ -121,15 +81,11 @@ N rows raw = 37032
 Pre-processing tag_id = 1004001479; Acrocephalus; Moulting
 N rows raw = 19346
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 3 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-30 done
--- Res time for date 2016-08-31 done
--- Res time for date 2016-09-01 done
--- Residence times assigned
--- N rows pre-processed = 786
+-- Pre-processing 3 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 586
 -- saved to data/processed/data_preprocessed/
     data_preproc_Acrocephalus_Moulting_1004001479.csv
 
@@ -138,19 +94,11 @@ N rows raw = 19346
 Pre-processing tag_id = 1004001587; Acrocephalus; Moulting
 N rows raw = 27558
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 7 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-12 done
--- Res time for date 2016-09-13 done
--- Res time for date 2016-09-14 done
--- Res time for date 2016-09-15 done
--- Res time for date 2016-09-16 done
--- Res time for date 2016-09-17 done
--- Res time for date 2016-09-18 done
--- Residence times assigned
--- N rows pre-processed = 3572
+-- Pre-processing 7 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 6716
 -- saved to data/processed/data_preprocessed/
     data_preproc_Acrocephalus_Moulting_1004001587.csv
 
@@ -159,18 +107,11 @@ N rows raw = 27558
 Pre-processing tag_id = 1004001607; Acrocephalus; Moulting
 N rows raw = 29965
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 6 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-21 done
--- Res time for date 2016-09-22 done
--- Res time for date 2016-09-23 done
--- Res time for date 2016-09-26 done
--- Res time for date 2016-09-27 done
--- Res time for date 2016-09-28 done
--- Residence times assigned
--- N rows pre-processed = 2251
+-- Pre-processing 6 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 4246
 -- saved to data/processed/data_preprocessed/
     data_preproc_Acrocephalus_Moulting_1004001607.csv
 
@@ -179,16 +120,10 @@ N rows raw = 29965
 Pre-processing tag_id = 1004001114; Acrocephalus; NonMoulting
 N rows raw = 7346
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 2 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-06-12 done
--- Res time for date 2016-06-13 done
--- Residence times assigned
--- N rows pre-processed = 399
--- saved to data/processed/data_preprocessed/
-    data_preproc_Acrocephalus_NonMoulting_1004001114.csv
+-- Pre-processing 2 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+List of data is empty, all data removed by speed filter
 
 ***
 
@@ -216,16 +151,11 @@ List of data is empty, all data had fewer than 500 rows
 Pre-processing tag_id = 1004001361; Acrocephalus; NonMoulting
 N rows raw = 18907
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 4 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-10 done
--- Res time for date 2016-08-11 done
--- Res time for date 2016-08-12 done
--- Res time for date 2016-08-13 done
--- Residence times assigned
--- N rows pre-processed = 1379
+-- Pre-processing 4 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 3380
 -- saved to data/processed/data_preprocessed/
     data_preproc_Acrocephalus_NonMoulting_1004001361.csv
 
@@ -234,35 +164,21 @@ N rows raw = 18907
 Pre-processing tag_id = 1004001391; Acrocephalus; NonMoulting
 N rows raw = 7494
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 3 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-05 done
--- Res time for date 2016-08-06 done
--- Res time for date 2016-08-07 done
--- Residence times assigned
--- N rows pre-processed = 853
--- saved to data/processed/data_preprocessed/
-    data_preproc_Acrocephalus_NonMoulting_1004001391.csv
+-- Pre-processing 3 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+List of data is empty, all data removed by speed filter
 
 ***
 
 Pre-processing tag_id = 1004001392; Acrocephalus; NonMoulting
 N rows raw = 20103
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 6 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-05 done
--- Res time for date 2016-08-06 done
--- Res time for date 2016-08-07 done
--- Res time for date 2016-08-08 done
--- Res time for date 2016-08-09 done
--- Res time for date 2016-08-10 done
--- Residence times assigned
--- N rows pre-processed = 2229
+-- Pre-processing 6 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 1889
 -- saved to data/processed/data_preprocessed/
     data_preproc_Acrocephalus_NonMoulting_1004001392.csv
 
@@ -271,17 +187,11 @@ N rows raw = 20103
 Pre-processing tag_id = 1004001393; Acrocephalus; NonMoulting
 N rows raw = 31957
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 5 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-05 done
--- Res time for date 2016-08-06 done
--- Res time for date 2016-08-07 done
--- Res time for date 2016-08-08 done
--- Res time for date 2016-08-09 done
--- Residence times assigned
--- N rows pre-processed = 6437
+-- Pre-processing 5 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 19113
 -- saved to data/processed/data_preprocessed/
     data_preproc_Acrocephalus_NonMoulting_1004001393.csv
 
@@ -290,18 +200,11 @@ N rows raw = 31957
 Pre-processing tag_id = 1004001396; Acrocephalus; NonMoulting
 N rows raw = 43564
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 6 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-05 done
--- Res time for date 2016-08-06 done
--- Res time for date 2016-08-07 done
--- Res time for date 2016-08-08 done
--- Res time for date 2016-08-09 done
--- Res time for date 2016-08-10 done
--- Residence times assigned
--- N rows pre-processed = 2899
+-- Pre-processing 6 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 5049
 -- saved to data/processed/data_preprocessed/
     data_preproc_Acrocephalus_NonMoulting_1004001396.csv
 
@@ -310,15 +213,11 @@ N rows raw = 43564
 Pre-processing tag_id = 1004001398; Acrocephalus; NonMoulting
 N rows raw = 25407
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 3 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-05 done
--- Res time for date 2016-08-06 done
--- Res time for date 2016-08-07 done
--- Residence times assigned
--- N rows pre-processed = 3593
+-- Pre-processing 3 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 9578
 -- saved to data/processed/data_preprocessed/
     data_preproc_Acrocephalus_NonMoulting_1004001398.csv
 
@@ -327,19 +226,11 @@ N rows raw = 25407
 Pre-processing tag_id = 1004001406; Acrocephalus; NonMoulting
 N rows raw = 47839
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 7 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-18 done
--- Res time for date 2016-08-19 done
--- Res time for date 2016-08-20 done
--- Res time for date 2016-08-21 done
--- Res time for date 2016-08-22 done
--- Res time for date 2016-08-23 done
--- Res time for date 2016-08-24 done
--- Residence times assigned
--- N rows pre-processed = 6243
+-- Pre-processing 7 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 16207
 -- saved to data/processed/data_preprocessed/
     data_preproc_Acrocephalus_NonMoulting_1004001406.csv
 
@@ -348,19 +239,11 @@ N rows raw = 47839
 Pre-processing tag_id = 1004001420; Acrocephalus; NonMoulting
 N rows raw = 26063
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 7 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-18 done
--- Res time for date 2016-08-19 done
--- Res time for date 2016-08-20 done
--- Res time for date 2016-08-21 done
--- Res time for date 2016-08-22 done
--- Res time for date 2016-08-23 done
--- Res time for date 2016-08-25 done
--- Residence times assigned
--- N rows pre-processed = 3136
+-- Pre-processing 7 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 3246
 -- saved to data/processed/data_preprocessed/
     data_preproc_Acrocephalus_NonMoulting_1004001420.csv
 
@@ -369,19 +252,11 @@ N rows raw = 26063
 Pre-processing tag_id = 1004001459; Acrocephalus; NonMoulting
 N rows raw = 107358
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 7 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-24 done
--- Res time for date 2016-08-25 done
--- Res time for date 2016-08-26 done
--- Res time for date 2016-08-27 done
--- Res time for date 2016-08-28 done
--- Res time for date 2016-08-29 done
--- Res time for date 2016-08-30 done
--- Residence times assigned
--- N rows pre-processed = 13257
+-- Pre-processing 7 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 38731
 -- saved to data/processed/data_preprocessed/
     data_preproc_Acrocephalus_NonMoulting_1004001459.csv
 
@@ -390,17 +265,11 @@ N rows raw = 107358
 Pre-processing tag_id = 1004001460; Acrocephalus; NonMoulting
 N rows raw = 36407
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 5 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-24 done
--- Res time for date 2016-08-25 done
--- Res time for date 2016-08-26 done
--- Res time for date 2016-08-27 done
--- Res time for date 2016-08-28 done
--- Residence times assigned
--- N rows pre-processed = 5393
+-- Pre-processing 5 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 10114
 -- saved to data/processed/data_preprocessed/
     data_preproc_Acrocephalus_NonMoulting_1004001460.csv
 
@@ -409,19 +278,11 @@ N rows raw = 36407
 Pre-processing tag_id = 1004001462; Acrocephalus; NonMoulting
 N rows raw = 89983
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 7 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-24 done
--- Res time for date 2016-08-25 done
--- Res time for date 2016-08-26 done
--- Res time for date 2016-08-27 done
--- Res time for date 2016-08-28 done
--- Res time for date 2016-08-29 done
--- Res time for date 2016-08-30 done
--- Residence times assigned
--- N rows pre-processed = 8346
+-- Pre-processing 7 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 23440
 -- saved to data/processed/data_preprocessed/
     data_preproc_Acrocephalus_NonMoulting_1004001462.csv
 
@@ -430,52 +291,31 @@ N rows raw = 89983
 Pre-processing tag_id = 1004001717; Acrocephalus; NonMoulting
 N rows raw = 6449
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 2 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-10-21 done
--- Res time for date 2016-10-22 done
--- Residence times assigned
--- N rows pre-processed = 697
--- saved to data/processed/data_preprocessed/
-    data_preproc_Acrocephalus_NonMoulting_1004001717.csv
+-- Pre-processing 2 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+List of data is empty, all data removed by speed filter
 
 ***
 
 Pre-processing tag_id = 1004001735; Acrocephalus; NonMoulting
 N rows raw = 6357
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 2 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-11-13 done
--- Res time for date 2016-11-14 done
--- Residence times assigned
--- N rows pre-processed = 846
--- saved to data/processed/data_preprocessed/
-    data_preproc_Acrocephalus_NonMoulting_1004001735.csv
+-- Pre-processing 2 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+List of data is empty, all data removed by speed filter
 
 ***
 
 Pre-processing tag_id = 1004001748; Acrocephalus; NonMoulting
 N rows raw = 40879
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 8 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-11-10 done
--- Res time for date 2016-11-11 done
--- Res time for date 2016-11-12 done
--- Res time for date 2016-11-13 done
--- Res time for date 2016-11-14 done
--- Res time for date 2016-11-15 done
--- Res time for date 2016-11-16 done
--- Res time for date 2016-11-17 done
--- Residence times assigned
--- N rows pre-processed = 6562
+-- Pre-processing 8 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 9359
 -- saved to data/processed/data_preprocessed/
     data_preproc_Acrocephalus_NonMoulting_1004001748.csv
 
@@ -484,15 +324,10 @@ N rows raw = 40879
 Pre-processing tag_id = 1004001749; Acrocephalus; NonMoulting
 N rows raw = 2284
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 1 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-11-11 done
--- Residence times assigned
--- N rows pre-processed = 280
--- saved to data/processed/data_preprocessed/
-    data_preproc_Acrocephalus_NonMoulting_1004001749.csv
+-- Pre-processing 1 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+List of data is empty, all data removed by speed filter
 
 ***
 
@@ -506,14 +341,10 @@ List of data is empty, all data had fewer than 500 rows
 Pre-processing tag_id = 1004001230; Hirundo; Manipulated
 N rows raw = 4155
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 2 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-08 done
--- Res time for date 2016-07-09 done
--- Residence times assigned
--- N rows pre-processed = 525
+-- Pre-processing 2 days' data separately
+-- Filtered to remove unreal speeds; speeds< 20 OR angle < 10
+-- Median smoothed coordinates, moving window = 3
+-- N rows pre-processed = 824
 -- saved to data/processed/data_preprocessed/
     data_preproc_Hirundo_Manipulated_1004001230.csv
 
@@ -522,13 +353,10 @@ N rows raw = 4155
 Pre-processing tag_id = 1004001267; Hirundo; Manipulated
 N rows raw = 3240
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 1 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-21 done
--- Residence times assigned
--- N rows pre-processed = 602
+-- Pre-processing 1 days' data separately
+-- Filtered to remove unreal speeds; speeds< 20 OR angle < 10
+-- Median smoothed coordinates, moving window = 3
+-- N rows pre-processed = 972
 -- saved to data/processed/data_preprocessed/
     data_preproc_Hirundo_Manipulated_1004001267.csv
 
@@ -537,14 +365,10 @@ N rows raw = 3240
 Pre-processing tag_id = 1004001271; Hirundo; Manipulated
 N rows raw = 6203
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 2 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-21 done
--- Res time for date 2016-09-22 done
--- Residence times assigned
--- N rows pre-processed = 1502
+-- Pre-processing 2 days' data separately
+-- Filtered to remove unreal speeds; speeds< 20 OR angle < 10
+-- Median smoothed coordinates, moving window = 3
+-- N rows pre-processed = 3085
 -- saved to data/processed/data_preprocessed/
     data_preproc_Hirundo_Manipulated_1004001271.csv
 
@@ -553,13 +377,10 @@ N rows raw = 6203
 Pre-processing tag_id = 1004001283; Hirundo; Manipulated
 N rows raw = 1145
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 1 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-18 done
--- Residence times assigned
--- N rows pre-processed = 451
+-- Pre-processing 1 days' data separately
+-- Filtered to remove unreal speeds; speeds< 20 OR angle < 10
+-- Median smoothed coordinates, moving window = 3
+-- N rows pre-processed = 927
 -- saved to data/processed/data_preprocessed/
     data_preproc_Hirundo_Manipulated_1004001283.csv
 
@@ -568,13 +389,10 @@ N rows raw = 1145
 Pre-processing tag_id = 1004001405; Hirundo; Manipulated
 N rows raw = 675
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 1 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-12 done
--- Residence times assigned
--- N rows pre-processed = 148
+-- Pre-processing 1 days' data separately
+-- Filtered to remove unreal speeds; speeds< 20 OR angle < 10
+-- Median smoothed coordinates, moving window = 3
+-- N rows pre-processed = 633
 -- saved to data/processed/data_preprocessed/
     data_preproc_Hirundo_Manipulated_1004001405.csv
 
@@ -597,13 +415,10 @@ List of data is empty, all data had fewer than 500 rows
 Pre-processing tag_id = 1004001713; Hirundo; Manipulated
 N rows raw = 4263
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 1 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-10-14 done
--- Residence times assigned
--- N rows pre-processed = 651
+-- Pre-processing 1 days' data separately
+-- Filtered to remove unreal speeds; speeds< 20 OR angle < 10
+-- Median smoothed coordinates, moving window = 3
+-- N rows pre-processed = 1600
 -- saved to data/processed/data_preprocessed/
     data_preproc_Hirundo_Manipulated_1004001713.csv
 
@@ -626,13 +441,10 @@ List of data is empty, all data had fewer than 500 rows
 Pre-processing tag_id = 1004001402; Hirundo; Moulting
 N rows raw = 1617
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 1 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-12 done
--- Residence times assigned
--- N rows pre-processed = 463
+-- Pre-processing 1 days' data separately
+-- Filtered to remove unreal speeds; speeds< 20 OR angle < 10
+-- Median smoothed coordinates, moving window = 3
+-- N rows pre-processed = 1551
 -- saved to data/processed/data_preprocessed/
     data_preproc_Hirundo_Moulting_1004001402.csv
 
@@ -641,13 +453,10 @@ N rows raw = 1617
 Pre-processing tag_id = 1004001403; Hirundo; Moulting
 N rows raw = 675
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 1 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-12 done
--- Residence times assigned
--- N rows pre-processed = 169
+-- Pre-processing 1 days' data separately
+-- Filtered to remove unreal speeds; speeds< 20 OR angle < 10
+-- Median smoothed coordinates, moving window = 3
+-- N rows pre-processed = 520
 -- saved to data/processed/data_preprocessed/
     data_preproc_Hirundo_Moulting_1004001403.csv
 
@@ -656,15 +465,10 @@ N rows raw = 675
 Pre-processing tag_id = 1004001404; Hirundo; Moulting
 N rows raw = 6465
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 3 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-13 done
--- Res time for date 2016-09-14 done
--- Res time for date 2016-09-15 done
--- Residence times assigned
--- N rows pre-processed = 1066
+-- Pre-processing 3 days' data separately
+-- Filtered to remove unreal speeds; speeds< 20 OR angle < 10
+-- Median smoothed coordinates, moving window = 3
+-- N rows pre-processed = 2116
 -- saved to data/processed/data_preprocessed/
     data_preproc_Hirundo_Moulting_1004001404.csv
 
@@ -687,16 +491,10 @@ List of data is empty, all data had fewer than 500 rows
 Pre-processing tag_id = 1004001710; Hirundo; Moulting
 N rows raw = 18119
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 4 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-10-14 done
--- Res time for date 2016-10-15 done
--- Res time for date 2016-10-16 done
--- Res time for date 2016-10-17 done
--- Residence times assigned
--- N rows pre-processed = 4629
+-- Pre-processing 4 days' data separately
+-- Filtered to remove unreal speeds; speeds< 20 OR angle < 10
+-- Median smoothed coordinates, moving window = 3
+-- N rows pre-processed = 12342
 -- saved to data/processed/data_preprocessed/
     data_preproc_Hirundo_Moulting_1004001710.csv
 
@@ -705,14 +503,10 @@ N rows raw = 18119
 Pre-processing tag_id = 1004000824; Hirundo; NonMoulting
 N rows raw = 5282
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 2 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-06-09 done
--- Res time for date 2016-06-10 done
--- Residence times assigned
--- N rows pre-processed = 1233
+-- Pre-processing 2 days' data separately
+-- Filtered to remove unreal speeds; speeds< 20 OR angle < 10
+-- Median smoothed coordinates, moving window = 3
+-- N rows pre-processed = 3575
 -- saved to data/processed/data_preprocessed/
     data_preproc_Hirundo_NonMoulting_1004000824.csv
 
@@ -721,15 +515,10 @@ N rows raw = 5282
 Pre-processing tag_id = 1004000825; Hirundo; NonMoulting
 N rows raw = 5787
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 3 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-06-09 done
--- Res time for date 2016-06-10 done
--- Res time for date 2016-06-11 done
--- Residence times assigned
--- N rows pre-processed = 1255
+-- Pre-processing 3 days' data separately
+-- Filtered to remove unreal speeds; speeds< 20 OR angle < 10
+-- Median smoothed coordinates, moving window = 3
+-- N rows pre-processed = 3503
 -- saved to data/processed/data_preprocessed/
     data_preproc_Hirundo_NonMoulting_1004000825.csv
 
@@ -738,13 +527,10 @@ N rows raw = 5787
 Pre-processing tag_id = 1004000826; Hirundo; NonMoulting
 N rows raw = 2084
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 1 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-06-09 done
--- Residence times assigned
--- N rows pre-processed = 259
+-- Pre-processing 1 days' data separately
+-- Filtered to remove unreal speeds; speeds< 20 OR angle < 10
+-- Median smoothed coordinates, moving window = 3
+-- N rows pre-processed = 830
 -- saved to data/processed/data_preprocessed/
     data_preproc_Hirundo_NonMoulting_1004000826.csv
 
@@ -753,13 +539,10 @@ N rows raw = 2084
 Pre-processing tag_id = 1004000827; Hirundo; NonMoulting
 N rows raw = 720
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 1 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-06-09 done
--- Residence times assigned
--- N rows pre-processed = 159
+-- Pre-processing 1 days' data separately
+-- Filtered to remove unreal speeds; speeds< 20 OR angle < 10
+-- Median smoothed coordinates, moving window = 3
+-- N rows pre-processed = 531
 -- saved to data/processed/data_preprocessed/
     data_preproc_Hirundo_NonMoulting_1004000827.csv
 
@@ -768,15 +551,10 @@ N rows raw = 720
 Pre-processing tag_id = 1004000829; Hirundo; NonMoulting
 N rows raw = 3585
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 3 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-06-09 done
--- Res time for date 2016-06-10 done
--- Res time for date 2016-06-11 done
--- Residence times assigned
--- N rows pre-processed = 993
+-- Pre-processing 3 days' data separately
+-- Filtered to remove unreal speeds; speeds< 20 OR angle < 10
+-- Median smoothed coordinates, moving window = 3
+-- N rows pre-processed = 3164
 -- saved to data/processed/data_preprocessed/
     data_preproc_Hirundo_NonMoulting_1004000829.csv
 
@@ -785,14 +563,10 @@ N rows raw = 3585
 Pre-processing tag_id = 1004001237; Hirundo; NonMoulting
 N rows raw = 1752
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 2 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-12 done
--- Res time for date 2016-07-13 done
--- Residence times assigned
--- N rows pre-processed = 472
+-- Pre-processing 2 days' data separately
+-- Filtered to remove unreal speeds; speeds< 20 OR angle < 10
+-- Median smoothed coordinates, moving window = 3
+-- N rows pre-processed = 1461
 -- saved to data/processed/data_preprocessed/
     data_preproc_Hirundo_NonMoulting_1004001237.csv
 
@@ -801,13 +575,10 @@ N rows raw = 1752
 Pre-processing tag_id = 1004001289; Hirundo; NonMoulting
 N rows raw = 2842
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 1 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-18 done
--- Residence times assigned
--- N rows pre-processed = 582
+-- Pre-processing 1 days' data separately
+-- Filtered to remove unreal speeds; speeds< 20 OR angle < 10
+-- Median smoothed coordinates, moving window = 3
+-- N rows pre-processed = 2325
 -- saved to data/processed/data_preprocessed/
     data_preproc_Hirundo_NonMoulting_1004001289.csv
 
@@ -816,13 +587,10 @@ N rows raw = 2842
 Pre-processing tag_id = 1004001449; Hirundo; NonMoulting
 N rows raw = 1046
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 1 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-24 done
--- Residence times assigned
--- N rows pre-processed = 313
+-- Pre-processing 1 days' data separately
+-- Filtered to remove unreal speeds; speeds< 20 OR angle < 10
+-- Median smoothed coordinates, moving window = 3
+-- N rows pre-processed = 863
 -- saved to data/processed/data_preprocessed/
     data_preproc_Hirundo_NonMoulting_1004001449.csv
 
@@ -831,13 +599,10 @@ N rows raw = 1046
 Pre-processing tag_id = 1004001712; Hirundo; NonMoulting
 N rows raw = 2510
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 1 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-10-14 done
--- Residence times assigned
--- N rows pre-processed = 241
+-- Pre-processing 1 days' data separately
+-- Filtered to remove unreal speeds; speeds< 20 OR angle < 10
+-- Median smoothed coordinates, moving window = 3
+-- N rows pre-processed = 749
 -- saved to data/processed/data_preprocessed/
     data_preproc_Hirundo_NonMoulting_1004001712.csv
 
@@ -853,33 +618,11 @@ List of data is empty, all data had fewer than 500 rows
 Pre-processing tag_id = 1004001386; Passer; LongPeriod
 N rows raw = 83241
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 21 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-11 done
--- Res time for date 2016-08-12 done
--- Res time for date 2016-08-13 done
--- Res time for date 2016-08-14 done
--- Res time for date 2016-08-15 done
--- Res time for date 2016-08-16 done
--- Res time for date 2016-08-17 done
--- Res time for date 2016-08-18 done
--- Res time for date 2016-08-19 done
--- Res time for date 2016-08-20 done
--- Res time for date 2016-08-21 done
--- Res time for date 2016-08-25 done
--- Res time for date 2016-08-26 done
--- Res time for date 2016-08-27 done
--- Res time for date 2016-08-29 done
--- Res time for date 2016-08-31 done
--- Res time for date 2016-09-01 done
--- Res time for date 2016-09-02 done
--- Res time for date 2016-09-03 done
--- Res time for date 2016-09-12 done
--- Res time for date 2016-09-13 done
--- Residence times assigned
--- N rows pre-processed = 11422
+-- Pre-processing 21 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 2784
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_LongPeriod_1004001386.csv
 
@@ -888,49 +631,11 @@ N rows raw = 83241
 Pre-processing tag_id = 1004001463; Passer; LongPeriod
 N rows raw = 124106
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 37 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-24 done
--- Res time for date 2016-08-25 done
--- Res time for date 2016-08-26 done
--- Res time for date 2016-08-27 done
--- Res time for date 2016-08-28 done
--- Res time for date 2016-08-29 done
--- Res time for date 2016-08-30 done
--- Res time for date 2016-08-31 done
--- Res time for date 2016-09-01 done
--- Res time for date 2016-09-02 done
--- Res time for date 2016-09-03 done
--- Res time for date 2016-09-04 done
--- Res time for date 2016-09-05 done
--- Res time for date 2016-09-06 done
--- Res time for date 2016-09-07 done
--- Res time for date 2016-09-08 done
--- Res time for date 2016-09-09 done
--- Res time for date 2016-09-10 done
--- Res time for date 2016-09-11 done
--- Res time for date 2016-09-12 done
--- Res time for date 2016-09-13 done
--- Res time for date 2016-09-14 done
--- Res time for date 2016-09-15 done
--- Res time for date 2016-09-16 done
--- Res time for date 2016-09-17 done
--- Res time for date 2016-09-18 done
--- Res time for date 2016-09-19 done
--- Res time for date 2016-09-20 done
--- Res time for date 2016-09-21 done
--- Res time for date 2016-09-22 done
--- Res time for date 2016-09-23 done
--- Res time for date 2016-09-24 done
--- Res time for date 2016-09-26 done
--- Res time for date 2016-09-28 done
--- Res time for date 2016-09-29 done
--- Res time for date 2016-09-30 done
--- Res time for date 2016-10-01 done
--- Residence times assigned
--- N rows pre-processed = 37592
+-- Pre-processing 37 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 25882
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_LongPeriod_1004001463.csv
 
@@ -939,29 +644,11 @@ N rows raw = 124106
 Pre-processing tag_id = 1004001465; Passer; LongPeriod
 N rows raw = 83851
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 17 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-24 done
--- Res time for date 2016-08-25 done
--- Res time for date 2016-08-26 done
--- Res time for date 2016-08-27 done
--- Res time for date 2016-08-28 done
--- Res time for date 2016-08-29 done
--- Res time for date 2016-08-30 done
--- Res time for date 2016-08-31 done
--- Res time for date 2016-09-01 done
--- Res time for date 2016-09-02 done
--- Res time for date 2016-09-03 done
--- Res time for date 2016-09-04 done
--- Res time for date 2016-09-05 done
--- Res time for date 2016-09-06 done
--- Res time for date 2016-09-07 done
--- Res time for date 2016-09-08 done
--- Res time for date 2016-09-09 done
--- Residence times assigned
--- N rows pre-processed = 24682
+-- Pre-processing 17 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 21536
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_LongPeriod_1004001465.csv
 
@@ -970,22 +657,11 @@ N rows raw = 83851
 Pre-processing tag_id = 1004001564; Passer; LongPeriod
 N rows raw = 40478
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 10 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-12 done
--- Res time for date 2016-09-13 done
--- Res time for date 2016-09-14 done
--- Res time for date 2016-09-15 done
--- Res time for date 2016-09-16 done
--- Res time for date 2016-09-17 done
--- Res time for date 2016-09-18 done
--- Res time for date 2016-09-19 done
--- Res time for date 2016-09-20 done
--- Res time for date 2016-09-21 done
--- Residence times assigned
--- N rows pre-processed = 9046
+-- Pre-processing 10 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 7035
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_LongPeriod_1004001564.csv
 
@@ -994,34 +670,11 @@ N rows raw = 40478
 Pre-processing tag_id = 1004001565; Passer; LongPeriod
 N rows raw = 58140
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 22 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-09 done
--- Res time for date 2016-09-10 done
--- Res time for date 2016-09-11 done
--- Res time for date 2016-09-12 done
--- Res time for date 2016-09-13 done
--- Res time for date 2016-09-14 done
--- Res time for date 2016-09-15 done
--- Res time for date 2016-09-16 done
--- Res time for date 2016-09-17 done
--- Res time for date 2016-09-18 done
--- Res time for date 2016-09-19 done
--- Res time for date 2016-09-20 done
--- Res time for date 2016-09-21 done
--- Res time for date 2016-09-23 done
--- Res time for date 2016-09-24 done
--- Res time for date 2016-09-26 done
--- Res time for date 2016-09-27 done
--- Res time for date 2016-09-28 done
--- Res time for date 2016-09-29 done
--- Res time for date 2016-10-01 done
--- Res time for date 2016-10-07 done
--- Res time for date 2016-10-08 done
--- Residence times assigned
--- N rows pre-processed = 11654
+-- Pre-processing 22 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 3352
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_LongPeriod_1004001565.csv
 
@@ -1030,36 +683,11 @@ N rows raw = 58140
 Pre-processing tag_id = 1004001567; Passer; LongPeriod
 N rows raw = 90901
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 24 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-09 done
--- Res time for date 2016-09-10 done
--- Res time for date 2016-09-12 done
--- Res time for date 2016-09-13 done
--- Res time for date 2016-09-14 done
--- Res time for date 2016-09-16 done
--- Res time for date 2016-09-17 done
--- Res time for date 2016-09-18 done
--- Res time for date 2016-09-19 done
--- Res time for date 2016-09-20 done
--- Res time for date 2016-09-21 done
--- Res time for date 2016-09-22 done
--- Res time for date 2016-09-23 done
--- Res time for date 2016-09-24 done
--- Res time for date 2016-09-29 done
--- Res time for date 2016-10-04 done
--- Res time for date 2016-10-06 done
--- Res time for date 2016-10-07 done
--- Res time for date 2016-10-08 done
--- Res time for date 2016-10-09 done
--- Res time for date 2016-10-10 done
--- Res time for date 2016-10-11 done
--- Res time for date 2016-10-12 done
--- Res time for date 2016-10-13 done
--- Residence times assigned
--- N rows pre-processed = 24602
+-- Pre-processing 24 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 26558
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_LongPeriod_1004001567.csv
 
@@ -1068,46 +696,11 @@ N rows raw = 90901
 Pre-processing tag_id = 1004001568; Passer; LongPeriod
 N rows raw = 122851
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 34 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-09 done
--- Res time for date 2016-09-10 done
--- Res time for date 2016-09-11 done
--- Res time for date 2016-09-12 done
--- Res time for date 2016-09-13 done
--- Res time for date 2016-09-14 done
--- Res time for date 2016-09-15 done
--- Res time for date 2016-09-16 done
--- Res time for date 2016-09-17 done
--- Res time for date 2016-09-18 done
--- Res time for date 2016-09-19 done
--- Res time for date 2016-09-20 done
--- Res time for date 2016-09-21 done
--- Res time for date 2016-09-22 done
--- Res time for date 2016-09-23 done
--- Res time for date 2016-09-24 done
--- Res time for date 2016-09-27 done
--- Res time for date 2016-09-28 done
--- Res time for date 2016-09-29 done
--- Res time for date 2016-09-30 done
--- Res time for date 2016-10-01 done
--- Res time for date 2016-10-03 done
--- Res time for date 2016-10-04 done
--- Res time for date 2016-10-07 done
--- Res time for date 2016-10-08 done
--- Res time for date 2016-10-09 done
--- Res time for date 2016-10-10 done
--- Res time for date 2016-10-11 done
--- Res time for date 2016-10-12 done
--- Res time for date 2016-10-13 done
--- Res time for date 2016-10-14 done
--- Res time for date 2016-10-15 done
--- Res time for date 2016-10-16 done
--- Res time for date 2016-10-17 done
--- Residence times assigned
--- N rows pre-processed = 32762
+-- Pre-processing 34 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 25647
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_LongPeriod_1004001568.csv
 
@@ -1116,30 +709,11 @@ N rows raw = 122851
 Pre-processing tag_id = 1004001569; Passer; LongPeriod
 N rows raw = 61615
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 18 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-09 done
--- Res time for date 2016-09-10 done
--- Res time for date 2016-09-11 done
--- Res time for date 2016-09-12 done
--- Res time for date 2016-09-13 done
--- Res time for date 2016-09-14 done
--- Res time for date 2016-09-15 done
--- Res time for date 2016-09-16 done
--- Res time for date 2016-09-17 done
--- Res time for date 2016-09-19 done
--- Res time for date 2016-09-20 done
--- Res time for date 2016-09-21 done
--- Res time for date 2016-09-22 done
--- Res time for date 2016-09-23 done
--- Res time for date 2016-09-24 done
--- Res time for date 2016-09-26 done
--- Res time for date 2016-09-29 done
--- Res time for date 2016-09-30 done
--- Residence times assigned
--- N rows pre-processed = 13050
+-- Pre-processing 18 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 6802
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_LongPeriod_1004001569.csv
 
@@ -1148,20 +722,11 @@ N rows raw = 61615
 Pre-processing tag_id = 1004001603; Passer; LongPeriod
 N rows raw = 19482
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 8 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-21 done
--- Res time for date 2016-09-22 done
--- Res time for date 2016-09-23 done
--- Res time for date 2016-09-24 done
--- Res time for date 2016-10-08 done
--- Res time for date 2016-10-11 done
--- Res time for date 2016-10-12 done
--- Res time for date 2016-10-15 done
--- Residence times assigned
--- N rows pre-processed = 3577
+-- Pre-processing 8 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 2777
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_LongPeriod_1004001603.csv
 
@@ -1170,29 +735,11 @@ N rows raw = 19482
 Pre-processing tag_id = 1004001604; Passer; LongPeriod
 N rows raw = 63439
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 17 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-27 done
--- Res time for date 2016-09-29 done
--- Res time for date 2016-10-01 done
--- Res time for date 2016-10-07 done
--- Res time for date 2016-10-08 done
--- Res time for date 2016-10-09 done
--- Res time for date 2016-10-10 done
--- Res time for date 2016-10-11 done
--- Res time for date 2016-10-12 done
--- Res time for date 2016-10-13 done
--- Res time for date 2016-10-14 done
--- Res time for date 2016-10-15 done
--- Res time for date 2016-10-16 done
--- Res time for date 2016-10-17 done
--- Res time for date 2016-10-30 done
--- Res time for date 2016-10-31 done
--- Res time for date 2016-11-01 done
--- Residence times assigned
--- N rows pre-processed = 12782
+-- Pre-processing 17 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 9306
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_LongPeriod_1004001604.csv
 
@@ -1201,15 +748,11 @@ N rows raw = 63439
 Pre-processing tag_id = 1004001250; Passer; Manipulated
 N rows raw = 18186
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 3 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-12 done
--- Res time for date 2016-07-13 done
--- Res time for date 2016-07-14 done
--- Residence times assigned
--- N rows pre-processed = 2033
+-- Pre-processing 3 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 1037
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Manipulated_1004001250.csv
 
@@ -1218,20 +761,11 @@ N rows raw = 18186
 Pre-processing tag_id = 1004001335; Passer; Manipulated
 N rows raw = 37905
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 8 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-25 done
--- Res time for date 2016-07-26 done
--- Res time for date 2016-07-27 done
--- Res time for date 2016-07-28 done
--- Res time for date 2016-07-29 done
--- Res time for date 2016-07-30 done
--- Res time for date 2016-07-31 done
--- Res time for date 2016-08-01 done
--- Residence times assigned
--- N rows pre-processed = 3227
+-- Pre-processing 8 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 5538
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Manipulated_1004001335.csv
 
@@ -1240,16 +774,11 @@ N rows raw = 37905
 Pre-processing tag_id = 1004001336; Passer; Manipulated
 N rows raw = 24050
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 4 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-26 done
--- Res time for date 2016-07-27 done
--- Res time for date 2016-07-28 done
--- Res time for date 2016-07-29 done
--- Residence times assigned
--- N rows pre-processed = 1708
+-- Pre-processing 4 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 3155
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Manipulated_1004001336.csv
 
@@ -1258,14 +787,11 @@ N rows raw = 24050
 Pre-processing tag_id = 1004001337; Passer; Manipulated
 N rows raw = 12707
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 2 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-26 done
--- Res time for date 2016-07-27 done
--- Residence times assigned
--- N rows pre-processed = 2087
+-- Pre-processing 2 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 4499
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Manipulated_1004001337.csv
 
@@ -1274,111 +800,71 @@ N rows raw = 12707
 Pre-processing tag_id = 1004001343; Passer; Manipulated
 N rows raw = 1630
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 1 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-26 done
--- Residence times assigned
--- N rows pre-processed = 345
--- saved to data/processed/data_preprocessed/
-    data_preproc_Passer_Manipulated_1004001343.csv
+-- Pre-processing 1 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+List of data is empty, all data removed by speed filter
 
 ***
 
 Pre-processing tag_id = 1004001344; Passer; Manipulated
 N rows raw = 2845
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 1 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-26 done
--- Residence times assigned
--- N rows pre-processed = 726
--- saved to data/processed/data_preprocessed/
-    data_preproc_Passer_Manipulated_1004001344.csv
+-- Pre-processing 1 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+List of data is empty, all data removed by speed filter
 
 ***
 
 Pre-processing tag_id = 1004001346; Passer; Manipulated
 N rows raw = 5107
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 1 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-26 done
--- Residence times assigned
--- N rows pre-processed = 299
--- saved to data/processed/data_preprocessed/
-    data_preproc_Passer_Manipulated_1004001346.csv
+-- Pre-processing 1 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+List of data is empty, all data removed by speed filter
 
 ***
 
 Pre-processing tag_id = 1004001350; Passer; Manipulated
 N rows raw = 3830
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 1 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-26 done
--- Residence times assigned
--- N rows pre-processed = 388
--- saved to data/processed/data_preprocessed/
-    data_preproc_Passer_Manipulated_1004001350.csv
+-- Pre-processing 1 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+List of data is empty, all data removed by speed filter
 
 ***
 
 Pre-processing tag_id = 1004001352; Passer; Manipulated
 N rows raw = 11859
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 5 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-26 done
--- Res time for date 2016-07-27 done
--- Res time for date 2016-07-28 done
--- Res time for date 2016-07-29 done
--- Res time for date 2016-07-30 done
--- Residence times assigned
--- N rows pre-processed = 3071
--- saved to data/processed/data_preprocessed/
-    data_preproc_Passer_Manipulated_1004001352.csv
+-- Pre-processing 5 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+List of data is empty, all data removed by speed filter
 
 ***
 
 Pre-processing tag_id = 1004001375; Passer; Manipulated
 N rows raw = 4426
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 1 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-08 done
--- Residence times assigned
--- N rows pre-processed = 356
--- saved to data/processed/data_preprocessed/
-    data_preproc_Passer_Manipulated_1004001375.csv
+-- Pre-processing 1 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+List of data is empty, all data removed by speed filter
 
 ***
 
 Pre-processing tag_id = 1004001457; Passer; Manipulated
 N rows raw = 89554
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 5 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-23 done
--- Res time for date 2016-08-24 done
--- Res time for date 2016-08-25 done
--- Res time for date 2016-08-26 done
--- Res time for date 2016-08-27 done
--- Residence times assigned
--- N rows pre-processed = 15066
+-- Pre-processing 5 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 28545
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Manipulated_1004001457.csv
 
@@ -1387,15 +873,11 @@ N rows raw = 89554
 Pre-processing tag_id = 1004001525; Passer; Manipulated
 N rows raw = 48287
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 3 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-06 done
--- Res time for date 2016-09-07 done
--- Res time for date 2016-09-08 done
--- Residence times assigned
--- N rows pre-processed = 6205
+-- Pre-processing 3 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 11511
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Manipulated_1004001525.csv
 
@@ -1404,40 +886,21 @@ N rows raw = 48287
 Pre-processing tag_id = 1004001562; Passer; Manipulated
 N rows raw = 10047
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 4 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-10 done
--- Res time for date 2016-09-11 done
--- Res time for date 2016-09-16 done
--- Res time for date 2016-09-19 done
--- Residence times assigned
--- N rows pre-processed = 1325
--- saved to data/processed/data_preprocessed/
-    data_preproc_Passer_Manipulated_1004001562.csv
+-- Pre-processing 4 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+List of data is empty, all data removed by speed filter
 
 ***
 
 Pre-processing tag_id = 1004001564; Passer; Manipulated
 N rows raw = 40583
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 10 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-12 done
--- Res time for date 2016-09-13 done
--- Res time for date 2016-09-14 done
--- Res time for date 2016-09-15 done
--- Res time for date 2016-09-16 done
--- Res time for date 2016-09-17 done
--- Res time for date 2016-09-18 done
--- Res time for date 2016-09-19 done
--- Res time for date 2016-09-20 done
--- Res time for date 2016-09-21 done
--- Residence times assigned
--- N rows pre-processed = 9046
+-- Pre-processing 10 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 7035
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Manipulated_1004001564.csv
 
@@ -1446,36 +909,11 @@ N rows raw = 40583
 Pre-processing tag_id = 1004001567; Passer; Manipulated
 N rows raw = 91006
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 24 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-09 done
--- Res time for date 2016-09-10 done
--- Res time for date 2016-09-12 done
--- Res time for date 2016-09-13 done
--- Res time for date 2016-09-14 done
--- Res time for date 2016-09-16 done
--- Res time for date 2016-09-17 done
--- Res time for date 2016-09-18 done
--- Res time for date 2016-09-19 done
--- Res time for date 2016-09-20 done
--- Res time for date 2016-09-21 done
--- Res time for date 2016-09-22 done
--- Res time for date 2016-09-23 done
--- Res time for date 2016-09-24 done
--- Res time for date 2016-09-29 done
--- Res time for date 2016-10-04 done
--- Res time for date 2016-10-06 done
--- Res time for date 2016-10-07 done
--- Res time for date 2016-10-08 done
--- Res time for date 2016-10-09 done
--- Res time for date 2016-10-10 done
--- Res time for date 2016-10-11 done
--- Res time for date 2016-10-12 done
--- Res time for date 2016-10-13 done
--- Residence times assigned
--- N rows pre-processed = 24674
+-- Pre-processing 24 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 26569
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Manipulated_1004001567.csv
 
@@ -1484,46 +922,11 @@ N rows raw = 91006
 Pre-processing tag_id = 1004001568; Passer; Manipulated
 N rows raw = 122982
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 34 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-09 done
--- Res time for date 2016-09-10 done
--- Res time for date 2016-09-11 done
--- Res time for date 2016-09-12 done
--- Res time for date 2016-09-13 done
--- Res time for date 2016-09-14 done
--- Res time for date 2016-09-15 done
--- Res time for date 2016-09-16 done
--- Res time for date 2016-09-17 done
--- Res time for date 2016-09-18 done
--- Res time for date 2016-09-19 done
--- Res time for date 2016-09-20 done
--- Res time for date 2016-09-21 done
--- Res time for date 2016-09-22 done
--- Res time for date 2016-09-23 done
--- Res time for date 2016-09-24 done
--- Res time for date 2016-09-27 done
--- Res time for date 2016-09-28 done
--- Res time for date 2016-09-29 done
--- Res time for date 2016-09-30 done
--- Res time for date 2016-10-01 done
--- Res time for date 2016-10-03 done
--- Res time for date 2016-10-04 done
--- Res time for date 2016-10-07 done
--- Res time for date 2016-10-08 done
--- Res time for date 2016-10-09 done
--- Res time for date 2016-10-10 done
--- Res time for date 2016-10-11 done
--- Res time for date 2016-10-12 done
--- Res time for date 2016-10-13 done
--- Res time for date 2016-10-14 done
--- Res time for date 2016-10-15 done
--- Res time for date 2016-10-16 done
--- Res time for date 2016-10-17 done
--- Residence times assigned
--- N rows pre-processed = 32854
+-- Pre-processing 34 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 25648
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Manipulated_1004001568.csv
 
@@ -1532,30 +935,11 @@ N rows raw = 122982
 Pre-processing tag_id = 1004001569; Passer; Manipulated
 N rows raw = 61639
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 18 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-09 done
--- Res time for date 2016-09-10 done
--- Res time for date 2016-09-11 done
--- Res time for date 2016-09-12 done
--- Res time for date 2016-09-13 done
--- Res time for date 2016-09-14 done
--- Res time for date 2016-09-15 done
--- Res time for date 2016-09-16 done
--- Res time for date 2016-09-17 done
--- Res time for date 2016-09-19 done
--- Res time for date 2016-09-20 done
--- Res time for date 2016-09-21 done
--- Res time for date 2016-09-22 done
--- Res time for date 2016-09-23 done
--- Res time for date 2016-09-24 done
--- Res time for date 2016-09-26 done
--- Res time for date 2016-09-29 done
--- Res time for date 2016-09-30 done
--- Residence times assigned
--- N rows pre-processed = 13067
+-- Pre-processing 18 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 6800
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Manipulated_1004001569.csv
 
@@ -1564,20 +948,11 @@ N rows raw = 61639
 Pre-processing tag_id = 1004001603; Passer; Manipulated
 N rows raw = 19482
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 8 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-21 done
--- Res time for date 2016-09-22 done
--- Res time for date 2016-09-23 done
--- Res time for date 2016-09-24 done
--- Res time for date 2016-10-08 done
--- Res time for date 2016-10-11 done
--- Res time for date 2016-10-12 done
--- Res time for date 2016-10-15 done
--- Residence times assigned
--- N rows pre-processed = 3577
+-- Pre-processing 8 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 2777
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Manipulated_1004001603.csv
 
@@ -1586,29 +961,11 @@ N rows raw = 19482
 Pre-processing tag_id = 1004001604; Passer; Manipulated
 N rows raw = 63439
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 17 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-27 done
--- Res time for date 2016-09-29 done
--- Res time for date 2016-10-01 done
--- Res time for date 2016-10-07 done
--- Res time for date 2016-10-08 done
--- Res time for date 2016-10-09 done
--- Res time for date 2016-10-10 done
--- Res time for date 2016-10-11 done
--- Res time for date 2016-10-12 done
--- Res time for date 2016-10-13 done
--- Res time for date 2016-10-14 done
--- Res time for date 2016-10-15 done
--- Res time for date 2016-10-16 done
--- Res time for date 2016-10-17 done
--- Res time for date 2016-10-30 done
--- Res time for date 2016-10-31 done
--- Res time for date 2016-11-01 done
--- Residence times assigned
--- N rows pre-processed = 12782
+-- Pre-processing 17 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 9306
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Manipulated_1004001604.csv
 
@@ -1617,34 +974,21 @@ N rows raw = 63439
 Pre-processing tag_id = 1004001177; Passer; Moulting
 N rows raw = 15380
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 3 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-01 done
--- Res time for date 2016-07-02 done
--- Res time for date 2016-07-05 done
--- Residence times assigned
--- N rows pre-processed = 860
--- saved to data/processed/data_preprocessed/
-    data_preproc_Passer_Moulting_1004001177.csv
+-- Pre-processing 3 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+List of data is empty, all data removed by speed filter
 
 ***
 
 Pre-processing tag_id = 1004001243; Passer; Moulting
 N rows raw = 32337
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 5 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-12 done
--- Res time for date 2016-07-13 done
--- Res time for date 2016-07-14 done
--- Res time for date 2016-07-15 done
--- Res time for date 2016-07-16 done
--- Residence times assigned
--- N rows pre-processed = 2456
+-- Pre-processing 5 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 2163
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Moulting_1004001243.csv
 
@@ -1653,14 +997,11 @@ N rows raw = 32337
 Pre-processing tag_id = 1004001246; Passer; Moulting
 N rows raw = 14494
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 2 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-12 done
--- Res time for date 2016-07-13 done
--- Residence times assigned
--- N rows pre-processed = 1408
+-- Pre-processing 2 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 1494
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Moulting_1004001246.csv
 
@@ -1669,16 +1010,11 @@ N rows raw = 14494
 Pre-processing tag_id = 1004001334; Passer; Moulting
 N rows raw = 16384
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 4 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-25 done
--- Res time for date 2016-07-26 done
--- Res time for date 2016-07-27 done
--- Res time for date 2016-07-28 done
--- Residence times assigned
--- N rows pre-processed = 1986
+-- Pre-processing 4 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 3444
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Moulting_1004001334.csv
 
@@ -1694,15 +1030,10 @@ List of data is empty, all data had fewer than 500 rows
 Pre-processing tag_id = 1004001347; Passer; Moulting
 N rows raw = 2493
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 1 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-26 done
--- Residence times assigned
--- N rows pre-processed = 364
--- saved to data/processed/data_preprocessed/
-    data_preproc_Passer_Moulting_1004001347.csv
+-- Pre-processing 1 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+List of data is empty, all data removed by speed filter
 
 ***
 
@@ -1716,65 +1047,31 @@ List of data is empty, all data had fewer than 500 rows
 Pre-processing tag_id = 1004001372; Passer; Moulting
 N rows raw = 20697
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 3 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-04 done
--- Res time for date 2016-08-05 done
--- Res time for date 2016-08-06 done
--- Residence times assigned
--- N rows pre-processed = 1077
--- saved to data/processed/data_preprocessed/
-    data_preproc_Passer_Moulting_1004001372.csv
+-- Pre-processing 3 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+List of data is empty, all data removed by speed filter
 
 ***
 
 Pre-processing tag_id = 1004001374; Passer; Moulting
 N rows raw = 1645
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 1 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-07 done
--- Residence times assigned
--- N rows pre-processed = 343
--- saved to data/processed/data_preprocessed/
-    data_preproc_Passer_Moulting_1004001374.csv
+-- Pre-processing 1 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+List of data is empty, all data removed by speed filter
 
 ***
 
 Pre-processing tag_id = 1004001386; Passer; Moulting
 N rows raw = 83235
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 21 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-11 done
--- Res time for date 2016-08-12 done
--- Res time for date 2016-08-13 done
--- Res time for date 2016-08-14 done
--- Res time for date 2016-08-15 done
--- Res time for date 2016-08-16 done
--- Res time for date 2016-08-17 done
--- Res time for date 2016-08-18 done
--- Res time for date 2016-08-19 done
--- Res time for date 2016-08-20 done
--- Res time for date 2016-08-21 done
--- Res time for date 2016-08-25 done
--- Res time for date 2016-08-26 done
--- Res time for date 2016-08-27 done
--- Res time for date 2016-08-29 done
--- Res time for date 2016-08-31 done
--- Res time for date 2016-09-01 done
--- Res time for date 2016-09-02 done
--- Res time for date 2016-09-03 done
--- Res time for date 2016-09-12 done
--- Res time for date 2016-09-13 done
--- Residence times assigned
--- N rows pre-processed = 11417
+-- Pre-processing 21 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 2784
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Moulting_1004001386.csv
 
@@ -1783,17 +1080,11 @@ N rows raw = 83235
 Pre-processing tag_id = 1004001400; Passer; Moulting
 N rows raw = 79289
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 5 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-05 done
--- Res time for date 2016-08-06 done
--- Res time for date 2016-08-07 done
--- Res time for date 2016-08-08 done
--- Res time for date 2016-08-09 done
--- Residence times assigned
--- N rows pre-processed = 9274
+-- Pre-processing 5 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 26771
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Moulting_1004001400.csv
 
@@ -1802,15 +1093,11 @@ N rows raw = 79289
 Pre-processing tag_id = 1004001401; Passer; Moulting
 N rows raw = 12519
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 3 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-05 done
--- Res time for date 2016-08-06 done
--- Res time for date 2016-08-07 done
--- Residence times assigned
--- N rows pre-processed = 1490
+-- Pre-processing 3 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 2446
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Moulting_1004001401.csv
 
@@ -1819,16 +1106,11 @@ N rows raw = 12519
 Pre-processing tag_id = 1004001407; Passer; Moulting
 N rows raw = 72654
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 4 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-18 done
--- Res time for date 2016-08-19 done
--- Res time for date 2016-08-20 done
--- Res time for date 2016-08-21 done
--- Residence times assigned
--- N rows pre-processed = 10542
+-- Pre-processing 4 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 24555
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Moulting_1004001407.csv
 
@@ -1837,18 +1119,11 @@ N rows raw = 72654
 Pre-processing tag_id = 1004001408; Passer; Moulting
 N rows raw = 114946
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 6 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-18 done
--- Res time for date 2016-08-19 done
--- Res time for date 2016-08-20 done
--- Res time for date 2016-08-21 done
--- Res time for date 2016-08-22 done
--- Res time for date 2016-08-23 done
--- Residence times assigned
--- N rows pre-processed = 17051
+-- Pre-processing 6 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 39596
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Moulting_1004001408.csv
 
@@ -1857,17 +1132,11 @@ N rows raw = 114946
 Pre-processing tag_id = 1004001412; Passer; Moulting
 N rows raw = 101158
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 5 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-18 done
--- Res time for date 2016-08-19 done
--- Res time for date 2016-08-20 done
--- Res time for date 2016-08-21 done
--- Res time for date 2016-08-22 done
--- Residence times assigned
--- N rows pre-processed = 15614
+-- Pre-processing 5 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 32130
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Moulting_1004001412.csv
 
@@ -1876,16 +1145,11 @@ N rows raw = 101158
 Pre-processing tag_id = 1004001414; Passer; Moulting
 N rows raw = 75097
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 4 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-18 done
--- Res time for date 2016-08-19 done
--- Res time for date 2016-08-20 done
--- Res time for date 2016-08-21 done
--- Residence times assigned
--- N rows pre-processed = 12120
+-- Pre-processing 4 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 28774
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Moulting_1004001414.csv
 
@@ -1894,18 +1158,11 @@ N rows raw = 75097
 Pre-processing tag_id = 1004001416; Passer; Moulting
 N rows raw = 118855
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 6 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-18 done
--- Res time for date 2016-08-19 done
--- Res time for date 2016-08-20 done
--- Res time for date 2016-08-21 done
--- Res time for date 2016-08-22 done
--- Res time for date 2016-08-23 done
--- Residence times assigned
--- N rows pre-processed = 20805
+-- Pre-processing 6 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 44461
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Moulting_1004001416.csv
 
@@ -1914,14 +1171,11 @@ N rows raw = 118855
 Pre-processing tag_id = 1004001418; Passer; Moulting
 N rows raw = 34016
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 2 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-18 done
--- Res time for date 2016-08-19 done
--- Residence times assigned
--- N rows pre-processed = 4255
+-- Pre-processing 2 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 10306
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Moulting_1004001418.csv
 
@@ -1930,49 +1184,11 @@ N rows raw = 34016
 Pre-processing tag_id = 1004001463; Passer; Moulting
 N rows raw = 124106
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 37 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-24 done
--- Res time for date 2016-08-25 done
--- Res time for date 2016-08-26 done
--- Res time for date 2016-08-27 done
--- Res time for date 2016-08-28 done
--- Res time for date 2016-08-29 done
--- Res time for date 2016-08-30 done
--- Res time for date 2016-08-31 done
--- Res time for date 2016-09-01 done
--- Res time for date 2016-09-02 done
--- Res time for date 2016-09-03 done
--- Res time for date 2016-09-04 done
--- Res time for date 2016-09-05 done
--- Res time for date 2016-09-06 done
--- Res time for date 2016-09-07 done
--- Res time for date 2016-09-08 done
--- Res time for date 2016-09-09 done
--- Res time for date 2016-09-10 done
--- Res time for date 2016-09-11 done
--- Res time for date 2016-09-12 done
--- Res time for date 2016-09-13 done
--- Res time for date 2016-09-14 done
--- Res time for date 2016-09-15 done
--- Res time for date 2016-09-16 done
--- Res time for date 2016-09-17 done
--- Res time for date 2016-09-18 done
--- Res time for date 2016-09-19 done
--- Res time for date 2016-09-20 done
--- Res time for date 2016-09-21 done
--- Res time for date 2016-09-22 done
--- Res time for date 2016-09-23 done
--- Res time for date 2016-09-24 done
--- Res time for date 2016-09-26 done
--- Res time for date 2016-09-28 done
--- Res time for date 2016-09-29 done
--- Res time for date 2016-09-30 done
--- Res time for date 2016-10-01 done
--- Residence times assigned
--- N rows pre-processed = 37592
+-- Pre-processing 37 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 25882
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Moulting_1004001463.csv
 
@@ -1981,29 +1197,11 @@ N rows raw = 124106
 Pre-processing tag_id = 1004001465; Passer; Moulting
 N rows raw = 83847
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 17 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-24 done
--- Res time for date 2016-08-25 done
--- Res time for date 2016-08-26 done
--- Res time for date 2016-08-27 done
--- Res time for date 2016-08-28 done
--- Res time for date 2016-08-29 done
--- Res time for date 2016-08-30 done
--- Res time for date 2016-08-31 done
--- Res time for date 2016-09-01 done
--- Res time for date 2016-09-02 done
--- Res time for date 2016-09-03 done
--- Res time for date 2016-09-04 done
--- Res time for date 2016-09-05 done
--- Res time for date 2016-09-06 done
--- Res time for date 2016-09-07 done
--- Res time for date 2016-09-08 done
--- Res time for date 2016-09-09 done
--- Residence times assigned
--- N rows pre-processed = 24678
+-- Pre-processing 17 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 21535
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Moulting_1004001465.csv
 
@@ -2012,17 +1210,11 @@ N rows raw = 83847
 Pre-processing tag_id = 1004001526; Passer; Moulting
 N rows raw = 86063
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 5 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-06 done
--- Res time for date 2016-09-07 done
--- Res time for date 2016-09-08 done
--- Res time for date 2016-09-09 done
--- Res time for date 2016-09-10 done
--- Residence times assigned
--- N rows pre-processed = 13275
+-- Pre-processing 5 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 29454
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Moulting_1004001526.csv
 
@@ -2031,34 +1223,11 @@ N rows raw = 86063
 Pre-processing tag_id = 1004001565; Passer; Moulting
 N rows raw = 58277
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 22 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-09 done
--- Res time for date 2016-09-10 done
--- Res time for date 2016-09-11 done
--- Res time for date 2016-09-12 done
--- Res time for date 2016-09-13 done
--- Res time for date 2016-09-14 done
--- Res time for date 2016-09-15 done
--- Res time for date 2016-09-16 done
--- Res time for date 2016-09-17 done
--- Res time for date 2016-09-18 done
--- Res time for date 2016-09-19 done
--- Res time for date 2016-09-20 done
--- Res time for date 2016-09-21 done
--- Res time for date 2016-09-23 done
--- Res time for date 2016-09-24 done
--- Res time for date 2016-09-26 done
--- Res time for date 2016-09-27 done
--- Res time for date 2016-09-28 done
--- Res time for date 2016-09-29 done
--- Res time for date 2016-10-01 done
--- Res time for date 2016-10-07 done
--- Res time for date 2016-10-08 done
--- Residence times assigned
--- N rows pre-processed = 11746
+-- Pre-processing 22 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 3352
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Moulting_1004001565.csv
 
@@ -2067,14 +1236,11 @@ N rows raw = 58277
 Pre-processing tag_id = 1004001571; Passer; Moulting
 N rows raw = 5698
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 2 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-09 done
--- Res time for date 2016-09-10 done
--- Residence times assigned
--- N rows pre-processed = 1482
+-- Pre-processing 2 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 943
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_Moulting_1004001571.csv
 
@@ -2083,31 +1249,21 @@ N rows raw = 5698
 Pre-processing tag_id = 1004001175; Passer; NonMoulting
 N rows raw = 5945
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 1 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-02 done
--- Residence times assigned
--- N rows pre-processed = 307
--- saved to data/processed/data_preprocessed/
-    data_preproc_Passer_NonMoulting_1004001175.csv
+-- Pre-processing 1 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+List of data is empty, all data removed by speed filter
 
 ***
 
 Pre-processing tag_id = 1004001180; Passer; NonMoulting
 N rows raw = 33461
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 4 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-02 done
--- Res time for date 2016-07-03 done
--- Res time for date 2016-07-04 done
--- Res time for date 2016-07-05 done
--- Residence times assigned
--- N rows pre-processed = 1417
+-- Pre-processing 4 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 531
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_NonMoulting_1004001180.csv
 
@@ -2116,30 +1272,21 @@ N rows raw = 33461
 Pre-processing tag_id = 1004001211; Passer; NonMoulting
 N rows raw = 3934
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 1 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-08 done
--- Residence times assigned
--- N rows pre-processed = 278
--- saved to data/processed/data_preprocessed/
-    data_preproc_Passer_NonMoulting_1004001211.csv
+-- Pre-processing 1 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+List of data is empty, all data removed by speed filter
 
 ***
 
 Pre-processing tag_id = 1004001214; Passer; NonMoulting
 N rows raw = 12044
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 3 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-08 done
--- Res time for date 2016-07-09 done
--- Res time for date 2016-07-10 done
--- Residence times assigned
--- N rows pre-processed = 3402
+-- Pre-processing 3 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 6381
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_NonMoulting_1004001214.csv
 
@@ -2148,14 +1295,11 @@ N rows raw = 12044
 Pre-processing tag_id = 1004001217; Passer; NonMoulting
 N rows raw = 7183
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 2 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-08 done
--- Res time for date 2016-07-09 done
--- Residence times assigned
--- N rows pre-processed = 1273
+-- Pre-processing 2 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 3126
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_NonMoulting_1004001217.csv
 
@@ -2164,34 +1308,21 @@ N rows raw = 7183
 Pre-processing tag_id = 1004001244; Passer; NonMoulting
 N rows raw = 4030
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 2 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-12 done
--- Res time for date 2016-07-13 done
--- Residence times assigned
--- N rows pre-processed = 589
--- saved to data/processed/data_preprocessed/
-    data_preproc_Passer_NonMoulting_1004001244.csv
+-- Pre-processing 2 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+List of data is empty, all data removed by speed filter
 
 ***
 
 Pre-processing tag_id = 1004001254; Passer; NonMoulting
 N rows raw = 8219
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 6 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-12 done
--- Res time for date 2016-07-13 done
--- Res time for date 2016-07-14 done
--- Res time for date 2016-07-15 done
--- Res time for date 2016-07-16 done
--- Res time for date 2016-07-17 done
--- Residence times assigned
--- N rows pre-processed = 2736
+-- Pre-processing 6 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 2985
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_NonMoulting_1004001254.csv
 
@@ -2200,21 +1331,11 @@ N rows raw = 8219
 Pre-processing tag_id = 1004001417; Passer; NonMoulting
 N rows raw = 184551
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 9 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-18 done
--- Res time for date 2016-08-19 done
--- Res time for date 2016-08-20 done
--- Res time for date 2016-08-21 done
--- Res time for date 2016-08-22 done
--- Res time for date 2016-08-23 done
--- Res time for date 2016-08-24 done
--- Res time for date 2016-08-25 done
--- Res time for date 2016-08-26 done
--- Residence times assigned
--- N rows pre-processed = 22786
+-- Pre-processing 9 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 54742
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_NonMoulting_1004001417.csv
 
@@ -2223,14 +1344,11 @@ N rows raw = 184551
 Pre-processing tag_id = 1004001675; Passer; NonMoulting
 N rows raw = 4236
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 2 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-10-14 done
--- Res time for date 2016-10-15 done
--- Residence times assigned
--- N rows pre-processed = 1585
+-- Pre-processing 2 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 1147
 -- saved to data/processed/data_preprocessed/
     data_preproc_Passer_NonMoulting_1004001675.csv
 
@@ -2239,17 +1357,11 @@ N rows raw = 4236
 Pre-processing tag_id = 1004001399; Pycnonotus; Manipulated
 N rows raw = 67083
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 5 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-05 done
--- Res time for date 2016-08-06 done
--- Res time for date 2016-08-07 done
--- Res time for date 2016-08-08 done
--- Res time for date 2016-08-09 done
--- Residence times assigned
--- N rows pre-processed = 10696
+-- Pre-processing 5 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 29019
 -- saved to data/processed/data_preprocessed/
     data_preproc_Pycnonotus_Manipulated_1004001399.csv
 
@@ -2258,15 +1370,11 @@ N rows raw = 67083
 Pre-processing tag_id = 1004001415; Pycnonotus; Manipulated
 N rows raw = 37823
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 3 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-19 done
--- Res time for date 2016-08-20 done
--- Res time for date 2016-08-21 done
--- Residence times assigned
--- N rows pre-processed = 5572
+-- Pre-processing 3 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 19815
 -- saved to data/processed/data_preprocessed/
     data_preproc_Pycnonotus_Manipulated_1004001415.csv
 
@@ -2275,19 +1383,11 @@ N rows raw = 37823
 Pre-processing tag_id = 1004001582; Pycnonotus; Manipulated
 N rows raw = 52810
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 7 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-11 done
--- Res time for date 2016-09-12 done
--- Res time for date 2016-09-13 done
--- Res time for date 2016-09-14 done
--- Res time for date 2016-09-15 done
--- Res time for date 2016-09-16 done
--- Res time for date 2016-09-17 done
--- Residence times assigned
--- N rows pre-processed = 14116
+-- Pre-processing 7 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 26647
 -- saved to data/processed/data_preprocessed/
     data_preproc_Pycnonotus_Manipulated_1004001582.csv
 
@@ -2296,22 +1396,11 @@ N rows raw = 52810
 Pre-processing tag_id = 1004001590; Pycnonotus; Manipulated
 N rows raw = 42816
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 10 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-19 done
--- Res time for date 2016-09-20 done
--- Res time for date 2016-09-21 done
--- Res time for date 2016-09-22 done
--- Res time for date 2016-09-23 done
--- Res time for date 2016-09-24 done
--- Res time for date 2016-09-25 done
--- Res time for date 2016-09-26 done
--- Res time for date 2016-09-27 done
--- Res time for date 2016-09-28 done
--- Residence times assigned
--- N rows pre-processed = 5797
+-- Pre-processing 10 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 9227
 -- saved to data/processed/data_preprocessed/
     data_preproc_Pycnonotus_Manipulated_1004001590.csv
 
@@ -2320,17 +1409,11 @@ N rows raw = 42816
 Pre-processing tag_id = 1004001608; Pycnonotus; Manipulated
 N rows raw = 24968
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 5 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-21 done
--- Res time for date 2016-09-22 done
--- Res time for date 2016-09-23 done
--- Res time for date 2016-09-24 done
--- Res time for date 2016-09-25 done
--- Residence times assigned
--- N rows pre-processed = 3861
+-- Pre-processing 5 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 7175
 -- saved to data/processed/data_preprocessed/
     data_preproc_Pycnonotus_Manipulated_1004001608.csv
 
@@ -2339,20 +1422,11 @@ N rows raw = 24968
 Pre-processing tag_id = 1004001610; Pycnonotus; Manipulated
 N rows raw = 33091
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 8 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-22 done
--- Res time for date 2016-09-23 done
--- Res time for date 2016-09-24 done
--- Res time for date 2016-09-25 done
--- Res time for date 2016-09-26 done
--- Res time for date 2016-09-27 done
--- Res time for date 2016-09-28 done
--- Res time for date 2016-09-29 done
--- Residence times assigned
--- N rows pre-processed = 5786
+-- Pre-processing 8 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 11265
 -- saved to data/processed/data_preprocessed/
     data_preproc_Pycnonotus_Manipulated_1004001610.csv
 
@@ -2361,15 +1435,11 @@ N rows raw = 33091
 Pre-processing tag_id = 1004001390; Pycnonotus; Moulting
 N rows raw = 9475
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 3 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-04 done
--- Res time for date 2016-08-05 done
--- Res time for date 2016-08-06 done
--- Residence times assigned
--- N rows pre-processed = 2497
+-- Pre-processing 3 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 5131
 -- saved to data/processed/data_preprocessed/
     data_preproc_Pycnonotus_Moulting_1004001390.csv
 
@@ -2378,17 +1448,11 @@ N rows raw = 9475
 Pre-processing tag_id = 1004001410; Pycnonotus; Moulting
 N rows raw = 91493
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 5 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-19 done
--- Res time for date 2016-08-20 done
--- Res time for date 2016-08-21 done
--- Res time for date 2016-08-22 done
--- Res time for date 2016-08-23 done
--- Residence times assigned
--- N rows pre-processed = 14593
+-- Pre-processing 5 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 43255
 -- saved to data/processed/data_preprocessed/
     data_preproc_Pycnonotus_Moulting_1004001410.csv
 
@@ -2397,19 +1461,11 @@ N rows raw = 91493
 Pre-processing tag_id = 1004001411; Pycnonotus; Moulting
 N rows raw = 122281
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 7 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-19 done
--- Res time for date 2016-08-20 done
--- Res time for date 2016-08-21 done
--- Res time for date 2016-08-22 done
--- Res time for date 2016-08-23 done
--- Res time for date 2016-08-24 done
--- Res time for date 2016-08-25 done
--- Residence times assigned
--- N rows pre-processed = 23177
+-- Pre-processing 7 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 70268
 -- saved to data/processed/data_preprocessed/
     data_preproc_Pycnonotus_Moulting_1004001411.csv
 
@@ -2418,18 +1474,11 @@ N rows raw = 122281
 Pre-processing tag_id = 1004001478; Pycnonotus; Moulting
 N rows raw = 48871
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 6 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-29 done
--- Res time for date 2016-08-30 done
--- Res time for date 2016-08-31 done
--- Res time for date 2016-09-01 done
--- Res time for date 2016-09-02 done
--- Res time for date 2016-09-03 done
--- Residence times assigned
--- N rows pre-processed = 9940
+-- Pre-processing 6 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 26285
 -- saved to data/processed/data_preprocessed/
     data_preproc_Pycnonotus_Moulting_1004001478.csv
 
@@ -2438,17 +1487,11 @@ N rows raw = 48871
 Pre-processing tag_id = 1004001480; Pycnonotus; Moulting
 N rows raw = 45871
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 5 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-08-30 done
--- Res time for date 2016-08-31 done
--- Res time for date 2016-09-01 done
--- Res time for date 2016-09-02 done
--- Res time for date 2016-09-03 done
--- Residence times assigned
--- N rows pre-processed = 9101
+-- Pre-processing 5 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 25850
 -- saved to data/processed/data_preprocessed/
     data_preproc_Pycnonotus_Moulting_1004001480.csv
 
@@ -2457,18 +1500,11 @@ N rows raw = 45871
 Pre-processing tag_id = 1004001609; Pycnonotus; Moulting
 N rows raw = 31345
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 6 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-22 done
--- Res time for date 2016-09-23 done
--- Res time for date 2016-09-24 done
--- Res time for date 2016-09-25 done
--- Res time for date 2016-09-26 done
--- Res time for date 2016-09-27 done
--- Residence times assigned
--- N rows pre-processed = 4541
+-- Pre-processing 6 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 8357
 -- saved to data/processed/data_preprocessed/
     data_preproc_Pycnonotus_Moulting_1004001609.csv
 
@@ -2477,16 +1513,11 @@ N rows raw = 31345
 Pre-processing tag_id = 1004001613; Pycnonotus; Moulting
 N rows raw = 24432
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 4 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-27 done
--- Res time for date 2016-09-28 done
--- Res time for date 2016-09-29 done
--- Res time for date 2016-09-30 done
--- Residence times assigned
--- N rows pre-processed = 4623
+-- Pre-processing 4 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 8911
 -- saved to data/processed/data_preprocessed/
     data_preproc_Pycnonotus_Moulting_1004001613.csv
 
@@ -2495,18 +1526,11 @@ N rows raw = 24432
 Pre-processing tag_id = 1004001636; Pycnonotus; Moulting
 N rows raw = 43510
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 6 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-09-27 done
--- Res time for date 2016-09-28 done
--- Res time for date 2016-09-29 done
--- Res time for date 2016-09-30 done
--- Res time for date 2016-10-01 done
--- Res time for date 2016-10-02 done
--- Residence times assigned
--- N rows pre-processed = 6100
+-- Pre-processing 6 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 12086
 -- saved to data/processed/data_preprocessed/
     data_preproc_Pycnonotus_Moulting_1004001636.csv
 
@@ -2515,14 +1539,11 @@ N rows raw = 43510
 Pre-processing tag_id = 1004001679; Pycnonotus; Moulting
 N rows raw = 5302
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 2 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-10-15 done
--- Res time for date 2016-10-16 done
--- Residence times assigned
--- N rows pre-processed = 1143
+-- Pre-processing 2 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 524
 -- saved to data/processed/data_preprocessed/
     data_preproc_Pycnonotus_Moulting_1004001679.csv
 
@@ -2531,14 +1552,11 @@ N rows raw = 5302
 Pre-processing tag_id = 1004001078; Pycnonotus; NonMoulting
 N rows raw = 3551
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 2 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-06-09 done
--- Res time for date 2016-06-10 done
--- Residence times assigned
--- N rows pre-processed = 1305
+-- Pre-processing 2 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 1209
 -- saved to data/processed/data_preprocessed/
     data_preproc_Pycnonotus_NonMoulting_1004001078.csv
 
@@ -2547,14 +1565,11 @@ N rows raw = 3551
 Pre-processing tag_id = 1004001079; Pycnonotus; NonMoulting
 N rows raw = 5992
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 2 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-06-09 done
--- Res time for date 2016-06-10 done
--- Residence times assigned
--- N rows pre-processed = 2284
+-- Pre-processing 2 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 3460
 -- saved to data/processed/data_preprocessed/
     data_preproc_Pycnonotus_NonMoulting_1004001079.csv
 
@@ -2563,19 +1578,11 @@ N rows raw = 5992
 Pre-processing tag_id = 1004001172; Pycnonotus; NonMoulting
 N rows raw = 12268
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 7 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-06-29 done
--- Res time for date 2016-06-30 done
--- Res time for date 2016-07-01 done
--- Res time for date 2016-07-02 done
--- Res time for date 2016-07-03 done
--- Res time for date 2016-07-04 done
--- Res time for date 2016-07-05 done
--- Residence times assigned
--- N rows pre-processed = 3460
+-- Pre-processing 7 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 3547
 -- saved to data/processed/data_preprocessed/
     data_preproc_Pycnonotus_NonMoulting_1004001172.csv
 
@@ -2584,21 +1591,11 @@ N rows raw = 12268
 Pre-processing tag_id = 1004001332; Pycnonotus; NonMoulting
 N rows raw = 75947
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 9 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-07-25 done
--- Res time for date 2016-07-26 done
--- Res time for date 2016-07-27 done
--- Res time for date 2016-07-28 done
--- Res time for date 2016-07-29 done
--- Res time for date 2016-07-30 done
--- Res time for date 2016-07-31 done
--- Res time for date 2016-08-01 done
--- Res time for date 2016-08-02 done
--- Residence times assigned
--- N rows pre-processed = 16787
+-- Pre-processing 9 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 47059
 -- saved to data/processed/data_preprocessed/
     data_preproc_Pycnonotus_NonMoulting_1004001332.csv
 
@@ -2607,15 +1604,11 @@ N rows raw = 75947
 Pre-processing tag_id = 1004001679; Pycnonotus; NonMoulting
 N rows raw = 11552
 -- removed nighttime positions between 20PM and 5AM
--- Pre-processing 3 days' daytime data separately
--- Filtered for speed < 3 and angle < 20
--- Median smoothed coordinates, moving window = 5
--- Getting residence times, radius = 10 m
--- Res time for date 2016-10-15 done
--- Res time for date 2016-10-16 done
--- Res time for date 2016-11-05 done
--- Residence times assigned
--- N rows pre-processed = 1479
+-- Pre-processing 3 days' data separately
+-- Filtered to keep transit; speeds > 3 AND angle < 10;
+    ELSE removing DBSCAN outliers (eps = 3)
+-- Median smoothed coordinates, moving window = 7
+-- N rows pre-processed = 524
 -- saved to data/processed/data_preprocessed/
     data_preproc_Pycnonotus_NonMoulting_1004001679.csv
 
