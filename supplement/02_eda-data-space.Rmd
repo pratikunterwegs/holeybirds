@@ -16,6 +16,11 @@ library(stringi)
 # libs for plotting
 library(ggplot2)
 library(atlastools)
+library(dbscan)
+library(patchwork)
+
+# source mean filter
+Rcpp::sourceCpp("src/weighted_mean_filter.cpp")
 ```
 
 ## Read data and plot by species
@@ -43,6 +48,45 @@ data_raw <- data_raw[vapply(data_raw, function(df) {
   nrow(df) > 500
 }, FUN.VALUE = T)]
 
+# plot to check
+plots = lapply(data_raw, function(df) {
+  ggplot(df, aes(x, y))+
+    geom_point(
+      alpha = 0.1
+    )
+})
+
+plots |> wrap_plots()
+```
+
+
+### Identify outliers on speed and DBSCAN
+
+```{r}
+# try dbscan
+data_proc = copy(data_raw)
+
+data_proc = lapply(data_proc, function(df) {
+  scan = dbscan(df[, c("x", "y")], eps = 2)
+  df[, outlier := scan$cluster == 0]
+  df
+})
+
+plots = Map(function(df_raw, df_proc) {
+  ggplot(mapping = aes(x, y))+
+    geom_point(
+      data = df_raw,
+      alpha = 0.1
+    )+
+    geom_point(
+      data = df_proc[!(outlier),],
+      col = "steelblue",
+      alpha = 0.5
+    )
+}, data_raw, data_proc)
+
+plots |> wrap_plots()
+
 data_raw <- lapply(data_raw, function(df) {
   # check if filtering works
   df[, c("speed_in", "speed_out", "angle") := list(
@@ -50,10 +94,19 @@ data_raw <- lapply(data_raw, function(df) {
     atl_get_speed(data = df, time = "UNIX", type = "out"),
     atl_turning_angle(data = df, time = "UNIX")
   )]
+  
   # fix missingle angles due to same position, assign 0
   df[, angle := nafill(angle, type = "const", fill = 0)]
+  
+  # classify dbscan outlier
+  scan = dbscan(df[, c("x", "y")], eps = 3)
+  df[, outlier:= scan$cluster == 0]
 })
+```
 
+### Outlier removal: Combinations of speed and density
+
+```{r}
 # make a copy
 data_proc <- copy(data_raw)
 
@@ -62,11 +115,12 @@ data_proc <- lapply(data_proc, function(df) {
   atl_filter_covariates(
     df,
     filters = c(
-      "(speed_in < 3 & speed_out < 3) | angle < 20"
+      "((!outlier) & (speed_in < 5 & speed_out < 5)) | ((angle < 10) & (angle != 0))"
     )
   )
 })
 
+# remove poor data
 data_proc <- data_proc[vapply(data_proc, function(df) {
   nrow(df) > 500
 }, FUN.VALUE = T)]
@@ -76,45 +130,84 @@ if (purrr::is_empty(data_proc)) {
   warning("data proc is empty, all data cleaned away")
 }
 
-d <- copy(data_proc[[1]])
-
-ggplot(d, aes(x, y)) +
-  geom_point() +
-  geom_path()
-
-# now smooth
-data_proc <- lapply(data_proc, atl_median_smooth,
-  x = "x", y = "y",
-  time = "UNIX", moving_window = 5
-)
-
-# try aggregate
-data_agg <- lapply(data_proc, function(df) {
-  df <- df[, c("UNIX", "x", "y", "sp", "treat", "TAG_ID")]
-  setnames(df, "UNIX", "time")
-  df <- atl_thin_data(
-    data = df, interval = 120,
-    id_columns = c("TAG_ID", "sp", "treat"),
-    method = "aggregate"
-  )
-})
-
-# plot aggregated data
-plots <- Map(function(df_raw, df_preproc) {
-  ggplot(df_preproc, aes(x, y)) +
-    geom_path(
-      data = df_raw,
-      alpha = 0.2,
-      col = "red"
-    ) +
+# plot to check
+plots = Map(function(df_raw, df_proc) {
+  ggplot(mapping = aes(x, y))+
     geom_point(
-      col = "steelblue",
-      shape = 1
-    ) +
-    geom_path(
-      col = "steelblue"
+      data = df_raw,
+      alpha = 0.1
+    )+
+    geom_point(
+      data = df_proc[!(outlier),],
+      aes(col = outlier),
+      alpha = 1
+    )+
+    scale_colour_viridis_d(
+      option = "H",
+      begin = 0.1, end = 0.9
+    )+
+    coord_sf(
+      crs = 2039
     )
 }, data_raw, data_proc)
+
+plots[[1]]
+
+plots |> wrap_plots()
+```
+
+### Median smoothing
+
+```{r}
+# copy again
+data_smooth = copy(data_proc)
+
+# now smooth
+data_smooth <- lapply(data_smooth, atl_median_smooth,
+  x = "x", y = "y",
+  time = "UNIX", moving_window = 9
+)
+
+# # try aggregate
+# data_agg <- lapply(data_proc, function(df) {
+#   df <- df[, c("UNIX", "x", "y", "sp", "treat", "TAG_ID")]
+#   setnames(df, "UNIX", "time")
+#   df <- atl_thin_data(
+#     data = df, interval = 120,
+#     id_columns = c("TAG_ID", "sp", "treat"),
+#     method = "aggregate"
+#   )
+# })
+
+pal = RColorBrewer::brewer.pal(4, "Set1")
+
+# plot aggregated data
+plots <- Map(function(df_raw, df_preproc, df_smooth) {
+  ggplot(mapping = aes(x, y)) +
+    geom_point(
+      data = df_raw,
+      alpha = 0.5,
+      col = "grey"
+    ) +
+    geom_point(
+      data = df_preproc,
+      aes(col = !outlier),
+      alpha = 0.5
+    ) +
+    # geom_point(
+    #   data = df_smooth,
+    #   col = pal[4],
+    #   alpha = 0.8
+    # )+
+    geom_path(
+      data = df_smooth,
+      col = pal[4],
+      alpha = 0.8
+    )+
+    theme_test()
+}, data_raw, data_proc, data_smooth)
+
+plots[[2]] + coord_sf(crs = 2039)
 
 plots |> patchwork::wrap_plots()
 ```
