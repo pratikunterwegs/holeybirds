@@ -31,9 +31,11 @@ Rcpp::sourceCpp("src/weighted_mean_filter.cpp")
 
 ```{r}
 data_raw <- holeybirds::read_tracking_data(
-  sp_name = "Acrocephalus",
-  treatment = "NonMoulting", index = 8
+  sp_name = "Hirundo",
+  treatment = "Moulting", index = 8
 )[d == "D"]
+
+nrow(data_raw)
 
 data_raw[, c("day", "hour") := list(
   lubridate::date(as.POSIXct(UNIX, origin = "1970-01-01", tz = "Asia/Jerusalem")),
@@ -67,7 +69,7 @@ plots |> wrap_plots()
 data_proc = copy(data_raw)
 
 data_proc = lapply(data_proc, function(df) {
-  scan = dbscan(df[, c("x", "y")], eps = 2)
+  scan = dbscan(df[, c("x", "y")], eps = 20)
   df[, outlier := scan$cluster == 0]
   df
 })
@@ -82,6 +84,9 @@ plots = Map(function(df_raw, df_proc) {
       data = df_proc[!(outlier),],
       col = "steelblue",
       alpha = 0.5
+    )+
+    coord_sf(
+      crs = 2039
     )
 }, data_raw, data_proc)
 
@@ -115,7 +120,7 @@ data_proc <- lapply(data_proc, function(df) {
   atl_filter_covariates(
     df,
     filters = c(
-      "((!outlier) & (speed_in < 5 & speed_out < 5)) | ((angle < 10) & (angle != 0))"
+      "((!outlier)) | ((angle < 10) & (angle != 0) & (speed_in > 3) & (speed_out > 3))"
     )
   )
 })
@@ -138,9 +143,9 @@ plots = Map(function(df_raw, df_proc) {
       alpha = 0.1
     )+
     geom_point(
-      data = df_proc[!(outlier),],
+      data = df_proc,
       aes(col = outlier),
-      alpha = 1
+      alpha = 0.3
     )+
     scale_colour_viridis_d(
       option = "H",
@@ -150,8 +155,6 @@ plots = Map(function(df_raw, df_proc) {
       crs = 2039
     )
 }, data_raw, data_proc)
-
-plots[[1]]
 
 plots |> wrap_plots()
 ```
@@ -165,7 +168,7 @@ data_smooth = copy(data_proc)
 # now smooth
 data_smooth <- lapply(data_smooth, atl_median_smooth,
   x = "x", y = "y",
-  time = "UNIX", moving_window = 9
+  time = "UNIX", moving_window = 3
 )
 
 # # try aggregate
@@ -191,7 +194,7 @@ plots <- Map(function(df_raw, df_preproc, df_smooth) {
     ) +
     geom_point(
       data = df_preproc,
-      aes(col = !outlier),
+      aes(col = outlier),
       alpha = 0.5
     ) +
     # geom_point(
@@ -204,10 +207,15 @@ plots <- Map(function(df_raw, df_preproc, df_smooth) {
       col = pal[4],
       alpha = 0.8
     )+
-    theme_test()
+    theme_test()+
+    scale_colour_viridis_d(
+      option = "H",
+      begin = 0.1, end = 0.9
+    )+
+    coord_sf(
+      crs = 2039
+    )
 }, data_raw, data_proc, data_smooth)
-
-plots[[2]] + coord_sf(crs = 2039)
 
 plots |> patchwork::wrap_plots()
 ```
