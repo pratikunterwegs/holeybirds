@@ -31,16 +31,18 @@ Rcpp::sourceCpp("src/weighted_mean_filter.cpp")
 
 ```{r}
 data_raw <- holeybirds::read_tracking_data(
-  sp_name = "Hirundo",
-  treatment = "Moulting", index = 8
+  sp_name = "Passer",
+  treatment = "Manipulated", index = 5
 )[d == "D"]
-
+unique(data_raw$TAG_ID)
 nrow(data_raw)
 
 data_raw[, c("day", "hour") := list(
   lubridate::date(as.POSIXct(UNIX, origin = "1970-01-01", tz = "Asia/Jerusalem")),
   lubridate::hour(as.POSIXct(UNIX, origin = "1970-01-01", tz = "Asia/Jerusalem"))
 )]
+
+data_raw = data_raw[hour >= 5 & hour < 20]
 
 # split by day
 data_raw <- split(data_raw, by = "day")
@@ -211,9 +213,6 @@ plots <- Map(function(df_raw, df_preproc, df_smooth) {
     scale_colour_viridis_d(
       option = "H",
       begin = 0.1, end = 0.9
-    )+
-    coord_sf(
-      crs = 2039
     )
 }, data_raw, data_proc, data_smooth)
 
