@@ -14,7 +14,7 @@ library(stringi)
 library(glue)
 
 # for analysis
-library(recurse)
+library(dbscan)
 
 # library for atlas data
 library(ggplot2)
@@ -209,31 +209,31 @@ for (file in files) {
         print(
           glue("-- Median smoothed coordinates, moving window = {moving_window_ppa}")
         )
-      }
-    }
-    
-    #### Merging data and saving to file ####
-    df <- rbindlist(df_l)
-    # save data to file
-    save_file <- glue("data/processed/data_preprocessed/data_preproc\\
-                      _{species}_{treatment}_{tag_id}.csv")
-    print(
-      glue("-- N rows pre-processed = {nrow(df)}")
-    )
-    
-    # really save the data
-    fwrite(df, file = save_file)
-    
-    print(
-      glue("-- saved to data/processed/data_preprocessed/
-                data_preproc_{species}_{treatment}_{tag_id}.csv
-            ")
-    )
-    
-    print(
-      glue("\n\n***\n\n")
-    )
-  } # else case for good data ends
+      } # if else for H or PPA ends
+      
+      #### Merging data and saving to file ####
+      df <- rbindlist(df_l)
+      # save data to file
+      save_file <- glue("data/processed/data_preprocessed/data_preproc\\
+                          _{species}_{treatment}_{tag_id}.csv")
+      print(
+        glue("-- N rows pre-processed = {nrow(df)}")
+      )
+      
+      # really save the data
+      fwrite(df, file = save_file)
+      
+      print(
+        glue("-- saved to data/processed/data_preprocessed/
+                    data_preproc_{species}_{treatment}_{tag_id}.csv
+                ")
+      )
+      
+      print(
+        glue("\n\n***\n\n")
+      )
+    } # else case for data after filtering ends, data to file
+  } # else case for min daily fixes data ends
 } # for loops ends
 sink()
 ```
