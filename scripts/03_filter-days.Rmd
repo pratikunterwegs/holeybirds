@@ -38,6 +38,14 @@ data_summary = lapply(files, function(file) {
   
   # get mcp area
   df_l[, mcp_area := vapply(data, function(le) {
+    # run DBSCAN again
+    le$cat = dbscan::dbscan(le[, c("x", "y")], eps = 5)$cluster
+    
+    le = le[cat > 0]
+    
+    if(nrow(le) < 1) {
+      return(NA_real_)
+    }
     
     le = st_as_sf(le[, c("x", "y")], coords = c("x", "y"), crs = 2039)
     le = st_union(le)
@@ -51,9 +59,7 @@ data_summary = lapply(files, function(file) {
 })
 
 data_summary = rbindlist(data_summary)
-```
 
-```{r}
 # write summary data to file
 fwrite(data_summary, file = "data/data_preproc_summary.csv")
 ```
