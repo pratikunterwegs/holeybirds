@@ -32,9 +32,13 @@ treat_data = fread("data/results/data_tracking_metrics_rrv.csv")
 for (file in files) {
   # read processed data
   data = fread(file)
-  data = merge(data, treat_data[, c("TAG", "treat", "RRV")], all.x = T)
+  
   # get tag
   tag = unique(data$TAG)
+  
+  data = merge(data, treat_data[TAG == unique(data$TAG), 
+                                c("TAG", "treat", "RRV")][1,], all.x = T)
+  
   treat = unique(data$treat)
   sp = unique(data$sp)
   
