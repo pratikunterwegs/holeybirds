@@ -30,22 +30,12 @@ Rcpp::sourceCpp("src/weighted_mean_filter.cpp")
 ### Explore
 
 ```{r}
-data_raw <- holeybirds::read_tracking_data(
-  sp_name = "Passer",
-  treatment = "Manipulated", index = 5
-)[d == "D"]
-unique(data_raw$TAG_ID)
+data_raw <- fread("data/processed/data_preprocessed/data_preproc_Passer_1004001335.csv")
+unique(data_raw$TAG)
 nrow(data_raw)
 
-data_raw[, c("day", "hour") := list(
-  lubridate::date(as.POSIXct(UNIX, origin = "1970-01-01", tz = "Asia/Jerusalem")),
-  lubridate::hour(as.POSIXct(UNIX, origin = "1970-01-01", tz = "Asia/Jerusalem"))
-)]
-
-data_raw = data_raw[hour >= 5 & hour < 20]
-
 # split by day
-data_raw <- split(data_raw, by = "day")
+data_raw <- split(data_raw, by = "date")
 
 # remove data with few rows
 data_raw <- data_raw[vapply(data_raw, function(df) {
@@ -54,10 +44,14 @@ data_raw <- data_raw[vapply(data_raw, function(df) {
 
 # plot to check
 plots = lapply(data_raw, function(df) {
-  ggplot(df, aes(x, y))+
+  ggplot(df, aes(X, Y))+
+    geom_path(
+      alpha = 0.1,
+    )+
     geom_point(
       alpha = 0.1
-    )
+    )+
+    coord_equal()
 })
 
 plots |> wrap_plots()
@@ -71,13 +65,13 @@ plots |> wrap_plots()
 data_proc = copy(data_raw)
 
 data_proc = lapply(data_proc, function(df) {
-  scan = dbscan(df[, c("x", "y")], eps = 20)
+  scan = dbscan(df[, c("X", "Y")], eps = 20)
   df[, outlier := scan$cluster == 0]
   df
 })
 
 plots = Map(function(df_raw, df_proc) {
-  ggplot(mapping = aes(x, y))+
+  ggplot(mapping = aes(X, Y))+
     geom_point(
       data = df_raw,
       alpha = 0.1
