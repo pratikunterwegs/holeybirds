@@ -43,9 +43,7 @@ data_patch_rrv[, c("hour_start", "hour_end") := list(
 data_patch_rrv = data_patch_rrv[!is.na(sp)]
 ```
 
-## Explore patch metrics and RRV
-
-### Patch switches
+## Patch switches
 
 Control for tracking duration
 
@@ -171,4 +169,3 @@ ggsave(
   height = 58, width = 87, units = "mm"
 )
 ```
-
