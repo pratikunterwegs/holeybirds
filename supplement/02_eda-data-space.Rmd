@@ -27,8 +27,8 @@ library(atlastools)
 ```{r}
 data_raw <- holeybirds::read_tracking_data(
   sp_name = "Passer",
-  treatment = "NonMoulting", index = 8
-)[d == "D"]
+  treatment = "Moulting", index = 2
+)
 
 data_raw[, c("day", "hour") := list(
   lubridate::date(as.POSIXct(UNIX, origin = "1970-01-01", tz = "Asia/Jerusalem")),
@@ -39,7 +39,9 @@ data_raw[, c("day", "hour") := list(
 data_raw = split(data_raw, by = "day")
 
 # remove data with few rows
-data_raw = data_raw[vapply(data_raw, function(df) { nrow(df) > 500 }, FUN.VALUE = T)]
+data_raw = data_raw[vapply(data_raw, function(df) { 
+  nrow(df) > 500 
+}, FUN.VALUE = T)]
 
 data_raw = lapply(data_raw, function(df) {
   # check if filtering works
@@ -65,42 +67,62 @@ data_proc = lapply(data_proc, function(df) {
   )
 })
 
-data_proc = data_proc[vapply(data_proc, function(df) { nrow(df) > 500 }, FUN.VALUE = T)]
+data_proc = data_proc[vapply(data_proc, function(df) { 
+  nrow(df) > 200 
+}, FUN.VALUE = T)]
 
-# filter repeatedly on speed
+# # filter repeatedly on speed
+# data_proc = lapply(data_proc, function(df) {
+#   while (max(df$speed_in, na.rm = T) > 1.5) {
+#     # print(sprintf("max speed = %f", max(df$speed_in, na.rm = T)))
+#     
+#     # filter again on speed
+#     df <- atl_filter_covariates(
+#       df,
+#       filters = c(
+#         "(speed_in < 1.5 & speed_out < 1.5) | angle < 5"
+#       )
+#     )
+#     # recalculate & check if filtering works
+#     df[, c("speed_in", "speed_out", "angle") := list(
+#       atl_get_speed(data = df, x = "x", time = "UNIX", type = "in"),
+#       atl_get_speed(data = df, time = "UNIX", type = "out"),
+#       atl_turning_angle(data = df, time = "UNIX")
+#     )]
+#   }
+#   df
+# })
+
+interval = 120 # in seconds
 data_proc = lapply(data_proc, function(df) {
-  while (max(df$speed_in, na.rm = T) > 1.5) {
-    print(sprintf("max speed = %f", max(df$speed_in, na.rm = T)))
-    
-    # filter again on speed
-    df <- atl_filter_covariates(
-      df,
-      filters = c(
-        "(speed_in < 1.5 & speed_out < 1.5) | angle < 5"
-      )
-    )
-    # recalculate & check if filtering works
-    df[, c("speed_in", "speed_out", "angle") := list(
-      atl_get_speed(data = df, x = "x", time = "UNIX", type = "in"),
-      atl_get_speed(data = df, time = "UNIX", type = "out"),
-      atl_turning_angle(data = df, time = "UNIX")
-    )]
-  }
-  df
+  df[, burst := cumsum(c(0, diff(UNIX)) > 60) + 1]
+  df[, burst_size := length(UNIX), by = "burst"]
+  
+  df = df[burst_size > 3,]
+  
 })
+# split by burst and smooth
+# data_proc = lapply(data_proc, split, by = "burst")
 
-
-# plot to check
-ggplot(data_proc[[1]])+
-  geom_path(aes(x, y))
+a = copy(data_proc[[2]])
 
 # now smooth
-data_proc = lapply(data_proc, atl_median_smooth, x = "x", y = "y",
-  time = "UNIX", moving_window = 21)
+a = lapply(a, atl_median_smooth, x = "x", y = "y",
+  time = "UNIX", moving_window = 5)
+
+# split by burst
+a = rbindlist(a)
 
 # plot to check
-ggplot(data_proc[[1]])+
-  geom_path(aes(x, y))
+p = ggplot(a)+
+  geom_path(data = data_raw[[2]], aes(x, y), col = "grey")+
+  geom_path(aes(x, y),
+            show.legend = F)+
+  geom_point(aes(x, y), shape = 1)+
+  # facet_wrap(~burst, scales = "free")+
+  theme_void()
+
+ggplotly(p)
 ```
 
 ### Recurse
