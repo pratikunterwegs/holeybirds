@@ -1,0 +1,168 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Link patch summaries with RRV
+
+```{r}
+library(data.table)
+
+library(ggplot2)
+```
+
+```{r}
+data = fread("data/results/data_patch_summary_ppa.csv")
+rrv = fread("data/results/data_daily_rrv.csv")
+
+# handle date
+rrv[, date := as.character(date)]
+data[, date := as.character(date)]
+```
+
+```{r}
+data_patch_rrv = merge(
+  data,
+  rrv,
+  by.x = c("id", "date"),
+  by.y = c("TAG", "date"),
+  all.x = TRUE
+)
+
+# handle duration and time of the patch
+data_patch_rrv[, duration := duration / (3600)]
+data_patch_rrv[, c("hour_start", "hour_end") := list(
+  as.POSIXct(
+    time_start, tz = "Asia/Jerusalem", origin = "1970-01-01"
+  ) |> hour(),
+  as.POSIXct(
+    time_end, tz = "Asia/Jerusalem", origin = "1970-01-01"
+  ) |> hour()
+)]
+
+data_patch_rrv = data_patch_rrv[!is.na(sp)]
+```
+
+## Explore patch metrics and RRV
+
+### Patch switches
+
+Control for tracking duration
+
+```{r}
+# get approx tracking duration per hour --- this is crude but not bad
+data_patch_rrv[, t_duration := as.numeric(max(time_end) - min(time_start)),
+               by = c("id", "date")]
+
+data_patch_rrv[, t_duration := t_duration / 3600]
+```
+
+
+
+```{r}
+patch_switches = data_patch_rrv[, .N, 
+                                by = c("id", "date", "rrv_calc","sp",
+                                       "treat", "t_duration")]
+# 
+# # filter data
+patch_switches = patch_switches[treat != "NonMoulting", ]
+# patch_switches[, nobs := length(unique(rrv_calc)), by = c("id")]
+# patch_switches = patch_switches[nobs > 1]
+```
+
+```{r}
+# psdf = patch_switches[, list(
+#   ps_max_rrv = mean(N[rrv_calc == max(rrv_calc)]),
+#   ps_min_rrv = mean(N[rrv_calc == min(rrv_calc)])
+# ), by = c("id", "sp", "treat")]
+# 
+# psdf = melt(
+#   psdf,
+#   id.vars = c("id", "sp", "treat")
+# )
+# 
+# psdf[, value_sc := value / max(value), c("id", "sp", "treat")]
+```
+
+Scale to compare species.
+
+```{r}
+psdf = copy(patch_switches)
+
+# rescale rrv across species and treatment
+psdf[, c("rrv_sc") := list(
+  scales::rescale(rrv_calc)
+  )
+  ,by = c("sp", "treat")
+]
+```
+
+
+```{r}
+fig_patch_switches = ggplot(psdf)+
+  geom_jitter(
+    aes(
+      rrv_calc, N / t_duration,
+      group = id,
+      col = treat
+    ),
+    shape = 1
+  )+
+  geom_smooth(
+    aes(
+      rrv_calc, N / t_duration,
+      col = treat
+    ),
+    method = "glm",
+    se = F
+  )+
+  scale_colour_viridis_d(
+    option = "H",
+    limits = c("Moulting", "Manipulated"),
+    begin = 0.2,
+    end = 0.8
+  )+
+  # scale_x_continuous(
+  #   breaks = c(0, 1),
+  #   labels = c(
+  #     "Most complete wings",
+  #     "Most gappy wings"
+  #   )
+  # )+
+  scale_x_reverse()+
+  facet_grid(
+    ~sp
+  )+
+  coord_cartesian(
+    xlim = c(20, 0)
+  )+
+  theme_test(
+    base_size = 10,
+    base_family = "Arial"
+  )+
+  theme(
+    # axis.text.x = element_text(
+    #   hjust = c(0, 1)
+    # ),
+    legend.box.margin = margin(rep(0, 4)),
+    legend.margin = margin(rep(0, 4)),
+    legend.key.height = unit(1, "mm"),
+    legend.position = "top",
+    strip.background = element_blank(),
+    strip.text = element_text(
+      face = "italic"
+    )
+  )+
+  labs(
+    x = "Estimated RRV (More recovery →)",
+    y = "Patch switches / hr",
+    colour = NULL
+  )
+
+ggsave(
+  fig_patch_switches,
+  filename = "figures/fig_patch_switches.png",
+  height = 58, width = 87, units = "mm"
+)
+```
+
