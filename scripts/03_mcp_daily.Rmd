@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Count tracking data by individual and day
+# MCP by Daily RRV
 
 ## Load libraries and prepare files
 
@@ -34,12 +34,12 @@ data_summary = lapply(files, function(file) {
   df = fread(file)
   
   # nest data
-  df_l = df[, list(data = list(.SD)), by = c("TAG_ID", "sp", "treat", "date")]
+  df_l = df[, list(data = list(.SD)), by = c("TAG", "sp", "date")]
   
   # get mcp area
   df_l[, mcp_area := vapply(data, function(le) {
     # run DBSCAN again
-    le$cat = dbscan::dbscan(le[, c("x", "y")], eps = 5)$cluster
+    le$cat = dbscan::dbscan(le[, c("X", "Y")], eps = 5)$cluster
     
     le = le[cat > 0]
     
@@ -47,7 +47,7 @@ data_summary = lapply(files, function(file) {
       return(NA_real_)
     }
     
-    le = st_as_sf(le[, c("x", "y")], coords = c("x", "y"), crs = 2039)
+    le = st_as_sf(le[, c("X", "Y")], coords = c("X", "Y"), crs = 2039)
     le = st_union(le)
     mcp_area = st_convex_hull(le) |> st_area() |> as.numeric()
     mcp_area
@@ -61,7 +61,7 @@ data_summary = lapply(files, function(file) {
 data_summary = rbindlist(data_summary)
 
 # write summary data to file
-fwrite(data_summary, file = "data/data_preproc_summary.csv")
+fwrite(data_summary, file = "data/results/data_preproc_summary.csv")
 ```
 
 ## Link to RRV
