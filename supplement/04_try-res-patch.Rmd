@@ -4,9 +4,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Try residence patch method
-
-**NB: RESIDENCE PATCH METHOD NOT GOOD FOR THESE BIRDS**
+# Parameterising the residence patch method
 
 ## Load libraries and prepare files
 
@@ -35,63 +33,55 @@ files <- list.files("data/processed/data_preprocessed",
 
 ```{r}
 # load data from file
-data <- fread(files[49])
+data <- fread(files[30])
 ```
 
 ### Prepare data
 
 ```{r}
-df <- data[, c("x", "y", "UNIX", "TAG_ID")]
+df <- data[, c("X", "Y", "time", "TAG", "date")]
 df[, time := (
-  as.POSIXct(UNIX, origin = "1970-01-01", tz = "Asia/Jerusalem")
+  as.POSIXct(time, origin = "1970-01-01", tz = "Asia/Jerusalem")
 )]
-setnames(df, old = "TAG_ID", "id")
+setnames(df, old = "TAG", "id")
 
 # get speeds and angles
 df[, c("speed", "angle") := list(
-  atl_get_speed(df),
-  atl_turning_angle(df)
+  atl_get_speed(df, x = "X", y = "Y"),
+  atl_turning_angle(df, x = "X", y = "Y")
 )]
 
 # fill NAs and NANs
 df$angle <- nafill(df$angle, fill = 0)
 
 # smooth speed
-df[, speed := runmed(speed, k = 9)]
+df[, speed := runmed(speed, k = 3)]
 
 # quantile
-quantile(df$speed, probs = 0.9)
-
-# split by day
-df[, date := date(time)]
+speed_limit = quantile(df$speed, probs = 0.9)
 ```
 
 ### Check transit
 
 ```{r}
-ggplot() +
+ggplot(df) +
   geom_path(
-    data = df,
-    aes(x, y),
+    aes(X, Y),
     col = "grey",
     size = 0.1
   ) +
   geom_point(
-    data = df[speed >= 0.2, ],
-    aes(x, y),
-    col = "indianred", shape = 1
-  ) +
-  geom_point(
-    data = df[speed < 0.2, ],
-    aes(x, y, col = speed),
-    shape = 19,
-    alpha = 0.5
+    aes(
+      X, Y,
+      col = speed,
+      shape = speed <= 1
+    )
   ) +
   scale_colour_continuous_sequential(
     palette = "Blues",
     trans = "sqrt",
-    limits = c(0, 1),
-    na.value = "transparent"
+    limits = c(0, speed_limit),
+    na.value = "red"
   ) +
   facet_wrap(~date) +
   ggspatial::annotation_scale() +
@@ -102,19 +92,23 @@ ggplot() +
 
 ```{r}
 # remove transit
-df <- df[speed < 1, ]
+df <- df[speed < speed_limit / 2, ]
 
 # split by date
 df <- split(df, by = "date")
 
 # apply res patch method
 patches <- lapply(df, function(d) {
-  d <- d[, c("x", "y", "id", "UNIX")]
-  setnames(d, old = "UNIX", new = "time")
+  d_ = copy(d)
+  d_ <- d[, c("X", "Y", "id", "time")]
+  setnames(d_, old = c("X", "Y"), new = c("x", "y"))
 
-  atl_res_patch(d,
-    buffer_radius = 5, lim_spat_indep = 20, lim_time_indep = 5,
-    min_fixes = 20
+  atl_res_patch(
+    data = d_,
+    buffer_radius = 25, 
+    lim_spat_indep = 100, 
+    lim_time_indep = 30,
+    min_fixes = 9
   )
 })
 
@@ -125,10 +119,15 @@ patch_summary <- lapply(patches, atl_patch_summary, which_data = "summary")
 patch_points <- lapply(patches, atl_patch_summary, which_data = "points")
 
 # patch spatial
-patch_spatial = lapply(patches, atl_patch_summary, which_data = "spatial", buffer_radius = 5)
+patch_spatial = lapply(
+  patches, atl_patch_summary, 
+  which_data = "spatial", buffer_radius = 25
+)
 ```
 
 ## Visualise residence patches
+
+### Patch summary
 
 ```{r}
 patch_summary <- Map(function(data, names) {
@@ -141,14 +140,67 @@ patch_summary <- Map(function(data, names) {
 }, patch_summary, names(patch_summary))
 
 patch_summary <- rbindlist(patch_summary)
+```
 
+```{r}
+ggplot(patch_summary)+
+  geom_path(
+    aes(
+      x_median, y_median,
+      col = as.factor(date),
+      group = date
+    )
+  )+
+  geom_point(
+    aes(
+      x_median, y_median,
+      size = duration / 60,
+      fill = as.factor(date)
+    ),
+    shape = 21
+  )+
+  facet_wrap(
+    ~date
+  )
+```
+
+### Patch points
+
+```{r}
 patch_points <- Map(function(data, names) {
   data$date <- names
   data
 }, patch_points, names(patch_points))
 
 patch_points <- rbindlist(patch_points)
+```
 
+```{r}
+ggplot(patch_points)+
+  geom_path(
+    aes(
+      x, y,
+      col = as.factor(patch),
+      group = interaction(date, patch)
+    )
+  )+
+  geom_point(
+    aes(
+      x, y,
+      fill = as.factor(patch)
+    ),
+    shape = 21
+  )+
+  facet_wrap(
+    ~date
+  )+
+  ggspatial::annotation_scale() +
+  ggthemes::theme_map()
+```
+
+### Patch spatials
+
+```{r}
 # id patch spatials
 patch_spatial <- Map(function(data, names) {
   data$date <- names
@@ -156,31 +208,33 @@ patch_spatial <- Map(function(data, names) {
 }, patch_spatial, names(patch_spatial))
 
 patch_spatial <- rbindlist(patch_spatial)
-patch_spatial = st_as_sf(patch_spatial, sf_column_name = "polygons")
+patch_spatial = sf::st_as_sf(patch_spatial, sf_column_name = "polygons")
+```
 
-ggplot(patch_summary) +
+```{r}
+ggplot() +
+  # geom_path(
+  #   aes(x_median, y_median,
+  #     group = date
+  #   ),
+  #   lty = 1,
+  #   size = 0.5
+  # ) +
+  geom_point(
+    data = patch_points,
+    aes(x, y),
+    alpha = 0.1
+  ) +
   geom_sf(
     data = patch_spatial,
-    aes(col = patch),
-    alpha = 1,
-    fill = NA
+    aes(fill = patch),
+    alpha = 0.5
   )+
-  # geom_point(
-  #   data = patch_points,
-  #   aes(x, y),
-  #   alpha = 0.1
-  # ) +
-  geom_path(
+  geom_text(
+    data = patch_summary,
     aes(x_median, y_median,
-      group = date
-    ),
-    lty = 1,
-    size = 0.5
-  ) +
-  geom_point(
-    aes(x_median, y_median),
-    shape = 21
-  ) +
+        label = patch)
+  )+
   scale_size(range = c(3, 8)) +
   scale_colour_viridis_c(
     option = "H"
