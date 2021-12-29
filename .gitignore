@@ -54,6 +54,10 @@ data/results/**
 data/raw/**
 !data/raw/README.txt
 
+# ignore dsm
+data/spatial/dsm/**
+data/**/drive-download**
+
 # ignore training data
 *lc_training*
 
