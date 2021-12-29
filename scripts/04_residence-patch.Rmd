@@ -163,4 +163,3 @@ Save patch data.
 ```{r}
 fwrite(patch_summaries, file = "data/results/data_patch_summary_ppa.csv")
 ```
-
