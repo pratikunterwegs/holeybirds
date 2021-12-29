@@ -36,7 +36,7 @@ files = files[-grep("Hirundo", files)]
 
 ## Remove transit positions
 
-Apply a single speed filter on the smoothed data to remove positions faster than 3m/s.
+Apply a single speed filter on the smoothed data to remove positions faster than 1.5 m/s.
 
 ```{r}
 # apply to all data
@@ -75,8 +75,8 @@ data = lapply(
       )
     )
     
-    # use a standard speed for now, 3m/s
-    df = df[speed < 3,]
+    # use a standard speed for now, 1.5m/s
+    df = df[speed < 1.5,]
     
     df
   })
