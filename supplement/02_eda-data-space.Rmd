@@ -16,6 +16,11 @@ library(stringi)
 # libs for plotting
 library(ggplot2)
 library(atlastools)
+library(dbscan)
+library(patchwork)
+
+# source mean filter
+Rcpp::sourceCpp("src/weighted_mean_filter.cpp")
 ```
 
 ## Read data and plot by species
@@ -25,104 +30,187 @@ library(atlastools)
 ### Explore
 
 ```{r}
-data_raw <- holeybirds::read_tracking_data(
-  sp_name = "Passer",
-  treatment = "Moulting", index = 2
-)
-
-data_raw[, c("day", "hour") := list(
-  lubridate::date(as.POSIXct(UNIX, origin = "1970-01-01", tz = "Asia/Jerusalem")),
-  lubridate::hour(as.POSIXct(UNIX, origin = "1970-01-01", tz = "Asia/Jerusalem"))
-)]
+data_raw <- fread("data/processed/data_preprocessed/data_preproc_Passer_1004001335.csv")
+unique(data_raw$TAG)
+nrow(data_raw)
 
 # split by day
-data_raw = split(data_raw, by = "day")
+data_raw <- split(data_raw, by = "date")
 
 # remove data with few rows
-data_raw = data_raw[vapply(data_raw, function(df) { 
-  nrow(df) > 500 
+data_raw <- data_raw[vapply(data_raw, function(df) {
+  nrow(df) > 500
 }, FUN.VALUE = T)]
 
-data_raw = lapply(data_raw, function(df) {
+# plot to check
+plots = lapply(data_raw, function(df) {
+  ggplot(df, aes(X, Y))+
+    geom_path(
+      alpha = 0.1,
+    )+
+    geom_point(
+      alpha = 0.1
+    )+
+    coord_equal()
+})
+
+plots |> wrap_plots()
+```
+
+
+### Identify outliers on speed and DBSCAN
+
+```{r}
+# try dbscan
+data_proc = copy(data_raw)
+
+data_proc = lapply(data_proc, function(df) {
+  scan = dbscan(df[, c("X", "Y")], eps = 20)
+  df[, outlier := scan$cluster == 0]
+  df
+})
+
+plots = Map(function(df_raw, df_proc) {
+  ggplot(mapping = aes(X, Y))+
+    geom_point(
+      data = df_raw,
+      alpha = 0.1
+    )+
+    geom_point(
+      data = df_proc[!(outlier),],
+      col = "steelblue",
+      alpha = 0.5
+    )+
+    coord_sf(
+      crs = 2039
+    )
+}, data_raw, data_proc)
+
+plots |> wrap_plots()
+
+data_raw <- lapply(data_raw, function(df) {
   # check if filtering works
   df[, c("speed_in", "speed_out", "angle") := list(
     atl_get_speed(data = df, x = "x", time = "UNIX", type = "in"),
     atl_get_speed(data = df, time = "UNIX", type = "out"),
     atl_turning_angle(data = df, time = "UNIX")
   )]
+  
   # fix missingle angles due to same position, assign 0
   df[, angle := nafill(angle, type = "const", fill = 0)]
+  
+  # classify dbscan outlier
+  scan = dbscan(df[, c("x", "y")], eps = 3)
+  df[, outlier:= scan$cluster == 0]
 })
+```
 
+### Outlier removal: Combinations of speed and density
+
+```{r}
 # make a copy
 data_proc <- copy(data_raw)
 
 # filter on speed
-data_proc = lapply(data_proc, function(df) {
+data_proc <- lapply(data_proc, function(df) {
   atl_filter_covariates(
     df,
     filters = c(
-      "(speed_in < 3 & speed_out < 3) | angle < 20"
+      "((!outlier)) | ((angle < 10) & (angle != 0) & (speed_in > 3) & (speed_out > 3))"
     )
   )
 })
 
-data_proc = data_proc[vapply(data_proc, function(df) { 
-  nrow(df) > 200 
+# remove poor data
+data_proc <- data_proc[vapply(data_proc, function(df) {
+  nrow(df) > 500
 }, FUN.VALUE = T)]
 
-# # filter repeatedly on speed
-# data_proc = lapply(data_proc, function(df) {
-#   while (max(df$speed_in, na.rm = T) > 1.5) {
-#     # print(sprintf("max speed = %f", max(df$speed_in, na.rm = T)))
-#     
-#     # filter again on speed
-#     df <- atl_filter_covariates(
-#       df,
-#       filters = c(
-#         "(speed_in < 1.5 & speed_out < 1.5) | angle < 5"
-#       )
-#     )
-#     # recalculate & check if filtering works
-#     df[, c("speed_in", "speed_out", "angle") := list(
-#       atl_get_speed(data = df, x = "x", time = "UNIX", type = "in"),
-#       atl_get_speed(data = df, time = "UNIX", type = "out"),
-#       atl_turning_angle(data = df, time = "UNIX")
-#     )]
-#   }
-#   df
-# })
-
-interval = 120 # in seconds
-data_proc = lapply(data_proc, function(df) {
-  df[, burst := cumsum(c(0, diff(UNIX)) > 60) + 1]
-  df[, burst_size := length(UNIX), by = "burst"]
-  
-  df = df[burst_size > 3,]
-  
-})
-# split by burst and smooth
-# data_proc = lapply(data_proc, split, by = "burst")
-
-a = copy(data_proc[[2]])
-
-# now smooth
-a = lapply(a, atl_median_smooth, x = "x", y = "y",
-  time = "UNIX", moving_window = 5)
-
-# split by burst
-a = rbindlist(a)
+# warn for all data lost
+if (purrr::is_empty(data_proc)) {
+  warning("data proc is empty, all data cleaned away")
+}
 
 # plot to check
-p = ggplot(a)+
-  geom_path(data = data_raw[[2]], aes(x, y), col = "grey")+
-  geom_path(aes(x, y),
-            show.legend = F)+
-  geom_point(aes(x, y), shape = 1)+
-  # facet_wrap(~burst, scales = "free")+
-  theme_void()
+plots = Map(function(df_raw, df_proc) {
+  ggplot(mapping = aes(x, y))+
+    geom_point(
+      data = df_raw,
+      alpha = 0.1
+    )+
+    geom_point(
+      data = df_proc,
+      aes(col = outlier),
+      alpha = 0.3
+    )+
+    scale_colour_viridis_d(
+      option = "H",
+      begin = 0.1, end = 0.9
+    )+
+    coord_sf(
+      crs = 2039
+    )
+}, data_raw, data_proc)
 
-ggplotly(p)
+plots |> wrap_plots()
+```
+
+### Median smoothing
+
+```{r}
+# copy again
+data_smooth = copy(data_proc)
+
+# now smooth
+data_smooth <- lapply(data_smooth, atl_median_smooth,
+  x = "x", y = "y",
+  time = "UNIX", moving_window = 3
+)
+
+# # try aggregate
+# data_agg <- lapply(data_proc, function(df) {
+#   df <- df[, c("UNIX", "x", "y", "sp", "treat", "TAG_ID")]
+#   setnames(df, "UNIX", "time")
+#   df <- atl_thin_data(
+#     data = df, interval = 120,
+#     id_columns = c("TAG_ID", "sp", "treat"),
+#     method = "aggregate"
+#   )
+# })
+
+pal = RColorBrewer::brewer.pal(4, "Set1")
+
+# plot aggregated data
+plots <- Map(function(df_raw, df_preproc, df_smooth) {
+  ggplot(mapping = aes(x, y)) +
+    geom_point(
+      data = df_raw,
+      alpha = 0.5,
+      col = "grey"
+    ) +
+    geom_point(
+      data = df_preproc,
+      aes(col = outlier),
+      alpha = 0.5
+    ) +
+    # geom_point(
+    #   data = df_smooth,
+    #   col = pal[4],
+    #   alpha = 0.8
+    # )+
+    geom_path(
+      data = df_smooth,
+      col = pal[4],
+      alpha = 0.8
+    )+
+    theme_test()+
+    scale_colour_viridis_d(
+      option = "H",
+      begin = 0.1, end = 0.9
+    )
+}, data_raw, data_proc, data_smooth)
+
+plots |> patchwork::wrap_plots()
 ```
 
 ### Recurse
@@ -133,164 +221,96 @@ library(recurse)
 data_residence <- lapply(data_proc, function(dt) {
 
   # do basic recurse -- refer to Bracis et al. (2018) Ecography
-  dt_recurse <- getRecursions(
+  dt$res_time <- getRecursions(
     x = dt[, c("x", "y", "UNIX", "TAG_ID")],
     radius = 10,
     timeunits = "mins"
-  )
-
-  # get revisit stats column provided as recurse output
-  dt_recurse <- setDT(
-    dt_recurse[["revisitStats"]]
-  )
-
-  # count long absences from the each position -- long absence is 5 mins
-  dt_recurse[, timeSinceLastVisit :=
-    ifelse(is.na(timeSinceLastVisit), -Inf, timeSinceLastVisit)]
-  dt_recurse[, longAbsenceCounter := cumsum(timeSinceLastVisit > 5),
-    by = .(coordIdx)
-  ]
-
-  # filter data to exclude revisits after the first long absence of 60 mins
-  dt_recurse <- dt_recurse[longAbsenceCounter < 1, ]
-
-  # calculate the residence time as the sum of times inside
-  # before the first 'long absence'
-  # also calculate the First Passage Time and the number of revisits
-  dt_recurse <- dt_recurse[, list(
-    resTime = sum(timeInside),
-    fpt = first(timeInside),
-    revisits = max(visitIdx)
-  ),
-  by = .(coordIdx, x, y)
-  ]
-
-  # prepare to merge existing data with recursion data
-  dt[, coordIdx := seq(nrow(dt))]
-
-  # merge the revised recursion analysis data with the tracking data
-  dt <- merge(dt,
-    dt_recurse[, c("coordIdx", "resTime")],
-    by = c("coordIdx")
-  )
-
-  # ensure the data are ordered in ascending order of time
-  setorderv(dt, "time")
+  )$residenceTime
 
   # print message when done
   message(sprintf("TAG %s residence times done", unique(dt$TAG_ID)))
 
-  # return the dataframe
   dt
 })
 ```
 
+### Plot residence time
+
+```{r}
+# plot aggregated data
+plots <- Map(function(df_raw, df_preproc) {
+  ggplot(df_preproc, aes(x, y)) +
+    geom_point(
+      data = df_raw,
+      aes(x, y),
+      alpha = 0.1
+    ) +
+    geom_path(
+      col = "grey"
+    ) +
+    geom_point(
+      aes(col = res_time),
+      shape = 16
+    ) +
+    scale_colour_viridis_c(
+      option = "H",
+      trans = "sqrt",
+      breaks = c(2, 10, 20, 60),
+      limits = c(2, NA),
+      na.value = "grey"
+    ) +
+    theme_void()
+}, data_raw, data_residence)
+
+plots |> patchwork::wrap_plots()
+```
+
 
 ```{r res_patch}
-a = copy(data_proc[[1]])
-a[, id := "TAG_ID"]
-a$time = NULL
-a$time = a$UNIX
+# make residence patches
+data_patch <- copy(data_residence)
+data_patch <- lapply(data_patch, function(df) {
+  df[, id := "TAG_ID"]
+  df$time <- NULL
+  df$time <- df$UNIX
 
-# remove transit
-a = atl_filter_covariates(
-      a,
-      filters = c(
-        "(speed_in < 1.5 & speed_out < 1.5) | angle < 5"
-      )
+  df <- atl_filter_covariates(
+    df,
+    filters = c(
+      "res_time >= 2"
     )
-
-b = atl_res_patch(a, buffer_radius = 3, lim_spat_indep = 50, lim_time_indep = 10)
-d = atl_patch_summary(b, which_data = "points")
-
-ggplot(data_proc[[1]])+
-  geom_path(aes(x, y))+
-  geom_point(
-    data = d,
-    aes(x, y, col = factor(patch))
-  )+
-  geom_point(
-    data = b,
-    aes(x_median, y_median, fill = duration / 60),
-    size = 10,
-    alpha = 0.8,
-    shape = 21
-  )+
-  scale_fill_distiller(direction = 1)
-
-
-# select columns
-data_thin <- data_proc[, c(
-  "TAG_ID", "sp", "treat",
-  "UNIX", "x", "y"
-)]
-
-# rename
-setnames(data_thin, old = "UNIX", new = "time")
-
-# thin to 20s
-data_thin <- atl_thin_data(
-  data = data_thin, interval = 30,
-  id_columns = c("TAG_ID", "sp", "treat"),
-  method = "aggregate"
-)
-
-# add day and hour
-data_thin[, c("day", "hour") := list(
-  lubridate::date(as.POSIXct(time, origin = "1970-01-01", tz = "Asia/Jerusalem")),
-  lubridate::hour(as.POSIXct(time, origin = "1970-01-01", tz = "Asia/Jerusalem"))
-)]
-```
-
-
-```{r}
-# plot and check
-ggplot() +
-  geom_path(
-    data = data_raw,
-    aes(x, y),
-    col = "grey",
-    alpha = 0.3,
-    size = 0.3
-  ) +
-  geom_path(
-    data = data_thin,
-    aes(x, y),
-    alpha = 0.2
-  ) +
-  geom_point(
-    data = data_thin,
-    aes(x, y, colour = hour),
-    shape = 19,
-    alpha = 0.7
-    # show.legend = F
-  ) +
-  facet_wrap(~day) +
-  scico::scale_colour_scico(
-    palette = "romaO",
-    name = "Hour",
-    limits = c(0, 23),
-    breaks = c(6, 12, 18),
-    labels = c("6 AM", "Noon", "6 PM"),
-    # trans = "sqrt",
-    # option = "G",
-    direction = 1
-    # begin = 0.1, end = 0.9,
-  ) +
-  ggthemes::theme_map() +
-  ggspatial::annotation_scale(location = "tl", style = "ticks") +
-  coord_sf(
-    crs = 2039,
-    xlim = range(data_proc$x),
-    ylim = range(data_proc$y)
   )
-```
 
-### Save example plot
+  b <- atl_res_patch(a, buffer_radius = 3, lim_spat_indep = 10, lim_time_indep = 5)
 
-```{r}
-# save
-ggsave(
-  filename = "figures/fig_Acrocephalus_daily.png"
-)
+  b
+})
+
+# make plots
+plots <- Map(function(df_raw, data_rp) {
+  ggplot(df_raw) +
+    geom_point(
+      aes(x, y),
+      alpha = 0.1
+    ) +
+    geom_path(
+      data = data_rp,
+      aes(x_median, y_median),
+      col = "red",
+      size = 1
+    ) +
+    geom_point(
+      data = b,
+      aes(x_median, y_median,
+        fill = duration / 60
+      ),
+      shape = 21
+    ) +
+    scale_fill_viridis_c(
+      option = "H"
+    ) +
+    theme_void()
+}, data_raw, data_patch)
+
+plots |> patchwork::wrap_plots()
 ```

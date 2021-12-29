@@ -73,3 +73,5 @@ data/**/drive-download**
 # ignore supplement tex
 docs/*.tex
 .Rproj.user
+
+figures/figures_preprocessing/

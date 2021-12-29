@@ -8,20 +8,20 @@
 #' @return A vector of net squared displacement.
 #' @export
 #'
-get_nsd = function(data, x = "x", y = "y", time = "time") {
+get_nsd <- function(data, x = "x", y = "y", time = "time") {
 
-    # set order by timestamps
-    data.table::setorderv(data, time)
+  # set order by timestamps
+  data.table::setorderv(data, time)
 
-    # get starting coordinates
-    x_1 = data[[x]][1]
-    y_1 = data[[y]][1]
+  # get starting coordinates
+  x_1 <- data[[x]][1]
+  y_1 <- data[[y]][1]
 
-    # get net displacement
-    net_displacement = sqrt(
-        ((data[[x]] - x_1) ^ 2) + ((data[[y]] - y_1) ^ 2)
-    )
+  # get net displacement
+  net_displacement <- sqrt(
+    ((data[[x]] - x_1)^2) + ((data[[y]] - y_1)^2)
+  )
 
-    # square the net displacement
-    net_displacement ^ 2
+  # square the net displacement
+  net_displacement^2
 }

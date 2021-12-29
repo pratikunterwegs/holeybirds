@@ -24,47 +24,47 @@ library(colorspace)
 
 ```{r}
 # load data from file
-data <- fread("data/processed/data_for_analysis.csv")
+data <- fread("data/processed/data_preprocessed/data_preproc_Acrocephalus_Manipulated_1004001585.csv")
 ```
 
 
 ```{r}
-df = data[TAG_ID == "1004001748", c("x", "y", "time", "TAG_ID")]
-
+# df <- data[TAG_ID == "1004001748", c("x", "y", "time", "TAG_ID")]
+df = copy(data)
 # filter by hour of day
-df[, posixtime := as.POSIXct(time, tz = "Asia/Jerusalem", origin = "1970-01-01")]
+df[, posixtime := as.POSIXct(UNIX, tz = "Asia/Jerusalem", origin = "1970-01-01")]
 df[, c("date", "hour") := list(
   date(posixtime),
   hour(posixtime)
 )]
 
-df_day = df[hour >= 5 & hour < 20,]
+df_day <- df[hour >= 5 & hour < 20, ]
 
 # make coords
-coords = st_as_sf(df_day, coords = c("x", "y"), crs = 2039) |>
+coords <- st_as_sf(df_day, coords = c("x", "y"), crs = 2039) |>
   st_transform(4326) |>
   st_coordinates()
-df_day[, c("x", "y") := list(coords[,"X"], coords[,"Y"])]
-df_day$time = as.POSIXct(df_day$time, origin = "1970-01-01")
+df_day[, c("x", "y") := list(coords[, "X"], coords[, "Y"])]
+# df_day$posixtime <- as.POSIXct(df_day$time, origin = "1970-01-01")
 
 # split by day
-df_day = split(df_day, by = "date")
+df_day <- split(df_day, by = "date")
 
 # select columns
-df_day = lapply(df_day, function(df) {
- df[, c("x", "y", "time", "TAG_ID")]
- setnames(df, c("location.long", "location.lat", "timestamp", "individual.local.identifier"))
+df_day <- lapply(df_day, function(df) {
+  df = df[, c("x", "y", "posixtime", "TAG_ID")]
+  setnames(df, c("location.long", "location.lat", "timestamp", "individual.local.identifier"))
 })
 
 # make telemetry
-ctm_list = lapply(df_day, as.telemetry)
+ctm_list <- lapply(df_day, as.telemetry)
 plot(ctm_list[[1]])
 
-vgm = variogram(ctm_list[[1]])
+vgm <- variogram(ctm_list[[1]])
 plot(vgm)
 
 variogram.fit(vgm)
-a = periodogram(ctm)
-a = ctmm.fit(ctm, CTMM = GUESS)
+a <- periodogram(ctm)
+a <- ctmm.fit(ctm, CTMM = GUESS)
 ```
 

@@ -13,7 +13,11 @@ library(data.table)
 library(stringi)
 library(glue)
 
+# for analysis
+library(dbscan)
+
 # library for atlas data
+library(ggplot2)
 library(atlastools)
 ```
 
@@ -21,13 +25,12 @@ Prepare files.
 
 ```{r}
 # list files
-files = list.files("data/processed/data_id", full.names = TRUE)
+files <- list.files("data/processed/data_id", full.names = TRUE)
 ```
 
 ## Pre-processing pipeline
 
 This pre-processing pipeline is parameterised based on exploratory data analysis which can be found in the supplementary material.
-
 
 ```{r preproc_pipeline}
 # remove old preprocessing log
@@ -39,13 +42,16 @@ if (file.exists("data/log_preprocessing.log")) {
 }
 
 # some parameters
-min_rows = 1000 # discard data below n rows
-moving_window = 11 # moving window
-smoothed_speed_threshold = 15
-point_speed_threshold = 10
-thinning_interval = 20
-hour_start = 5
-hour_end = 20
+min_daily_fixes <- 500 # discard data below n rows
+moving_window_ppa <- 7 # moving window for sparrow, bulbul, warbler (PPA)
+moving_window_h <- 7 # moving window for swallow
+speed_threshold_ppa <- 20 # speed threshold for PPA is 3 m/s
+speed_threshold_h <- 20 # speed threshold for swallow
+angle_threshold <- 10 # in degrees
+hour_start <- 5
+hour_end <- 20
+dbscan_eps <- 3 # for PPA only
+sd_limit = 20
 
 # sink date time to log
 sink(file = "data/log_preprocessing.log", append = FALSE)
@@ -57,137 +63,219 @@ sink(file = "data/log_preprocessing.log", append = TRUE)
 
 # run pre-processing
 for (file in files) {
-    # read in file
-    df = fread(file)
-    
-    tag_id = unique(df$TAG_ID)
-    species = unique(df$sp)
-    treatment = unique(df$treat)
-    
-    # write messages
-      # informative messages
-      print(glue("Pre-processing tag_id = {tag_id}; {species}; {treatment}
-                 N rows daytime raw = {nrow(df)}
-                 ")
-            )
-      
-    # filter on time of day -- this is being redone for safety
-    # the column 'd' already marks daytime positions
-    df[, hour := hour(
-      as.POSIXct(UNIX, origin = "1970-01-01", tz = "Asia/Jerusalem")
-    )]
-    
-    df = df[hour >= hour_start & hour < hour_end, ]
-    
-    print(
-      glue("
+  # read in file
+  df <- fread(file)
+  
+  tag_id <- unique(df$TAG)
+  species <- unique(df$sp)
+  
+  # write messages
+  # informative messages
+  print(
+    glue(
+      "Pre-processing tag_id = {tag_id}; {species};
+      N rows raw = {nrow(df)}
+      "
+    )
+  )
+  # add time
+  df[, time := as.integer(as.numeric(TIME) / 1000)]
+  
+  # remove so called attractor points
+  df = atl_filter_bounds(
+    data = df,
+    x = "X", y = "Y", 
+    x_range = 257000.0 - c(300, -300),
+    y_range = 780000.0 - c(300, -300)
+  )
+  
+  print(
+    glue("
+          -- removed attractor points near X = {257000.0},Y = {780000.0}
+             ")
+  )
+  
+  # remove other attractors
+  df[, count := .N, by = c("X", "Y")]
+  df = df[count < 5, ]
+  
+  print(
+    glue("
+          -- removed other attractor points; counts above {5}
+             ")
+  )
+  
+  df$count = NULL
+  
+  # filter on time of day -- this is being redone for safety
+  # the column 'd' already marks daytime positions
+  df[, c("date", "hour") := list(
+    lubridate::date(as.POSIXct(as.numeric(TIME) / 1000, 
+                               origin = "1970-01-01", tz = "Asia/Jerusalem")),
+    lubridate::hour(as.POSIXct(as.numeric(TIME) / 1000, 
+                               origin = "1970-01-01", tz = "Asia/Jerusalem"))
+  )]
+  
+  df <- df[hour >= hour_start & hour < hour_end, ]
+  
+  print(
+    glue("
           -- removed nighttime positions between {hour_end}PM and {hour_start}AM
              ")
+  )
+  
+  # calculate SD and filter for SD <= 20 metres
+  df[, SD := sqrt(VARX + VARY + (2 * COVXY))]
+  
+  df <- df[SD <= 20]
+  
+  print(
+    glue("
+          -- removed SD > {sd_limit}
+             ")
+  )
+  
+  # split by date
+  df_l <- split(df, by = "date")
+  
+  # remove data with few rows
+  df_l <- df_l[vapply(df_l, function(le) {
+    nrow(le) > min_daily_fixes
+  }, FUN.VALUE = T)]
+  
+  #### Filtering on speed OR density based scan (DBSCAN) ####
+  # warn for all data lost, and skip to next individual if all data lost
+  # else continue with pre-processing
+  if (purrr::is_empty(df_l)) {
+    print(
+      glue::glue("List of data is empty, all data had fewer than \\
+        {min_daily_fixes} rows")
     )
     
-    # check for rows, if less than min_rows, do not process further
-    # min_rows is passed as an argument below
-    if (nrow(df) > min_rows) {
-      # add speeds
-      df[, c("speed_in", "speed_out") := list(
-        atl_get_speed(data = df, x = "x", time = "UNIX", type = "in"),
-        atl_get_speed(data = df, time = "UNIX", type = "out")
+    print(
+      glue("\n\n***\n\n")
+    )
+    
+    next
+  } else {
+    # pre-processing continues here
+    
+    print(glue::glue("-- Pre-processing {length(df_l)} days' data separately
+                       "))
+    
+    # first calculate speeds and turning angles, handle 0 angles
+    df_l <- lapply(df_l, function(le) {
+      
+      # check if filtering works
+      le[, c("speed_in", "speed_out", "angle") := list(
+        atl_get_speed(data = le, x = "X", y = "Y", time = "time", type = "in"),
+        atl_get_speed(data = le, x = "X", y = "Y", time = "time", type = "out"),
+        atl_turning_angle(data = le, x = "X", y = "Y", time = "time")
       )]
-      
-      # check speed quantiles
-      # speed quantiles
-      sapply(df[, c("speed_in", "speed_out")], quantile,
-             na.rm = T, probs = c(0.85, 0.9, 0.95)
-      )
-      
-      # filter on smoothed speed
-      df[, speed_smoothed := frollmean(speed_in, n = 21)]
-      df <- df[!is.na(speed_smoothed) & 
-                 speed_smoothed < smoothed_speed_threshold, ]
+      # fix missing angles due to same position, assign 0
+      le[, angle := nafill(angle, type = "const", fill = 0)]
+    })
+    
+    # check is species is Hirundo (swallow) and handle differently
+    # CURRENTLY HANDLED THE SAME!
+    if(species == "Hirundo") {
+      df_l <- lapply(df_l, function(le) {
+        atl_filter_covariates(
+          le,
+          filters = c(
+            glue::glue("(angle < {angle_threshold}) |\\
+                       ((speed_in < {speed_threshold_ppa}) &\\
+                       (speed_out < {speed_threshold_ppa}))")
+          )
+        )
+      })
+      print(glue::glue("-- Filtered out spikes using speeds > \\
+      {speed_threshold_ppa} AND angle > {angle_threshold};
+                       "))
+    } else {
+      df_l <- lapply(df_l, function(le) {
+        atl_filter_covariates(
+          le,
+          filters = c(
+            glue::glue("(angle < {angle_threshold}) |\\
+                       ((speed_in < {speed_threshold_ppa}) &\\
+                       (speed_out < {speed_threshold_ppa}))")
+          )
+        )
+      })
+      print(glue::glue("-- Filtered out spikes using speeds > \\
+      {speed_threshold_ppa} AND angle > {angle_threshold};
+                       "))
+    }
+    
+    
+    #### Median smoothing ####
+    # remove data with few rows
+    df_l <- df_l[vapply(df_l, function(le) {
+      nrow(le) > min_daily_fixes
+    }, FUN.VALUE = T)]
+    
+    # check again if any data remains and if not, move to next ID
+    if (purrr::is_empty(df_l)) {
       print(
-        glue("-- removed 21 point smoothed speeds \\
-             above {smoothed_speed_threshold} mps.
-             ")
-      )
-      
-      # recalculate speeds
-      df[, c("speed_in", "speed_out") := list(
-        atl_get_speed(data = df, x = "x", time = "UNIX", type = "in"),
-        atl_get_speed(data = df, time = "UNIX", type = "out")
-      )]
-      
-      # filter per position now
-      df <- df[speed_in < point_speed_threshold & 
-                 speed_out < point_speed_threshold, ]
-      print(
-        glue("-- removed point speeds above {point_speed_threshold}")
-      )
-      
-      # now smooth on a 9 point median smooth
-      atl_median_smooth(
-        data = df, x = "x", y = "y",
-        time = "UNIX", moving_window = moving_window
-      )
-      print(
-        glue("-- median smoothed coordinates, moving window = {moving_window}")
-      )
-
-      # save smoothed data to file
-      save_file = glue("data/processed/data_preprocessed/data_smooth\\
-                       _{species}_{treatment}_{tag_id}.csv")
-      
-      # really save the data
-      fwrite(df, file = save_file)
-
-      # select columns for thinning
-      data_thin <- df[, c(
-        "TAG_ID", "sp", "treat",
-        "UNIX", "x", "y"
-      )]
-      print(
-        glue("-- selecting columns {stri_flatten(colnames(data_thin), collapse = ', ')}")
-      )
-      
-      # rename time column
-      setnames(data_thin, old = "UNIX", new = "time")
-      
-      # thin data to 20s by aggregation
-      data_thin <- atl_thin_data(
-        data = data_thin, interval = 20,
-        id_columns = c("TAG_ID", "sp", "treat"),
-        method = "aggregate"
-      )
-      print(
-        glue("-- thinned data to {thinning_interval} seconds")
-      )      
-      # save data to file
-      save_file = glue("data/processed/data_preprocessed/data_thin\\
-                       _{species}_{treatment}_{tag_id}.csv")
-      print(
-        glue("-- N rows pre-processed = {nrow(data_thin)}")
-      )
-      
-      # really save the data
-      fwrite(data_thin, file = save_file)
-      
-      print(
-        glue("-- saved to data/processed/data_preprocessed/
-              data_thin_{species}_{treatment}_{tag_id}.csv
-             ")
+        glue::glue("List of data is empty, all data removed by speed filter
+                  ")
       )
       
       print(
         glue("\n\n***\n\n")
       )
       
+      next
     } else {
-      print(
-        glue("Too few rows (< {min_rows}) remaining
+      
+      if(species == "Hirundo") {
+        # pre-processing continues
+        # apply a median smooth smooth
+        df_l <- lapply(df_l, atl_median_smooth,
+                       x = "X", y = "Y",
+                       time = "time", moving_window = moving_window_h
+        )
         
-             ")
+        print(
+          glue("-- Median smoothed coordinates, moving window = {moving_window_h}")
+        )  
+      } else {
+        # apply a median smooth smooth
+        df_l <- lapply(df_l, atl_median_smooth,
+                       x = "X", y = "Y",
+                       time = "time", moving_window = moving_window_ppa
+        )
+        
+        print(
+          glue("-- Median smoothed coordinates, moving window = {moving_window_ppa}")
+        )
+      } # if else for H or PPA ends
+      
+      #### Merging data and saving to file ####
+      df <- rbindlist(df_l)
+      
+      # save data to file
+      save_file <- glue("data/processed/data_preprocessed/data_preproc\\
+                          _{species}_{tag_id}.csv")
+      print(
+        glue("-- N rows pre-processed = {nrow(df)}")
       )
-    }
-  }
+      
+      # really save the data
+      fwrite(df, file = save_file)
+      
+      print(
+        glue("-- saved to data/processed/data_preprocessed/
+                    data_preproc_{species}_{tag_id}.csv
+                ")
+      )
+      
+      print(
+        glue("\n\n***\n\n")
+      )
+    } # else case for data after filtering ends, data to file
+  } # else case for min daily fixes data ends
+} # for loops ends
 sink()
 ```
-

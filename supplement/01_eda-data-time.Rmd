@@ -23,11 +23,16 @@ library(patchwork)
 # load saved data
 data <- fread("data/results/data_daily_fixes.csv")
 
+# read treatment data
+treat = fread("data/results/data_tracking_metrics_rrv.csv")
+
+data = merge(data, treat[, c("TAG", "treat")], by = c("TAG"))
+
 # set factor order
 data$treat <- factor(data$treat,
   levels = c(
     "Moulting", "NonMoulting",
-    "Manipulated", "LongPeriod"
+    "Manipulated"
   )
 )
 ```
@@ -46,7 +51,7 @@ fig_daily_fixes <-
     ggplot(df) +
       geom_tile(
         aes(
-          x = day, y = factor(TAG_ID),
+          x = day, y = factor(TAG),
           fill = nfixes
         )
       ) +
@@ -87,7 +92,3 @@ ggsave(
   filename = "figures/fig_daily_fixes.png"
 )
 ```
-
-## Select data by daily samples sizes
-
-WIP ---  return to this after mapping data.

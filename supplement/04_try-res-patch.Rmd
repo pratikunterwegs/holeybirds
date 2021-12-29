@@ -27,21 +27,21 @@ library(colorspace)
 List the files.
 
 ```{r}
-files = list.files("data/processed/data_preprocessed",
-                   pattern = "smooth",
-                   full.names = T)
+files <- list.files("data/processed/data_preprocessed",
+  full.names = T
+)
 ```
 
 
 ```{r}
 # load data from file
-data <- fread(files[6])
+data <- fread(files[49])
 ```
 
 ### Prepare data
 
 ```{r}
-df = data[, c("x", "y", "UNIX", "TAG_ID")]
+df <- data[, c("x", "y", "UNIX", "TAG_ID")]
 df[, time := (
   as.POSIXct(UNIX, origin = "1970-01-01", tz = "Asia/Jerusalem")
 )]
@@ -54,7 +54,7 @@ df[, c("speed", "angle") := list(
 )]
 
 # fill NAs and NANs
-df$angle = nafill(df$angle, fill = 0)
+df$angle <- nafill(df$angle, fill = 0)
 
 # smooth speed
 df[, speed := runmed(speed, k = 9)]
@@ -69,109 +69,125 @@ df[, date := date(time)]
 ### Check transit
 
 ```{r}
-ggplot()+
+ggplot() +
   geom_path(
     data = df,
     aes(x, y),
     col = "grey",
     size = 0.1
-  )+
+  ) +
   geom_point(
     data = df[speed >= 0.2, ],
-    aes(x,y),
+    aes(x, y),
     col = "indianred", shape = 1
-  )+
+  ) +
   geom_point(
     data = df[speed < 0.2, ],
-    aes(x,y,col=speed),
+    aes(x, y, col = speed),
     shape = 19,
     alpha = 0.5
-  )+
+  ) +
   scale_colour_continuous_sequential(
     palette = "Blues",
     trans = "sqrt",
     limits = c(0, 1),
     na.value = "transparent"
-  )+
-  facet_wrap(~date)+
-  ggspatial::annotation_scale()+
+  ) +
+  facet_wrap(~date) +
+  ggspatial::annotation_scale() +
   ggthemes::theme_map()
-  coord_sf(
-    crs = 2039
-  )
 ```
 
 ## Residence patch by day
 
 ```{r}
 # remove transit
-df = df[speed < 0.2, ]
+df <- df[speed < 1, ]
 
 # split by date
-df = split(df, by = "date")
+df <- split(df, by = "date")
 
 # apply res patch method
-patches = lapply(df, function(d) {
-  d = d[, c("x", "y", "id", "UNIX")]
+patches <- lapply(df, function(d) {
+  d <- d[, c("x", "y", "id", "UNIX")]
   setnames(d, old = "UNIX", new = "time")
-  
-  atl_res_patch(d, buffer_radius = 10, lim_spat_indep = 25, lim_time_indep = 5,
-                min_fixes = 8)
+
+  atl_res_patch(d,
+    buffer_radius = 5, lim_spat_indep = 20, lim_time_indep = 5,
+    min_fixes = 20
+  )
 })
 
 # get patch summary
-patch_summary = lapply(patches, atl_patch_summary, which_data = "summary")
+patch_summary <- lapply(patches, atl_patch_summary, which_data = "summary")
 
 # patch points
-patch_points = lapply(patches, atl_patch_summary, which_data = "points")
+patch_points <- lapply(patches, atl_patch_summary, which_data = "points")
+
+# patch spatial
+patch_spatial = lapply(patches, atl_patch_summary, which_data = "spatial", buffer_radius = 5)
 ```
 
 ## Visualise residence patches
 
 ```{r}
-patch_summary = Map(function(data, names) {
-  data$date = names
-  data$hour = hour(as.POSIXct(data$time_start, origin = "1970-01-01", 
-                              tz = "Asia/Jerusalem"))
+patch_summary <- Map(function(data, names) {
+  data$date <- names
+  data$hour <- hour(as.POSIXct(data$time_start,
+    origin = "1970-01-01",
+    tz = "Asia/Jerusalem"
+  ))
   data
 }, patch_summary, names(patch_summary))
 
-patch_summary = rbindlist(patch_summary)
+patch_summary <- rbindlist(patch_summary)
 
-patch_points = Map(function(data, names) {
-  data$date = names
+patch_points <- Map(function(data, names) {
+  data$date <- names
   data
 }, patch_points, names(patch_points))
 
-patch_points = rbindlist(patch_points)
+patch_points <- rbindlist(patch_points)
 
-ggplot(patch_summary[hour > 5 & hour < 20,])+
-  geom_path(
-    data = patch_points,
-    aes(x, y),
-    col = "grey90"
+# id patch spatials
+patch_spatial <- Map(function(data, names) {
+  data$date <- names
+  data
+}, patch_spatial, names(patch_spatial))
+
+patch_spatial <- rbindlist(patch_spatial)
+patch_spatial = st_as_sf(patch_spatial, sf_column_name = "polygons")
+
+ggplot(patch_summary) +
+  geom_sf(
+    data = patch_spatial,
+    aes(col = patch),
+    alpha = 1,
+    fill = NA
   )+
-  geom_point(
-    data = patch_points,
-    aes(x, y, col = (patch))
-  )+
+  # geom_point(
+  #   data = patch_points,
+  #   aes(x, y),
+  #   alpha = 0.1
+  # ) +
   geom_path(
     aes(x_median, y_median,
-        group = date)
-  )+
+      group = date
+    ),
+    lty = 1,
+    size = 0.5
+  ) +
   geom_point(
-    aes(x_median, y_median,
-        size = duration / 60),
-    shape = 21,
-    fill = "grey",
-    alpha = 0.5,
-    colour = "grey30"
-  )+
-  scale_size(range = c(3, 8))+
+    aes(x_median, y_median),
+    shape = 21
+  ) +
+  scale_size(range = c(3, 8)) +
   scale_colour_viridis_c(
     option = "H"
-  )+
-  facet_wrap(~date)+
-  ggspatial::annotation_scale(style = "ticks")+
-  ggthemes::theme_map()
+  ) +
+  scale_fill_viridis_c(
+    option = "H"
+  ) +
+  facet_wrap(~date) +
+  ggspatial::annotation_scale(style = "ticks")
 ```
