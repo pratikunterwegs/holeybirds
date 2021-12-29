@@ -1,0 +1,33 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Large scale space use for swallows
+
+## Load libraries and prepare files
+
+```{r}
+# libs for data
+library(data.table)
+library(lubridate)
+
+# library for atlas data
+library(atlastools)
+```
+
+List the files and remove swallows, as they need to be handled differently.
+
+```{r}
+# list all preprocessed data files
+files <- list.files(
+  "data/processed/data_preprocessed",
+  pattern = "csv",
+  full.names = T
+)
+
+# remove swallow files
+files = files[grep("Hirundo", files)]
+```
+
