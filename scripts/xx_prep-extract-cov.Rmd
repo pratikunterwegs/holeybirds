@@ -1,0 +1,49 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+library(amt)
+library(purrr)
+```
+
+```{r}
+load("data/processed/data_for_ssf.Rds")
+```
+
+Get step coordinates and make mask layer for raster covariates.
+
+```{r}
+# get unique coords of real and potential steps
+coordinates = lapply(
+  tracks$data, function(df) {
+    coords = tibble(
+      x = c(df$x1_, df$x2_),
+      y = c(df$y1_, df$y2_)
+    ) |>
+      distinct()
+  }
+)
+
+# get unique coords across birds
+coordinates = bind_rows(coordinates) %>% 
+  distinct()
+
+# make convex hull
+mcp = st_as_sf(
+  coordinates,
+  coords = c("x", "y"),
+  crs = 2039
+) %>% 
+  st_union() %>% 
+  st_convex_hull()
+
+# save mcp
+st_write(
+  mcp,
+  dsn = "data/spatial/data_tracking_mcp.gpkg",
+  layer = "mcp_tracking"
+)
+```
+
