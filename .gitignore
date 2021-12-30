@@ -64,6 +64,9 @@ data/**/drive-download**
 *hula_lc_vector*
 *hula_valley*
 
+# ignore patch spatials
+data/spatial/data_patch_spatials*
+
 !*.log
 
 # docx
