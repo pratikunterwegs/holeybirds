@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Prepare covariate layers
+# Prepare to extract data from covariate layers
 
 ```{r}
 library(amt)
@@ -70,7 +70,7 @@ st_write(
 )
 ```
 
-## Load total mcp
+## Make total mcp
 
 ```{r}
 rp_mcp = st_read("data/spatial/data_res_patch_mcp.gpkg") %>% 
@@ -104,7 +104,3 @@ st_write(
   append = F
 )
 ```
-
-## Load covariate layers
-
-Cov layers are not large enough.
