@@ -3,6 +3,8 @@ editor_options:
   chunk_output_type: console
 ---
 
+# Prepare covariate layers
+
 ```{r}
 library(amt)
 library(purrr)
@@ -45,5 +47,11 @@ st_write(
   dsn = "data/spatial/data_tracking_mcp.gpkg",
   layer = "mcp_tracking"
 )
+
+rm(coordinates, tracks)
+gc()
 ```
 
+## Load covariate layers
+
+Cov layers are not large enough.
