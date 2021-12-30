@@ -7,12 +7,18 @@ editor_options:
 
 ```{r}
 library(data.table)
-
 library(ggplot2)
+library(colorspace)
+library(patchwork)
 ```
 
 ```{r}
-data = fread("data/results/data_patch_summary_ppa.csv")
+psdf = fread("data/results/data_patch_summary_ppa.csv")
+data = fread("data/results/data_patch_cov_ppa.csv")
+# link dates to patches
+data = merge(data, psdf)
+rm(psdf)
+
 rrv = fread("data/results/data_daily_rrv.csv")
 
 # handle date
@@ -55,49 +61,23 @@ data_patch_rrv[, t_duration := as.numeric(max(time_end) - min(time_start)),
 data_patch_rrv[, t_duration := t_duration / 3600]
 ```
 
-
-
 ```{r}
 patch_switches = data_patch_rrv[, .N, 
                                 by = c("id", "date", "rrv_calc","sp",
                                        "treat", "t_duration")]
-# 
-# # filter data
-# patch_switches = patch_switches
-# patch_switches[, nobs := length(unique(rrv_calc)), by = c("id")]
-# patch_switches = patch_switches[nobs > 1]
-```
-
-```{r}
-# psdf = patch_switches[, list(
-#   ps_max_rrv = mean(N[rrv_calc == max(rrv_calc)]),
-#   ps_min_rrv = mean(N[rrv_calc == min(rrv_calc)])
-# ), by = c("id", "sp", "treat")]
-# 
-# psdf = melt(
-#   psdf,
-#   id.vars = c("id", "sp", "treat")
-# )
-# 
-# psdf[, value_sc := value / max(value), c("id", "sp", "treat")]
-```
-
-Scale to compare species.
-
-```{r}
-psdf = copy(patch_switches)
 ```
 
 
 ```{r}
 fig_patch_switches =
-  ggplot(psdf[treat != "NonMoulting"])+
+  ggplot(patch_switches[treat != "NonMoulting"])+
   geom_jitter(
     aes(
       rrv_calc, N / t_duration,
       group = id,
       col = treat
     ),
+    alpha = 0.5,
     shape = 1
   )+
   geom_smooth(
@@ -109,21 +89,20 @@ fig_patch_switches =
     se = F
   )+
   geom_boxplot(
-    data = psdf[treat == "NonMoulting",],
+    data = patch_switches[treat == "NonMoulting",],
     aes(
       rrv_calc, N / t_duration,
       fill = "nonmoulting"
-    )
+    ),
+    size = 0.3
   )+
-  scale_fill_viridis_d(
+  scale_fill_discrete_qualitative(
     labels = "Non-moulting",
-    begin = 1
+    palette = "Harmonic"
   )+
-  scale_colour_viridis_d(
-    option = "H",
-    limits = c("Moulting", "Manipulated"),
-    begin = 0.2,
-    end = 0.8
+  scale_colour_discrete_diverging(
+    palette = "Blue-Red 2",
+    limits = c("Moulting", "Manipulated")
   )+
   # scale_x_continuous(
   #   breaks = c(0, 1),
@@ -140,7 +119,7 @@ fig_patch_switches =
     xlim = c(20, 0)
   )+
   theme_test(
-    base_size = 10,
+    base_size = 8,
     base_family = "Arial"
   )+
   theme(
@@ -161,11 +140,151 @@ fig_patch_switches =
     x = "Estimated RRV (More complete wing →)",
     y = "Patch switches / hr",
     colour = NULL
+  )+
+  guides(
+    colour = guide_legend(
+      override.aes = list(
+        alpha = 1,
+        size = 0.5
+      )
+    )
   )
 
 ggsave(
   fig_patch_switches,
   filename = "figures/fig_patch_switches.png",
   height = 58, width = 87, units = "mm"
+)
+```
+
+## Shelter -- resource tradeoff
+
+```{r}
+psdf = copy(data_patch_rrv)
+```
+
+```{r}
+psdf = psdf[, c("id", "sp", "treat", "vis", "ndvi", 
+                "rrv_calc", "duration", "t_duration")]
+
+psdf[, prop_t := duration / t_duration]
+```
+
+## Shelter use with rrv
+
+```{r}
+fig_vis =
+  ggplot()+
+  geom_jitter(
+    data = psdf[treat != "NonMoulting"],
+    aes(
+      rrv_calc, vis,
+      col = treat
+    ),
+    alpha = 0.3,
+    size = 0.2,
+    shape = 1
+  )+
+  geom_smooth(
+    data = psdf[treat != "NonMoulting"],
+    aes(
+      rrv_calc, vis,
+      group = treat,
+      col = treat
+    ),
+    method = "glm",
+    se = F
+  )+
+  geom_text(
+    data = data.table(
+      x = 10,
+      y = c(0.1, 1.1),
+      label = c("More sheltered patches", "More exposed patches")
+    ),
+    aes(
+      x, y, label = label
+    ),
+    size = 2,
+    family = "Arial",
+    col = "grey50"
+  )+
+  geom_boxplot(
+    data = psdf[treat == "NonMoulting",],
+    aes(
+      rrv_calc, vis,
+      fill = "nonmoulting"
+    ),
+    size = 0.3
+  )+
+  scale_fill_discrete_qualitative(
+    labels = "Non-moulting",
+    palette = "Harmonic"
+  )+
+  scale_colour_discrete_diverging(
+    palette = "Blue-Red 2",
+    limits = c("Moulting", "Manipulated")
+  )+
+  scale_x_reverse()+
+  facet_grid(
+    ~sp
+  )+
+  coord_cartesian(
+    xlim = c(20, 0)
+  )+
+  theme_test(
+    base_size = 8,
+    base_family = "Arial"
+  )+
+  theme(
+    # axis.text.x = element_text(
+    #   hjust = c(0, 1)
+    # ),
+    legend.box.margin = margin(rep(0, 4)),
+    legend.margin = margin(rep(0, 4)),
+    legend.key.height = unit(1, "mm"),
+    legend.position = "top",
+    strip.background = element_blank(),
+    strip.text = element_text(
+      face = "italic"
+    )
+  )+
+  labs(
+    fill = NULL,
+    x = "Estimated RRV (More complete wing →)",
+    y = "Visibility index",
+    colour = NULL
+  )+
+  guides(
+    colour = guide_legend(
+      override.aes = list(
+        alpha = 1,
+        size = 0.5
+      )
+    )
+  )
+```
+
+```{r}
+fig_1 = wrap_plots(
+  fig_patch_switches,
+  fig_vis,
+  guides = "collect",
+  ncol = 1
+) &
+  plot_annotation(
+    tag_levels = "A"
+  ) &
+  theme(
+    legend.position = "top",
+    plot.tag = element_text(
+      size = 10,
+      face = "bold"
+    )
+  )
+
+ggsave(
+  fig_1,
+  filename = "figures/fig_01.png",
+  height = 104, width = 87, units = "mm"
 )
 ```
