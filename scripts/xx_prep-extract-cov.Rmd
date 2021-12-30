@@ -8,7 +8,10 @@ editor_options:
 ```{r}
 library(amt)
 library(purrr)
+library(data.table)
 ```
+
+## Prepare extent from SSA data
 
 ```{r}
 load("data/processed/data_for_ssf.Rds")
@@ -50,6 +53,41 @@ st_write(
 
 rm(coordinates, tracks)
 gc()
+```
+
+## Prepare extent from residence patch data
+
+```{r}
+res_patch_spatial = st_read("data/spatial/data_patch_spatials.gpkg")
+rp_sf_mcp = st_union(res_patch_spatial) %>% 
+  st_convex_hull()
+
+# save
+st_write(
+  rp_sf_mcp,
+  dsn = "data/spatial/data_res_patch_mcp.gpkg",
+  layer = "mcp_tracking"
+)
+```
+
+## Load total mcp
+
+```{r}
+rp_mcp = st_read("data/spatial/data_res_patch_mcp.gpkg") %>% 
+  `st_crs<-`(2039)
+ssf_mcp = st_read("data/spatial/data_tracking_mcp.gpkg") %>% 
+  `st_crs<-`(2039)
+
+# union and get mask
+combined_mcp = st_union(
+  rp_mcp, ssf_mcp
+)
+
+# the ssf mcp is sufficient as it is larger
+st_write(
+  combined_mcp,
+  dsn = "data/spatial/mask_cov_layers.shp"
+)
 ```
 
 ## Load covariate layers
