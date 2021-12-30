@@ -104,7 +104,7 @@ patch_data = lapply(
     patches <- lapply(df, function(d) {
       
       # make a copy --- slower but safer
-      d_ = copy(d)
+      d_ = data.table::copy(d)
       
       # select relevant columns
       d_ <- d[, c("X", "Y", "id", "time")]
@@ -156,10 +156,24 @@ patch_summaries = lapply(
 
 # bind all individual level data frames together
 patch_summaries = rbindlist(patch_summaries)
+
+fwrite(patch_summaries, file = "data/results/data_patch_summary_ppa.csv")
 ```
 
-Save patch data.
+Get residence patch spatials.
 
 ```{r}
-fwrite(patch_summaries, file = "data/results/data_patch_summary_ppa.csv")
+# run summary function over each list element
+patch_data = lapply(patch_data, rbindlist) |> rbindlist()
+
+patch_spatials = atl_patch_summary(
+  patch_data = patch_data,
+  which_data = "spatial",
+  buffer_radius = 25
+)
+
+st_write(
+  patch_spatials,
+  dsn = "data/spatial/data_patch_spatials.gpkg"
+)
 ```
