@@ -88,6 +88,21 @@ st_write(
   combined_mcp,
   dsn = "data/spatial/mask_cov_layers.shp"
 )
+
+# make wgs84
+cmcp_latlong = st_transform(
+  combined_mcp,
+  4326
+) %>% 
+  st_bbox() %>% 
+  st_as_sfc()
+
+# the ssf mcp is sufficient as it is larger
+st_write(
+  cmcp_latlong,
+  dsn = "data/spatial/mask_cov_layers_wgs84.shp",
+  append = F
+)
 ```
 
 ## Load covariate layers
