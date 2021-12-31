@@ -93,7 +93,7 @@ tracks <- mutate(
 ```{r}
 save(
   tracks,
-  file = "data/data_amt_with_covs.Rds"
+  file = "data/processed/data_amt_with_covs.Rds"
 )
 ```
 
