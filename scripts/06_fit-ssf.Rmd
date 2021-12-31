@@ -24,7 +24,7 @@ library(amt)
 
 ```{r}
 # load data saved as Rds object
-load("data/processed/data_for_ssf.Rds")
+load("data/processed/data_amt_with_covs.Rds")
 ```
 
 ## Fit candidate SSF
@@ -34,11 +34,9 @@ Here, we fit a candidate SSF for step length, NDVI, landcover, the interaction o
 ```{r}
 # make a copy of the data, renaming data to ssf
 ssfs <- rename(tracks, ssf = "data")
-```
 
-```{r}
 # specify the model formula
-ssf_formula <- "case_ ~ log_sl + ndvi + p_natural + ndvi_step + step_openness + log_sl:p_natural + log_sl:step_openness + strata(step_id_)"
+ssf_formula <- "case_ ~ log_sl + vis + ndvi + vis:ndvi + strata(step_id_)"
 
 # add formula to dataframe
 ssfs <- mutate(
@@ -52,7 +50,7 @@ ssfs <- mutate(
 # sink output to log
 sink(file = "data/log_ssf_fit.log")
 
-ssf_comment <- "Trial SSF log writing"
+ssf_comment <- "Writing SSF log"
 
 # first print date
 print(
@@ -69,17 +67,6 @@ ssfs <- mutate(
   ssfs,
   ssf = imap(ssf, function(.x, .y) {
 
-    # print some information about the data -- which row, which id, treatment
-    print(
-      glue("sp = {ssfs$sp[.y]}; \\
-            tag = {ssfs$TAG_ID[.y]}; treatment = {ssfs$treat[.y]}
-            track date = {ssfs$date[.y]}
-            row in dataframe = {.y}
-            formula = {ssfs$ssf_formula[.y]}
-            start time: {Sys.time()}
-           ")
-    )
-
     # pass the model fitting through a try catch
     # this allows errors to be logged and prevents the process from
     # breaking when there is an error
@@ -87,6 +74,17 @@ ssfs <- mutate(
 
       # the model fitting expression to evaluate
       expr = {
+        
+        # print some information about the data -- which row, which id, treatment
+        print(
+          glue("sp = {ssfs$sp[.y]}; \\
+            tag = {ssfs$TAG[.y]};
+            track date = {ssfs$date[.y]}
+            row in dataframe = {.y}
+            formula = {ssfs$ssf_formula[.y]}
+            start time: {Sys.time()}
+           ")
+        )
 
         # this is the SSF fit function from amt
         ssf_fit <-
