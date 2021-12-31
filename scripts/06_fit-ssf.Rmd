@@ -36,7 +36,7 @@ Here, we fit a candidate SSF for step length, NDVI, landcover, the interaction o
 ssfs <- rename(tracks, ssf = "data")
 
 # specify the model formula
-ssf_formula <- "case_ ~ log_sl + vis + ndvi + vis:ndvi + strata(step_id_)"
+ssf_formula <- "case_ ~ log_sl + ndvi + vis + ndvi:vis + strata(step_id_)"
 
 # add formula to dataframe
 ssfs <- mutate(
