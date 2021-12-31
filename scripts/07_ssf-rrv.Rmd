@@ -78,6 +78,14 @@ ssf_params <- mutate(
 
 # unnest
 ssf_params <- unnest(ssf_params, cols = coefs)
+
+# get exp coefs
+ssf_params = mutate(
+  ssf_params,
+  exp_coef = exp(estimate)
+)
+
+rm(ssfs); gc()
 ```
 
 ## Link SSF coefficients and RRV
@@ -113,7 +121,7 @@ data <- filter(
 # get sl coefficient for all models
 data <- data %>%
   group_by(
-    TAG_ID, date, sp, treat
+    TAG, date, sp, treat
   ) %>%
   mutate(
     sl_coef = estimate[term == "log_sl"]
@@ -125,42 +133,54 @@ data <-
   mutate(
     data,
     estimate_corrected = case_when(
-      str_detect(term, "sl:") ~ estimate + shape + sl_coef,
-      str_detect(term, "log_sl") ~ estimate + shape,
+      str_detect(term, "sl:") ~ exp_coef + shape + sl_coef,
+      str_detect(term, "log_sl") ~ exp_coef + shape,
       TRUE ~ estimate
     )
   )
 ```
 
-## Relative Selection Strengths
 
 ```{r}
-ggplot(filter(data, abs(estimate_corrected) < 50)) +
+filter(
+  data, sp != "Hirundo", 
+  treat != "NonMoulting", 
+  term != "log_sl",
+  p.value <= 0.05
+) |> 
+ggplot() +
   geom_jitter(
     aes(
       rrv_calc, estimate_corrected,
-      shape = sp,
-      col = p.value <= 0.05,
-      alpha = p.value <= 0.05
+      col = sp
     ),
-    width = 0.1,
-    show.legend = T
+    # shape = 1,
+    show.legend = T,
+    size = 2
   ) +
   geom_smooth(
-    # data = filter(data, p.value < 0.05),
     aes(
-      rrv_calc, estimate_corrected
+      rrv_calc, estimate_corrected,
+      col = sp
     ),
-    show.legend = T,
-    se = F,
+    # shape = 1,
     method = "glm",
-    col = "grey20",
-    size = 0.4
-  )+
+    show.legend = T
+  ) +
+  # geom_smooth(
+  #   # data = filter(data, p.value < 0.05),
+  #   aes(
+  #     rrv_calc, estimate_corrected,
+  #     col = treat
+  #   ),
+  #   show.legend = T,
+  #   se = F,
+  #   method = "glm"
+  # )+
   scale_colour_viridis_d(
     option = "H",
-    direction = -1,
-    begin = 0.1,
+    # direction = -1,
+    begin = 0.2,
     end = 0.8
   ) +
   scale_alpha_manual(
@@ -168,29 +188,91 @@ ggplot(filter(data, abs(estimate_corrected) < 50)) +
     guide = F
   ) +
   scale_x_continuous(
-    limits = c(1, 15)
+    # limits = c(1, 15)
     # trans = ggallin::ssqrt_trans
   ) +
   scale_y_continuous(
     # limits = c(1, NA)
-    # trans = ggallin::ssqrt_trans
+    trans = ggallin::pseudolog10_trans
   ) +
-  facet_grid(term ~ sp, scales = "free_y") +
+  facet_grid(
+    sp~term, 
+    scales = "free_y"
+  ) +
   theme_test()+
   theme(
     legend.position = "top"
   ) +
   labs(
     x = "Calculated RRV",
-    y = "Relative Selection Strength",
+    # y = "Relative Selection Strength",
     shape = "Sp.",
-    col = "p < 0.05", alpha = NULL
+    # col = "p < 0.05", 
+    alpha = NULL
   )
-  ```
+```
 
-## Selection and RRV
+## Relative Selection Strengths
 
 ```{r}
-library()
+# prepare relative selection
+relative_selection = data |> 
+  select(
+    TAG, sp, date, term, exp_coef,
+    treat, rrv_calc
+  ) |> 
+  filter(
+    term != "log_sl"
+  )
+
+# |> 
+  # pivot_wider(
+  #   id_cols = c("TAG", "sp", "date", "treat", "rrv_calc"),
+  #   names_from = "term",
+  #   values_from = "estimate_corrected"
+  # )
+
+# scale selection within daily tracks and 
+relsel = relative_selection |> 
+  group_by(
+    TAG, sp, date, rrv_calc
+  ) |> 
+  mutate(
+    scaled_estimate = exp_coef / sum(abs(exp_coef))
+  )
+```
+
+```{r}
+a = relsel |> 
+  filter(
+    sp != "Hirundo",
+    term != "log_sl"
+  ) |> 
+  pivot_wider(
+    id_cols = c("TAG", "sp", "date", "treat"),
+    values_from = "scaled_estimate",
+    names_from = "term"
+  )
+
+ggplot(a)+
+  geom_jitter(
+    aes(
+      ndvi, vis, 
+      col = treat
+    )
+  )+
+  scale_y_continuous(
+    trans = ggallin::pseudolog10_trans
+  )
+
+  geom_smooth(
+    aes(
+      rrv_calc, scaled_estimate,
+      col = treat
+    ),
+    method = "glm",
+    se = F
+  )+
+  facet_grid(term~sp)
 ```
 
