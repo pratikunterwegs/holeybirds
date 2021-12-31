@@ -19,29 +19,20 @@ library(tidyr)
 library(sf)
 library(purrr)
 
-library(devtools)
-if (!"velox" %in% installed.packages()) {
-  install_github("hunzikp/velox")
-} else {
-  library(velox)
-}
-
 # library for SSF
 library(amt)
-
-# plot libraries
-library(ggplot2)
-library(colorspace)
 ```
 
 ```{r}
 # read file names
-files <- list.files("data/processed/data_preprocessed",
+files <- list.files(
+  "data/processed/data_preprocessed",
+  pattern = "csv",
   full.names = TRUE
 )
 ```
 
-## Filter for stationary daytime positions
+## Filter data for quality
 
 ```{r}
 # define daily data threshold
@@ -165,19 +156,6 @@ tracks = mutate(
   nrow = map_int(data, nrow)
 )
 ```
-
-```{r}
-# histogram of remaining data
-ggplot(tracks)+
-  geom_histogram(
-    aes(
-      nrow,
-      fill = ..x.. > 20
-    )
-  )+
-  facet_grid(sp ~ treat)
-```
-
 
 ### Quality filters
 
