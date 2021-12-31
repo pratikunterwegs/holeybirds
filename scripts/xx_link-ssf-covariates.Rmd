@@ -1,0 +1,99 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+# libraries
+library(amt)
+library(purrr)
+library(dplyr)
+
+library(sf)
+library(terra)
+```
+
+```{r}
+# load data
+load("data/processed/data_for_ssf.Rds")
+```
+
+Load landscape.
+
+```{r}
+ndvi = "data/rasters/raster_hula_ndvi_2039.tif"
+vis = "data/rasters/raster_hula_visibility.tif"
+```
+
+```{r}
+# radius in metres
+use_radius <- 10 # this is the resolution of the ndvi layer
+
+# prepare NDVI and LC velox
+ndvi <- rast(ndvi)
+vis <- rast(vis)
+```
+
+```{r}
+tracks <- mutate(
+  tracks,
+  data = imap(data, function(.x, .y) {
+    # print message
+    message(sprintf("working on row %i", .y))
+
+    # make buffers at destination
+    step_end_buffer <- select(.x, x2_, y2_, case_, step_id_) %>%
+      st_as_sf(coords = c("x2_", "y2_"), crs = 2039)
+
+    # get ndvi values
+    mean_vis <- terra::extract(
+      vis,
+      vect(step_end_buffer),
+      fun = mean
+    )
+    
+    # get visibility values
+    mean_ndvi <- terra::extract(
+      ndvi,
+      vect(step_end_buffer),
+      fun = mean
+    )
+    
+    # merge data
+    env = merge(mean_ndvi, mean_vis)
+    env = rename(env, vis = raster_hula_visibility, ID_sp = ID)
+
+    # join destination data with steps data
+    .x <- mutate(.x,
+      ID_sp = seq(nrow(.x))
+    ) %>%
+      inner_join(env, by = "ID_sp") %>%
+      select(-ID_sp)
+  })
+)
+```
+
+Prepare final predictors
+
+```{r}
+# add a very small movement distance (1e-5 metres --- less than a centimetre)
+# to prevent infinite values
+tracks <- mutate(
+  tracks,
+  data = map(data, function(df) {
+    df <- mutate(df, log_sl = log(sl_ + 1e-5)) %>%
+      filter(!is.na(log_sl), !is.infinite(log_sl))
+
+    # return df
+    df
+  })
+)
+```
+
+```{r}
+save(
+  tracks,
+  file = "data/data_amt_with_covs.Rds"
+)
+```
+
