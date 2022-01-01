@@ -43,8 +43,8 @@ tracks <- mutate(
 
     # make buffers at destination
     step_end_buffer <- select(.x, x2_, y2_, case_, step_id_) %>%
-      st_as_sf(coords = c("x2_", "y2_"), crs = 2039) %>% 
-      st_buffer(10)
+      st_as_sf(coords = c("x2_", "y2_"), crs = 2039) #%>% 
+      # st_buffer(10)
 
     # get ndvi values
     mean_vis <- terra::extract(
