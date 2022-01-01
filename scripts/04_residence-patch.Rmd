@@ -160,6 +160,41 @@ patch_summaries = rbindlist(patch_summaries)
 fwrite(patch_summaries, file = "data/results/data_patch_summary_ppa.csv")
 ```
 
+Get patch points.
+
+```{r}
+# run summary function over each list element
+patch_points = lapply(
+  # running over individuals
+  patch_data, function(l) {
+    
+    # running over dates within individuals
+    ps_df = Map(
+      l, names(l),
+      f = function(le, n) {
+        # get the summary
+        patches_id_date = atl_patch_summary(
+          le, which_data = "points"
+        )
+        # add the date to the summary
+        patches_id_date$date = n
+        
+        # return summary
+        patches_id_date
+      }
+    )
+    
+    # return individual level as a single data frame
+    rbindlist(ps_df)
+  }
+)
+
+# bind all individual level data frames together
+patch_points = rbindlist(patch_points)
+
+fwrite(patch_points, file = "data/results/data_patch_points_ppa.csv")
+```
+
 Get residence patch spatials.
 
 ```{r}
