@@ -67,6 +67,9 @@ data/**/drive-download**
 # ignore patch spatials
 data/spatial/data_patch_spatials*
 
+# ignore Rdata
+*.Rds
+
 !*.log
 
 # docx
