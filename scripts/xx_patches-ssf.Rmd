@@ -1,0 +1,439 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Prepare data for SSF
+
+Here we prepare the data for SSFs using the `amt` package.
+
+## Load libraries and prepare files
+
+```{r}
+# libs for data
+library(data.table)
+library(lubridate)
+library(glue)
+library(dplyr)
+library(tidyr)
+library(sf)
+library(purrr)
+
+# library for SSF
+library(amt)
+```
+
+```{r}
+# read data
+data = fread("data/results/data_patch_summary_ppa.csv")
+points = fread("data/results/data_patch_points_ppa.csv")
+
+data[, time_median := as.POSIXct(
+  time_median, origin = "1970-01-01", t = "Asian/Jerusalme"
+)]
+```
+
+## Prepare for SSF
+
+### Split by id and date
+
+```{r}
+# make tibble and nest by id and date + other identifiers
+setDF(data)
+
+# select data cols for id
+data = select(
+  data,
+  id, patch, date, x_median, y_median, time_median
+)
+
+# nest the tibble,
+tracks <- nest(
+  data,
+  data = -matches(c("id", "date"))
+)
+
+# prepare link point data
+setDF(points)
+points = nest(
+  points,
+  data = -matches(c("id", "date"))
+)
+```
+
+### Make `amt` objects
+
+```{r}
+# make amt objects from the nested data
+# keep attribute columns
+tracks <- mutate(tracks,
+  data = map(data, function(df) {
+    amt::make_track(
+      tbl = df,
+      .x = x_median,
+      .y = y_median,
+      .t = time_median,
+      all_cols = T,
+      crs = sp::CRS(
+        st_crs(2039)$proj4string
+      )
+    )
+  })
+)
+```
+
+
+```{r}
+# count rows in data
+tracks = mutate(
+  tracks,
+  nrow = map_int(data, nrow)
+)
+
+# remove with fewer than 5 rows
+tracks = filter(
+  tracks,
+  nrow >= 5
+)
+
+# make steps
+tracks = mutate(
+  tracks,
+  data = lapply(data, steps, keep_cols = "both")
+)
+```
+
+### Prepare alternate steps
+
+```{r}
+# define alternate steps
+n_alt_steps <- 19
+
+# prepare alternate steps and extract covariates
+tracks <- mutate(
+  tracks,
+  data = imap(data, function(.x, .y) {
+
+    # messages
+    message(
+      glue("operating row {.y}")
+    )
+    
+    # get 19 random potential steps
+    amt::random_steps(.x, n = n_alt_steps)
+  })
+)
+```
+
+Data still contains long term sparrow tracking and swallow data.
+
+```{r}
+save(tracks, file = "data/processed/data_for_ssf.Rds")
+```
+
+```{r}
+# unlist and view
+data = unnest(
+  tracks,
+  cols = "data"
+)
+
+# write
+fwrite(
+  data, file = "data/results/data_alternative_patches.csv"
+)
+
+# make geometry
+data = mutate(
+  data,
+  seg = pmap(list(x1_, x2_, y1_, y2_), function(x1, x2, y1, y2) {
+    sf::st_linestring(
+      x = matrix(c(x1, y1, x2, y2), nrow = 2, byrow = 2)
+    )
+  })
+)
+
+# make sf
+data_steps = st_sf(
+  data,
+  sf_column_name = "seg",
+  crs = 2039
+)
+
+# write
+st_write(
+  data_steps,
+  dsn = "data/spatial/data_patch_alt_steps.gpkg"
+)
+```
+
+## Read patches and get cov
+
+```{r}
+# load("data/processed/data_for_ssf.Rds")
+
+ndvi = "data/rasters/raster_hula_ndvi_2039.tif"
+vis = "data/rasters/raster_hula_visibility.tif"
+
+ndvi <- terra::rast(ndvi)
+vis <- terra::rast(vis)
+```
+
+```{r}
+# rename points data
+points = rename(
+  points,
+  points_data = data
+)
+
+# link points data to tracks
+tracks = left_join(
+  tracks,
+  points
+)
+```
+
+```{r}
+rand_pts_x = rnorm(30, 0, 20)
+rand_pts_y = rnorm(30, 0, 20)
+```
+
+```{r}
+tracks <- mutate(
+  tracks,
+  data = pmap(
+    list(data, points_data, seq(length(data))), function(df, pdf, .y) {
+    # print message
+    message(sprintf("working on row %i", .y))
+    
+    #### env values in true patches ####
+
+    # link real patch movements with real patch locations
+    # identify the true patches in point data
+    pdf = pdf %>%
+      select(
+        patch, x, y
+      )
+    pdf = st_as_sf(
+      pdf,
+      coords = c("x", "y"),
+      crs = 2039
+    )
+    # get ndvi and vis
+    # get ndvi values
+    mean_vis <- terra::extract(
+      vis,
+      terra::vect(pdf),
+      fun = mean
+    )
+    # get visibility values
+    mean_ndvi <- terra::extract(
+      ndvi,
+      terra::vect(pdf),
+      fun = mean
+    )
+    # merge data
+    env = merge(mean_ndvi, mean_vis)
+    env = rename(
+      env, 
+      vis = raster_hula_visibility
+    )
+    # add to real patch points and get summary
+    pdf$ndvi = env$ndvi
+    pdf$vis = env$vis
+    # drop geometry
+    pdf = st_drop_geometry(pdf)
+    # summarise env
+    pdf = group_by(
+      pdf,
+      patch
+    ) |> 
+      summarise(
+        across(
+          c(ndvi, vis),
+          list(
+            mean = mean
+          )
+        )
+      )
+    
+    #### env values of alternative steps ####
+    sim_pts = select(
+      df,
+      x2_, y2_, case_, patch_end, patch_start
+    ) %>%
+    filter(
+      !case_
+    )
+
+    # sample around ends of alt steps
+    sim_pts = mutate(
+      sim_pts,
+      spts = pmap(
+        list(x2_, y2_),
+        function(x2_, y2_) {
+          tibble(
+            x2_sim = x2_ + rand_pts_x,
+            y2_sim = y2_ + rand_pts_y
+          )
+        }
+      )
+    )
+    # unnest samples
+    sim_pts = unnest(
+      sim_pts,
+      cols = "spts"
+    )
+    # sample at alternative steps
+    sim_pts = st_as_sf(
+      sim_pts,
+      coords = c("x2_sim", "y2_sim"),
+      crs = 2039
+    )
+    # get ndvi values
+    mean_vis <- terra::extract(
+      vis,
+      terra::vect(sim_pts),
+      fun = mean
+    )
+    # get visibility values
+    mean_ndvi <- terra::extract(
+      ndvi,
+      terra::vect(sim_pts),
+      fun = mean
+    )
+    # merge data
+    env = merge(mean_ndvi, mean_vis)
+    env = rename(
+      env, 
+      vis = raster_hula_visibility
+    )
+    # assign values to alternative steps
+    sim_pts$ndvi = env$ndvi
+    sim_pts$vis = env$vis
+    # drop geometry
+    sim_pts = st_drop_geometry(sim_pts)
+    # summarise by x2 and y2
+    sim_pts = group_by(
+      sim_pts,
+      x2_, y2_, case_, patch_end, patch_start
+    ) |> 
+      summarise(
+        across(
+          c(ndvi, vis),
+          list(
+            mean = mean
+          )
+        )
+      )
+    
+    #### step start covariates ####
+    # these are always from a real patch
+    df = inner_join(
+      df,
+      
+      # drop coords when joining for start locs
+      select(
+        ungroup(pdf), 
+        patch, ndvi_mean, vis_mean
+      ),
+      
+      by = c("patch_start" = "patch")
+    )
+    
+    #### step end covariates for alternative steps ####
+    df = left_join(
+      df, 
+      sim_pts, 
+      by = c("x2_", "y2_", "case_", 
+             "patch_end", "patch_start")
+    )
+    
+    #### step end covariates for real steps ####
+    pdf = mutate(
+        pdf,
+        case_ = TRUE
+      )
+    df = left_join(
+      df,
+      pdf,
+      by = c(
+        "patch_end" = "patch",
+        "case_"
+        )
+    ) %>%
+      mutate(
+        ndvi_mean_end = if_else(
+          is.na(ndvi_mean.y), ndvi_mean, ndvi_mean.y
+        ),
+        vis_mean_end = if_else(
+          is.na(vis_mean.y), vis_mean, vis_mean.y
+        )
+      )
+    df = select(
+      df,
+      -ndvi_mean.y, -vis_mean.y, -ndvi_mean, -vis_mean
+    ) %>%
+      rename(
+        ndvi_mean_start = ndvi_mean.x,
+        vis_mean_start = vis_mean.x
+      )
+    
+    
+
+    # join destination data with steps data
+    df
+  })
+)
+
+rm(ndvi, vis)
+```
+
+Prepare final predictors
+
+```{r}
+# add a very small movement distance (1e-5 metres --- less than a centimetre)
+# to prevent infinite values
+tracks <- mutate(
+  tracks,
+  data = map(data, function(df) {
+    df <- mutate(df, log_sl = log(sl_ + 1e-5)) %>%
+      filter(!is.na(log_sl), !is.infinite(log_sl))
+
+    # return df
+    df
+  })
+)
+
+save(
+  tracks,
+  file = "data/processed/data_amt_with_covs.Rds"
+)
+```
+
+## Save real and potential step metrics
+
+```{r}
+tracks = select(
+  tracks,
+  id, date, data
+) |> 
+  unnest(
+    cols = "data"
+  )
+
+tracks = select(
+  tracks,
+  id, date, x1_, x2_, y1_, y2_, 
+  case_, 
+  matches("ndvi"),
+  matches("vis")
+)
+
+# save
+fwrite(
+  tracks,
+  file = "data/results/data_ssf_step_covs.csv"
+)
+```
+
