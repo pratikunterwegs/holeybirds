@@ -1,0 +1,47 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+library(data.table)
+library(ggplot2)
+```
+
+```{r}
+data = fread("data/results/data_ssf_step_covs.csv")
+rrv = fread("data/results/data_daily_rrv.csv")
+
+data[, date := as.character(date)]
+rrv[, date := as.character(date)]
+```
+
+```{r}
+data = merge(
+  data,
+  rrv,
+  by.x = c("id", "date"),
+  by.y = c("TAG", "date")
+)
+```
+
+```{r}
+ggplot()+
+  geom_histogram(
+    data = data,
+    aes(
+      ndvi_mean_end,
+      y = ..density..,
+      fill = case_
+    ),
+    alpha = 0.5,
+    position = "identity"
+  )+
+  theme_test(
+    base_family = "Arial"
+  )+
+  facet_grid(
+    ~sp
+  )
+```
+

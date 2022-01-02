@@ -436,4 +436,3 @@ fwrite(
   file = "data/results/data_ssf_step_covs.csv"
 )
 ```
-

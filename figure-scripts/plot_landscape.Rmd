@@ -1,0 +1,71 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+library(terra)
+library(tmap)
+library(stars)
+
+library(data.table)
+```
+
+```{r}
+# load ndvi
+ndvi = stars::read_stars("data/rasters/raster_hula_ndvi_2039.tif")
+st_crs(ndvi) = st_crs(2039)
+vis = stars::read_stars("data/rasters/raster_hula_visibility.tif")
+```
+
+```{r}
+patches = sf::st_read("data/spatial/data_patch_spatials.gpkg")
+st_crs(patches) = 2039
+patches = dplyr::group_by(
+  patches,
+  id
+) |> 
+  dplyr::summarise(
+    geom = st_union(geom)
+  )
+
+# get species
+fixes = fread("data/results/data_daily_fixes.csv")
+fixes = unique(rrv[, c("sp", "TAG")])
+
+# get treatmetn
+rrv = fread("data/results/data_daily_rrv.csv")
+rrv = unique(rrv[, c("sp", "TAG", "treat")])
+
+patches = dplyr::left_join(
+  patches,
+  rrv,
+  by = c("id" = "TAG")
+)
+
+patches_sp = dplyr::group_by(
+  patches,
+  sp
+) |> 
+  dplyr::summarize(geom = st_union(geom))
+```
+
+```{r}
+
+```
+
+
+```{r}
+tm_shape(
+  shp = vis,
+  raster.downsample = 11
+)+
+  tm_raster(
+    palette = scico::scico(11, palette = "davos", direction = 1)[seq(10)],
+    #viridis::viridis(20, direction = -1),
+    breaks = seq(0, 1, 0.1)#,
+    # colorNA = "lightblue"
+    # style = "cont"
+  )
+```
+
