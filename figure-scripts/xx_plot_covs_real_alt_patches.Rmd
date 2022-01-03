@@ -5,7 +5,10 @@ editor_options:
 
 ```{r}
 library(data.table)
+
 library(ggplot2)
+library(colorspace)
+library(patchwork)
 ```
 
 ```{r}
@@ -26,22 +29,151 @@ data = merge(
 ```
 
 ```{r}
-ggplot()+
-  geom_histogram(
-    data = data,
-    aes(
-      ndvi_mean_end,
-      y = ..density..,
-      fill = case_
-    ),
-    alpha = 0.5,
-    position = "identity"
+data_var = copy(data)[, c("case_", "ndvi_mean_end", "vis_mean_end", 
+  "treat", "sp", "rrv_calc")]
+```
+
+## Selection for NDVI and Visibility
+
+```{r}
+fig_selection = 
+  ggplot()+
+  geom_abline(
+    intercept = 1,
+    slope = -1,
+    col = "grey20",
+    lty = 2
   )+
-  theme_test(
-    base_family = "Arial"
+  geom_vline(
+    xintercept = c(0.4, 0.6),
+    colour = "grey",
+    lty = 2
+  )+
+  geom_bin2d(
+    data = data_var[case_ == FALSE,],
+    aes(
+      ndvi_mean_end, vis_mean_end,
+      alpha = ..density..,
+    ),
+    binwidth = c(0.05, 0.05)
+  )+
+  geom_point(
+    data = data_var[(case_)],
+    aes(
+      ndvi_mean_end, vis_mean_end,
+      col = "real"
+    ),
+    size = 0.5,
+    alpha = 0.5
+  )+
+  scale_fill_continuous_sequential(
+    palette = "Rocket"
+  )+
+  scale_alpha(
+    guide = "none",
+    range = c(0.6, 1)
+  )+
+  scale_colour_manual(
+    values = c("steelblue"),
+    label = "Real patches"
+  )+
+  scale_y_continuous()+
+  coord_cartesian(
+    ylim = c(0.0, 1)
   )+
   facet_grid(
     ~sp
+  )+
+  theme_test(
+    base_family = "Arial",
+    base_size = 12
+  )+
+  theme(
+    strip.background = element_blank(),
+    strip.text = element_text(
+      face = "italic"
+    ),
+    legend.position = "top",
+    legend.key.height = unit(1, "mm"),
+    legend.key.width = unit(5, "mm")
+  )+
+  labs(
+    x = "NDVI (step end)",
+    y = "Visibility index (step end)",
+    fill = "# Alternative patches",
+    colour = NULL
+  )+
+  guides(
+    colour = guide_legend(
+      override.aes = list(
+        alpha = 1,
+        size = 3,
+        stroke = 1
+      )
+    )
   )
+
+# save figure
+ggsave(
+  fig_selection,
+  filename = "figures/fig_env_selection.png",
+  height = 87 * 0.9,
+  width = 178,
+  units = "mm"
+)
 ```
 
+## Selection within high NDVI values
+
+```{r}
+ggplot(data_var[
+  between(ndvi_mean_end, 0.4, 0.6),
+  ])+
+  geom_boxplot(
+    aes(
+      as.factor(treat), vis_mean_end,
+      fill = case_
+    ),
+    # outlier.size = 0.2,
+    outlier.shape = 4,
+    width = 0.5
+  )+
+  scale_fill_discrete_diverging(
+    palette = "Blue-Red",
+    l1 = 50,
+    limits = c("TRUE", "FALSE"),
+    labels = c("Real patches", "Alternative patches")
+  )+
+  scale_x_discrete(
+    labels = c(
+      "Manip.",
+      "Moult.",
+      "Non-moult."
+    )
+  )+
+  facet_grid(
+    cols = vars(sp)
+  )+
+  theme_bw(
+    base_family = "Arial",
+    base_size = 12
+  )+
+  theme(
+    strip.background = element_blank(),
+    strip.text = element_text(
+      face = "italic"
+    ),
+    legend.box.margin = margin(rep(0, 4)),
+    legend.margin = margin(rep(0, 4)),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    legend.position = "top",
+    legend.key.height = unit(1, "mm"),
+    legend.key.width = unit(5, "mm")
+  )+
+  labs(
+    x = "Wing condition (More complete wing →) ",
+    y = "Visibility index (step end)",
+    fill = NULL
+  )
+```
