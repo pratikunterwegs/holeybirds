@@ -92,10 +92,6 @@ writeLines(
 )
 
 mod_plot_data = sjPlot::get_model_data(mod, type = "int")
-fwrite(
-  mod_plot_data,
-  "data/results/model_vis_ndvi_plot_data.csv"
-)
 ```
 
 ```{r}
@@ -104,6 +100,18 @@ setDT(mod_plot_data)
 setnames(mod_plot_data, "group", "lc")
 mod_plot_data$lc_agro = mod_plot_data$lc == "O"
 env_data$lc_agro = env_data$lc == "O"
+
+# save env data
+fwrite(
+  env_data,
+  "data/results/data_vis_ndvi.csv"
+)
+
+# save mod data
+fwrite(
+  mod_plot_data,
+  "data/results/model_vis_ndvi_plot_data.csv"
+)
 ```
 
 
