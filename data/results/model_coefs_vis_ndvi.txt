@@ -1,0 +1,29 @@
+
+Call:
+glm(formula = vis ~ ndvi * lc, data = env_data)
+
+Deviance Residuals: 
+     Min        1Q    Median        3Q       Max  
+-0.78171  -0.13002   0.03974   0.17229   0.88617  
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  0.34264    0.01958  17.500  < 2e-16 ***
+ndvi        -0.38848    0.04992  -7.782 8.03e-15 ***
+lcR          0.21525    0.05133   4.193 2.78e-05 ***
+lcB         -0.04918    0.04082  -1.205   0.2283    
+lcO          0.49093    0.02029  24.199  < 2e-16 ***
+ndvi:lcR    -0.19272    0.11282  -1.708   0.0876 .  
+ndvi:lcB     0.02143    0.13553   0.158   0.8744    
+ndvi:lcO     0.22471    0.05341   4.207 2.61e-05 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for gaussian family taken to be 0.04633919)
+
+    Null deviance: 885.40  on 8008  degrees of freedom
+Residual deviance: 370.76  on 8001  degrees of freedom
+AIC: -1863.2
+
+Number of Fisher Scoring iterations: 2
+
