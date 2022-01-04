@@ -1,0 +1,100 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Large scale space use for swallows
+
+## Load libraries and prepare files
+
+```{r}
+# libs for data
+library(data.table)
+library(lubridate)
+
+# library for atlas data
+library(ctmm)
+library(ggplot2)
+```
+
+List the files and remove swallows, as they need to be handled differently.
+
+```{r}
+# list all preprocessed data files
+files <- list.files(
+  "data/processed/data_preprocessed",
+  pattern = "csv",
+  full.names = T
+)
+
+# remove swallow files
+files = files[grep("Hirundo", files)]
+```
+
+Load a trial dataset.
+
+```{r}
+data = fread(files[2])
+```
+
+```{r}
+ggplot(data)+
+  geom_path(
+    aes(X, Y)
+  )+
+  geom_point(
+    aes(X, Y)
+  )+
+  facet_wrap(
+    ~date
+  )
+```
+
+## Fit a movement model using CTMM
+
+### Make telemetry object
+
+```{r}
+data[,time := as.POSIXct(
+  time, tz = "Asia/Jerusalem", origin = "1970-01-01"
+)]
+
+d2 = copy(data)
+setnames(d2, old = c("X", "Y"), new = c("location.long", "location.lat"))
+
+d2 = d2[, c("location.long", "location.lat", "time")]
+
+# make wgs84
+d2 = sf::st_as_sf(
+  d2, coords = c("location.long", "location.lat"),
+  crs = 2039
+) |>
+  sf::st_transform(
+    4326
+  )
+
+d2 = cbind(
+  d2,
+  sf::st_coordinates(d2)
+) |> 
+  sf::st_drop_geometry()
+
+colnames(d2) = c( "time", "location.long", "location.lat")
+
+a = as.telemetry(d2[, c("location.long", "location.lat", "time")])
+```
+
+```{r}
+vg = variogram(a)
+plot(vg)
+```
+
+```{r}
+mods = ctmm.select(
+  a,
+  CTMM = ctmm.guess(),
+  variogram = vg
+)
+```
+

@@ -1,0 +1,214 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Large scale space use for sparrow, bulbul, and warbler
+
+## Load libraries and prepare files
+
+```{r}
+# libs for data
+library(data.table)
+library(lubridate)
+
+# library for atlas data
+library(atlastools)
+```
+
+List the files and remove swallows, as they need to be handled differently.
+
+```{r}
+# list all preprocessed data files
+files <- list.files(
+  "data/processed/data_preprocessed",
+  pattern = "csv",
+  full.names = T
+)
+
+# remove swallow files
+files = files[-grep("Hirundo", files)]
+
+# apply over a subsample
+# files = files[sample(length(files), 10)]
+```
+
+## Remove transit positions
+
+Apply a single speed filter on the smoothed data to remove positions faster than 1.5 m/s.
+
+```{r}
+# apply to all data
+data = lapply(
+  files, function(file) {
+    # read the file
+    df = fread(file)
+    
+    # select useful columns
+    df = df[, c("X", "Y", "time", "TAG", "date")]
+    
+    # handle time
+    df[, time := (
+      as.POSIXct(time, origin = "1970-01-01", tz = "Asia/Jerusalem")
+    )]
+    
+    # change colname from TAG to id
+    setnames(df, old = "TAG", "id")
+    
+    # recalculate speeds and angles
+    df[, c("speed", "angle") := list(
+      atl_get_speed(df, x = "X", y = "Y"),
+      atl_turning_angle(df, x = "X", y = "Y")
+    )]
+    
+    # handle NAN angles from cosines method
+    df[, angle := nafill(angle, fill = 0)]
+    
+    # smooth speed to hopefully remove small reflections
+    df[, speed := runmed(speed, k = 3)]
+    
+    # calculate and print 90th percentile of speed
+    print(
+      glue::glue(
+        "90th percentile speed = {quantile(df$speed, probs = 0.9)} m/s"
+      )
+    )
+    
+    # use a standard speed for now, 1.5m/s
+    df = df[speed < 1.5,]
+    
+    df
+  })
+```
+
+## Residence patches by date
+
+```{r}
+# residence patch parameters
+buffer_radius_ = 25 # metres
+lim_spat_indep_ = 100 # metres
+lim_time_indep_ = 30 # minutes
+min_fixes_ = 9 # fixes
+```
+
+
+```{r}
+# split by date
+patch_data = lapply(
+  data, function(df) {
+    # split by date
+    df <- split(df, by = "date")
+    
+    # apply the residence patch method
+    patches <- lapply(df, function(d) {
+      
+      # make a copy --- slower but safer
+      d_ = data.table::copy(d)
+      
+      # select relevant columns
+      d_ <- d[, c("X", "Y", "id", "time")]
+      
+      # names to lowercase
+      setnames(d_, old = c("X", "Y"), new = c("x", "y"))
+      
+      # apply method
+      atl_res_patch(
+        data = d_,
+        buffer_radius = buffer_radius_, 
+        lim_spat_indep = lim_spat_indep_, 
+        lim_time_indep = lim_time_indep_,
+        min_fixes = min_fixes_
+      )
+    })
+  }
+)
+```
+
+Get residence patch summaries.
+
+```{r}
+# run summary function over each list element
+patch_summaries = lapply(
+  # running over individuals
+  patch_data, function(l) {
+    
+    # running over dates within individuals
+    ps_df = Map(
+      l, names(l),
+      f = function(le, n) {
+        # get the summary
+        patches_id_date = atl_patch_summary(
+          le, which_data = "summary"
+        )
+        # add the date to the summary
+        patches_id_date$date = n
+        
+        # return summary
+        patches_id_date
+      }
+    )
+    
+    # return individual level as a single data frame
+    rbindlist(ps_df)
+  }
+)
+
+# bind all individual level data frames together
+patch_summaries = rbindlist(patch_summaries)
+
+fwrite(patch_summaries, file = "data/results/data_patch_summary_ppa.csv")
+```
+
+Get patch points.
+
+```{r}
+# run summary function over each list element
+patch_points = lapply(
+  # running over individuals
+  patch_data, function(l) {
+    
+    # running over dates within individuals
+    ps_df = Map(
+      l, names(l),
+      f = function(le, n) {
+        # get the summary
+        patches_id_date = atl_patch_summary(
+          le, which_data = "points"
+        )
+        # add the date to the summary
+        patches_id_date$date = n
+        
+        # return summary
+        patches_id_date
+      }
+    )
+    
+    # return individual level as a single data frame
+    rbindlist(ps_df)
+  }
+)
+
+# bind all individual level data frames together
+patch_points = rbindlist(patch_points)
+
+fwrite(patch_points, file = "data/results/data_patch_points_ppa.csv")
+```
+
+Get residence patch spatials.
+
+```{r}
+# run summary function over each list element
+patch_data = lapply(patch_data, rbindlist) |> rbindlist()
+
+patch_spatials = atl_patch_summary(
+  patch_data = patch_data,
+  which_data = "spatial",
+  buffer_radius = 25
+)
+
+st_write(
+  patch_spatials,
+  dsn = "data/spatial/data_patch_spatials.gpkg"
+)
+```

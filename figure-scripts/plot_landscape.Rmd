@@ -1,0 +1,219 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+library(terra)
+library(stars)
+
+library(data.table)
+library(sf)
+
+library(ggplot2)
+library(colorspace)
+```
+
+```{r}
+# load ndvi
+ndvi = rast("data/rasters/raster_hula_ndvi_2039.tif")
+# ndvi = st_as_stars(ndvi)
+
+# st_crs(ndvi) = st_crs(2039)
+vis = rast("data/rasters/raster_hula_visibility.tif")
+# vis = st_as_stars(vis)
+
+ndvi = crop(ndvi, vis)
+ndvi = st_as_stars(
+  ndvi,
+  crs = crs(vis)
+)
+vis = st_as_stars(
+  vis,
+  crs = crs(vis)
+)
+```
+
+```{r}
+patches = st_read("data/spatial/data_patch_spatials.gpkg")
+patches = dplyr::group_by(
+  patches,
+  id
+) |> 
+  dplyr::summarise(
+    geom = st_union(geom)
+  )
+
+# get species
+fixes = fread("data/results/data_daily_fixes.csv")
+fixes = unique(fixes[, c("sp", "TAG")])
+
+# get treatmetn
+rrv = fread("data/results/data_daily_rrv.csv")
+rrv = unique(rrv[, c("sp", "TAG", "treat")])
+
+patches = dplyr::left_join(
+  patches,
+  rrv,
+  by = c("id" = "TAG")
+)
+
+patches = dplyr::group_by(
+  patches,
+  sp
+) |> 
+  dplyr::summarise(
+    geom = st_union(geom)
+  )
+
+st_crs(patches) = 2039
+
+patches = dplyr::filter(patches, !is.na(sp))
+```
+
+```{r}
+fig_ndvi =
+  ggplot()+
+  geom_stars(
+    data = ndvi,
+    downsample = 3
+  )+
+  scale_fill_viridis_c(
+    option = "A",
+    direction = -1,
+    limits = c(0.05, NA),
+    na.value = "lightblue",
+    name = "NDVI"
+  )+
+  coord_sf(
+    crs = 2039, 
+    xlim = st_bbox(vis)[c("xmin", "xmax")],
+    ylim = st_bbox(patches)[c("ymin", "ymax")],
+    expand = F
+  )+
+  ggthemes::theme_map(base_family = "Arial")+
+  theme(
+    plot.background = element_rect(
+      fill = "white",
+      colour = NA
+    ),
+    legend.position = "top",
+    legend.key.height = unit(2, "mm"),
+    legend.title = element_text(
+      vjust = 1
+    )
+  )+
+  labs(
+    colour = NULL
+  )+
+  guides(
+    size = "none"
+  )
+
+ggsave(
+  fig_ndvi,
+  filename = "figures/fig_ndvi.png",
+  height = 4, width = 4
+)
+```
+
+```{r}
+fig_vi =
+  ggplot()+
+  geom_stars(
+    data = vis,
+    downsample = 11
+  )+
+  scico::scale_fill_scico(
+    palette = "davos",
+    begin = 0, end = 0.95,
+    name = "VI"
+  )+
+  coord_sf(
+    crs = 2039, 
+    xlim = st_bbox(vis)[c("xmin", "xmax")],
+    ylim = st_bbox(patches)[c("ymin", "ymax")],
+    expand = F
+  )+
+  ggthemes::theme_map(base_family = "Arial")+
+  theme(
+    plot.background = element_rect(
+      fill = "white",
+      colour = NA
+    ),
+    legend.position = "top",
+    legend.key.height = unit(2, "mm"),
+    legend.title = element_text(
+      vjust = 1
+    )
+  )+
+  labs(
+    colour = NULL
+  )+
+  guides(
+    size = "none"
+  )
+
+ggsave(
+  fig_vi,
+  filename = "figures/fig_vi.png",
+  height = 4, width = 4
+)
+```
+
+```{r}
+data = fread("data/results/data_ssf_step_covs.csv")
+rrv = fread("data/results/data_daily_rrv.csv")
+
+data[, date := as.character(date)]
+rrv[, date := as.character(date)]
+```
+
+```{r}
+data = merge(
+  data,
+  rrv,
+  by.x = c("id", "date"),
+  by.y = c("TAG", "date")
+)
+
+# melt by var
+data = data[, c("ndvi_mean_end", "vis_mean_end", "sp", "treat")]
+
+data = melt(
+  data,
+  id.vars = c("sp", "treat")
+)
+
+data = split(data, by = "variable")
+```
+
+```{r}
+plots = Map(
+  data, names(data),
+  f = function(df, n) {
+    
+    ggplot()+
+      geom_histogram(
+        data = df,
+        aes(
+          ndvi_mean_end,
+          y = ..density..,
+          fill = case_
+        ),
+        alpha = 0.5,
+        position = "identity"
+      )+
+      scale_fill_discrete_diverging(
+        palette = pl
+      )+
+      theme_test(
+        base_family = "Arial"
+      )+
+      facet_grid(
+        ~sp
+      )
+  }
+)
+```
+

@@ -54,11 +54,21 @@ data/results/**
 data/raw/**
 !data/raw/README.txt
 
+# ignore dsm
+data/spatial/dsm/**
+data/**/drive-download**
+
 # ignore training data
 *lc_training*
 
 *hula_lc_vector*
 *hula_valley*
+
+# ignore patch spatials
+data/spatial/data_patch_spatials*
+
+# ignore Rdata
+*.Rds
 
 !*.log
 

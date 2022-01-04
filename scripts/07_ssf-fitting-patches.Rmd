@@ -1,58 +1,23 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: console
----
-# Fit SSFs
 
-Here we fit SSFs to the data.
 
-## Load libraries and prepare files
+## SSF fitting
 
 ```{r}
-# libs for data
-library(dplyr)
-library(tidyr)
-library(purrr)
-
-# libs for messages
-library(glue)
-
-# library for SSF
-library(amt)
-```
-
-```{r}
-# load data saved as Rds object
-load("data/processed/data_for_ssf.Rds")
-```
-
-## Fit candidate SSF
-
-Here, we fit a candidate SSF for step length, NDVI, landcover, the interaction of step length and NDVI and the interaction of step length and landcover. All environmental covariates are taken at the end point of the steps, i.e., to determine which conditions the birds prefer to move to (see Signer et al. 2019).
-
-```{r}
-# make a copy of the data, renaming data to ssf
 ssfs <- rename(tracks, ssf = "data")
-```
 
-```{r}
 # specify the model formula
-ssf_formula <- "case_ ~ log_sl + ndvi + p_natural + ndvi_step + step_openness + log_sl:p_natural + log_sl:step_openness + strata(step_id_)"
+ssf_formula <- "case_ ~ log_sl + ndvi + vis + ndvi:vis + strata(step_id_)"
 
 # add formula to dataframe
 ssfs <- mutate(
   ssfs,
   ssf_formula = ssf_formula
 )
-```
 
-
-```{r}
 # sink output to log
 sink(file = "data/log_ssf_fit.log")
 
-ssf_comment <- "Trial SSF log writing"
+ssf_comment <- "Writing SSF log"
 
 # first print date
 print(
@@ -69,17 +34,6 @@ ssfs <- mutate(
   ssfs,
   ssf = imap(ssf, function(.x, .y) {
 
-    # print some information about the data -- which row, which id, treatment
-    print(
-      glue("sp = {ssfs$sp[.y]}; \\
-            tag = {ssfs$TAG_ID[.y]}; treatment = {ssfs$treat[.y]}
-            track date = {ssfs$date[.y]}
-            row in dataframe = {.y}
-            formula = {ssfs$ssf_formula[.y]}
-            start time: {Sys.time()}
-           ")
-    )
-
     # pass the model fitting through a try catch
     # this allows errors to be logged and prevents the process from
     # breaking when there is an error
@@ -87,6 +41,17 @@ ssfs <- mutate(
 
       # the model fitting expression to evaluate
       expr = {
+
+        # print some information about the data -- which row, which id, treatment
+        print(
+          glue("sp = {ssfs$sp[.y]}; \\
+            tag = {ssfs$TAG[.y]};
+            track date = {ssfs$date[.y]}
+            row in dataframe = {.y}
+            formula = {ssfs$ssf_formula[.y]}
+            start time: {Sys.time()}
+           ")
+        )
 
         # this is the SSF fit function from amt
         ssf_fit <-
@@ -133,11 +98,6 @@ ssfs <- mutate(
 
 # end sinking to log
 sink()
-```
 
-### Save SSF data
-
-```{r}
 save(ssfs, file = "data/results/data_fitted_ssfs.Rds")
 ```
-

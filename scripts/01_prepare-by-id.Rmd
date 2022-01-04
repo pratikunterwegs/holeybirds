@@ -13,6 +13,8 @@ library(data.table)
 library(readxl)
 library(stringi)
 library(glue)
+
+library(RSQLite)
 ```
 
 ### Get `atlastools`
@@ -23,7 +25,9 @@ if (!require(remotes)) {
 }
 
 # installation using remotes
-remotes::install_github("pratikunterwegs/atlastools")
+if (!require(atlastools)) {
+  remotes::install_github("pratikunterwegs/atlastools")
+}
 
 library(atlastools)
 ```
@@ -32,30 +36,18 @@ library(atlastools)
 
 ```{r}
 # list data files
-data <- list.files(path = "data/raw", pattern = ".csv")
-names <- stri_replace_all(data, replacement = " ", regex = "\\_")
+data_files <- list.files(path = "data/raw", pattern = "sqlite")
+names <- stri_replace_all(data_files, replacement = " ", regex = "\\_")
 
 # split by word
 names <- stri_extract_all_words(str = names)
 
 # get genus name and treatment
 species <- vapply(names, `[[`, FUN.VALUE = "string", 1)
-treatment <- vapply(names, `[[`, FUN.VALUE = "string", 3)
-```
+# treatment <- vapply(names, `[[`, FUN.VALUE = "string", 3)
 
-## Check data sizes
-
-```{r}
 # data files again with full names
-data <- list.files(path = "data/raw", pattern = ".csv", full.names = TRUE)
-
-# check file sizes
-data_size <- vapply(data, function(x) {
-  length(readLines(x))
-}, FUN.VALUE = 1L)
-
-# sum rows
-sum(data_size) # about 4 million
+data_files <- list.files(path = "data/raw", pattern = "sqlite", full.names = TRUE)
 ```
 
 ## Load data and split by ID
@@ -64,36 +56,54 @@ Load and assign species and treatment.
 
 ```{r}
 invisible(
-  mapply(function(file, sp, tr) {
-    # read the file
-    df <- fread(file)
-
+  Map(data_files, species, f = function(file, sp) {
+    # open connection
+    con = dbConnect(
+      drv = SQLite(),
+      dbname = file
+    )
+    
+    # list the tables
+    table_name <- dbListTables(con)[3] # 3rd table is localisations
+    
+    # prepare to query all tables
+    query <- sprintf('select * from \"%s\"', table_name)
+    
+    # query the database
+    df <- dbGetQuery(conn = con, statement = query)
+    
+    # disconnect from database
+    dbDisconnect(con)
+    
+    # make data table
+    setDT(df)
+    
     # assign species
     df[, sp := sp]
 
-    # assign treatment
-    df[, treat := tr]
-
     # get unique tags
-    tags <- unique(df$TAG_ID)
+    tags <- unique(df$TAG)
+    
+    # remove *Z covariance
+    df[, c("VARZ", "COVXZ", "COVYZ") := NULL]
 
     # split by tag
-    df <- split(df, by = "TAG_ID")
+    df <- split(df, by = "TAG")
 
     # looping over tag ID, write to file
     invisible(
-      mapply(function(dt, tag) {
+      Map(df, tags, f = function(dt, tag) {
 
         # write to file
         fwrite(
           x = dt,
           file = glue::glue(
-            "data/processed/data_id/data_{sp}_{tr}_{tag}.csv"
+            "data/processed/data_id/data_{sp}_{tag}.csv"
           )
         )
-      }, df, tags)
+      })
     )
-  }, data, species, treatment)
+  })
 )
 ```
 
@@ -103,15 +113,15 @@ invisible(
 
 ```{r}
 # list data
-data <- list.files("data/processed/data_id/", full.names = TRUE)
+data_files <- list.files("data/processed/data_id/", full.names = TRUE)
 
 # get metrics
-data_metrics <- lapply(data, function(file) {
+data_metrics <- lapply(data_files, function(file) {
   # read file
   df <- fread(file)
 
   # convert time
-  df[, time := as.POSIXct(UNIX, tz = "UTC", origin = "1970-01-01")]
+  df[, time := as.POSIXct(as.numeric(TIME) / 1000, tz = "UTC", origin = "1970-01-01")]
   # this is consistent with the
   # time column previously present
 
@@ -125,13 +135,13 @@ data_metrics <- lapply(data, function(file) {
     start_tracking = min(time),
     end_tracking = max(time)
   ),
-  by = c("sp", "treat", "TAG_ID")
+  by = c("sp", "TAG")
   ]
 
   # temporal heatmap
   df[, day := as.Date(time)]
   df_tmp_heat <- df[, list(nfixes = .N),
-    by = c("sp", "treat", "TAG_ID", "day")
+    by = c("sp", "TAG", "day")
   ]
   rm(df)
   # return a list
@@ -214,24 +224,41 @@ data <- data[, !c("ID", "Day")]
 
 ### Link RRV to species and individual
 
-
 ```{r}
 # read previously summarised data
 data_tracking_summary <- fread("data/results/data_basic_tracking_metric.csv")
 
 # select useful columns
-data_tracking_summary <- data_tracking_summary[, c("sp", "treat", "TAG_ID")]
+# data_tracking_summary <- data_tracking_summary[, c("sp", "treat", "TAG")]
 
 # get last four digits of the tag id
-data_tracking_summary[, "tag_4_digit" := stri_sub(TAG_ID, -4, -1)]
+data_tracking_summary[, "tag_4_digit" := stri_sub(TAG, -4, -1)]
 
 # pad the RRV data tag id, ie, make xx01 to 0001
 data[, trunc_tag := stri_pad_left(trunc_tag, width = 4, pad = 0)]
 
+data_treat = unique(data, by = c("trunc_tag", "treat"))
+
+# attach treatment data to tracking metrics
+data_tracking_summary_w_rrv =
+  merge(
+  data_tracking_summary, data_treat, all = F,
+  by.y = c("trunc_tag"),
+  by.x = c("tag_4_digit")
+)
+
+data_tracking_summary_w_rrv = data_tracking_summary_w_rrv[
+  , !c("tag_4_digit", "date", "rrv_calc")
+]
+
+fwrite(data_tracking_summary_w_rrv, 
+       file = "data/results/data_tracking_metrics_rrv.csv")
+
 # join the datasets
 data <- merge(data, data_tracking_summary,
-  by.x = c("treat", "trunc_tag"),
-  by.y = c("treat", "tag_4_digit")
+  by.x = c("trunc_tag"),
+  by.y = c("tag_4_digit"),
+  all.x = T, all.y = F
 )
 
 # remove old tag and write to file

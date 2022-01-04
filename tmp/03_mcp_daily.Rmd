@@ -1,0 +1,127 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# MCP by Daily RRV
+
+## Load libraries and prepare files
+
+```{r}
+# libs for data
+library(data.table)
+library(lubridate)
+
+# for eda
+library(ggplot2)
+```
+
+Prepare files.
+
+```{r}
+# list files
+files <- list.files("data/processed/data_preprocessed",
+  full.names = TRUE
+)
+```
+
+## Count and Minimum Convex Polygons Area
+
+```{r}
+library(sf)
+# load and do MCP
+data_summary = lapply(files, function(file) {
+  df = fread(file)
+  
+  # nest data
+  df_l = df[, list(data = list(.SD)), by = c("TAG", "sp", "date")]
+  
+  # get mcp area
+  df_l[, mcp_area := vapply(data, function(le) {
+    # run DBSCAN again
+    le$cat = dbscan::dbscan(le[, c("X", "Y")], eps = 5)$cluster
+    
+    le = le[cat > 0]
+    
+    if(nrow(le) < 1) {
+      return(NA_real_)
+    }
+    
+    le = st_as_sf(le[, c("X", "Y")], coords = c("X", "Y"), crs = 2039)
+    le = st_union(le)
+    mcp_area = st_convex_hull(le) |> st_area() |> as.numeric()
+    mcp_area
+  }, FUN.VALUE = 1.0)
+  ]
+  # get N fixes
+  df_l[, fixes := vapply(data, nrow, FUN.VALUE = 1.0)]
+  df_l[, data := NULL]
+})
+
+data_summary = rbindlist(data_summary)
+
+# write summary data to file
+fwrite(data_summary, file = "data/results/data_preproc_summary.csv")
+```
+
+## Link to RRV
+
+```{r}
+rrv = fread("data/results/data_daily_rrv.csv")
+
+# handle date
+rrv$date = as.character(rrv$date)
+data_summary$date = as.character(data_summary$date)
+
+data_summary = merge(data_summary, rrv, all.x = T)
+```
+
+## Area and Fixes by RRV
+
+```{r}
+ggplot(data_summary[!treat == "LongPeriod"])+
+  geom_hline(
+    yintercept = pi * c(100^2, 300^2),
+    col = 2, lty = 2
+  )+
+  geom_jitter(
+    aes(rrv_calc, mcp_area,
+        col = treat),
+    width = 0.2,
+    alpha = 0.8
+  )+
+  # geom_boxplot(
+  #   aes(rrv_calc, mcp_area, group = rrv_calc),
+  #   width = 0.5,
+  #   fill = "transparent"
+  # )+
+  geom_smooth(
+    aes(rrv_calc, mcp_area, group = treat == "Manipulated"),
+    method = "glm",
+    col = "grey20",
+    lty = 1,
+    size = 0.5,
+    se = F
+  )+
+  scale_y_continuous(
+    trans = "log10",
+    labels = function(x) {
+      scales::comma(x, scale = (1/1000)^2, accuracy = 0.01)
+    }
+  )+
+  theme_bw()+
+  theme(
+    legend.position = "top"
+  )+
+  labs(y = "MCP area (sq. km.)",
+       x = "Calculated RRV",
+       col = "Treatment")+
+  facet_wrap(~sp, scales = "free_y")
+
+# save
+ggsave(
+  filename = "figures/fig_mcp_rrv.png",
+  width = 4.5, height = 4
+)
+```
+
