@@ -58,6 +58,12 @@ gc()
 ```{r}
 # mean ndvi and vis per patch and date
 points = points[, lapply(.SD, mean), by = c("id", "patch", "date")]
+
+# save
+fwrite(
+  points,
+  "data/results/data_patch_env.csv"
+)
 ```
 
 ```{r}
@@ -85,7 +91,12 @@ data =
   by.y = c("TAG", "date"),
   all.x = T
 )
+
+# filter
+data = data[!is.na(sp)]
 ```
+
+## Patch movement
 
 ```{r}
 # patch switches
@@ -193,3 +204,100 @@ ggsave(
 )
 ```
 
+## Patch attributes
+
+```{r}
+fig_vis_wing = 
+ggplot(data)+
+  geom_boxplot(
+    aes(
+      treat, vis,
+      col = treat
+    )
+  )+
+  scale_x_discrete(
+    labels = c("Manip.", "Moult.", "N-moult.")
+  )+
+  facet_grid(
+    ~sp
+  )+
+  theme_grey(
+    base_size = 8,
+    base_family = "Arial"
+  )+
+  theme(
+    legend.position = "none"
+  )+
+  labs(
+    x = "Wing condition",
+    y = "Visibility index (More open →)"
+  )
+```
+
+```{r}
+# patch vis by rrv
+fig_vis_rrv =
+  ggplot(data)+
+  geom_jitter(
+    aes(
+      rrv_calc, vis, # patches per tracking in hours
+      col = treat
+    ),
+    shape = 1,
+    size = 0.3,
+    alpha = 0.3
+  )+
+  geom_smooth(
+    aes(
+      rrv_calc, vis
+    ),
+    col = "grey20",
+    method = "glm",
+    se = F
+  )+
+  geom_smooth(
+    aes(
+      rrv_calc, vis,
+      col = treat
+    ),
+    method = "glm",
+    se = F
+  )+
+  scale_x_reverse()+
+  facet_grid(
+    ~sp
+  )+
+  theme_grey(
+    base_size = 8,
+    base_family = "Arial"
+  )+
+  theme(
+    legend.position = "top"
+  )+
+  labs(
+    fill = NULL,
+    x = "Estimated RRV (More complete wing →)",
+    y = "Visibility index (More open →)",
+    colour = NULL
+  )
+```
+
+```{r}
+fig_vis = 
+  wrap_plots(
+  fig_vis_wing,
+  fig_vis_rrv,
+  ncol = 1
+) &
+  plot_annotation(
+    tag_levels = "A"
+  )
+
+ggsave(
+  fig_vis,
+  filename = "figures/fig_vis.png",
+  height = 114,
+  width = 87,
+  units = "mm"
+)
+```

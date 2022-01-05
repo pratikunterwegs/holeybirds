@@ -30,117 +30,25 @@ data = merge(
 
 ```{r}
 data_var = copy(data)[, c("case_", "ndvi_mean_end", "vis_mean_end", 
-  "treat", "sp", "rrv_calc")]
-```
-
-## Selection for NDVI and Visibility
-
-```{r}
-fig_selection = 
-  ggplot()+
-  geom_abline(
-    intercept = 1,
-    slope = -1,
-    col = "grey20",
-    lty = 2
-  )+
-  geom_vline(
-    xintercept = c(0.4, 0.6),
-    colour = "grey",
-    lty = 2
-  )+
-  geom_bin2d(
-    data = data_var[case_ == FALSE,],
-    aes(
-      ndvi_mean_end, vis_mean_end,
-      alpha = ..density..,
-    ),
-    binwidth = c(0.05, 0.05)
-  )+
-  geom_point(
-    data = data_var[(case_)],
-    aes(
-      ndvi_mean_end, vis_mean_end,
-      col = "real"
-    ),
-    size = 0.5,
-    alpha = 0.5
-  )+
-  scale_fill_continuous_sequential(
-    palette = "Rocket"
-  )+
-  scale_alpha(
-    guide = "none",
-    range = c(0.6, 1)
-  )+
-  scale_colour_manual(
-    values = c("steelblue"),
-    label = "Real patches"
-  )+
-  scale_y_continuous()+
-  coord_cartesian(
-    ylim = c(0.0, 1)
-  )+
-  facet_grid(
-    ~sp
-  )+
-  theme_test(
-    base_family = "Arial",
-    base_size = 12
-  )+
-  theme(
-    strip.background = element_blank(),
-    strip.text = element_text(
-      face = "italic"
-    ),
-    legend.position = "top",
-    legend.key.height = unit(1, "mm"),
-    legend.key.width = unit(5, "mm")
-  )+
-  labs(
-    x = "NDVI (step end)",
-    y = "Visibility index (step end)",
-    fill = "# Alternative patches",
-    colour = NULL
-  )+
-  guides(
-    colour = guide_legend(
-      override.aes = list(
-        alpha = 1,
-        size = 3,
-        stroke = 1
-      )
-    )
-  )
-
-# save figure
-ggsave(
-  fig_selection,
-  filename = "figures/fig_env_selection.png",
-  height = 87 * 0.9,
-  width = 178,
-  units = "mm"
-)
+  "treat", "sp", "rrv_calc", "date", "x1_", "x2_", "y1_", "y2_")]
 ```
 
 ## Selection within high NDVI values
 
 ```{r}
-ggplot(data_var[
+fig_vis_selection =
+  ggplot(data_var[
   between(ndvi_mean_end, 0.4, 0.6),
   ])+
   geom_boxplot(
     aes(
       as.factor(treat), vis_mean_end,
       fill = case_
-    ),
-    # outlier.size = 0.2,
-    outlier.shape = 4,
-    width = 0.5
+    )
   )+
-  scale_fill_discrete_diverging(
-    palette = "Blue-Red",
-    l1 = 50,
+  scale_fill_discrete(
+    # palette = "Blue-Red",
+    # l1 = 50,
     limits = c("TRUE", "FALSE"),
     labels = c("Real patches", "Alternative patches")
   )+
@@ -148,32 +56,134 @@ ggplot(data_var[
     labels = c(
       "Manip.",
       "Moult.",
-      "Non-moult."
+      "N-moult."
     )
   )+
   facet_grid(
     cols = vars(sp)
   )+
-  theme_bw(
+  theme_grey(
     base_family = "Arial",
-    base_size = 12
+    base_size = 8
   )+
   theme(
-    strip.background = element_blank(),
-    strip.text = element_text(
-      face = "italic"
-    ),
-    legend.box.margin = margin(rep(0, 4)),
-    legend.margin = margin(rep(0, 4)),
-    panel.grid.minor = element_blank(),
-    panel.grid.major.x = element_blank(),
+    # strip.background = element_blank(),
+    # strip.text = element_text(
+    #   face = "italic"
+    # ),
+    # legend.box.margin = margin(rep(0, 4)),
+    # legend.margin = margin(rep(0, 4)),
+    # panel.grid.minor = element_blank(),
+    # panel.grid.major.x = element_blank(),
     legend.position = "top",
-    legend.key.height = unit(1, "mm"),
-    legend.key.width = unit(5, "mm")
+    # legend.key.height = unit(1, "mm"),
+    # legend.key.width = unit(5, "mm")
   )+
   labs(
-    x = "Wing condition (More complete wing →) ",
-    y = "Visibility index (step end)",
+    x = "Wing condition", #(More complete wing →)
+    y = "Visibility index at next patch\n(More open →)",
     fill = NULL
   )
+
+ggsave(
+  fig_vis_selection,
+  filename = "figures/fig_vis_selection_wing.png",
+  height = 87,
+  width = 87,
+  units = "mm"
+)
 ```
+
+```{r}
+# get the difference between real (case_ == T) and alternative patches
+data_var[, ndvi_diff := ndvi_mean_end - ndvi_mean_end[case_],
+         by = c("sp", "treat", "rrv_calc", "date", "x1_", "y1_")]
+
+data_var[, vis_diff := vis_mean_end - vis_mean_end[case_],
+         by = c("sp", "treat", "rrv_calc", "date", "x1_", "y1_")]
+
+# get mean difference between real and alternative patches
+# by species, treatment, rrv, and date
+data_diff = data_var[, lapply(.SD, mean), 
+         by = c("sp", "treat", "rrv_calc", "date", "x1_", "y1_")]
+```
+
+```{r}
+data_var = na.omit(data_var)
+```
+
+```{r}
+fig_diff_selection =
+  ggplot(
+  data_var[
+  between(ndvi_mean_end, 0.4, 0.6),
+  ]
+)+
+  geom_boxplot(
+    aes(
+      rrv_calc, vis_mean_end,
+      # col = treat,
+      group = interaction(rrv_calc, case_),
+      fill = case_,
+      alpha = case_
+    ),
+    size = 0.2,
+    col = "grey50",
+    shape = 21
+  )+
+  geom_smooth(
+    aes(
+      rrv_calc, vis_mean_end,
+      col = treat,
+      group = interaction(treat, case_),
+      lty = case_
+    ),
+    method = "glm",
+    se = F
+  )+
+  scale_x_reverse()+
+  scale_colour_discrete(
+    limits = c("Manipulated", "Moulting", "NonMoulting")
+  )+
+  scale_fill_brewer(
+    palette = "Greys"
+  )+
+  # scale_linetype(
+  #   values = c(
+  #     "TRUE" = 1,
+  #     "FALSE" = 2
+  #   ),
+  #   labels = c("Real patch", "Alt. patch"),
+  #   name = NULL
+  # )+
+  facet_grid(
+    rows = vars(sp)
+  )+
+  theme_grey(
+    base_size = 8,
+    base_family = "Arial"
+  )+
+  theme(
+    legend.position = "top"
+  )+
+  guides(
+    fill = "none",
+    alpha = "none",
+    lty = "none"
+  )+
+  labs(
+    x = " Estimated RRV (More complete wing →)",
+    y = "Visibility index at next patch\n(More open →)",
+    fill = NULL,
+    col = NULL,
+    alpha = NULL
+  )
+
+ggsave(
+  fig_diff_selection,
+  filename = "figures/fig_diff_vis_selection.png",
+  width = 87,
+  height = 114, units = "mm"
+)
+```
+
