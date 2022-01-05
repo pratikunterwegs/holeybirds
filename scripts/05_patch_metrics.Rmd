@@ -1,0 +1,195 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+library(data.table)
+library(sf)
+
+library(terra)
+```
+
+```{r}
+data = fread("data/results/data_patch_summary_ppa.csv")
+points = fread("data/results/data_patch_points_ppa.csv")
+```
+
+```{r}
+points = points[, c("id", "patch", "x", "y", "date")]
+points = st_as_sf(
+  points,
+  coords = c("x", "y"),
+  crs = 2039
+)
+```
+
+```{r}
+# load rasters
+ndvi = rast("data/rasters/raster_hula_ndvi_2039.tif")
+vis = rast("data/rasters/raster_hula_visibility.tif")
+```
+
+```{r}
+ndvi_samp = terra::extract(
+  ndvi,
+  vect(points)
+)
+
+vis_samp = terra::extract(
+  vis,
+  vect(points)
+)
+
+points = st_drop_geometry(points)
+setDT(points)
+
+points[, c("ndvi", "vis") := list(
+  ndvi_samp$ndvi,
+  vis_samp$raster_hula_visibility
+)]
+```
+
+```{r}
+rm(vis, ndvi)
+gc()
+```
+
+```{r}
+# mean ndvi and vis per patch and date
+points = points[, lapply(.SD, mean), by = c("id", "patch", "date")]
+```
+
+```{r}
+data = merge(
+  data,
+  points
+)
+```
+
+## Plot patch sequence metrics and patch attributes
+
+```{r}
+# link rrv
+rrv = fread("data/results/data_daily_rrv.csv")
+rrv$date = as.character(rrv$date)
+data$date = as.character(data$date)
+```
+
+```{r}
+data =
+  merge(
+  data,
+  rrv,
+  by.x = c("id", "date"),
+  by.y = c("TAG", "date"),
+  all.x = T
+)
+```
+
+```{r}
+# patch switches
+patch_switches = data[, list(
+  N = .N,
+  mean_duration = mean(duration) / 3600, # in hours
+  tracking_duration = (max(time_end) - min(time_start)) / 3600 # in hours
+), by = c("id", "date", "sp", "rrv_calc", "treat")]
+
+patch_switches = patch_switches[!is.na(sp)]
+```
+
+```{r}
+fig_patches_wing = 
+  ggplot(patch_switches)+
+  geom_boxplot(
+    aes(
+      treat, N / tracking_duration, # patches per tracking in hours
+      # mean_duration,
+      col = treat
+    )
+  )+
+  scale_x_discrete(
+    labels = c("Manip.", "Moult.", "N-moult.")
+  )+
+  facet_grid(
+    ~sp
+  )+
+  theme_grey(
+    base_size = 8,
+    base_family = "Arial"
+  )+
+  theme(
+    legend.position = "none"
+  )+
+  labs(
+    x = "Wing condition",
+    y = "Patch switches per hour"
+  )
+```
+
+```{r}
+# patch switches by rrv
+fig_patches_rrv = 
+  ggplot(patch_switches)+
+  geom_jitter(
+    aes(
+      rrv_calc, N / tracking_duration, # patches per tracking in hours
+      col = treat
+    ),
+    shape = 1
+  )+
+  geom_smooth(
+    aes(
+      rrv_calc, N / tracking_duration
+    ),
+    col = "grey20",
+    method = "glm",
+    se = F
+  )+
+  geom_smooth(
+    aes(
+      rrv_calc, N / tracking_duration,
+      col = treat
+    ),
+    method = "glm",
+    se = F
+  )+
+  scale_x_reverse()+
+  facet_grid(
+    ~sp
+  )+
+  theme_grey(
+    base_size = 8,
+    base_family = "Arial"
+  )+
+  theme(
+    legend.position = "top"
+  )+
+  labs(
+    fill = NULL,
+    x = "Estimated RRV (More complete wing →)",
+    y = "Patch switches per hour",
+    colour = NULL
+  )
+```
+
+```{r}
+fig_patches = 
+  wrap_plots(
+  fig_patches_wing,
+  fig_patches_rrv,
+  ncol = 1
+) &
+  plot_annotation(
+    tag_levels = "A"
+  )
+
+ggsave(
+  fig_patches,
+  filename = "figures/fig_patch_switches.png",
+  height = 114,
+  width = 87,
+  units = "mm"
+)
+```
+
