@@ -181,7 +181,7 @@ fwrite(data_daily_heat, file = "data/results/data_daily_fixes.csv")
 files <- list.files(path = "data/raw/", pattern = "xlsx", full.names = T)
 
 # remove long term sparrows
-files <- files[-grep("Long", files)]
+# files <- files[-grep("Long", files)]
 
 # read data
 data <- lapply(files, read_xlsx, skip = 1)
@@ -195,22 +195,24 @@ cols_to_keep <- c("Group", "ID", "Tag", "RRV", "Day", "Date", "calculated RRV")
 # keep only useful rows and cols
 data <- lapply(
   data, function(df) {
-    setDT(df)
+    df = tibble::as_tibble(df)
 
-    # subset columns
-    df <- df[, ..cols_to_keep]
-
-    # remove extra rows by removing NAs
-    na.omit(df)
+    df = tibble::as_tibble(df) |> 
+      dplyr::select(dplyr::matches(cols_to_keep))
   }
 )
+
+# add col to data element 4, which is long term sparrows
+data[[4]]$`calculated RRV` = NA
 ```
 
 ### Handle date and column names
 
 ```{r}
 # first bind rows
-data <- rbindlist(data)
+data <- rbindlist(data, use.names = T)
+
+data = data[!is.na(Tag)]
 
 # edit names to match previous individual data
 setnames(data,
