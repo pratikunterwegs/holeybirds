@@ -232,13 +232,13 @@ pwalk(
     
     #### env values of alternative steps ####
     sim_pts = select(
-      df,
+      data,
       x2_, y2_, case_, patch_end, patch_start
     ) %>%
-    filter(
-      !case_
-    )
-
+      filter(
+        !case_
+      )
+    
     # sample around ends of alt steps
     sim_pts = mutate(
       sim_pts,
@@ -257,48 +257,21 @@ pwalk(
       sim_pts,
       cols = "spts"
     )
-    # sample at alternative steps
-    sim_pts = st_as_sf(
-      sim_pts,
-      coords = c("x2_sim", "y2_sim"),
-      crs = 2039
-    )
     # get ndvi values
     mean_vis <- terra::extract(
       vis,
-      terra::vect(sim_pts),
+      as.matrix(sim_pts[, c("x2_sim", "y2_sim")]),
       fun = mean
     )
     # get visibility values
     mean_ndvi <- terra::extract(
       ndvi,
-      terra::vect(sim_pts),
+      as.matrix(sim_pts[, c("x2_sim", "y2_sim")]),
       fun = mean
     )
-    # merge data
-    env = merge(mean_ndvi, mean_vis)
-    env = rename(
-      env, 
-      vis = raster_hula_visibility
-    )
     # assign values to alternative steps
-    sim_pts$ndvi = env$ndvi
-    sim_pts$vis = env$vis
-    # drop geometry
-    sim_pts = st_drop_geometry(sim_pts)
-    # summarise by x2 and y2
-    sim_pts = group_by(
-      sim_pts,
-      x2_, y2_, case_, patch_end, patch_start
-    ) |> 
-      summarise(
-        across(
-          c(ndvi, vis),
-          list(
-            mean = mean
-          )
-        )
-      )
+    sim_pts$ndvi = mean_ndvi$ndvi
+    sim_pts$vis = mean_vis$raster_hula_visibility
     
     #### step start covariates ####
     # these are always from a real patch
