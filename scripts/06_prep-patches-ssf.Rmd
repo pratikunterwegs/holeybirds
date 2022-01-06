@@ -314,25 +314,26 @@ pwalk(
     
     #### step end covariates for real steps ####
     pdf = mutate(
-        pdf,
-        case_ = TRUE
-      )
+      pdf,
+      case_ = TRUE
+    )
     df = left_join(
       df,
       pdf,
       by = c(
         "patch_end" = "patch",
         "case_"
-        )
+      )
     ) %>%
       mutate(
-        ndvi_mean_end = if_else(
-          is.na(ndvi_mean.y), ndvi_mean, ndvi_mean.y
+        ndvi_end = if_else(
+          is.na(ndvi_end), ndvi, ndvi_end
         ),
-        vis_mean_end = if_else(
-          is.na(vis_mean.y), vis_mean, vis_mean.y
+        vis_end = if_else(
+          is.na(vis_end), vis, vis_end
         )
       )
+    
     df = select(
       df,
       -ndvi_mean.y, -vis_mean.y, -ndvi_mean, -vis_mean
