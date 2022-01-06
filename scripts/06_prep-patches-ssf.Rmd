@@ -206,55 +206,29 @@ pwalk(
     # message(sprintf("working on row %i", .y))
     
     #### env values in true patches ####
-
     # link real patch movements with real patch locations
     # identify the true patches in point data
-    pdf = pdf %>%
+    pdf = points_data %>%
       select(
         patch, x, y
       )
-    pdf = st_as_sf(
-      pdf,
-      coords = c("x", "y"),
-      crs = 2039
-    )
     # get ndvi and vis
     # get ndvi values
     mean_vis <- terra::extract(
       vis,
-      terra::vect(pdf),
+      as.matrix(pdf[, c("x", "y")]),
       fun = mean
     )
     # get visibility values
     mean_ndvi <- terra::extract(
       ndvi,
-      terra::vect(pdf),
+      as.matrix(pdf[, c("x", "y")]),
       fun = mean
     )
-    # merge data
-    env = merge(mean_ndvi, mean_vis)
-    env = rename(
-      env, 
-      vis = raster_hula_visibility
-    )
+    
     # add to real patch points and get summary
-    pdf$ndvi = env$ndvi
-    pdf$vis = env$vis
-    # drop geometry
-    pdf = st_drop_geometry(pdf)
-    # summarise env
-    pdf = group_by(
-      pdf,
-      patch
-    ) |> 
-      summarise(
-        across(
-          c(ndvi, vis),
-          list(
-            mean = mean
-          )
-        )
-      )
+    pdf$ndvi = mean_ndvi$ndvi
+    pdf$vis = mean_vis$raster_hula_visibility
     
     #### env values of alternative steps ####
     sim_pts = select(
