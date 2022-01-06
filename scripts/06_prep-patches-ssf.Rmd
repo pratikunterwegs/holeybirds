@@ -194,8 +194,8 @@ tracks = left_join(
 ```
 
 ```{r}
-rand_pts_x = rnorm(30, 0, 20)
-rand_pts_y = rnorm(30, 0, 20)
+rand_pts_x = rnorm(15, 0, 20)
+rand_pts_y = rnorm(15, 0, 20)
 ```
 
 ```{r}
