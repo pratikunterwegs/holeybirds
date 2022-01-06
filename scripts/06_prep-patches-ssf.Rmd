@@ -424,7 +424,7 @@ tracks = select(
 
 tracks = select(
   tracks,
-  id, date, x1_, x2_, y1_, y2_, 
+  id, date, x1_, x2_, y1_, y2_, step_id_,
   case_, 
   matches("ndvi"),
   matches("vis")
