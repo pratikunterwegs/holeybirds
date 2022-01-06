@@ -294,12 +294,23 @@ pwalk(
     )
     
     #### step end covariates for alternative steps ####
-    df = left_join(
+    df =
+      left_join(
+        df, 
       df, 
+        df, 
+        sim_pts, 
       sim_pts, 
+        sim_pts, 
+        by = c("x2_", "y2_", "case_", 
       by = c("x2_", "y2_", "case_", 
-             "patch_end", "patch_start")
-    )
+        by = c("x2_", "y2_", "case_", 
+               "patch_end", "patch_start")
+      ) %>%
+      rename(
+        ndvi_end = ndvi,
+        vis_end = vis
+      )
     
     #### step end covariates for real steps ####
     pdf = mutate(
