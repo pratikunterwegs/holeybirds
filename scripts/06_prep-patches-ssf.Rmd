@@ -338,40 +338,37 @@ pwalk(
       filter(!is.na(log_sl), !is.infinite(log_sl))
     
     df = select(
+      df, 
+      patch_start, patch_end,
+      step_id_,
+      case_,
+      log_sl,
+      matches(c("ndvi", "vis")),
+      -ndvi, -vis
+    )
+    
+    # join destination data with steps data
+    df = distinct(
+      df
+    )
+    
+    # sample only half of all points
+    df = group_by(
       df,
-      -ndvi_mean.y, -vis_mean.y, -ndvi_mean, -vis_mean
-    ) %>%
-      rename(
-        ndvi_mean_start = ndvi_mean.x,
-        vis_mean_start = vis_mean.x
+      patch_start,
+      patch_end,
+      case_
+    ) |> 
+      sample_frac(
+        size = 0.5
       )
     
+    df = mutate(
+      df,
+      id = id,
+      date = date
+    )
     
-
-    # join destination data with steps data
-    df
-  })
-)
-
-rm(ndvi, vis)
-```
-
-Prepare final predictors
-
-```{r}
-# add a very small movement distance (1e-5 metres --- less than a centimetre)
-# to prevent infinite values
-tracks <- mutate(
-  tracks,
-  data = map(data, function(df) {
-    df <- mutate(df, log_sl = log(sl_ + 1e-5)) %>%
-      filter(!is.na(log_sl), !is.infinite(log_sl))
-
-    # return df
-    df
-  })
-)
-
 save(
   tracks,
   file = "data/processed/data_amt_with_covs.Rds"
