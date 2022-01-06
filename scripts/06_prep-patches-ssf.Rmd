@@ -66,7 +66,8 @@ points = nest(
 ```{r}
 # make amt objects from the nested data
 # keep attribute columns
-tracks <- mutate(tracks,
+tracks <- mutate(
+  tracks,
   data = map(data, function(df) {
     amt::make_track(
       tbl = df,
@@ -113,12 +114,10 @@ n_alt_steps <- 9
 tracks <- mutate(
   tracks,
   data = imap(data, function(.x, .y) {
-
     # messages
     message(
       glue("operating row {.y}")
     )
-    
     # get 19 random potential steps
     amt::random_steps(.x, n = n_alt_steps)
   })
@@ -171,7 +170,6 @@ st_write(
 
 ```{r}
 # load("data/processed/data_for_ssf.Rds")
-
 ndvi = "data/rasters/raster_hula_ndvi_2039.tif"
 vis = "data/rasters/raster_hula_visibility.tif"
 
@@ -297,13 +295,7 @@ pwalk(
     df =
       left_join(
         df, 
-      df, 
-        df, 
         sim_pts, 
-      sim_pts, 
-        sim_pts, 
-        by = c("x2_", "y2_", "case_", 
-      by = c("x2_", "y2_", "case_", 
         by = c("x2_", "y2_", "case_", 
                "patch_end", "patch_start")
       ) %>%
