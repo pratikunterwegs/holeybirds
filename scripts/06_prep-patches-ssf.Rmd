@@ -275,16 +275,22 @@ pwalk(
     
     #### step start covariates ####
     # these are always from a real patch
-    df = inner_join(
-      df,
+    df = left_join(
+      data,
       
       # drop coords when joining for start locs
       select(
         ungroup(pdf), 
-        patch, ndvi_mean, vis_mean
+        patch, ndvi, vis
       ),
       
       by = c("patch_start" = "patch")
+    )
+    df = distinct(df)
+    df = rename(
+      df,
+      vis_start = vis,
+      ndvi_start = ndvi
     )
     
     #### step end covariates for alternative steps ####
