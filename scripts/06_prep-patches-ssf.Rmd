@@ -199,12 +199,11 @@ rand_pts_y = rnorm(15, 0, 20)
 ```
 
 ```{r}
-tracks <- mutate(
+pwalk(
   tracks,
-  data = pmap(
-    list(data, points_data, seq(length(data))), function(df, pdf, .y) {
+  function(id, date, data, nrow, points_data) {
     # print message
-    message(sprintf("working on row %i", .y))
+    # message(sprintf("working on row %i", .y))
     
     #### env values in true patches ####
 
