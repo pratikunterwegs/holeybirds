@@ -42,11 +42,25 @@ tracks_rrv = nest(
   tracks_rrv, 
   data = -matches(c("sp", "rrv_calc", "treat"))
 )
+
+# count rows
+tracks_rrv = mutate(
+  tracks_rrv,
+  nrow = map_int(
+    data, function(df) nrow(filter(df, !is.na(ndvi_mean_start)))
+  )
+)
+
+# remove empty data
+tracks_rrv = filter(
+  tracks_rrv,
+  nrow > 10
+)
 ```
 
 ```{r}
 # specify the model formula
-ssf_formula <- "case_ ~ ndvi_mean_end:vis_mean_end + vis_mean_start:vis_mean_end + strata(step_id_)"
+ssf_formula <- "case_ ~ ndvi_mean_end + vis_mean_end + ndvi_mean_end:vis_mean_end + vis_mean_start:vis_mean_end + strata(step_id_)"
 
 # add formula to dataframe
 ssfs <- mutate(
@@ -140,3 +154,78 @@ sink()
 
 save(ssfs, file = "data/results/data_fitted_ssfs.Rds")
 ```
+
+## SSF parameters
+
+```{r}
+# filter for bad fits
+ssfs <- filter(
+  ssfs,
+  !map_lgl(
+    ssf, is.null
+  )
+)
+
+# select track identifiers
+ssf_params <- select(
+  ssfs,
+  -matches("ssf")
+)
+
+# select model parameter for ndvi preference
+ssf_params <- mutate(
+  ssf_params,
+  coefs = map(ssfs$ssf, function(l) {
+    tryCatch(
+      expr = {
+        broom::tidy(
+          l$model
+        )
+      },
+      error = function(e) {
+        return(NULL)
+      }
+    )
+  })
+  # shape = map_dbl(ssfs$ssf, function(l) {
+  #   l$sl_$params$shape
+  # })
+)
+
+# unnest
+ssf_params <- unnest(ssf_params, cols = coefs)
+
+# get exp coefs
+ssf_params = mutate(
+  ssf_params,
+  exp_coef = exp(estimate)
+)
+
+rm(ssfs); gc()
+```
+
+```{r}
+# remove data
+ssf_params = select(ssf_params, -data)
+```
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+ggplot(ssf_params)+
+  geom_point(
+    aes(
+      rrv_calc, estimate,
+      col = treat
+    )
+  )+
+  scale_y_continuous(
+    trans = ggallin::pseudolog10_trans
+  )+
+  facet_grid(
+    term ~ sp
+  )
+```
+
