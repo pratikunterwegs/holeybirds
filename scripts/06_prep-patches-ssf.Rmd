@@ -334,6 +334,9 @@ pwalk(
         )
       )
     
+    df <- mutate(df, log_sl = log(sl_ + 1e-5)) %>%
+      filter(!is.na(log_sl), !is.infinite(log_sl))
+    
     df = select(
       df,
       -ndvi_mean.y, -vis_mean.y, -ndvi_mean, -vis_mean
