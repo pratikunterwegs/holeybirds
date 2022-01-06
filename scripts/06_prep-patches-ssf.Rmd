@@ -369,34 +369,16 @@ pwalk(
       date = date
     )
     
-save(
-  tracks,
-  file = "data/processed/data_amt_with_covs.Rds"
-)
-```
-
-## Save real and potential step metrics
-
-```{r}
-tracks = select(
-  tracks,
-  id, date, data
-) |> 
-  unnest(
-    cols = "data"
-  )
-
-tracks = select(
-  tracks,
-  id, date, x1_, x2_, y1_, y2_, step_id_,
-  case_, 
-  matches("ndvi"),
-  matches("vis")
+    fwrite(
+      df,
+      file = glue::glue(
+        "data/processed/data_for_clogit/data_{id}_{date}.csv"
+      )
+    )
+    
+  }
 )
 
-# save
-fwrite(
-  tracks,
-  file = "data/results/data_ssf_step_covs.csv"
-)
+# remove rasters
+rm(ndvi, vis)
 ```
