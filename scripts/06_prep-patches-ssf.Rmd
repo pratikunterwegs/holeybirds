@@ -107,7 +107,7 @@ tracks = mutate(
 
 ```{r}
 # define alternate steps
-n_alt_steps <- 19
+n_alt_steps <- 9
 
 # prepare alternate steps and extract covariates
 tracks <- mutate(
