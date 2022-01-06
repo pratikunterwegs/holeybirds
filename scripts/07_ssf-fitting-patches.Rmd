@@ -1,16 +1,56 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 
+```{r}
+library(readr)
+library(tidyr)
+library(dplyr)
+library(glue)
+library(purrr)
+
+library(amt)
+```
+
+
+```{r}
+tracks = read_csv("data/results/data_ssf_step_covs.csv")
+rrv = read_csv("data/results/data_daily_rrv.csv")
+
+tracks$date = as.character(tracks$date)
+rrv$date = as.character(rrv$date)
+```
+
+```{r}
+tracks = full_join(
+  tracks,
+  rrv,
+  by = c("id"= "TAG", "date")
+)
+
+tracks_rrv = filter(tracks, !is.na(rrv_calc))
+tracks_wing = filter(tracks, !is.na(treat))
+```
 
 ## SSF fitting
 
 ```{r}
-ssfs <- rename(tracks, ssf = "data")
+# nest by rrv calc and sp
+tracks_rrv = nest(
+  tracks_rrv, 
+  data = -matches(c("sp", "rrv_calc", "treat"))
+)
+```
 
+```{r}
 # specify the model formula
-ssf_formula <- "case_ ~ log_sl + ndvi + vis + ndvi:vis + strata(step_id_)"
+ssf_formula <- "case_ ~ ndvi_mean_end:vis_mean_end + vis_mean_start:vis_mean_end + strata(step_id_)"
 
 # add formula to dataframe
 ssfs <- mutate(
-  ssfs,
+  tracks_rrv,
   ssf_formula = ssf_formula
 )
 
@@ -32,7 +72,7 @@ print(
 # fit ssfs overwriting the track data
 ssfs <- mutate(
   ssfs,
-  ssf = imap(ssf, function(.x, .y) {
+  ssf = imap(data, function(.x, .y) {
 
     # pass the model fitting through a try catch
     # this allows errors to be logged and prevents the process from
@@ -45,8 +85,7 @@ ssfs <- mutate(
         # print some information about the data -- which row, which id, treatment
         print(
           glue("sp = {ssfs$sp[.y]}; \\
-            tag = {ssfs$TAG[.y]};
-            track date = {ssfs$date[.y]}
+            rrv_calc = {ssfs$rrv_calc[.y]};
             row in dataframe = {.y}
             formula = {ssfs$ssf_formula[.y]}
             start time: {Sys.time()}
@@ -56,7 +95,7 @@ ssfs <- mutate(
         # this is the SSF fit function from amt
         ssf_fit <-
           .x %>%
-          amt::fit_issf(
+          amt::fit_ssf(
             formula = as.formula(ssfs$ssf_formula[.y])
           )
 
