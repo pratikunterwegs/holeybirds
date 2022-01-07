@@ -60,8 +60,7 @@ data = map(
 ```{r}
 # prepare formula
 ssf_formula <- glue(
-  "case_ ~ ndvi_end + vis_end +\\
-  ndvi_end:vis_end + vis_start:vis_end +\\
+  "case_ ~ vis_end + lc_end + vis_end:lc_end + \\
   strata(step_id_)"
 )
 ```
@@ -223,8 +222,10 @@ library(ggplot2)
 
 ```{r}
 # remove non rrv data
+ssf_coefs = data_id
+
 ssf_coefs = filter(
-  data_id,
+  ssf_coefs,
   !is.na(rrv_calc)
 )
 
@@ -242,6 +243,11 @@ ggplot(
     sp == "Pycnonotus"
   )
 )+
+  geom_hline(
+    yintercept = 0,
+    col = 2,
+    lty = 2
+  )+
   geom_boxplot(
     aes(
       treat, estimate,
@@ -251,8 +257,8 @@ ggplot(
   scale_y_continuous(
     # trans = ggallin::pseudolog10_trans
   )+
-  facet_grid(
-    rows = vars(term),
+  facet_wrap(
+    ~term,
     scales = "free_y"
   )
 ```
@@ -264,6 +270,10 @@ ggplot(
     sp == "Pycnonotus"
   )
 )+
+  geom_hline(
+    yintercept = 0,
+    lty = 2
+  )+
   geom_point(
     aes(
       rrv_calc, estimate,
@@ -281,10 +291,10 @@ ggplot(
   )+
   scale_x_reverse()+
   scale_y_continuous(
-    trans = ggallin::pseudolog10_trans
+    # trans = ggallin::pseudolog10_trans
   )+
-  facet_grid(
-    term ~ sp,
+  facet_wrap(
+    ~term,
     scales = "free_y"
   )
 ```
