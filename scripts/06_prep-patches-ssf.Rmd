@@ -186,7 +186,6 @@ lc = st_read("data/spatial/hula_lc_vector")
 lc = mutate(
   lc,
   Name = case_when(
-    Name == "R" ~ "O",
     Name == "C" ~ "W",
     TRUE ~ Name
   )
