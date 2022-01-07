@@ -4,7 +4,10 @@ editor_options:
 ---
 
 ```{r}
-library(data.table)
+library(readr)
+library(purrr)
+library(dplyr)
+library(tidyr)
 
 library(ggplot2)
 library(colorspace)
@@ -12,43 +15,139 @@ library(patchwork)
 ```
 
 ```{r}
-data = fread("data/results/data_ssf_step_covs.csv")
-rrv = fread("data/results/data_daily_rrv.csv")
-
-data[, date := as.character(date)]
-rrv[, date := as.character(date)]
+# read rrv
+rrv = read_csv("data/results/data_daily_rrv.csv")
+rrv$date = as.character(rrv$date)
 ```
 
+## Fit clogit to data
+
 ```{r}
-data = merge(
-  data,
-  rrv,
-  by.x = c("id", "date"),
-  by.y = c("TAG", "date")
+# read data
+files = list.files(
+  "data/processed/data_for_clogit",
+  pattern = "csv", full.names = TRUE
 )
 ```
 
 ```{r}
-data_var = copy(data)[, c("case_", "ndvi_mean_end", "vis_mean_end", 
-  "treat", "sp", "rrv_calc", "date", "x1_", "x2_", "y1_", "y2_")]
+# which files
+ids = stringr::str_extract(files, "\\d{10}")
+dates = stringr::str_extract(files, "\\d{4}-\\d{2}-\\d{2}")
+```
+
+```{r}
+to_keep = ids %in% rrv$TAG & dates %in% rrv$date
+files = files[to_keep]
+```
+
+```{r eval=FALSE, include=FALSE}
+# read data
+data = map(
+  files, read_csv
+)
+
+# bind and save
+data = bind_rows(data)
+
+# step means
+data_step_covs = group_by(
+  data,
+  id, date,
+  patch_start,
+  patch_end,
+  case_,
+) %>% 
+  summarise(
+    across(
+      matches(c("ndvi", "vis")),
+      mean
+    )
+  )
+
+# proportion of lc class
+data_step_lc = group_by(
+  data,
+  id, date,
+  patch_start,
+  patch_end,
+  case_,
+) %>%
+  summarise(
+    as.data.frame(table(lc_end))
+  )
+
+# convert to percentages
+data_step_lc = ungroup(
+  data_step_lc
+) %>% 
+  group_by(
+    id, date, patch_start, patch_end, case_
+  ) %>% 
+  mutate(
+    Freq = Freq / sum(Freq)
+  )
+
+# pivot wide
+data_step_lc = pivot_wider(
+  data_step_lc,
+  names_from = "lc_end",
+  values_from = "Freq", 
+  values_fill = 0
+)
+
+# link to env attributes
+data_step_covs = left_join(
+  data_step_covs,
+  data_step_lc
+)
+
+write_csv(
+  data_step_covs,
+  file = "data/results/data_ssf_step_covs.csv"
+)
+```
+
+```{r}
+rm(data); gc()
+```
+
+## Link with rrv and treatment
+
+```{r}
+data_step_covs = mutate(
+  data_step_covs,
+  date = as.character(date)
+)
+
+data_step_covs = left_join(
+  data_step_covs,
+  rrv,
+  by = c("id" = "TAG", "date")
+)
 ```
 
 ## Selection within high NDVI values
 
 ```{r}
 fig_vis_selection =
-  ggplot(data_var[
-  between(ndvi_mean_end, 0.4, 0.6),
-  ])+
+  ggplot(
+    filter(
+      data_step_covs,
+      between(ndvi_end, 0.4, 0.6),
+      !is.na(sp)
+    )
+  )+
   geom_boxplot(
     aes(
-      as.factor(treat), vis_mean_end,
+      as.factor(treat), vis_end,
       fill = case_
     )
   )+
-  scale_fill_discrete(
+  scale_fill_discrete_qualitative(
     # palette = "Blue-Red",
     # l1 = 50,
+    rev = T,
     limits = c("TRUE", "FALSE"),
     labels = c("Real patches", "Alternative patches")
   )+
