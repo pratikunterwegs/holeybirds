@@ -194,95 +194,84 @@ ggsave(
 ```
 
 ```{r}
-# get the difference between real (case_ == T) and alternative patches
-data_var[, ndvi_diff := ndvi_mean_end - ndvi_mean_end[case_],
-         by = c("sp", "treat", "rrv_calc", "date", "x1_", "y1_")]
-
-data_var[, vis_diff := vis_mean_end - vis_mean_end[case_],
-         by = c("sp", "treat", "rrv_calc", "date", "x1_", "y1_")]
-
-# get mean difference between real and alternative patches
-# by species, treatment, rrv, and date
-data_diff = data_var[, lapply(.SD, mean), 
-         by = c("sp", "treat", "rrv_calc", "date", "x1_", "y1_")]
-```
-
-```{r}
-data_var = na.omit(data_var)
-```
-
-```{r}
-fig_diff_selection =
+fig_vis_rrv = 
   ggplot(
-  data_var[
-  between(ndvi_mean_end, 0.4, 0.6),
-  ]
-)+
-  geom_boxplot(
+    filter(
+      data_step_covs,
+      between(ndvi_end, 0.4, 0.6),
+      !is.na(sp),
+      !is.na(rrv_calc),
+      !is.na(treat)
+    )
+  )+
+  geom_jitter(
     aes(
-      rrv_calc, vis_mean_end,
-      # col = treat,
-      group = interaction(rrv_calc, case_),
-      fill = case_,
-      alpha = case_
+      rrv_calc, vis_end,
+      colour = case_,
+      group = interaction(rrv_calc, case_)
     ),
-    size = 0.2,
-    col = "grey50",
-    shape = 21
+    shape = 1,
+    position = position_dodge(width = 0.5)
   )+
   geom_smooth(
-    aes(
-      rrv_calc, vis_mean_end,
-      col = treat,
-      group = interaction(treat, case_),
-      lty = case_
+    data = filter(
+      data_step_covs,
+      between(ndvi_end, 0.4, 0.6),
+      !is.na(sp),
+      !is.na(rrv_calc),
+      !is.na(treat),
+      case_
     ),
-    method = "glm",
-    se = F
+    aes(
+      rrv_calc, vis_end,
+      group = treat
+    ),
+    method = "glm"
+  )+
+  scale_colour_discrete_qualitative(
+    # palette = "Blue-Red",
+    # l1 = 50,
+    rev = T,
+    limits = c("TRUE", "FALSE"),
+    labels = c("Real patches", "Alternative patches")
   )+
   scale_x_reverse()+
-  scale_colour_discrete(
-    limits = c("Manipulated", "Moulting", "NonMoulting")
-  )+
-  scale_fill_brewer(
-    palette = "Greys"
-  )+
-  # scale_linetype(
-  #   values = c(
-  #     "TRUE" = 1,
-  #     "FALSE" = 2
-  #   ),
-  #   labels = c("Real patch", "Alt. patch"),
-  #   name = NULL
-  # )+
   facet_grid(
-    rows = vars(sp)
+    cols = vars(sp)
   )+
   theme_grey(
-    base_size = 8,
-    base_family = "Arial"
+    base_family = "Arial",
+    base_size = 8
   )+
   theme(
-    legend.position = "top"
-  )+
-  guides(
-    fill = "none",
-    alpha = "none",
-    lty = "none"
+    # strip.background = element_blank(),
+    # strip.text = element_text(
+    #   face = "italic"
+    # ),
+    # legend.box.margin = margin(rep(0, 4)),
+    # legend.margin = margin(rep(0, 4)),
+    # panel.grid.minor = element_blank(),
+    # panel.grid.major.x = element_blank(),
+    legend.position = "top",
+    # legend.key.height = unit(1, "mm"),
+    # legend.key.width = unit(5, "mm")
   )+
   labs(
-    x = " Estimated RRV (More complete wing →)",
+    x = "Estimated RRV (More complete wing →)", #(More complete wing →)
     y = "Visibility index at next patch\n(More open →)",
-    fill = NULL,
-    col = NULL,
-    alpha = NULL
+    col = NULL
   )
 
 ggsave(
-  fig_diff_selection,
-  filename = "figures/fig_diff_vis_selection.png",
-  width = 87,
-  height = 114, units = "mm"
+  fig_vis_rrv,
+  filename = "figures/fig_vis_selection_rrv.png",
+  height = 87,
+  width = 114,
+  units = "mm"
 )
+```
+
+```{r}
+
 ```
 
