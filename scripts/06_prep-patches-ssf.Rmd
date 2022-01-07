@@ -16,8 +16,13 @@ library(lubridate)
 library(glue)
 library(dplyr)
 library(tidyr)
-library(sf)
 library(purrr)
+
+# for vectors
+library(sf)
+
+# for rasters
+library(terra)
 
 # library for SSF
 library(amt)
@@ -29,7 +34,7 @@ data = fread("data/results/data_patch_summary_ppa.csv")
 points = fread("data/results/data_patch_points_ppa.csv")
 
 data[, time_median := as.POSIXct(
-  time_median, origin = "1970-01-01", t = "Asian/Jerusalem"
+  time_median, origin = "1970-01-01", t = "Asia/Jerusalem"
 )]
 ```
 
@@ -175,6 +180,33 @@ vis = "data/rasters/raster_hula_visibility.tif"
 
 ndvi <- terra::rast(ndvi)
 vis <- terra::rast(vis)
+
+# landcover
+lc = st_read("data/spatial/hula_lc_vector")
+lc = mutate(
+  lc,
+  Name = case_when(
+    Name == "R" ~ "O",
+    Name == "C" ~ "W",
+    TRUE ~ Name
+  )
+) %>% 
+  rename(
+    lc = Name
+  )
+
+# crop  ndvi to lc
+ndvi = terra::crop(
+  ndvi,
+  vect(lc)
+)
+
+# rasterise
+lc = terra::rasterize(
+  vect(lc),
+  ndvi,
+  field = "lc"
+)
 ```
 
 ```{r}
@@ -223,10 +255,15 @@ pwalk(
       as.matrix(pdf[, c("x", "y")]),
       fun = mean
     )
+    lc_samp = terra::extract(
+      lc,
+      as.matrix(pdf[, c("x", "y")])
+    )
     
     # add to real patch points and get summary
     pdf$ndvi = mean_ndvi$ndvi
     pdf$vis = mean_vis$raster_hula_visibility
+    pdf$lc = lc_samp$lc
     
     #### env values of alternative steps ####
     sim_pts = select(
@@ -267,9 +304,15 @@ pwalk(
       as.matrix(sim_pts[, c("x2_sim", "y2_sim")]),
       fun = mean
     )
+    lc_samp = terra::extract(
+      lc,
+      as.matrix(sim_pts[, c("x2_sim", "y2_sim")])
+    )
+    
     # assign values to alternative steps
     sim_pts$ndvi = mean_ndvi$ndvi
     sim_pts$vis = mean_vis$raster_hula_visibility
+    sim_pts$lc = lc_samp$lc
     
     #### step start covariates ####
     # these are always from a real patch
@@ -279,7 +322,7 @@ pwalk(
       # drop coords when joining for start locs
       select(
         ungroup(pdf), 
-        patch, ndvi, vis
+        patch, ndvi, vis, lc
       ),
       
       by = c("patch_start" = "patch")
@@ -288,7 +331,8 @@ pwalk(
     df = rename(
       df,
       vis_start = vis,
-      ndvi_start = ndvi
+      ndvi_start = ndvi,
+      lc_start = lc
     )
     
     #### step end covariates for alternative steps ####
@@ -301,7 +345,8 @@ pwalk(
       ) %>%
       rename(
         ndvi_end = ndvi,
-        vis_end = vis
+        vis_end = vis,
+        lc_end = lc
       )
     
     #### step end covariates for real steps ####
@@ -323,6 +368,9 @@ pwalk(
         ),
         vis_end = if_else(
           is.na(vis_end), vis, vis_end
+        ),
+        lc_end = if_else(
+          is.na(lc_end), lc, lc_end
         )
       )
     
@@ -335,8 +383,8 @@ pwalk(
       step_id_,
       case_,
       log_sl,
-      matches(c("ndvi", "vis")),
-      -ndvi, -vis
+      matches(c("ndvi", "vis", "lc")),
+      -ndvi, -vis, -lc
     )
     
     # join destination data with steps data
