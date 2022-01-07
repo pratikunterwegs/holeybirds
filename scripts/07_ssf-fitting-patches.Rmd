@@ -209,6 +209,12 @@ write_csv(
 )
 ```
 
+## Remove data
+
+```{r}
+rm(data); gc()
+```
+
 ## Plot clogit coefficients
 
 ```{r}
@@ -216,18 +222,69 @@ library(ggplot2)
 ```
 
 ```{r}
-ggplot(ssf_params)+
-  geom_point(
+# remove non rrv data
+ssf_coefs = filter(
+  data_id,
+  !is.na(rrv_calc)
+)
+
+# remove coefs where p > 0.05
+# ssf_coefs = filter(
+#   ssf_coefs,
+#   p.value <= 0.05
+# )
+```
+
+```{r}
+ggplot(
+  filter(
+    ssf_coefs,
+    sp == "Pycnonotus"
+  )
+)+
+  geom_boxplot(
     aes(
-      rrv_calc, estimate,
+      treat, estimate,
       col = treat
     )
   )+
   scale_y_continuous(
-    trans = ggallin::pseudolog10_trans
+    # trans = ggallin::pseudolog10_trans
   )+
   facet_grid(
-    term ~ sp
+    rows = vars(term),
+    scales = "free_y"
   )
 ```
 
+```{r}
+ggplot(
+  filter(
+    ssf_coefs,
+    sp == "Pycnonotus"
+  )
+)+
+  geom_point(
+    aes(
+      rrv_calc, estimate,
+      col = treat
+    ),
+    shape = 1,
+    size = 3
+  )+
+  geom_smooth(
+    aes(
+      rrv_calc, estimate,
+      col = treat
+    ),
+    method = "glm"
+  )+
+  scale_x_reverse()+
+  scale_y_continuous(
+    trans = ggallin::pseudolog10_trans
+  )+
+  facet_grid(
+    term ~ sp,
+    scales = "free_y"
+  )
+```
