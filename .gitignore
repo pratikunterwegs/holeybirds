@@ -38,6 +38,9 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 
+# no docs
+docs/*.pdf
+
 # large data
 data/processed/**
 !data/processed/00_placeholder.txt
