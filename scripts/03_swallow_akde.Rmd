@@ -1,7 +1,6 @@
 ---
-output: html_document
 editor_options: 
-  chunk_output_type: inline
+  chunk_output_type: console
 ---
 
 ```{r}
@@ -20,61 +19,94 @@ files = list.files(
 ```
 
 ```{r}
+# read all data
 data = lapply(files, fread)
+
+# bind list and split by id and date
+data = rbindlist(data)
+data = split(data, by = c("TAG", "date"))
 ```
 
 ```{r}
-df = data[[1]]
+# prepare telemetry
+data_tel = lapply(
+  data, function(df) {
+    # prepare and convert to telemetry object
+    tel = df[, c("TAG", "X", "Y", "time")]
+    # handle time
+    tel[, time := as.POSIXct(
+      time,
+      tz = "Asia/Jerusalem",
+      origin = "1970-01-01"
+    )]
+    
+    # edit coordinates to long-lat for ctmm
+    tel_sf = st_as_sf(
+      tel,
+      coords = c("X", "Y"), crs = 2039 
+    )
+    tel_sf = st_transform(
+      tel_sf,
+      crs = 4326
+    )
+    
+    # change names for ctmm
+    setnames(
+      tel,
+      c("individual.local.identifier", "location.long", "location.lat",
+        "timestamp")
+    )
+    # get coordinates in long-lat
+    tel_coords = st_coordinates(tel_sf)
+    tel[, c("location.long", "location.lat") := list(
+      tel_coords[, "X"],
+      tel_coords[, "Y"]
+    )]
+    
+    # make telemetry object
+    tel = as.telemetry(tel)
+    tel
+  }
+)
 ```
 
 ```{r}
-# prepare and convert to telemetry object
-tel = df[, c("TAG", "X", "Y", "time")]
-tel[, time := as.POSIXct(
-  time,
-  tz = "Asia/Jerusalem",
-  origin = "1970-01-01"
-)]
-
-
-# edit coordinates
-tel_sf = st_as_sf(
-  tel,
-  coords = c("X", "Y"), crs = 2039 
-)
-tel_sf = st_transform(
-  tel_sf,
-  crs = 4326
+# guess ctmm fits
+ctmm_guess = lapply(data_tel, ctmm::ctmm.guess, interactive = FALSE)
+# save
+save(
+  ctmm_guess,
+  file = "data/results/data_ctmm_guess_swallows.Rds"
 )
 
-setnames(
-  tel,
-  c("individual.local.identifier", "location.long", "location.lat",
-    "timestamp")
+# select movement models
+ctmm_fit = Map(
+  data_tel, ctmm_guess,
+  f = function(df, guess) {
+    ctmm.select(df, guess, method = "pHREML", verbose = TRUE)
+  }
 )
-
-tel_coords = st_coordinates(tel_sf)
-
-tel[, c("location.long", "location.lat") := list(
-  tel_coords[, "X"],
-  tel_coords[, "Y"]
-)]
-
-tel = as.telemetry(tel)
+# save fit data
+save(
+  ctmm_fit,
+  file = "data/results/data_ctmm_fit_swallows.Rds"
+)
 ```
 
 ```{r}
-# fit model
-vg = variogram(tel)
-guess1 = ctmm.guess(tel, interactive = FALSE)
-fit1 = ctmm.select(tel, guess1, method = "ML")
-```
+# utilisation distribution data
+data_ud = Map(
+  data_tel, ctmm_fit,
+  f = function(df, fit) {
+    akde(
+      df, fit, weights = TRUE
+    )
+  }
+)
 
-```{r}
-ud = akde(
-  tel[lubridate::date(tel$timestamp) < max(lubridate::date(tel$timestamp)), ], 
-  fit1, 
-  weights = TRUE
+# save fit data
+save(
+  data_ud,
+  file = "data/results/data_ud_swallows.Rds"
 )
 ```
-
