@@ -1,0 +1,80 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r}
+library(data.table)
+library(sf)
+library(ctmm)
+```
+
+```{r}
+# load swallow data preprocessed
+files = list.files(
+  path = "data/processed/data_preprocessed",
+  pattern = "Hirundo",
+  full.names = TRUE
+)
+```
+
+```{r}
+data = lapply(files, fread)
+```
+
+```{r}
+df = data[[1]]
+```
+
+```{r}
+# prepare and convert to telemetry object
+tel = df[, c("TAG", "X", "Y", "time")]
+tel[, time := as.POSIXct(
+  time,
+  tz = "Asia/Jerusalem",
+  origin = "1970-01-01"
+)]
+
+
+# edit coordinates
+tel_sf = st_as_sf(
+  tel,
+  coords = c("X", "Y"), crs = 2039 
+)
+tel_sf = st_transform(
+  tel_sf,
+  crs = 4326
+)
+
+setnames(
+  tel,
+  c("individual.local.identifier", "location.long", "location.lat",
+    "timestamp")
+)
+
+tel_coords = st_coordinates(tel_sf)
+
+tel[, c("location.long", "location.lat") := list(
+  tel_coords[, "X"],
+  tel_coords[, "Y"]
+)]
+
+tel = as.telemetry(tel)
+```
+
+```{r}
+# fit model
+vg = variogram(tel)
+guess1 = ctmm.guess(tel, interactive = FALSE)
+fit1 = ctmm.select(tel, guess1, method = "ML")
+```
+
+```{r}
+ud = akde(
+  tel[lubridate::date(tel$timestamp) < max(lubridate::date(tel$timestamp)), ], 
+  fit1, 
+  weights = TRUE
+)
+```
+
