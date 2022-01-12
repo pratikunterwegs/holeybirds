@@ -197,38 +197,24 @@ psdf = patch_switches[, unlist(lapply(.SD, function(x) {
 ### Model patch switches per hour
 
 ```{r}
-library(lmerTest)
+library(mgcv)
 library(ggplot2)
 ```
 
 ```{r}
-# convert to patch switches per hour
-patch_switches[, ps_ph := N/tracking_duration]
-patch_switches[, dist_ph := total_dist/tracking_duration]
+patch_switches[, c("sp", "treat") := lapply(
+  .SD, as.factor
+), .SDcols = c("sp", "treat")]
 
-# remove NA values
-patch_switches = patch_switches[!is.na(rrv_calc)]
-
-# add uncorrelated square polynomials
-orth_rrv = poly(patch_switches$rrv_calc, 2, raw = FALSE)
-
-patch_switches[, c("orth_rrv_1", "orth_rrv_2") := list(
-  orth_rrv[,1],
-  orth_rrv[,2]
-)]
-
-# model for movement
-mod1 = lmer(
-  dist_ph ~ orth_rrv_1 + orth_rrv_2 + # the linear and quadratic effect of rrv
-    # (1 + orth_rrv_2||sp) + # rrv effect varies with species
-    (1|sp) + (0 + orth_rrv_1||sp) + #(orth_rrv_1||sp) + (orth_rrv_2||sp)+
-    # (orth_rrv_2|sp)+
-    # (1|sp)+ (0 + orth_rrv_2||sp)+
-    (1|treat) + (1|id), # random effect of id and treatment
+mod1 = gam(
+  dist_ph ~ s(rrv_calc, by = sp, k = 3)+
+    s(sp, bs = "re"),
+    # s(sp, rrv_calc, bs = "re"),
   data = patch_switches
 )
+
 summary(mod1)
-plot_model(mod1, type = "re")
+gratia::draw(mod1)
 ```
 
 ```{r}
