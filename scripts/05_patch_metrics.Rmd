@@ -173,13 +173,25 @@ patch_switches = data[, list(
   tracking_duration = (max(time_end) - min(time_start)) / 3600 # in hours
 ), by = c("id", "date", "sp", "rrv_calc", "treat")]
 
-# handle rrv calc within treatment
-patch_switches[, rrv_calc_wt := scales::rescale(rrv_calc, to = c(0.1, 1)), 
-               by = c("sp", "treat")]
-
-patch_switches[treat == "NonMoulting", rrv_calc_wt := 0]
-
 patch_switches = patch_switches[!is.na(sp)]
+
+
+# convert to patch switches per hour
+patch_switches[, dist_ph := total_dist/tracking_duration]
+
+# remove NA values
+patch_switches = patch_switches[!is.na(rrv_calc)]
+```
+
+```{r}
+# plot rrv with errors per treatment, and patch distance w/ errors per trt
+psdf = patch_switches[, unlist(lapply(.SD, function(x) {
+  list(
+    mean = as.numeric(mean(x)),
+    sd = sd(x, na.rm = T)
+  )
+}), recursive = F), 
+.SDcols = c("dist_ph", "rrv_calc"), by = c("sp", "treat")]
 ```
 
 ### Model patch switches per hour
