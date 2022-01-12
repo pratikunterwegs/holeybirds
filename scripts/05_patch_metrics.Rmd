@@ -139,29 +139,6 @@ data =
 data = data[!is.na(sp) & !is.na(treat)]
 ```
 
-## Plot patch sequence metrics and patch attributes
-
-```{r}
-# link rrv
-rrv = fread("data/results/data_daily_rrv.csv")
-rrv$date = as.character(rrv$date)
-data$date = as.character(data$date)
-```
-
-```{r}
-data =
-  merge(
-  data,
-  rrv,
-  by.x = c("id", "date"),
-  by.y = c("TAG", "date"),
-  all.x = T
-)
-
-# filter
-data = data[!is.na(sp)]
-```
-
 ## Movements between patches
 
 ```{r}
@@ -234,6 +211,7 @@ writeLines(
 # make prediction table
 pred_data = CJ(
   sp = as.factor(unique(data$sp)),
+  id = "new",
   treat = as.factor(unique(data$treat)),
   rrv_calc = seq(0, 20, 0.5)
 )
