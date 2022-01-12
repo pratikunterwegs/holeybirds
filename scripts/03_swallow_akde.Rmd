@@ -110,3 +110,103 @@ save(
   file = "data/results/data_ud_swallows.Rds"
 )
 ```
+
+## Summarise movement and utilisation
+
+```{r}
+load("data/results/data_ctmm_fit_swallows.Rds")
+load("data/results/data_ud_swallows.Rds")
+```
+
+```{r}
+# get data
+id = stringr::str_extract(names(ctmm_fit), "\\d{10}")
+date = stringr::str_extract(names(ctmm_fit), "\\d{4}-\\d{2}-\\d{2}")
+```
+
+```{r}
+# get movement model data
+estimates = lapply(ctmm_fit, function(le) {
+  est = as.data.frame(
+    summary(
+      le[[1]]
+    )$CI
+  ) |> 
+    as.data.table(
+      keep.rownames = "variable"
+    )
+  est = est[variable == "area (square kilometers)", variable := "area_ctmm"]
+  est
+})
+
+# get wAKDE fitted utilisation distribution data
+ud = lapply(data_ud, function(le) {
+  est = as.data.frame(
+    summary(le)$CI
+  ) |> 
+    as.data.table(
+      keep.rownames = "variable"
+    )
+  
+  est = est[variable == "area (square kilometers)", variable := "area_wakde"]
+  est
+})
+```
+
+```{r}
+# bind rows and link to id and date
+estimates = Map(
+  estimates, ud, id, date,
+  f = function(df1, df2, id, date) {
+    df = rbindlist(
+      list(df1, df2), use.names = TRUE
+    )
+    df$id = id
+    df$date = date
+    df
+  }
+)
+
+estimates = rbindlist(estimates)
+
+# save data
+fwrite(
+  estimates, 
+  file = "data/results/data_ctmm_ud_swallows.csv"
+)
+```
+
+## Link with RRV and moult status
+
+```{r}
+# read rrv
+rrv = fread("data/results/data_daily_rrv.csv")
+rrv$date = as.character(rrv$date)
+
+estimates$id = as.integer(estimates$id)
+
+data = merge(
+  estimates,
+  rrv,
+  by.x = c("id", "date"),
+  by.y = c("TAG", "date"),
+  all.x = TRUE,
+  all.y = FALSE
+)
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(data[variable %in% c("speed (kilometers/day)", "area_wakde", "area_ctmm")])+
+  geom_boxplot(
+    aes(
+      treat, est,
+      col = treat
+    )
+  )+
+  facet_grid(
+    rows = vars(variable), scales = "free_y"
+  )
+```
+
