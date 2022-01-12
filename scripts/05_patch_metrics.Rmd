@@ -272,208 +272,111 @@ ggplot(patch_switches[dist_ph < 900])+
 ```
 
 ```{r}
-ggplot(patch_switches[dist_ph < 900])+
+library(ggplot2)
+library(colorspace)
+
+fig_moult_move =
+ggplot(psdf)+
+  geom_hline(
+    yintercept = 100,
+    col = "grey",
+    lty = 2
+  )+
   geom_jitter(
+    data = patch_switches[dist_ph < 900],
     aes(
       rrv_calc, dist_ph,
       col = treat
     ),
     shape = 1
   )+
-  geom_pointrange(
+  geom_ribbon(
     data = pred_data,
     aes(
-      rrv_calc, fit,
-      ymin = lower, 
-      ymax = upper
+      rrv_calc,
+      ymin = pred - se,
+      ymax = pred + se
     ),
-    fill = "white",
-    shape = 21
+    fill = "transparent",
+    col = "indianred",
+    lty = 1
   )+
-  scale_y_continuous(
-    # trans = ggallin::ssqrt_trans
+  geom_line(
+    data = pred_data,
+    aes(
+      rrv_calc, pred
+    )
   )+
+  geom_linerange(
+    aes(
+      rrv_calc.mean,
+      ymin = dist_ph.mean - dist_ph.sd,
+      ymax = dist_ph.mean + dist_ph.sd
+    )
+  )+
+  geom_linerange(
+    aes(
+      rrv_calc.mean, dist_ph.mean,
+      xmin = rrv_calc.mean - rrv_calc.sd,
+      xmax = rrv_calc.mean + rrv_calc.sd
+    )
+  )+
+  geom_point(
+    aes(
+      rrv_calc.mean, dist_ph.mean,
+      fill = treat
+    ),
+    shape = 21,
+    size = 4
+  )+
+  scale_fill_discrete_sequential(
+    palette = "Batlow",
+    l1 = 30, l2 = 60,
+    breaks = c("NonMoulting", "Moulting", "Manipulated"),
+    labels = c("N. Moulting", "Moulting", "Manipulated")
+  )+
+  scale_colour_discrete_sequential(
+    palette = "Batlow",
+    l1 = 50, l2 = 50,
+    guide = "none"
+  )+
+  # scale_y_sqrt()+
   facet_grid(
     rows = vars(sp),
-    scales = "free_y"
+    scales = "free",
+    # labeller = labeller(
+    #   sp = c(
+    #     "Acrocephalus" = "Warbler",
+    #     "Passer" = "Sparrow",
+    #     "Pycnonotus" = "Bulbul"
+    #   )
+    # )
   )+
-  # ylim(0, NA)+
   coord_cartesian(
     ylim = c(0, NA)
   )+
-  theme(
-    legend.position = "top"
-  )
-```
-
-
-```{r}
-# patch switches by rrv
-# fig_patches_rrv = 
-  ggplot(patch_switches)+
-  geom_jitter(
-    aes(
-      rrv_calc, dist_ph, # patches per tracking in hours
-      col = treat
-    ),
-    shape = 1
-  )+
-  geom_smooth(
-    aes(
-      rrv_calc, dist_ph,
-      col = treat
-    ),
-    method = "glm",
-    se = T
-  )+
-  scale_x_continuous(
-    
-  )+
-  scale_y_sqrt()+
-  facet_grid(
-    ~sp
-  )+
-  theme_grey(
-    base_size = 8,
+  theme_test(
+    base_size = 10,
     base_family = "Arial"
   )+
   theme(
-    legend.position = "top"
-  )+
-  labs(
-    fill = NULL,
-    x = "Estimated RRV (More ragged wing →)",
-    y = "Patch switches per hour",
-    colour = NULL
-  )
-```
-
-```{r}
-fig_patches = 
-  wrap_plots(
-  fig_patches_wing,
-  fig_patches_rrv,
-  ncol = 1
-) &
-  plot_annotation(
-    tag_levels = "A"
-  )
-
-ggsave(
-  fig_patches,
-  filename = "figures/fig_patch_switches.png",
-  height = 114,
-  width = 87,
-  units = "mm"
-)
-```
-
-## Patch attributes
-
-```{r}
-fig_vis_wing = 
-ggplot(data)+
-  geom_boxplot(
-    aes(
-      treat, vis,
-      col = treat
+    legend.position = "top",
+    strip.background = element_blank(),
+    strip.text = element_text(
+      face = "italic"
     )
   )+
-  scale_x_discrete(
-    labels = c("Manip.", "Moult.", "N-moult.")
-  )+
-  facet_grid(
-    ~sp
-  )+
-  theme_grey(
-    base_size = 8,
-    base_family = "Arial"
-  )+
-  theme(
-    legend.position = "none"
-  )+
   labs(
-    x = "Wing condition",
-    y = "Visibility index (More open →)"
-  )
-```
-
-```{r}
-# patch vis by rrv
-fig_vis_rrv =
-  ggplot(data)+
-  geom_jitter(
-    aes(
-      rrv_calc, vis, # patches per tracking in hours
-      col = treat
-    ),
-    shape = 1,
-    size = 0.3,
-    alpha = 0.3
-  )+
-  geom_smooth(
-    aes(
-      rrv_calc, vis
-    ),
-    col = "grey20",
-    method = "glm",
-    se = F
-  )+
-  geom_smooth(
-    aes(
-      rrv_calc, vis,
-      col = treat
-    ),
-    method = "glm",
-    se = F
-  )+
-  scale_x_reverse()+
-  facet_grid(
-    ~sp
-  )+
-  theme_grey(
-    base_size = 8,
-    base_family = "Arial"
-  )+
-  theme(
-    legend.position = "top"
-  )+
-  labs(
-    fill = NULL,
-    x = "Estimated RRV (More complete wing →)",
-    y = "Visibility index (More open →)",
-    colour = NULL
-  )
-```
-
-```{r}
-fig_vis = 
-  wrap_plots(
-  fig_vis_wing,
-  fig_vis_rrv,
-  ncol = 1
-) &
-  plot_annotation(
-    tag_levels = "A"
+    x = "RRV (More ragged wing)",
+    y = "Daily long-distance movement (m)",
+    fill = NULL
   )
 
 ggsave(
-  fig_vis,
-  filename = "figures/fig_vis.png",
-  height = 114,
+  fig_moult_move,
+  filename = "figures/fig_01.png",
   width = 87,
+  height = 114,
   units = "mm"
-)
-```
-
-## Correlation between patch covariates
-
-```{r}
-library(lmerTest)
-```
-
-```{r}
-mod_corr = lmer(
-  vis ~ ndvi*lc + (1|sp), data = data
 )
 ```
