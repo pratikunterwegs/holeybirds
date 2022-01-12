@@ -10,6 +10,8 @@ library(sf)
 library(terra)
 ```
 
+## Extract environmental covariates at patches
+
 ```{r}
 data = fread("data/results/data_patch_summary_ppa.csv")
 points = fread("data/results/data_patch_points_ppa.csv")
@@ -41,6 +43,11 @@ vis_samp = terra::extract(
   vect(points)
 )
 
+lc_samp = terra::extract(
+  vect(lc),
+  vect(points)
+)
+
 points = st_drop_geometry(points)
 setDT(points)
 
@@ -66,11 +73,69 @@ fwrite(
 )
 ```
 
+## Get landcover at patches
+
+```{r}
+lc = st_read("data/spatial/hula_lc_vector")
+```
+
+```{r}
+data_coords = data[, c("x_median", "y_median")]
+data_coords = st_as_sf(
+  data_coords,
+  coords = c("x_median", "y_median"),
+  crs = 2039
+)
+
+# extract landcover
+lc_patches = terra::extract(
+  vect(lc),
+  vect(data_coords), fun = first
+)
+setDT(lc_patches)
+lc_patches = lc_patches[, c("id.x", "Name")]
+lc_patches = unique(lc_patches, by = "id.x")
+
+rm(data_coords)
+```
+
+## Link patch covariates to RRV
+
+```{r}
+# load data patch summary
+data = fread("data/results/data_patch_summary_ppa.csv")
+patch_env = fread("data/results/data_patch_env.csv")
+```
+
 ```{r}
 data = merge(
   data,
-  points
+  patch_env
 )
+
+# this hopes that the order is correct after applying unique to patches
+data$lc = lc_patches$Name
+```
+
+```{r}
+# link rrv
+rrv = fread("data/results/data_daily_rrv.csv")
+rrv$date = as.character(rrv$date)
+data$date = as.character(data$date)
+```
+
+```{r}
+data =
+  merge(
+  data,
+  rrv,
+  by.x = c("id", "date"),
+  by.y = c("TAG", "date"),
+  all.x = T
+)
+
+# filter
+data = data[!is.na(sp) & !is.na(treat)]
 ```
 
 ## Plot patch sequence metrics and patch attributes
@@ -96,76 +161,184 @@ data =
 data = data[!is.na(sp)]
 ```
 
-## Patch movement
+## Movements between patches
 
 ```{r}
 # patch switches
 patch_switches = data[, list(
   N = .N,
+  total_dist = sum(dist_bw_patch, na.rm = T),
   mean_duration = mean(duration) / 3600, # in hours
   tracking_duration = (max(time_end) - min(time_start)) / 3600 # in hours
 ), by = c("id", "date", "sp", "rrv_calc", "treat")]
 
+# handle rrv calc within treatment
+patch_switches[, rrv_calc_wt := scales::rescale(rrv_calc, to = c(0.1, 1)), 
+               by = c("sp", "treat")]
+
+patch_switches[treat == "NonMoulting", rrv_calc_wt := 0]
+
 patch_switches = patch_switches[!is.na(sp)]
 ```
 
+### Model patch switches per hour
+
 ```{r}
-fig_patches_wing = 
-  ggplot(patch_switches)+
-  geom_boxplot(
-    aes(
-      treat, N / tracking_duration, # patches per tracking in hours
-      # mean_duration,
-      col = treat
-    )
-  )+
-  scale_x_discrete(
-    labels = c("Manip.", "Moult.", "N-moult.")
-  )+
-  facet_grid(
-    ~sp
-  )+
-  theme_grey(
-    base_size = 8,
-    base_family = "Arial"
-  )+
-  theme(
-    legend.position = "none"
-  )+
-  labs(
-    x = "Wing condition",
-    y = "Patch switches per hour"
-  )
+library(lmerTest)
+library(ggplot2)
 ```
 
 ```{r}
+# convert to patch switches per hour
+patch_switches[, ps_ph := N/tracking_duration]
+patch_switches[, dist_ph := total_dist/tracking_duration]
+
+# remove NA values
+patch_switches = patch_switches[!is.na(rrv_calc)]
+
+# add uncorrelated square polynomials
+orth_rrv = poly(patch_switches$rrv_calc, 2, raw = FALSE)
+
+patch_switches[, c("orth_rrv_1", "orth_rrv_2") := list(
+  orth_rrv[,1],
+  orth_rrv[,2]
+)]
+
+# model for movement
+mod1 = lmer(
+  dist_ph ~ orth_rrv_1 + orth_rrv_2 + # the linear and quadratic effect of rrv
+    # (1 + orth_rrv_2||sp) + # rrv effect varies with species
+    (1|sp) + (0 + orth_rrv_1||sp) + #(orth_rrv_1||sp) + (orth_rrv_2||sp)+
+    # (orth_rrv_2|sp)+
+    # (1|sp)+ (0 + orth_rrv_2||sp)+
+    (1|treat) + (1|id), # random effect of id and treatment
+  data = patch_switches
+)
+summary(mod1)
+plot_model(mod1, type = "re")
+```
+
+```{r}
+# save model summary
+mod_summary = summary(mod1)
+writeLines(
+  capture.output(
+    mod_summary
+  ),
+  con = "data/results/mod_summary_rrv_movement.txt"
+)
+```
+
+## Plot movement per hour over patch switches
+
+```{r}
+# make prediction table
+pred_data = CJ(
+  sp = as.factor(unique(data$sp)),
+  treat = as.factor(unique(data$treat)),
+  rrv_calc = seq(0, 20, 0.5)
+)
+
+# filter for unrealistic
+pred_data = pred_data[(
+  (treat == "NonMoulting" & rrv_calc == 0) |
+    (treat == "Moulting" & between(rrv_calc, 2, 12)) |
+    (treat == "Manipulated" & between(rrv_calc, 12, 20))
+)]
+
+# get prediction
+pred = predict(mod1, newdata = pred_data, allow.new.levels = T, se.fit = T)
+
+pred_data$pred = pred$fit
+
+# explore
+ggplot(patch_switches[dist_ph < 900])+
+  geom_jitter(
+    aes(
+      rrv_calc, dist_ph,
+      col = treat
+    ),
+    shape = 1
+  )+
+  geom_point(
+    data = pred_data,
+    aes(
+      rrv_calc, pred
+    )
+  )+
+  facet_grid(
+    ~sp
+  )
+
+# summarise
+pred_data[, rrv_calc := plyr::round_any(rrv_calc, 2)]
+pred_data = pred_data[, lapply(.SD, mean), by = c("sp", "rrv_calc"),
+                      .SDcols = c("fit", "upper", "lower")]
+
+# limit at 0
+```
+
+## Plot data and predictions
+
+```{r}
+ggplot(patch_switches[dist_ph < 900])+
+  geom_jitter(
+    aes(
+      rrv_calc, dist_ph,
+      col = treat
+    ),
+    shape = 1
+  )+
+  geom_pointrange(
+    data = pred_data,
+    aes(
+      rrv_calc, fit,
+      ymin = lower, 
+      ymax = upper
+    ),
+    fill = "white",
+    shape = 21
+  )+
+  scale_y_continuous(
+    # trans = ggallin::ssqrt_trans
+  )+
+  facet_grid(
+    rows = vars(sp),
+    scales = "free_y"
+  )+
+  # ylim(0, NA)+
+  coord_cartesian(
+    ylim = c(0, NA)
+  )+
+  theme(
+    legend.position = "top"
+  )
+```
+
+
+```{r}
 # patch switches by rrv
-fig_patches_rrv = 
+# fig_patches_rrv = 
   ggplot(patch_switches)+
   geom_jitter(
     aes(
-      rrv_calc, N / tracking_duration, # patches per tracking in hours
+      rrv_calc, dist_ph, # patches per tracking in hours
       col = treat
     ),
     shape = 1
   )+
   geom_smooth(
     aes(
-      rrv_calc, N / tracking_duration
-    ),
-    col = "grey20",
-    method = "glm",
-    se = F
-  )+
-  geom_smooth(
-    aes(
-      rrv_calc, N / tracking_duration,
+      rrv_calc, dist_ph,
       col = treat
     ),
     method = "glm",
-    se = F
+    se = T
   )+
-  scale_x_reverse()+
+  scale_x_continuous(
+    
+  )+
+  scale_y_sqrt()+
   facet_grid(
     ~sp
   )+
@@ -178,7 +351,7 @@ fig_patches_rrv =
   )+
   labs(
     fill = NULL,
-    x = "Estimated RRV (More complete wing →)",
+    x = "Estimated RRV (More ragged wing →)",
     y = "Patch switches per hour",
     colour = NULL
   )
@@ -299,5 +472,17 @@ ggsave(
   height = 114,
   width = 87,
   units = "mm"
+)
+```
+
+## Correlation between patch covariates
+
+```{r}
+library(lmerTest)
+```
+
+```{r}
+mod_corr = lmer(
+  vis ~ ndvi*lc + (1|sp), data = data
 )
 ```
