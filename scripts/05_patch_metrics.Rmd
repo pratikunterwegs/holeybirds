@@ -249,16 +249,17 @@ pred_data = pred_data[(
 pred = predict(mod1, newdata = pred_data, allow.new.levels = T, se.fit = T)
 
 pred_data$pred = pred$fit
+pred_data$se = pred$se.fit
 
 # explore
 ggplot(patch_switches[dist_ph < 900])+
-  geom_jitter(
-    aes(
-      rrv_calc, dist_ph,
-      col = treat
-    ),
-    shape = 1
-  )+
+  # geom_jitter(
+  #   aes(
+  #     rrv_calc, dist_ph,
+  #     col = treat
+  #   ),
+  #   shape = 1
+  # )+
   geom_point(
     data = pred_data,
     aes(
@@ -268,16 +269,7 @@ ggplot(patch_switches[dist_ph < 900])+
   facet_grid(
     ~sp
   )
-
-# summarise
-pred_data[, rrv_calc := plyr::round_any(rrv_calc, 2)]
-pred_data = pred_data[, lapply(.SD, mean), by = c("sp", "rrv_calc"),
-                      .SDcols = c("fit", "upper", "lower")]
-
-# limit at 0
 ```
-
-## Plot data and predictions
 
 ```{r}
 ggplot(patch_switches[dist_ph < 900])+
