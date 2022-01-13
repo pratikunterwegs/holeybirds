@@ -1,0 +1,249 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+library(data.table)
+library(sf)
+library(ctmm)
+```
+
+```{r}
+# load swallow data preprocessed
+files = list.files(
+  path = "data/processed/data_preprocessed",
+  pattern = "Hirundo",
+  full.names = TRUE
+)
+```
+
+```{r}
+# read all data
+data = lapply(files, fread)
+
+# bind list and split by id and date
+data = rbindlist(data)
+data = split(data, by = c("TAG", "date"))
+```
+
+## Calculate distance and area
+
+### Distance
+
+```{r}
+library(atlastools)
+```
+
+```{r}
+data = lapply(
+  data, function(df) {
+    df[, dist := atl_simple_dist(df, x = "X", y = "Y")]
+    df[, dist := nafill(dist, type = "const", fill = 0)]
+    df
+  }
+)
+
+# cumulative daily distance in kilometres
+data_dist = lapply(data, function(df) {
+  df[, list(
+    dist = sum(dist) / 1000
+  ), by = c("TAG", "date")]
+}) |> rbindlist()
+
+data_dist$date = as.character(data_dist$date)
+```
+
+### Link with RRV and moult status
+
+```{r}
+# read rrv
+rrv = fread("data/results/data_daily_rrv.csv")
+rrv$date = as.character(rrv$date)
+
+data_dist = merge(
+  data_dist,
+  rrv,
+  by.x = c("TAG", "date"),
+  by.y = c("TAG", "date"),
+  all.x = TRUE,
+  all.y = FALSE
+)
+```
+
+```{r}
+# sanity check
+ggplot(data_dist)+
+  geom_jitter(
+    aes(rrv_calc, dist, col = treat)
+  )
+```
+
+```{r}
+# speed over rrv summary
+psdf = data_dist
+psdf2 = psdf[, unlist(
+  lapply(.SD, function(x) {
+  list(
+    mean = mean(x, na.rm = TRUE),
+    sd = sd(x, na.rm = TRUE)
+  )
+}), recursive = F), 
+.SDcols = c("dist", "rrv_calc"), by = c("treat")]
+```
+
+## Fit GAM movement to data
+
+```{r}
+library(mgcv)
+
+mod1 = gam(
+  dist ~ s(rrv_calc, k = 3),
+  data = psdf
+)
+
+gratia::draw(mod1)
+```
+
+```{r}
+# make prediction table
+pred_data = CJ(
+  sp = as.factor(unique(psdf$sp)),
+  id = "new",
+  rrv_calc = seq(0, 20, 0.5)
+)
+
+# get prediction
+pred = predict(mod1, newdata = pred_data, allow.new.levels = T, se.fit = T)
+
+pred_data$pred = pred$fit
+pred_data$se = pred$se.fit
+```
+
+## Plot movement and utilisation over RRV
+
+```{r}
+fig_swallow_dist = 
+  ggplot(psdf2)+
+  geom_jitter(
+    data = psdf,
+    aes(
+      rrv_calc, dist,
+      col = treat
+    ),
+    shape = 1
+  )+
+  geom_ribbon(
+    data = pred_data[rrv_calc < 15,],
+    aes(
+      rrv_calc,
+      ymin = pred - se,
+      ymax = pred + se
+    ),
+    fill = "transparent",
+    col = "grey",
+    lty = 1
+  )+
+  geom_line(
+    data = pred_data[rrv_calc < 15,],
+    aes(
+      rrv_calc, pred
+    ),
+    col = "indianred"
+  )+
+  geom_linerange(
+    aes(
+      x = rrv_calc.mean,
+      ymin = dist.mean - dist.sd,
+      ymax = dist.mean + dist.sd
+    )
+  )+
+  geom_linerange(
+    aes(
+      x = rrv_calc.mean,
+      y = dist.mean,
+      xmin = rrv_calc.mean - rrv_calc.sd,
+      xmax = rrv_calc.mean + rrv_calc.sd
+    )
+  )+
+  geom_point(
+    aes(
+      rrv_calc.mean, dist.mean,
+      fill = treat
+    ),
+    shape = 21,
+    size = 3
+  )+
+  scale_fill_discrete_sequential(
+    palette = "Batlow",
+    l1 = 30, l2 = 60,
+    breaks = c("NonMoulting", "Moulting", "Manipulated"),
+    labels = c("N. Moulting", "Moulting", "Manipulated")
+  )+
+  scale_colour_discrete_sequential(
+    palette = "Batlow",
+    l1 = 50, l2 = 50,
+    guide = "none"
+  )+
+  coord_cartesian(
+    # ylim = c(0, NA)
+  )+
+  theme_test(
+    base_size = 10,
+    base_family = "Arial"
+  )+
+  theme(
+    legend.position = "top",
+    strip.background = element_blank(),
+    strip.text = element_text(
+      face = "italic"
+    )
+  )+
+  labs(
+    x = "RRV (More ragged wing)",
+    y = "Daily distance moved (km)",
+    fill = NULL
+  )
+
+# save
+ggsave(
+  fig_swallow_dist,
+  filename = "figures/fig_03.png",
+  height = 87, width = 87, units = "mm"
+)
+```
+
+## Get area and link with NDVI
+
+```{r}
+library(sf)
+# make polygon
+data_swallow_poly = lapply(
+  data, function(df) {
+    dfsf = st_as_sf(
+      df, coords = c("X", "Y"),
+      crs = 2039
+    )
+    dfpoly = st_buffer(
+      dfsf, dist = 25
+    )
+  }
+)
+
+# bind all by id
+data_swallow_poly = dplyr::bind_rows(data_swallow_poly)
+data_swallow_poly = dplyr::group_by(
+  data_swallow_poly,
+  TAG
+) |> 
+  dplyr::summarise(
+    geometry = st_union(geometry)
+  )
+
+# save
+st_write(
+  data_swallow_poly,
+  dsn = "data/spatial/data_swallow_poly.gpkg"
+)
+```
+
