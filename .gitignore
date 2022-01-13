@@ -84,3 +84,6 @@ docs/*.tex
 .Rproj.user
 
 figures/figures_preprocessing/
+
+# ignore geopackages
+*.gpkg
