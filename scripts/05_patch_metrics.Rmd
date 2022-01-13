@@ -269,21 +269,22 @@ ggplot(psdf)+
     shape = 1
   )+
   geom_ribbon(
-    data = pred_data,
+    data = pred_data[!(sp == "Pycnonotus" & rrv_calc > 17)],
     aes(
       rrv_calc,
       ymin = pred - se,
       ymax = pred + se
     ),
     fill = "transparent",
-    col = "indianred",
+    col = "grey",
     lty = 1
   )+
   geom_line(
-    data = pred_data,
+    data = pred_data[!(sp == "Pycnonotus" & rrv_calc > 17)],
     aes(
       rrv_calc, pred
-    )
+    ),
+    col = "indianred"
   )+
   geom_linerange(
     aes(
