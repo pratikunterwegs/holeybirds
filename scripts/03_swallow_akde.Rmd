@@ -114,6 +114,12 @@ save(
 ## Summarise movement and utilisation
 
 ```{r}
+library(data.table)
+library(ggplot2)
+library(colorspace)
+```
+
+```{r}
 load("data/results/data_ctmm_fit_swallows.Rds")
 load("data/results/data_ud_swallows.Rds")
 ```
@@ -196,17 +202,96 @@ data = merge(
 ```
 
 ```{r}
-library(ggplot2)
+# speed over rrv summary
+psdf = data[variable == "speed (kilometers/day)"]
+psdf2 = psdf[, list(
+  rrv_mean = mean(rrv_calc),
+  rrv_sd = sd(rrv_calc),
+  speed_mean = mean(est),
+  speed_low = mean(low),
+  speed_high = mean(high),
+  speed_sd = sd(est)
+), by = c("treat")]
+```
 
-ggplot(data[variable %in% c("speed (kilometers/day)", "area_wakde", "area_ctmm")])+
-  geom_boxplot(
+## Fit GAM movement to data
+
+```{r}
+library(mgcv)
+
+mod1 = gam(
+  est ~ s(rrv_calc, k = ),
+  data = psdf
+)
+
+gratia::draw(mod1)
+```
+
+
+## Plot movement and utilisation over RRV
+
+```{r}
+ggplot(psdf2)+
+  geom_jitter(
+    data = psdf,
     aes(
-      treat, est,
+      rrv_calc, est,
       col = treat
+    ),
+    shape = 1
+  )+
+  geom_linerange(
+    aes(
+      x = rrv_mean,
+      ymin = speed_mean - speed_sd,
+      ymax = speed_mean + speed_sd
     )
   )+
-  facet_grid(
-    rows = vars(variable), scales = "free_y"
+  geom_linerange(
+    aes(
+      x = rrv_mean,
+      y = speed_mean,
+      xmin = rrv_mean - rrv_sd,
+      xmax = rrv_mean + rrv_sd
+    )
+  )+
+  geom_point(
+    aes(
+      rrv_mean, speed_mean,
+      fill = treat
+    ),
+    shape = 21,
+    size = 3
+  )+
+  scale_fill_discrete_sequential(
+    palette = "Batlow",
+    l1 = 30, l2 = 60,
+    breaks = c("NonMoulting", "Moulting", "Manipulated"),
+    labels = c("N. Moulting", "Moulting", "Manipulated")
+  )+
+  scale_colour_discrete_sequential(
+    palette = "Batlow",
+    l1 = 50, l2 = 50,
+    guide = "none"
+  )+
+  coord_cartesian(
+    # ylim = c(0, NA)
+  )+
+  theme_test(
+    base_size = 10,
+    base_family = "Arial"
+  )+
+  theme(
+    legend.position = "top",
+    strip.background = element_blank(),
+    strip.text = element_text(
+      face = "italic"
+    )
+  )+
+  labs(
+    x = "RRV (More ragged wing)",
+    y = "Daily distance moved (km)",
+    fill = NULL
   )
 ```
 
