@@ -471,6 +471,17 @@ tracks = unnest(
   step_covs
 )
 
+# remove cols
+tracks = select(
+  tracks,
+  id,
+  date,
+  matches(c("x", "y")),
+  matches(c("ndvi", "vis")),
+  case_, step_id_,
+  B, O, R, `T`, W
+)
+
 # save
 write.csv(
   tracks,
