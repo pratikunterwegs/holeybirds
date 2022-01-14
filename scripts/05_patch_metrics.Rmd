@@ -43,11 +43,6 @@ vis_samp = terra::extract(
   vect(points)
 )
 
-lc_samp = terra::extract(
-  vect(lc),
-  vect(points)
-)
-
 points = st_drop_geometry(points)
 setDT(points)
 
@@ -71,33 +66,6 @@ fwrite(
   points,
   "data/results/data_patch_env.csv"
 )
-```
-
-## Get landcover at patches
-
-```{r}
-library(sf)
-lc = st_read("data/spatial/hula_lc_vector")
-```
-
-```{r}
-data_coords = data[, c("x_median", "y_median")]
-data_coords = st_as_sf(
-  data_coords,
-  coords = c("x_median", "y_median"),
-  crs = 2039
-)
-
-# extract landcover
-lc_patches = terra::extract(
-  terra::vect(lc),
-  terra::vect(data_coords), fun = first
-)
-setDT(lc_patches)
-lc_patches = lc_patches[, c("id.x", "Name")]
-lc_patches = unique(lc_patches, by = "id.x")
-
-rm(data_coords)
 ```
 
 ## Link patch covariates to RRV
