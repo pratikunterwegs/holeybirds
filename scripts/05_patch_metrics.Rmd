@@ -1,0 +1,329 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+library(data.table)
+library(sf)
+
+library(terra)
+```
+
+## Extract environmental covariates at patches
+
+```{r}
+data = fread("data/results/data_patch_summary_ppa.csv")
+points = fread("data/results/data_patch_points_ppa.csv")
+```
+
+```{r}
+points = points[, c("id", "patch", "x", "y", "date")]
+points = st_as_sf(
+  points,
+  coords = c("x", "y"),
+  crs = 2039
+)
+```
+
+```{r}
+# load rasters
+ndvi = rast("data/rasters/raster_hula_ndvi_2039.tif")
+vis = rast("data/rasters/raster_hula_visibility.tif")
+```
+
+```{r}
+ndvi_samp = terra::extract(
+  ndvi,
+  vect(points)
+)
+
+vis_samp = terra::extract(
+  vis,
+  vect(points)
+)
+
+points = st_drop_geometry(points)
+setDT(points)
+
+points[, c("ndvi", "vis") := list(
+  ndvi_samp$ndvi,
+  vis_samp$raster_hula_visibility
+)]
+```
+
+```{r}
+rm(vis, ndvi)
+gc()
+```
+
+```{r}
+# mean ndvi and vis per patch and date
+points = points[, lapply(.SD, mean), by = c("id", "patch", "date")]
+
+# save
+fwrite(
+  points,
+  "data/results/data_patch_env.csv"
+)
+```
+
+## Link patch covariates to RRV
+
+```{r}
+# load data patch summary
+data = fread("data/results/data_patch_summary_ppa.csv")
+patch_env = fread("data/results/data_patch_env.csv")
+```
+
+```{r}
+data = merge(
+  data,
+  patch_env
+)
+
+# this hopes that the order is correct after applying unique to patches
+data$lc = lc_patches$Name
+```
+
+```{r}
+# link rrv
+rrv = fread("data/results/data_daily_rrv.csv")
+rrv$date = as.character(rrv$date)
+data$date = as.character(data$date)
+```
+
+```{r}
+data =
+  merge(
+  data,
+  rrv,
+  by.x = c("id", "date"),
+  by.y = c("TAG", "date"),
+  all.x = T
+)
+
+# filter
+data = data[!is.na(sp) & !is.na(treat)]
+```
+
+## Movements between patches
+
+```{r}
+# patch switches
+patch_switches = data[, list(
+  N = .N,
+  total_dist = sum(dist_bw_patch, na.rm = T),
+  mean_duration = mean(duration) / 3600, # in hours
+  tracking_duration = (max(time_end) - min(time_start)) / 3600 # in hours
+), by = c("id", "date", "sp", "rrv_calc", "treat")]
+
+patch_switches = patch_switches[!is.na(sp)]
+
+
+# convert to patch switches per hour
+patch_switches[, dist_ph := total_dist/tracking_duration]
+
+# remove NA values
+patch_switches = patch_switches[!is.na(rrv_calc)]
+```
+
+```{r}
+# plot rrv with errors per treatment, and patch distance w/ errors per trt
+psdf = patch_switches[, unlist(lapply(.SD, function(x) {
+  list(
+    mean = as.numeric(mean(x)),
+    sd = sd(x, na.rm = T)
+  )
+}), recursive = F), 
+.SDcols = c("dist_ph", "rrv_calc"), by = c("sp", "treat")]
+```
+
+### Model patch switches per hour
+
+```{r}
+library(mgcv)
+library(ggplot2)
+```
+
+```{r}
+patch_switches[, c("sp", "treat") := lapply(
+  .SD, as.factor
+), .SDcols = c("sp", "treat")]
+
+mod1 = gam(
+  dist_ph ~ s(rrv_calc, by = sp, k = 3)+
+    s(sp, bs = "re"),
+    # s(sp, rrv_calc, bs = "re"),
+  data = patch_switches
+)
+
+summary(mod1)
+gratia::draw(mod1)
+```
+
+```{r}
+# save model summary
+mod_summary = summary(mod1)
+writeLines(
+  capture.output(
+    mod_summary
+  ),
+  con = "data/results/mod_summary_rrv_movement.txt"
+)
+```
+
+## Plot movement per hour over patch switches
+
+```{r}
+# make prediction table
+pred_data = CJ(
+  sp = as.factor(unique(data$sp)),
+  id = "new",
+  treat = as.factor(unique(data$treat)),
+  rrv_calc = seq(0, 20, 0.5)
+)
+
+# filter for unrealistic
+pred_data = pred_data[(
+  (treat == "NonMoulting" & rrv_calc == 0) |
+    (treat == "Moulting" & between(rrv_calc, 2, 12)) |
+    (treat == "Manipulated" & between(rrv_calc, 12, 20))
+)]
+
+# get prediction
+pred = predict(mod1, newdata = pred_data, allow.new.levels = T, se.fit = T)
+
+pred_data$pred = pred$fit
+pred_data$se = pred$se.fit
+
+# explore
+ggplot(patch_switches[dist_ph < 900])+
+  # geom_jitter(
+  #   aes(
+  #     rrv_calc, dist_ph,
+  #     col = treat
+  #   ),
+  #   shape = 1
+  # )+
+  geom_point(
+    data = pred_data,
+    aes(
+      rrv_calc, pred
+    )
+  )+
+  facet_grid(
+    ~sp
+  )
+```
+
+```{r}
+library(ggplot2)
+library(colorspace)
+
+fig_moult_move =
+ggplot(psdf)+
+  geom_hline(
+    yintercept = 100,
+    col = "grey",
+    lty = 2
+  )+
+  geom_jitter(
+    data = patch_switches[dist_ph < 900],
+    aes(
+      rrv_calc, dist_ph,
+      col = treat
+    ),
+    shape = 1
+  )+
+  geom_ribbon(
+    data = pred_data[!(sp == "Pycnonotus" & rrv_calc > 17)],
+    aes(
+      rrv_calc,
+      ymin = pred - se,
+      ymax = pred + se
+    ),
+    fill = "transparent",
+    col = "grey",
+    lty = 1
+  )+
+  geom_line(
+    data = pred_data[!(sp == "Pycnonotus" & rrv_calc > 17)],
+    aes(
+      rrv_calc, pred
+    ),
+    col = "indianred"
+  )+
+  geom_linerange(
+    aes(
+      rrv_calc.mean,
+      ymin = dist_ph.mean - dist_ph.sd,
+      ymax = dist_ph.mean + dist_ph.sd
+    )
+  )+
+  geom_linerange(
+    aes(
+      rrv_calc.mean, dist_ph.mean,
+      xmin = rrv_calc.mean - rrv_calc.sd,
+      xmax = rrv_calc.mean + rrv_calc.sd
+    )
+  )+
+  geom_point(
+    aes(
+      rrv_calc.mean, dist_ph.mean,
+      fill = treat
+    ),
+    shape = 21,
+    size = 4
+  )+
+  scale_fill_discrete_sequential(
+    palette = "Batlow",
+    l1 = 30, l2 = 60,
+    breaks = c("NonMoulting", "Moulting", "Manipulated"),
+    labels = c("N. Moulting", "Moulting", "Manipulated")
+  )+
+  scale_colour_discrete_sequential(
+    palette = "Batlow",
+    l1 = 50, l2 = 50,
+    guide = "none"
+  )+
+  # scale_y_sqrt()+
+  facet_grid(
+    rows = vars(sp),
+    scales = "free",
+    # labeller = labeller(
+    #   sp = c(
+    #     "Acrocephalus" = "Warbler",
+    #     "Passer" = "Sparrow",
+    #     "Pycnonotus" = "Bulbul"
+    #   )
+    # )
+  )+
+  coord_cartesian(
+    ylim = c(0, NA)
+  )+
+  theme_test(
+    base_size = 10,
+    base_family = "Arial"
+  )+
+  theme(
+    legend.position = "top",
+    strip.background = element_blank(),
+    strip.text = element_text(
+      face = "italic"
+    )
+  )+
+  labs(
+    x = "RRV (More ragged wing)",
+    y = "Daily long-distance movement (m)",
+    fill = NULL
+  )
+
+ggsave(
+  fig_moult_move,
+  filename = "figures/fig_01.png",
+  width = 87,
+  height = 114,
+  units = "mm"
+)
+```
