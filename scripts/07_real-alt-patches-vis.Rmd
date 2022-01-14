@@ -5,7 +5,6 @@ editor_options:
 
 ```{r}
 library(readr)
-library(purrr)
 library(dplyr)
 library(tidyr)
 
@@ -15,108 +14,21 @@ library(patchwork)
 ```
 
 ```{r}
-# read rrv
-rrv = read_csv("data/results/data_daily_rrv.csv")
-rrv$date = as.character(rrv$date)
-```
-
-## Fit clogit to data
-
-```{r}
-# read data
-files = list.files(
-  "data/processed/data_for_clogit",
-  pattern = "csv", full.names = TRUE
-)
-```
-
-```{r}
-# which files
-ids = stringr::str_extract(files, "\\d{10}")
-dates = stringr::str_extract(files, "\\d{4}-\\d{2}-\\d{2}")
-```
-
-```{r}
-to_keep = ids %in% rrv$TAG & dates %in% rrv$date
-files = files[to_keep]
-```
-
-```{r eval=FALSE, include=FALSE}
-# read data
-data = map(
-  files, read_csv
-)
-
-# bind and save
-data = bind_rows(data)
-
-# step means
-data_step_covs = group_by(
-  data,
-  id, date,
-  patch_start,
-  patch_end,
-  case_,
-) %>% 
-  summarise(
-    across(
-      matches(c("ndvi", "vis")),
-      mean
-    )
-  )
-
-# proportion of lc class
-data_step_lc = group_by(
-  data,
-  id, date,
-  patch_start,
-  patch_end,
-  case_,
-) %>%
-  summarise(
-    as.data.frame(table(lc_end))
-  )
-
-# convert to percentages
-data_step_lc = ungroup(
-  data_step_lc
-) %>% 
-  group_by(
-    id, date, patch_start, patch_end, case_
-  ) %>% 
-  mutate(
-    Freq = Freq / sum(Freq)
-  )
-
-# pivot wide
-data_step_lc = pivot_wider(
-  data_step_lc,
-  names_from = "lc_end",
-  values_from = "Freq", 
-  values_fill = 0
-)
-
-# link to env attributes
-data_step_covs = left_join(
-  data_step_covs,
-  data_step_lc
-)
-
-write_csv(
-  data_step_covs,
-  file = "data/results/data_ssf_step_covs.csv"
-)
-```
-
-```{r}
-rm(data); gc()
-```
-
-## Link with rrv and treatment
-
-```{r}
 # read in saved data
 data_step_covs = read_csv("data/results/data_ssf_step_covs.csv")
+
+# remove cols
+data_step_covs = select(
+  data_step_covs,
+  id,
+  date,
+  matches(c("x", "y")),
+  matches(c("ndvi", "vis")),
+  case_, step_id_,
+  B, O, R, `T`, W,
+  -X22
+)
+
 # read rrv
 rrv = read_csv("data/results/data_daily_rrv.csv")
 rrv$date = as.character(rrv$date)
@@ -141,7 +53,7 @@ data_step_covs = left_join(
 # filter for high ndvi values
 data_sel = filter(
   data_step_covs,
-  between(ndvi_mean_end, 0.4, 1)
+  between(ndvi_end, 0.4, 1)
 )
 
 # filter out data without species or rrv
@@ -152,25 +64,34 @@ data_sel = filter(
   !is.na(rrv_calc)
 )
 
-# summarise
-sdf = group_by(
-  data_sel,
-  sp, treat, case_
+sdf = filter(
+  data_sel
 ) |> 
+  select(
+    sp, treat, case_,
+    rrv_calc,
+    matches(c("vis", "ndvi"))
+  )
+
+sdf = sdf |> 
+  group_by(
+    sp, treat, case_
+  ) |> 
   summarise(
     across(
-      c(rrv_calc, vis_mean_end, ndvi_mean_end),
+      matches(c("vis", "ndvi", "rrv")), 
       .fns = list(
-        mean = function(x) mean(x, na.rm = T),
+        mean = function(x) mean(x, na.rm=T),
         sd = function(x) sd(x, na.rm = T)
       )
-    )
-  ) |> 
+    ),
+    .groups = "keep"
+  )|> 
   rename(
-    vis_mean = vis_mean_end_mean,
-    vis_sd = vis_mean_end_sd,
-    ndvi_mean = ndvi_mean_end_mean,
-    ndvi_sd = ndvi_mean_end_sd
+    vis_mean = vis_end_mean,
+    vis_sd = vis_end_sd,
+    ndvi_mean = ndvi_end_mean,
+    ndvi_sd = ndvi_end_sd
   ) |> 
   mutate(
     case_ = if_else(case_, "real", "alternate")
@@ -194,7 +115,7 @@ data_sel = mutate(
 library(mgcv)
 
 mod1 = gam(
-  vis_mean_end ~ s(rrv_calc, by = sp, k = 3) +
+  vis_end ~ s(rrv_calc, by = sp, k = 3) +
     s(sp, bs = "re"),
   data = filter(
     data_sel, case_
@@ -205,20 +126,14 @@ summary(mod1)
 gratia::draw(mod1)
 ```
 
+## Model visibility across RRV
+
 ```{r}
 # make prediction table
 pred_data = crossing(
   sp = as.factor(unique(data_sel$sp)),
   id = "new",
-  treat = as.factor(unique(data_sel$treat)),
   rrv_calc = seq(0, 20, 0.5)
-)
-
-# filter for unrealistic
-pred_data = filter(pred_data,
-  (treat == "NonMoulting" & rrv_calc == 0) |
-  (treat == "Moulting" & between(rrv_calc, 2, 12)) |
-  (treat == "Manipulated" & between(rrv_calc, 12, 20))
 )
 
 # get prediction
@@ -247,23 +162,33 @@ ggplot(data_sel)+
   )
 ```
 
-
-### Plot figure 2
+## Plot comparison of real and potential patches visibility
 
 ```{r}
-fig_vis_selection = 
+fig_vis_selection =
 ggplot(sdf)+
+  geom_jitter(
+    data = filter(
+      data_sel,
+      !case_
+    ),
+    aes(
+      rrv_calc, vis_end
+    ),
+    col = "lightgrey",
+    shape = 4,
+    size = 0.2
+  )+
   geom_jitter(
     data = filter(
       data_sel,
       case_
     ),
     aes(
-      rrv_calc, vis_mean_end,
+      rrv_calc, vis_end,
       col = treat,
     ),
-    shape = 1,
-    size = 0.3
+    shape = 1
   )+
   geom_ribbon(
     data = filter(
@@ -386,9 +311,131 @@ ggplot(sdf)+
 
 ggsave(
   fig_vis_selection,
-  filename = "figures/fig_02.png",
+  filename = "figures/fig_03.png",
   height = 87,
   width = 178,
   units = "mm"
 )
 ```
+
+### Compare real and potential patches NDVI
+
+```{r}
+fig_ndvi_selection = ggplot(sdf)+
+  geom_jitter(
+    data = filter(
+      data_sel,
+      !case_
+    ),
+    aes(
+      rrv_calc, ndvi_end
+    ),
+    col = "lightgrey",
+    shape = 4,
+    size = 0.2
+  )+
+  geom_jitter(
+    data = filter(
+      data_sel,
+      case_
+    ),
+    aes(
+      rrv_calc, ndvi_end,
+      col = treat,
+    ),
+    shape = 1
+  )+
+  geom_linerange(
+    aes(
+      x = rrv_calc_mean,
+      ymin = ndvi_mean - ndvi_sd,
+      ymax = ndvi_mean + ndvi_sd
+    ),
+    position = position_nudge(
+      x = c(-1, 1)
+    )
+  )+
+  geom_linerange(
+    aes(
+      x = rrv_calc_mean, y = ndvi_mean,
+      xmin = rrv_calc_mean - rrv_calc_sd,
+      xmax = rrv_calc_mean + rrv_calc_sd
+    ),
+    position = position_nudge(
+      x = c(-1, 1)
+    )
+  )+
+  geom_point(
+    aes(
+      rrv_calc_mean, ndvi_mean,
+      shape = case_,
+      fill = treat
+    ),
+    size = 3,
+    position = position_nudge(
+      x = c(-1, 1)
+    )
+  )+
+  scale_fill_discrete_sequential(
+    palette = "Batlow",
+    l1 = 30, l2 = 60,
+    breaks = c("NonMoulting", "Moulting", "Manipulated"),
+    labels = c("N. Moulting", "Moulting", "Manipulated")
+  )+
+  scale_colour_discrete_sequential(
+    palette = "Batlow",
+    l1 = 50, l2 = 50,
+    guide = "none"
+  )+
+  scale_shape_manual(
+    values = c(
+      "real" = 21, 
+      "alternate" = 25
+    ),
+    limits = c("alternate", "real"),
+    # breaks = c("real", "alternate"),
+    labels = c("Potential", "Real")
+  )+
+  facet_grid(
+    cols = vars(sp),
+    scales = "free_x"
+  )+
+  theme_test(
+    base_size = 10,
+    base_family = "Arial"
+  )+
+  theme(
+    legend.position = "top",
+    strip.background = element_blank(),
+    strip.text = element_text(
+      face = "italic"
+    )
+  )+
+  labs(
+    x = "RRV (More ragged wing)",
+    y = "NDVI at next patch",
+    fill = NULL,
+    shape = NULL
+  )+
+  guides(
+    fill = guide_legend(
+      override.aes = list(
+        shape = 22
+      )
+    ),
+    shape = guide_legend(
+      override.aes = list(
+        size = 3
+      )
+    )
+  )
+
+ggsave(
+  fig_ndvi_selection,
+  filename = "figures/fig_ndvi_sel_rrv.png",
+  height = 87,
+  width = 178,
+  units = "mm"
+)
+```
+
