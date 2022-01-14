@@ -208,7 +208,7 @@ fig_swallow_dist =
 # save
 ggsave(
   fig_swallow_dist,
-  filename = "figures/fig_03.png",
+  filename = "figures/fig_02.png",
   height = 87, width = 87, units = "mm"
 )
 ```
