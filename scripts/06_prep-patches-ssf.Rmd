@@ -135,40 +135,40 @@ Data still contains long term sparrow tracking and swallow data.
 save(tracks, file = "data/processed/data_for_ssf.Rds")
 ```
 
-```{r}
-# unlist and view
-data = unnest(
-  tracks,
-  cols = "data"
-)
-
-# write
-fwrite(
-  data, file = "data/results/data_alternative_patches.csv"
-)
-
-# make geometry
-data = mutate(
-  data,
-  seg = pmap(list(x1_, x2_, y1_, y2_), function(x1, x2, y1, y2) {
-    sf::st_linestring(
-      x = matrix(c(x1, y1, x2, y2), nrow = 2, byrow = 2)
-    )
-  })
-)
-
-# make sf
-data_steps = st_sf(
-  data,
-  sf_column_name = "seg",
-  crs = 2039
-)
-
-# write
-st_write(
-  data_steps,
-  dsn = "data/spatial/data_patch_alt_steps.gpkg"
-)
+```{r,eval=FALSE}
+# # unlist and view
+# data = unnest(
+#   tracks,
+#   cols = "data"
+# )
+# 
+# # write
+# fwrite(
+#   data, file = "data/results/data_alternative_patches.csv"
+# )
+# 
+# # make geometry
+# data = mutate(
+#   data,
+#   seg = pmap(list(x1_, x2_, y1_, y2_), function(x1, x2, y1, y2) {
+#     sf::st_linestring(
+#       x = matrix(c(x1, y1, x2, y2), nrow = 2, byrow = 2)
+#     )
+#   })
+# )
+# 
+# # make sf
+# data_steps = st_sf(
+#   data,
+#   sf_column_name = "seg",
+#   crs = 2039
+# )
+# 
+# # write
+# st_write(
+#   data_steps,
+#   dsn = "data/spatial/data_patch_alt_steps.gpkg"
+# )
 ```
 
 ## Read patches and get cov
@@ -228,7 +228,7 @@ rand_pts_y = rnorm(15, 0, 20)
 ```
 
 ```{r}
-pwalk(
+step_covs = pmap(
   tracks,
   function(id, date, data, nrow, points_data) {
     # print message
@@ -376,48 +376,104 @@ pwalk(
     df <- mutate(df, log_sl = log(sl_ + 1e-5)) %>%
       filter(!is.na(log_sl), !is.infinite(log_sl))
     
-    df = select(
-      df, 
-      patch_start, patch_end,
-      step_id_,
-      case_,
-      log_sl,
-      matches(c("ndvi", "vis", "lc")),
-      -ndvi, -vis, -lc
+    # summarise covariates across real and alternative patches
+    # return summary for comparison
+    setDT(df)
+    df_s = df[, lapply(.SD, mean),
+       .SDcols = c("ndvi_end", "ndvi_start", "vis_end", "vis_start"),
+       by = c("x1_", "y1_", "x2_", "y2_", 
+              "step_id_", "patch_start", "patch_end",
+              "case_")]
+    df_s_lc = df[, .N, 
+                 by =  c(
+                   "x1_", "y1_", "x2_", "y2_",
+                   "step_id_", "patch_start", "patch_end",
+                   "case_", "lc_end"
+                 )
+    ]
+    df_s_lc[, prop := N / sum(N),
+            by = c("x1_", "y1_", "x2_", "y2_", 
+              "step_id_", "patch_start", "patch_end",
+              "case_")]
+    df_s_lc = dcast(
+      df_s_lc,
+      x1_ + y1_ + x2_ + y2_ + step_id_ + patch_start + patch_end + case_ ~ lc_end,
+      value.var = "prop", fill = 0
     )
     
-    # join destination data with steps data
-    df = distinct(
-      df
+    # handle missing names
+    lc_names = c("B", "O", "R", "T")
+    df_s_lc[, c(setdiff(lc_names, names(df_s_lc))) := 0]
+    
+    # merge with data and return
+    df_s = merge.data.table(
+      df_s,
+      df_s_lc, 
+      by = intersect(names(df_s), names(df_s_lc))
     )
     
-    # sample only half of all points
-    df = group_by(
-      df,
-      patch_start,
-      patch_end,
-      case_
-    ) |> 
-      sample_frac(
-        size = 0.5
-      )
+    as_tibble(df_s)
     
-    df = mutate(
-      df,
-      id = id,
-      date = date
-    )
+    # df = select(
+    #   df, 
+    #   patch_start, patch_end,
+    #   step_id_,
+    #   case_,
+    #   log_sl,
+    #   matches(c("ndvi", "vis", "lc")),
+    #   -ndvi, -vis, -lc
+    # )
     
-    fwrite(
-      df,
-      file = glue::glue(
-        "data/processed/data_for_clogit/data_{id}_{date}.csv"
-      )
-    )
+    # # join destination data with steps data
+    # df = distinct(
+    #   df
+    # )
+    # 
+    # # sample only half of all points
+    # df = group_by(
+    #   df,
+    #   patch_start,
+    #   patch_end,
+    #   case_
+    # ) |> 
+    #   sample_frac(
+    #     size = 0.5
+    #   )
+    # 
+    # df = mutate(
+    #   df,
+    #   id = id,
+    #   date = date
+    # )
+    # 
+    # fwrite(
+    #   df,
+    #   file = glue::glue(
+    #     "data/processed/data_for_clogit/data_{id}_{date}.csv"
+    #   )
+    # )
     
   }
 )
 
+tracks$step_covs = step_covs
+
 # remove rasters
 rm(ndvi, vis)
+```
+
+```{r}
+# unnest data
+tracks = unnest(
+  select(
+    tracks, -data, -points_data,
+  ),
+  step_covs
+)
+
+# save
+write.csv(
+  tracks,
+  file = "data/results/data_ssf_step_covs.csv"
+)
 ```
