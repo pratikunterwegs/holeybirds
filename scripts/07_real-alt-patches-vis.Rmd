@@ -47,6 +47,15 @@ data_step_covs = left_join(
 )
 ```
 
+```{r}
+# long term tracking
+df_cov_lt = filter(
+  data_step_covs,
+  is.na(rrv_calc),
+  sp == "Passer"
+)
+```
+
 ### Summarise by case and treatment
 
 ```{r}
@@ -437,5 +446,74 @@ ggsave(
   width = 178,
   units = "mm"
 )
+```
+
+## Patch selection over the long term
+
+```{r}
+df_cov_lt
+
+sdf = filter(
+  df_cov_lt
+) |> 
+  select(
+    sp, treat, case_,
+    date, id,
+    RRV,
+    matches(c("vis", "ndvi"))
+  )
+
+sdf = mutate(
+  sdf,
+  date = as.Date(date)
+) |> 
+  group_by(
+    id
+  ) |> 
+  mutate(
+    days = as.numeric(date - min(date))
+  )
+
+sdf = sdf |> 
+  group_by(
+    treat, case_, RRV, days, id
+  ) |> 
+  summarise(
+    across(
+      matches(c("vis", "ndvi")), 
+      .fns = list(
+        mean = function(x) mean(x, na.rm=T),
+        sd = function(x) sd(x, na.rm = T)
+      )
+    ),
+    .groups = "keep"
+  )|> 
+  rename(
+    vis_mean = vis_end_mean,
+    vis_sd = vis_end_sd,
+    ndvi_mean = ndvi_end_mean,
+    ndvi_sd = ndvi_end_sd
+  ) |> 
+  mutate(
+    case_ = if_else(case_, "real", "alternate")
+  )
+```
+
+```{r}
+ggplot(sdf)+
+  stat_summary(
+    aes(
+      plyr::round_any(days, 3), 
+      ndvi_mean,
+      col = as.factor(RRV),
+      shape = case_
+    )
+  )+
+  scale_color_viridis_d(
+    option = "H"
+  )+
+  facet_wrap(
+    ~id
+  )
 ```
 
