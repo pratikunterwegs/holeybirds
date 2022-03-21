@@ -255,7 +255,7 @@ ggplot(psdf)+
       rrv_calc, dist_ph,
       col = treat
     ),
-    shape = 1
+    shape = 16
   )+
   geom_ribbon(
     data = pred_data[!(sp == "Pycnonotus" & rrv_calc > 17)],
