@@ -131,6 +131,9 @@ pred = predict(mod1, newdata = pred_data, allow.new.levels = T, se.fit = T)
 
 pred_data$pred = pred$fit
 pred_data$se = pred$se.fit
+
+# add species name
+psdf2[, sp := "Hirundo"]
 ```
 
 ## Plot movement and utilisation over RRV
@@ -186,6 +189,14 @@ fig_swallow_dist =
     ),
     shape = 21,
     size = 3
+  )+
+  facet_grid(
+    rows = vars(sp),
+    labeller = labeller(
+      sp = c(
+        "Hirundo" = "Barn swallow"
+      )
+    )
   )+
   scale_fill_discrete_sequential(
     palette = "Batlow",
