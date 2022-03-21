@@ -81,9 +81,6 @@ data = merge(
   data,
   patch_env
 )
-
-# this hopes that the order is correct after applying unique to patches
-data$lc = lc_patches$Name
 ```
 
 ```{r}
@@ -119,7 +116,6 @@ patch_switches = data[, list(
 ), by = c("id", "date", "sp", "rrv_calc", "treat")]
 
 patch_switches = patch_switches[!is.na(sp)]
-
 
 # convert to patch switches per hour
 patch_switches[, dist_ph := total_dist/tracking_duration]
@@ -173,6 +169,23 @@ writeLines(
 )
 ```
 
+### Summarise patch switches
+
+```{r}
+# summarise patch switches by species and treatments
+patch_switch_summary = patch_switches[treat != "Manipulated" | 
+                                        (treat == "Manipulated" & rrv_calc > 12), list(
+  mean_dist_ph = mean(dist_ph, na.rm = TRUE)
+), by = c("sp", "treat")]
+
+# save small data
+fwrite(
+  patch_switch_summary,
+  file = "data/results/data_patch_switch_summary.csv"
+)
+```
+
+
 ## Plot movement per hour over patch switches
 
 ```{r}
@@ -216,6 +229,14 @@ ggplot(patch_switches[dist_ph < 900])+
     ~sp
   )
 ```
+
+```{r}
+# set factor order of species names
+psdf[, sp := factor(sp, levels = c(
+  "Pycnonotus", "Passer", "Acrocephalus"
+))]
+```
+
 
 ```{r}
 library(ggplot2)
@@ -280,7 +301,7 @@ ggplot(psdf)+
     palette = "Batlow",
     l1 = 30, l2 = 60,
     breaks = c("NonMoulting", "Moulting", "Manipulated"),
-    labels = c("N. Moulting", "Moulting", "Manipulated")
+    labels = c("Non-molting", "Molting", "Manipulated")
   )+
   scale_colour_discrete_sequential(
     palette = "Batlow",
@@ -291,13 +312,13 @@ ggplot(psdf)+
   facet_grid(
     rows = vars(sp),
     scales = "free",
-    # labeller = labeller(
-    #   sp = c(
-    #     "Acrocephalus" = "Warbler",
-    #     "Passer" = "Sparrow",
-    #     "Pycnonotus" = "Bulbul"
-    #   )
-    # )
+    labeller = labeller(
+      sp = c(
+        "Acrocephalus" = "Clamorous\nreed warbler",
+        "Passer" = "House sparrow",
+        "Pycnonotus" = "White spectacled\nbulbul"
+      )
+    )
   )+
   coord_cartesian(
     ylim = c(0, NA)
@@ -314,8 +335,8 @@ ggplot(psdf)+
     )
   )+
   labs(
-    x = "RRV (More ragged wing)",
-    y = "Daily long-distance movement (m)",
+    x = "Wing gap index (More gappy wing →)",
+    y = "Distance moved between residence patches (m) / hr",
     fill = NULL
   )
 
