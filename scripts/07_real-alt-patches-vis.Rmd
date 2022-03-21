@@ -7,6 +7,7 @@ editor_options:
 library(readr)
 library(dplyr)
 library(tidyr)
+library(amt)
 
 library(ggplot2)
 library(colorspace)
@@ -53,7 +54,7 @@ data_step_covs = left_join(
 # filter for high ndvi values
 data_sel = filter(
   data_step_covs,
-  between(ndvi_end, 0.4, 1)
+  between(ndvi_end, 0, 1)
 )
 
 # filter out data without species or rrv
@@ -64,6 +65,7 @@ data_sel = filter(
   !is.na(rrv_calc)
 )
 
+# select useful columns
 sdf = filter(
   data_sel
 ) |> 
@@ -96,6 +98,12 @@ sdf = sdf |>
   mutate(
     case_ = if_else(case_, "real", "alternate")
   )
+
+# save
+write_csv(
+  sdf,
+  file = "data/results/data_visibility_steps_summary.csv"
+)
 ```
 
 ### Model visibility with RRV
@@ -116,7 +124,8 @@ library(mgcv)
 
 mod1 = gam(
   vis_end ~ s(rrv_calc, by = sp, k = 3) +
-    s(sp, bs = "re"),
+    s(ndvi_end, k = 5), 
+    # s(sp, bs = "re"),
   data = filter(
     data_sel, case_
   )
@@ -124,6 +133,17 @@ mod1 = gam(
 
 summary(mod1)
 gratia::draw(mod1)
+```
+
+```{r}
+# save model summary
+mod_summary = summary(mod1)
+writeLines(
+  capture.output(
+    mod_summary
+  ),
+  con = "data/results/mod_summary_rrv_visibility.txt"
+)
 ```
 
 ## Model visibility across RRV
@@ -161,6 +181,69 @@ ggplot(data_sel)+
     ~sp
   )
 ```
+
+## Step selection based on visibility
+
+```{r}
+# split the data by species, first making a copy
+data_clogit = data_sel
+
+# fix factor levels
+data_clogit = mutate(
+  data_clogit,
+  treat = factor(
+    treat,
+    levels = c("NonMoulting", "Moulting", "Manipulated")
+  ),
+  vis_end_inv = 1 - vis_end
+)
+
+# now nest the data
+data_clogit = nest(
+  data_clogit, !c("sp", "treat")
+)
+
+# apply a gam over the nested data
+data_clogit = mutate(
+  data_clogit,
+  mod_fit = lapply(
+    data, function(df) {
+      survival::clogit(
+        formula = case_ ~ (vis_end) + ndvi_end +
+          strata(step_id_),
+        method = "approximate",
+        data = df
+      )
+    }
+  )
+)
+
+# get model outputs
+data_clogit = mutate(
+  data_clogit,
+  mod_fit = lapply(mod_fit, broom::tidy)
+)
+
+# unnest model fits
+data_clogit = unnest(
+  data_clogit,
+  cols = "mod_fit"
+)
+
+# mark sig
+data_clogit = mutate(
+  data_clogit,
+  sig = p.value < 0.05
+)
+
+# remove data col and save
+data_clogit = select(data_clogit, -data)
+write_csv(
+  data_clogit,
+  file = "data/results/data_clogit_fit_vis.csv"
+)
+```
+
 
 ## Plot comparison of real and potential patches visibility
 
