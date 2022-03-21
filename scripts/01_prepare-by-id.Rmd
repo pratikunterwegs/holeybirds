@@ -253,7 +253,7 @@ data_tracking_summary_w_rrv = data_tracking_summary_w_rrv[
   , !c("tag_4_digit", "date", "rrv_calc")
 ]
 
-fwrite(data_tracking_summary_w_rrv, 
+fwrite(data_tracking_summary_w_rrv,
        file = "data/results/data_tracking_metrics_rrv.csv")
 
 # join the datasets
@@ -269,3 +269,57 @@ data <- data[, !"trunc_tag"]
 fwrite(data, file = "data/results/data_daily_rrv.csv")
 ```
 
+### Summarise wing gap index
+
+```{r}
+# read in wing gap index scores
+wgi = fread("data/results/data_daily_rrv.csv")
+
+# summarise by species and molt status
+wgi_summary = wgi[, list(
+  wgi_mean = mean(RRV, na.rm = TRUE),
+  wgi_sd = sd(RRV, na.rm = TRUE)
+), by = c("treat", "sp")]
+
+# save data
+fwrite(
+  wgi_summary,
+  file = "data/results/data_wgi_summary.csv"
+)
+```
+
+### WGI progression plot
+
+```{r}
+# assign first and last day of tracking
+wgi[, day := as.numeric(date - min(date), units = "days") + 1, by = "TAG"]
+
+library(ggplot2)
+
+ggplot(wgi[treat != "NonMoulting"])+
+  geom_smooth(
+    aes(
+      day, rrv_calc,
+      col = treat
+    ),
+    method = "glm"
+  )+
+  geom_point(
+    aes(
+      day, rrv_calc, group = TAG, 
+      col = treat
+    )
+  )+
+  coord_cartesian(
+    xlim = c(NA, 7)
+  )+
+  facet_wrap(
+    facets = vars(sp)
+  )+
+  theme_test()+
+  theme(
+    legend.position = "top"
+  )
+```
+
+### WGI after five days
