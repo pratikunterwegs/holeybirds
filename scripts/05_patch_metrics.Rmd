@@ -5,9 +5,12 @@ editor_options:
 
 ```{r}
 library(data.table)
-library(sf)
 
+library(sf)
 library(terra)
+
+library(ggplot2)
+library(colorspace)
 ```
 
 ## Extract environmental covariates at patches
@@ -239,9 +242,7 @@ psdf[, sp := factor(sp, levels = c(
 
 
 ```{r}
-library(ggplot2)
-library(colorspace)
-
+# plot figure
 fig_moult_move =
 ggplot(psdf)+
   geom_hline(
@@ -255,10 +256,11 @@ ggplot(psdf)+
       rrv_calc, dist_ph,
       col = treat
     ),
-    shape = 16
+    shape = 1
   )+
   geom_ribbon(
-    data = pred_data[!(sp == "Pycnonotus" & rrv_calc > 17)],
+    data = pred_data[!(sp == "Pycnonotus" & rrv_calc > 17) &
+                       !sp == "Acrocephalus"],
     aes(
       rrv_calc,
       ymin = pred - se,
@@ -269,7 +271,8 @@ ggplot(psdf)+
     lty = 1
   )+
   geom_line(
-    data = pred_data[!(sp == "Pycnonotus" & rrv_calc > 17)],
+    data = pred_data[!(sp == "Pycnonotus" & rrv_calc > 17) &
+                       !sp == "Acrocephalus"],
     aes(
       rrv_calc, pred
     ),
