@@ -269,6 +269,16 @@ data <- data[, !"trunc_tag"]
 fwrite(data, file = "data/results/data_daily_rrv.csv")
 ```
 
+```{r}
+# summarise some tracking metrics
+data_tracking_summary[, .(all_fixes = sum(nfixes))]
+
+# average positions per day
+data_tracking_summary[, list(avg_fixes = nfixes / days_tracking), by = c("TAG", "sp")][
+  , list(avg_avg_fixes = mean(avg_fixes), sd_avg_fixes = sd(avg_fixes)), by = "sp"
+]
+```
+
 ### Summarise wing gap index
 
 ```{r}
@@ -288,6 +298,19 @@ fwrite(
 )
 ```
 
+```{r}
+# count individuals by species
+unique(wgi, by = "TAG")[, .N, by = "sp"]
+```
+
+```{r}
+# summarise tracking before pre-processing
+unique(wgi, by = "TAG")[, .(
+  mt = mean(days_tracking), sdt = sd(days_tracking)), 
+  by = "sp"]
+```
+
+
 ### WGI progression plot
 
 ```{r}
@@ -297,10 +320,11 @@ wgi[, day := as.numeric(date - min(date), units = "days") + 1, by = "TAG"]
 library(ggplot2)
 
 ggplot(wgi[treat != "NonMoulting"])+
-  geom_smooth(
+  geom_line(
     aes(
       day, rrv_calc,
-      col = treat
+      col = treat,
+      group = TAG
     ),
     method = "glm"
   )+
@@ -310,13 +334,15 @@ ggplot(wgi[treat != "NonMoulting"])+
       col = treat
     )
   )+
+  scale_y_continuous(
+    breaks = seq(20)
+  )+
   coord_cartesian(
     xlim = c(NA, 7)
   )+
   facet_wrap(
     facets = vars(sp)
   )+
-  theme_test()+
   theme(
     legend.position = "top"
   )
