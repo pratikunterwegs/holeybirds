@@ -7,9 +7,12 @@ editor_options:
 library(readr)
 library(dplyr)
 library(tidyr)
-library(amt)
+library(glue)
+
+library(survival)
 
 library(ggplot2)
+library(ggtext)
 library(colorspace)
 library(patchwork)
 ```
@@ -153,6 +156,7 @@ writeLines(
 pred_data = crossing(
   sp = as.factor(unique(data_sel$sp)),
   id = "new",
+  ndvi_end = 0.3,
   rrv_calc = seq(0, 20, 0.5)
 )
 
@@ -244,8 +248,54 @@ write_csv(
 )
 ```
 
+```{r}
+# merge rrv mean data and clogit fits
+data_clogit = left_join(
+  data_clogit,
+  filter(sdf, case_ == "real")
+)
+
+# add text label
+data_clogit = mutate(
+  data_clogit,
+  p_val_round = round(p.value, digits = 3),
+  label = glue(
+    "p = {p_val_round}"
+  ),
+  # handle if p is very small
+  label = if_else(
+    p_val_round < 0.0001,
+    glue("p < 0.001"),
+    label
+  ),
+  # add the z statistic
+  label = glue(
+    "z = {round(statistic, 3)}
+    {label}"
+  )
+)
+```
 
 ## Plot comparison of real and potential patches visibility
+
+```{r}
+# set factor levels
+sdf = mutate(
+  sdf,
+  sp = factor(sp, levels = c(
+    "Pycnonotus", "Passer", "Acrocephalus"
+  ))
+)
+
+# set factors
+data_clogit = mutate(
+  data_clogit,
+  sp = factor(sp, levels = c(
+    "Pycnonotus", "Passer", "Acrocephalus"
+  ))
+)
+```
+
 
 ```{r}
 fig_vis_selection =
@@ -271,32 +321,33 @@ ggplot(sdf)+
       rrv_calc, vis_end,
       col = treat,
     ),
+    size = 1,
     shape = 1
   )+
-  geom_ribbon(
-    data = filter(
-      pred_data,
-      !(sp %in% c("Passer", "Pycnonotus") & rrv_calc > 17)
-    ),
-    aes(
-      rrv_calc,
-      ymin = pred - se,
-      ymax = pred + se
-    ),
-    fill = "transparent",
-    col = "grey",
-    lty = 1
-  )+
-  geom_line(
-    data = filter(
-      pred_data,
-      !(sp %in% c("Passer", "Pycnonotus") & rrv_calc > 17)
-    ),
-    aes(
-      rrv_calc, pred
-    ),
-    col = "indianred"
-  )+
+  # geom_ribbon(
+  #   data = filter(
+  #     pred_data,
+  #     (sp %in% c("Acrocephalus"))
+  #   ),
+  #   aes(
+  #     rrv_calc,
+  #     ymin = pred - se,
+  #     ymax = pred + se
+  #   ),
+  #   fill = "transparent",
+  #   col = "grey",
+  #   lty = 1
+  # )+
+  # geom_line(
+  #   data = filter(
+  #     pred_data,
+  #     (sp %in% c("Acrocephalus"))
+  #   ),
+  #   aes(
+  #     rrv_calc, pred
+  #   ),
+  #   col = "indianred"
+  # )+
   geom_linerange(
     aes(
       x = rrv_calc_mean,
@@ -328,21 +379,37 @@ ggplot(sdf)+
       x = c(-1, 1)
     )
   )+
-  geom_text(
-    data = tibble(
-      x = 0,
-      y = 0.9,
-      l = "NDVI > 0.4"
+  ggrepel::geom_text_repel(
+    data = filter(
+      data_clogit,
+      term == "vis_end"
     ),
-    hjust = "inward",
-    fontface = "italic",
-    aes(x, y, label = l)
+    aes(
+      x = rrv_calc_mean,
+      y = 1.2,
+      label = label,
+      col = treat,
+      hjust = 0.5,
+    ),
+    fontface = "bold",
+    size = 3
+  )+
+  facet_grid(
+    cols = vars(sp),
+    scales = "free_x",
+    labeller = labeller(
+      sp = c(
+        "Acrocephalus" = "Clamorous\nreed warbler",
+        "Passer" = "House sparrow",
+        "Pycnonotus" = "White spectacled\nbulbul"
+      )
+    )
   )+
   scale_fill_discrete_sequential(
     palette = "Batlow",
     l1 = 30, l2 = 60,
     breaks = c("NonMoulting", "Moulting", "Manipulated"),
-    labels = c("N. Moulting", "Moulting", "Manipulated")
+    labels = c("Non-molting", "Molting", "Manipulated")
   )+
   scale_colour_discrete_sequential(
     palette = "Batlow",
@@ -358,9 +425,8 @@ ggplot(sdf)+
     # breaks = c("real", "alternate"),
     labels = c("Potential", "Real")
   )+
-  facet_grid(
-    cols = vars(sp),
-    scales = "free_x"
+  scale_y_continuous(
+    breaks = seq(0, 1, 0.25)
   )+
   theme_test(
     base_size = 10,
@@ -374,8 +440,8 @@ ggplot(sdf)+
     )
   )+
   labs(
-    x = "RRV (More ragged wing)",
-    y = "Visibility at next patch",
+    x = "Wing gap index (More gappy wing →)",
+    y = "Visibility of residence patches",
     fill = NULL,
     shape = NULL
   )+
