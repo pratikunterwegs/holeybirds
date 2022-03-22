@@ -147,26 +147,26 @@ fig_swallow_dist =
       rrv_calc, dist_ph,
       col = treat
     ),
-    shape = 16
+    shape = 1
   )+
-  geom_ribbon(
-    data = pred_data[rrv_calc < 15,],
-    aes(
-      rrv_calc,
-      ymin = pred - se,
-      ymax = pred + se
-    ),
-    fill = "transparent",
-    col = "grey",
-    lty = 1
-  )+
-  geom_line(
-    data = pred_data[rrv_calc < 15,],
-    aes(
-      rrv_calc, pred
-    ),
-    col = "indianred"
-  )+
+  # geom_ribbon(
+  #   data = pred_data[rrv_calc < 15,],
+  #   aes(
+  #     rrv_calc,
+  #     ymin = pred - se,
+  #     ymax = pred + se
+  #   ),
+  #   fill = "transparent",
+  #   col = "grey",
+  #   lty = 1
+  # )+
+  # geom_line(
+  #   data = pred_data[rrv_calc < 15,],
+  #   aes(
+  #     rrv_calc, pred
+  #   ),
+  #   col = "indianred"
+  # )+
   geom_linerange(
     aes(
       x = rrv_calc.mean,
