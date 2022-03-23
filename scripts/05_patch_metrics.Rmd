@@ -188,7 +188,6 @@ fwrite(
 )
 ```
 
-
 ## Plot movement per hour over patch switches
 
 ```{r}
@@ -319,7 +318,7 @@ ggplot(psdf)+
       sp = c(
         "Acrocephalus" = "Clamorous\nreed warbler",
         "Passer" = "House sparrow",
-        "Pycnonotus" = "White spectacled\nbulbul"
+        "Pycnonotus" = "White-spectacled\nbulbul"
       )
     )
   )+
