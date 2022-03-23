@@ -28,6 +28,10 @@ library(colorspace)
 ndvi = rast("data/rasters/raster_hula_ndvi_2039.tif")
 vis = rast("data/rasters/raster_hula_visibility.tif")
 
+# load land use as sf
+landcover = st_read("data/spatial/hula_lc_vector")
+landcover = st_crop(landcover, vis)
+
 # crop ndvi by vis
 ndvi = crop(ndvi, vis)
 ```
@@ -136,3 +140,76 @@ ggsave(
   height = 130, width = 80, units = "mm"
 )
 ```
+
+## Plot landcover
+
+```{r}
+landcover = mutate(
+  landcover,
+  class = if_else(
+    Name %in% c("C", "W"),
+    "W", Name
+  )
+)
+```
+
+
+```{r}
+fig_landcover = 
+  ggplot(landcover)+
+  geom_sf(
+    aes(
+      fill = class
+    ),
+    col = "transparent"
+  )+
+  scico::scale_fill_scico_d(
+    palette = "hawaii",
+    direction = 1,
+    labels = c(
+      "B" = "Settlements",
+      "O" = "Open areas",
+      "R" = "Reedbeds",
+      "T" = "Trees",
+      "W" = "Water"
+    ),
+    name = NULL
+  )+
+  coord_sf(
+    crs = 2039,
+    expand = F
+  )+
+  scale_x_continuous(
+    breaks = seq(35.58, 35.64, length.out = 3)
+  )+
+  theme_test()+
+  theme(
+    legend.position = "bottom",
+    legend.key.height = unit(2, "mm"),
+    legend.key.width = unit(2, "mm"),
+    legend.title = element_text(
+      vjust = 1
+    ),
+    legend.text = element_text(
+      size = 6
+    ),
+    panel.background = element_rect(
+      fill = "grey99"
+    ),
+    axis.title = element_blank(),
+    axis.text = element_text(
+      size = 8
+    ),
+    axis.text.y = element_text(
+      angle = 90, hjust = 0.5
+    )
+  )
+
+# save figure
+ggsave(
+  fig_landcover,
+  filename = "figures/fig_spm_04.png",
+  height = 130, width = 80, units = "mm"
+)
+```
+
