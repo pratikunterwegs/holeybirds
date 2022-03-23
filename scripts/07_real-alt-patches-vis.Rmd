@@ -401,7 +401,7 @@ ggplot(sdf)+
       sp = c(
         "Acrocephalus" = "Clamorous\nreed warbler",
         "Passer" = "House sparrow",
-        "Pycnonotus" = "White spectacled\nbulbul"
+        "Pycnonotus" = "White-spectacled\nbulbul"
       )
     )
   )+
