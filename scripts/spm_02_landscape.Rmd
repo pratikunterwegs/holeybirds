@@ -213,3 +213,312 @@ ggsave(
 )
 ```
 
+## Model correlation NDVI and visibility
+
+Reload rasters as terra objects.
+
+```{r}
+# load rasters using terra
+ndvi = rast("data/rasters/raster_hula_ndvi_2039.tif")
+vis = rast("data/rasters/raster_hula_visibility.tif")
+```
+
+
+```{r}
+# make samples
+samples = st_sample(
+  landcover,
+  size = 10000,
+  type = "hexagonal"
+)
+```
+
+```{r}
+# extract data at samples
+vis_samp = terra::extract(
+  vis,
+  vect(samples)
+)
+setDT(vis_samp)
+
+ndvi_samp = extract(
+  ndvi,
+  vect(samples)
+)
+setDT(ndvi_samp)
+
+# lc samples
+lc_samp = extract(
+  vect(
+    dplyr::select(landcover, Name)
+  ),
+  vect(samples)
+)
+setDT(lc_samp)
+
+# merge data
+env_data = merge(vis_samp, ndvi_samp)
+env_data = merge(env_data, lc_samp, by.x = "ID", by.y = "id.x")
+
+# filter for valid values
+env_data = env_data[!is.nan(raster_hula_visibility)]
+env_data = setnames(env_data[, !("ID")], c("vis", "ndvi", "lc"))
+```
+
+```{r}
+# landcover classifications
+# B = settlement
+# C = canal
+# O = agriculture/open
+# R = reedbeds
+# T = trees
+# W = water
+
+# remove water
+env_data = env_data[!lc %in% c("C", "W")]
+
+# set landcover factor levels
+env_data$lc = factor(
+  env_data$lc,
+  levels = c("T", "R", "B", "O")
+)
+```
+
+### Fit a simple GAM
+
+```{r}
+# load library
+library(mgcv)
+
+# fit a bam for large data
+mod = bam(
+  vis ~ s(ndvi, by = lc) +
+    s(lc, bs = "re"),
+  data = env_data
+)
+
+summary(mod)
+
+model_summary = summary(mod)
+
+writeLines(
+  capture.output(model_summary),
+  con = "data/results/model_coefs_vis_ndvi.txt"
+)
+
+gratia::draw(mod, fixed = T)
+```
+
+### Get predicted values
+
+```{r}
+# make prediction table
+pred_data = CJ(
+  lc = factor(unique(env_data$lc),
+                 levels = c("T", "R", "B", "O", "W")),
+  ndvi = seq(0, 1, 0.02)
+)
+
+# get prediction
+pred = predict(mod, newdata = pred_data, allow.new.levels = T, se.fit = T)
+
+pred_data$pred = pred$fit
+pred_data$se = pred$se.fit
+
+fig_vis_ndvi = 
+  ggplot(pred_data)+
+  geom_bin_2d(
+    data = env_data,
+    aes(
+      ndvi, vis,
+      fill = ..density..
+    ),
+    show.legend = F
+  )+
+  geom_ribbon(
+    aes(
+      ndvi, 
+      ymin = pred - se,
+      ymax = pred + se,
+      group = lc
+    ),
+    size = 0.3,
+    col = "grey30",
+    fill = alpha("grey", 0.2)
+  )+
+  geom_line(
+    aes(
+      ndvi, pred
+    ),
+    col = 1
+  )+
+  facet_wrap(
+    facets = vars(lc),
+    labeller = labeller(
+      lc = c(
+        "B" = "Settlements",
+        "O" = "Open areas",
+        "R" = "Reedbeds",
+        "T" = "Trees"
+      )
+    )
+  )+
+  labs(
+    x = "NDVI",
+    y = "Visibility index"
+  )+
+  scico::scale_fill_scico(
+    palette = "lajolla"
+  )+
+  scico::scale_colour_scico_d(
+    palette = "hawaii",
+    direction = 1,
+    limits = c(
+      "B", "O", "R", "T", "W"
+    ),
+    breaks = c("B", "O", "R", "T"),
+    labels = c(
+      "B" = "Settlements",
+      "O" = "Open areas",
+      "R" = "Reedbeds",
+      "T" = "Trees"
+    ),
+    name = NULL
+  )+
+  coord_cartesian(
+    expand = T,
+    ylim = c(0, 1),
+    xlim = c(0, 0.8)
+  )+
+  theme_test()+
+  theme(
+    legend.position = "bottom",
+    legend.justification = 1,
+    legend.margin = margin(rep(0, 4)),
+    legend.key.height = unit(4, "mm"),
+    legend.key.width = unit(5, "mm"),
+    strip.background = element_blank(),
+    strip.text = element_text(
+      face = "bold"
+    )
+  )
+
+# save figure
+ggsave(
+  fig_vis_ndvi,
+  filename = "figures/fig_spm_05.png",
+  height = 90, width = 90, units = "mm"
+)
+```
+
+
+```{r}
+# change group name
+setDT(mod_plot_data)
+setnames(mod_plot_data, "group", "lc")
+mod_plot_data$lc_agro = mod_plot_data$lc == "O"
+env_data$lc_agro = env_data$lc == "O"
+
+# save env data
+fwrite(
+  env_data,
+  "data/results/data_vis_ndvi.csv"
+)
+
+# save mod data
+fwrite(
+  mod_plot_data,
+  "data/results/model_vis_ndvi_plot_data.csv"
+)
+```
+
+
+```{r}
+fig_vis_ndvi = 
+  ggplot(
+  env_data,
+  aes(
+    ndvi, vis
+  )
+)+
+  geom_bin2d(
+    aes(
+      fill = ..density..
+    ),
+    binwidth = c(0.05, 0.05)
+  )+
+  geom_pointrange(
+    data = mod_plot_data,
+    aes(
+      x, predicted,
+      ymin = conf.low,
+      ymax = conf.high,
+      col = lc,
+      shape = lc
+    ),
+    position = position_dodge(
+      width = 0.1
+    )
+  )+
+  scale_colour_discrete_qualitative(
+    l1 = 40,
+    labels = c("Orchards", "Reedbeds", "Settlements", "Crops")
+  )+
+  scale_shape(
+    labels = c("Orchards", "Reedbeds", "Settlements", "Crops")
+  )+
+  scale_fill_continuous_sequential(
+    palette = "Heat 2",
+    guide = "none"
+  )+
+  facet_wrap(
+    ~lc_agro,
+    scales = "free",
+    labeller = labeller(
+      lc_agro = c(
+        "TRUE" = "Crop fields & open areas",
+        "FALSE" = "Orchards, reedbeds, settlements"
+      )
+    ),
+    ncol = 1
+  )+
+  coord_cartesian(
+    ylim = c(0, 1)
+  )+
+  theme_test(
+    base_size = 8,
+    base_family = "Arial"
+  )+
+  theme(
+    legend.position = "bottom",
+    legend.margin = margin(rep(0, 4)),
+    legend.key.height = unit(4, "mm"),
+    legend.key.width = unit(5, "mm"),
+    strip.background = element_blank(),
+    strip.text = element_text(
+      face = "bold"
+    )
+  )+
+  guides(
+    colour = guide_legend(
+      nrow = 2
+    ),
+    shape = guide_legend(
+      nrow = 2
+    )
+  )+
+  labs(
+    x = "NDVI",
+    y = "Visibility index",
+    colour = NULL,
+    shape = NULL
+  )
+
+ggsave(
+  fig_vis_ndvi,
+  filename = "figures/fig_vis_ndvi.png",
+  height = 87,
+  width = 52, units = "mm"
+)
+```
+
