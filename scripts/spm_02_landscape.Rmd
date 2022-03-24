@@ -203,7 +203,7 @@ fig_landcover =
 
 ```{r}
 fig_landscape_maps = wrap_plots(
-  fig_ndvi, fig_vis, fig_landcover
+   fig_landcover, fig_ndvi, fig_vis
 ) + plot_annotation(
   tag_levels = "A"
 ) &
