@@ -3,23 +3,23 @@ Family: gaussian
 Link function: identity 
 
 Formula:
-vis ~ s(ndvi, by = lc, k = 4) + s(lc, bs = "re")
+vis ~ s(ndvi, by = lc) + s(lc, bs = "re")
 
 Parametric coefficients:
             Estimate Std. Error t value Pr(>|t|)    
-(Intercept)   0.4445     0.1276   3.484 0.000497 ***
+(Intercept)   0.4446     0.1272   3.495 0.000476 ***
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 Approximate significance of smooth terms:
               edf Ref.df       F  p-value    
-s(ndvi):lcT 2.936  2.997   57.31  < 2e-16 ***
-s(ndvi):lcR 2.101  2.524   31.07  < 2e-16 ***
-s(ndvi):lcB 1.000  1.000   14.80 0.000121 ***
-s(ndvi):lcO 2.830  2.979   59.55  < 2e-16 ***
-s(lc)       2.990  3.000 1075.59  < 2e-16 ***
+s(ndvi):lcT 5.117  6.108   28.00  < 2e-16 ***
+s(ndvi):lcR 2.227  2.837   27.13  < 2e-16 ***
+s(ndvi):lcB 1.000  1.000   14.85 0.000117 ***
+s(ndvi):lcO 6.827  7.947   26.41  < 2e-16 ***
+s(lc)       2.990  3.000 1004.02  < 2e-16 ***
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-R-sq.(adj) =  0.595   Deviance explained = 59.5%
-fREML = -1273.1  Scale est. = 0.044185  n = 9303
+R-sq.(adj) =  0.596   Deviance explained = 59.7%
+fREML = -1282.6  Scale est. = 0.044024  n = 9303
