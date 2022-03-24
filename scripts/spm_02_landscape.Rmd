@@ -80,13 +80,6 @@ fig_ndvi =
       angle = 90, hjust = 0.5
     )
   )
-
-# save figure
-ggsave(
-  fig_ndvi,
-  filename = "figures/fig_spm_02.png",
-  height = 130, width = 80, units = "mm"
-)
 ```
 
 ## Visibility across the landscape
@@ -132,13 +125,6 @@ fig_vis =
       angle = 90, hjust = 0.5
     )
   )
-
-# save figure
-ggsave(
-  fig_vis,
-  filename = "figures/fig_spm_03.png",
-  height = 130, width = 80, units = "mm"
-)
 ```
 
 ## Plot landcover
@@ -182,6 +168,7 @@ fig_landcover =
   scale_x_continuous(
     breaks = seq(35.58, 35.64, length.out = 3)
   )+
+  ggspatial::annotation_scale()+
   theme_test()+
   theme(
     legend.position = "bottom",
@@ -196,6 +183,7 @@ fig_landcover =
     panel.background = element_rect(
       fill = "grey99"
     ),
+    plot.background = element_blank(),
     axis.title = element_blank(),
     axis.text = element_text(
       size = 8
@@ -203,15 +191,36 @@ fig_landcover =
     axis.text.y = element_text(
       angle = 90, hjust = 0.5
     )
+  )+
+  guides(
+    fill = guide_legend(
+      nrow = 2
+    )
+  )
+```
+
+### Merge figures
+
+```{r}
+fig_landscape_maps = wrap_plots(
+  fig_ndvi, fig_vis, fig_landcover
+) + plot_annotation(
+  tag_levels = "A"
+) &
+  theme(
+    plot.tag = element_text(
+      size = 10, face = "bold"
+    )
   )
 
-# save figure
+# save overall figure
 ggsave(
-  fig_landcover,
-  filename = "figures/fig_spm_04.png",
-  height = 130, width = 80, units = "mm"
+  fig_landscape_maps,
+  filename = "figures/fig_spm_02.png",
+  height = 130, width = 195, units = "mm"
 )
 ```
+
 
 ## Model correlation NDVI and visibility
 
@@ -406,119 +415,7 @@ fig_vis_ndvi =
 # save figure
 ggsave(
   fig_vis_ndvi,
-  filename = "figures/fig_spm_05.png",
+  filename = "figures/fig_spm_03.png",
   height = 90, width = 90, units = "mm"
 )
 ```
-
-
-```{r}
-# change group name
-setDT(mod_plot_data)
-setnames(mod_plot_data, "group", "lc")
-mod_plot_data$lc_agro = mod_plot_data$lc == "O"
-env_data$lc_agro = env_data$lc == "O"
-
-# save env data
-fwrite(
-  env_data,
-  "data/results/data_vis_ndvi.csv"
-)
-
-# save mod data
-fwrite(
-  mod_plot_data,
-  "data/results/model_vis_ndvi_plot_data.csv"
-)
-```
-
-
-```{r}
-fig_vis_ndvi = 
-  ggplot(
-  env_data,
-  aes(
-    ndvi, vis
-  )
-)+
-  geom_bin2d(
-    aes(
-      fill = ..density..
-    ),
-    binwidth = c(0.05, 0.05)
-  )+
-  geom_pointrange(
-    data = mod_plot_data,
-    aes(
-      x, predicted,
-      ymin = conf.low,
-      ymax = conf.high,
-      col = lc,
-      shape = lc
-    ),
-    position = position_dodge(
-      width = 0.1
-    )
-  )+
-  scale_colour_discrete_qualitative(
-    l1 = 40,
-    labels = c("Orchards", "Reedbeds", "Settlements", "Crops")
-  )+
-  scale_shape(
-    labels = c("Orchards", "Reedbeds", "Settlements", "Crops")
-  )+
-  scale_fill_continuous_sequential(
-    palette = "Heat 2",
-    guide = "none"
-  )+
-  facet_wrap(
-    ~lc_agro,
-    scales = "free",
-    labeller = labeller(
-      lc_agro = c(
-        "TRUE" = "Crop fields & open areas",
-        "FALSE" = "Orchards, reedbeds, settlements"
-      )
-    ),
-    ncol = 1
-  )+
-  coord_cartesian(
-    ylim = c(0, 1)
-  )+
-  theme_test(
-    base_size = 8,
-    base_family = "Arial"
-  )+
-  theme(
-    legend.position = "bottom",
-    legend.margin = margin(rep(0, 4)),
-    legend.key.height = unit(4, "mm"),
-    legend.key.width = unit(5, "mm"),
-    strip.background = element_blank(),
-    strip.text = element_text(
-      face = "bold"
-    )
-  )+
-  guides(
-    colour = guide_legend(
-      nrow = 2
-    ),
-    shape = guide_legend(
-      nrow = 2
-    )
-  )+
-  labs(
-    x = "NDVI",
-    y = "Visibility index",
-    colour = NULL,
-    shape = NULL
-  )
-
-ggsave(
-  fig_vis_ndvi,
-  filename = "figures/fig_vis_ndvi.png",
-  height = 87,
-  width = 52, units = "mm"
-)
-```
-
