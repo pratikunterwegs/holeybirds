@@ -7,8 +7,12 @@ editor_options:
 library(readr)
 library(dplyr)
 library(tidyr)
+library(glue)
+
+library(survival)
 
 library(ggplot2)
+library(ggtext)
 library(colorspace)
 library(patchwork)
 ```
@@ -53,7 +57,7 @@ data_step_covs = left_join(
 # filter for high ndvi values
 data_sel = filter(
   data_step_covs,
-  between(ndvi_end, 0.4, 1)
+  between(ndvi_end, 0, 1)
 )
 
 # filter out data without species or rrv
@@ -64,6 +68,7 @@ data_sel = filter(
   !is.na(rrv_calc)
 )
 
+# select useful columns
 sdf = filter(
   data_sel
 ) |> 
@@ -96,6 +101,12 @@ sdf = sdf |>
   mutate(
     case_ = if_else(case_, "real", "alternate")
   )
+
+# save
+write_csv(
+  sdf,
+  file = "data/results/data_visibility_steps_summary.csv"
+)
 ```
 
 ### Model visibility with RRV
@@ -116,7 +127,8 @@ library(mgcv)
 
 mod1 = gam(
   vis_end ~ s(rrv_calc, by = sp, k = 3) +
-    s(sp, bs = "re"),
+    s(ndvi_end, k = 5), 
+    # s(sp, bs = "re"),
   data = filter(
     data_sel, case_
   )
@@ -126,6 +138,17 @@ summary(mod1)
 gratia::draw(mod1)
 ```
 
+```{r}
+# save model summary
+mod_summary = summary(mod1)
+writeLines(
+  capture.output(
+    mod_summary
+  ),
+  con = "data/results/mod_summary_rrv_visibility.txt"
+)
+```
+
 ## Model visibility across RRV
 
 ```{r}
@@ -133,6 +156,7 @@ gratia::draw(mod1)
 pred_data = crossing(
   sp = as.factor(unique(data_sel$sp)),
   id = "new",
+  ndvi_end = 0.3,
   rrv_calc = seq(0, 20, 0.5)
 )
 
@@ -162,7 +186,116 @@ ggplot(data_sel)+
   )
 ```
 
+## Step selection based on visibility
+
+```{r}
+# split the data by species, first making a copy
+data_clogit = data_sel
+
+# fix factor levels
+data_clogit = mutate(
+  data_clogit,
+  treat = factor(
+    treat,
+    levels = c("NonMoulting", "Moulting", "Manipulated")
+  ),
+  vis_end_inv = 1 - vis_end
+)
+
+# now nest the data
+data_clogit = nest(
+  data_clogit, !c("sp", "treat")
+)
+
+# apply a gam over the nested data
+data_clogit = mutate(
+  data_clogit,
+  mod_fit = lapply(
+    data, function(df) {
+      survival::clogit(
+        formula = case_ ~ (vis_end) + ndvi_end +
+          strata(step_id_),
+        method = "approximate",
+        data = df
+      )
+    }
+  )
+)
+
+# get model outputs
+data_clogit = mutate(
+  data_clogit,
+  mod_fit = lapply(mod_fit, broom::tidy)
+)
+
+# unnest model fits
+data_clogit = unnest(
+  data_clogit,
+  cols = "mod_fit"
+)
+
+# mark sig
+data_clogit = mutate(
+  data_clogit,
+  sig = p.value < 0.05
+)
+
+# remove data col and save
+data_clogit = select(data_clogit, -data)
+write_csv(
+  data_clogit,
+  file = "data/results/data_clogit_fit_vis.csv"
+)
+```
+
+```{r}
+# merge rrv mean data and clogit fits
+data_clogit = left_join(
+  data_clogit,
+  filter(sdf, case_ == "real")
+)
+
+# add text label
+data_clogit = mutate(
+  data_clogit,
+  p_val_round = round(p.value, digits = 3),
+  label = glue(
+    "p = {p_val_round}"
+  ),
+  # handle if p is very small
+  label = if_else(
+    p_val_round < 0.0001,
+    glue("p < 0.001"),
+    label
+  ),
+  # add the z statistic
+  label = glue(
+    "z = {round(statistic, 3)}
+    {label}"
+  )
+)
+```
+
 ## Plot comparison of real and potential patches visibility
+
+```{r}
+# set factor levels
+sdf = mutate(
+  sdf,
+  sp = factor(sp, levels = c(
+    "Pycnonotus", "Passer", "Acrocephalus"
+  ))
+)
+
+# set factors
+data_clogit = mutate(
+  data_clogit,
+  sp = factor(sp, levels = c(
+    "Pycnonotus", "Passer", "Acrocephalus"
+  ))
+)
+```
+
 
 ```{r}
 fig_vis_selection =
@@ -188,32 +321,33 @@ ggplot(sdf)+
       rrv_calc, vis_end,
       col = treat,
     ),
+    size = 1,
     shape = 1
   )+
-  geom_ribbon(
-    data = filter(
-      pred_data,
-      !(sp %in% c("Passer", "Pycnonotus") & rrv_calc > 17)
-    ),
-    aes(
-      rrv_calc,
-      ymin = pred - se,
-      ymax = pred + se
-    ),
-    fill = "transparent",
-    col = "grey",
-    lty = 1
-  )+
-  geom_line(
-    data = filter(
-      pred_data,
-      !(sp %in% c("Passer", "Pycnonotus") & rrv_calc > 17)
-    ),
-    aes(
-      rrv_calc, pred
-    ),
-    col = "indianred"
-  )+
+  # geom_ribbon(
+  #   data = filter(
+  #     pred_data,
+  #     (sp %in% c("Acrocephalus"))
+  #   ),
+  #   aes(
+  #     rrv_calc,
+  #     ymin = pred - se,
+  #     ymax = pred + se
+  #   ),
+  #   fill = "transparent",
+  #   col = "grey",
+  #   lty = 1
+  # )+
+  # geom_line(
+  #   data = filter(
+  #     pred_data,
+  #     (sp %in% c("Acrocephalus"))
+  #   ),
+  #   aes(
+  #     rrv_calc, pred
+  #   ),
+  #   col = "indianred"
+  # )+
   geom_linerange(
     aes(
       x = rrv_calc_mean,
@@ -245,21 +379,37 @@ ggplot(sdf)+
       x = c(-1, 1)
     )
   )+
-  geom_text(
-    data = tibble(
-      x = 0,
-      y = 0.9,
-      l = "NDVI > 0.4"
+  ggrepel::geom_text_repel(
+    data = filter(
+      data_clogit,
+      term == "vis_end"
     ),
-    hjust = "inward",
-    fontface = "italic",
-    aes(x, y, label = l)
+    aes(
+      x = rrv_calc_mean,
+      y = 1.2,
+      label = label,
+      col = treat,
+      hjust = 0.5,
+    ),
+    fontface = "bold",
+    size = 3
+  )+
+  facet_grid(
+    cols = vars(sp),
+    scales = "free_x",
+    labeller = labeller(
+      sp = c(
+        "Acrocephalus" = "Clamorous\nreed warbler",
+        "Passer" = "House sparrow",
+        "Pycnonotus" = "White-spectacled\nbulbul"
+      )
+    )
   )+
   scale_fill_discrete_sequential(
     palette = "Batlow",
     l1 = 30, l2 = 60,
     breaks = c("NonMoulting", "Moulting", "Manipulated"),
-    labels = c("N. Moulting", "Moulting", "Manipulated")
+    labels = c("Non-molting", "Molting", "Manipulated")
   )+
   scale_colour_discrete_sequential(
     palette = "Batlow",
@@ -275,9 +425,8 @@ ggplot(sdf)+
     # breaks = c("real", "alternate"),
     labels = c("Potential", "Real")
   )+
-  facet_grid(
-    cols = vars(sp),
-    scales = "free_x"
+  scale_y_continuous(
+    breaks = seq(0, 1, 0.25)
   )+
   theme_test(
     base_size = 10,
@@ -291,8 +440,8 @@ ggplot(sdf)+
     )
   )+
   labs(
-    x = "RRV (More ragged wing)",
-    y = "Visibility at next patch",
+    x = "Wing gap index (More gappy wing →)",
+    y = "Visibility of residence patches",
     fill = NULL,
     shape = NULL
   )+
@@ -317,125 +466,3 @@ ggsave(
   units = "mm"
 )
 ```
-
-### Compare real and potential patches NDVI
-
-```{r}
-fig_ndvi_selection = ggplot(sdf)+
-  geom_jitter(
-    data = filter(
-      data_sel,
-      !case_
-    ),
-    aes(
-      rrv_calc, ndvi_end
-    ),
-    col = "lightgrey",
-    shape = 4,
-    size = 0.2
-  )+
-  geom_jitter(
-    data = filter(
-      data_sel,
-      case_
-    ),
-    aes(
-      rrv_calc, ndvi_end,
-      col = treat,
-    ),
-    shape = 1
-  )+
-  geom_linerange(
-    aes(
-      x = rrv_calc_mean,
-      ymin = ndvi_mean - ndvi_sd,
-      ymax = ndvi_mean + ndvi_sd
-    ),
-    position = position_nudge(
-      x = c(-1, 1)
-    )
-  )+
-  geom_linerange(
-    aes(
-      x = rrv_calc_mean, y = ndvi_mean,
-      xmin = rrv_calc_mean - rrv_calc_sd,
-      xmax = rrv_calc_mean + rrv_calc_sd
-    ),
-    position = position_nudge(
-      x = c(-1, 1)
-    )
-  )+
-  geom_point(
-    aes(
-      rrv_calc_mean, ndvi_mean,
-      shape = case_,
-      fill = treat
-    ),
-    size = 3,
-    position = position_nudge(
-      x = c(-1, 1)
-    )
-  )+
-  scale_fill_discrete_sequential(
-    palette = "Batlow",
-    l1 = 30, l2 = 60,
-    breaks = c("NonMoulting", "Moulting", "Manipulated"),
-    labels = c("N. Moulting", "Moulting", "Manipulated")
-  )+
-  scale_colour_discrete_sequential(
-    palette = "Batlow",
-    l1 = 50, l2 = 50,
-    guide = "none"
-  )+
-  scale_shape_manual(
-    values = c(
-      "real" = 21, 
-      "alternate" = 25
-    ),
-    limits = c("alternate", "real"),
-    # breaks = c("real", "alternate"),
-    labels = c("Potential", "Real")
-  )+
-  facet_grid(
-    cols = vars(sp),
-    scales = "free_x"
-  )+
-  theme_test(
-    base_size = 10,
-    base_family = "Arial"
-  )+
-  theme(
-    legend.position = "top",
-    strip.background = element_blank(),
-    strip.text = element_text(
-      face = "italic"
-    )
-  )+
-  labs(
-    x = "RRV (More ragged wing)",
-    y = "NDVI at next patch",
-    fill = NULL,
-    shape = NULL
-  )+
-  guides(
-    fill = guide_legend(
-      override.aes = list(
-        shape = 22
-      )
-    ),
-    shape = guide_legend(
-      override.aes = list(
-        size = 3
-      )
-    )
-  )
-
-ggsave(
-  fig_ndvi_selection,
-  filename = "figures/fig_ndvi_sel_rrv.png",
-  height = 87,
-  width = 178,
-  units = "mm"
-)
-```
-

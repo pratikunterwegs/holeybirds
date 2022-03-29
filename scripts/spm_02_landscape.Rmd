@@ -1,0 +1,421 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Vegetation, visibility, and land use in the study area
+
+## Load libraries
+
+```{r}
+# libs for data
+library(data.table)
+library(glue)
+
+library(sf)
+library(terra)
+# to plot rasters
+library(stars)
+
+library(ggplot2)
+library(colorspace)
+```
+
+## Load data
+
+```{r}
+# load rasters using terra
+ndvi = rast("data/rasters/raster_hula_ndvi_2039.tif")
+vis = rast("data/rasters/raster_hula_visibility.tif")
+
+# load land use as sf
+landcover = st_read("data/spatial/hula_lc_vector")
+landcover = st_crop(landcover, vis)
+
+# crop ndvi by vis
+ndvi = crop(ndvi, vis)
+```
+
+## NDVI across the landscape
+
+```{r}
+ndvi = st_as_stars(ndvi)
+```
+
+```{r}
+fig_ndvi =
+  ggplot()+
+  geom_stars(
+    data = ndvi,
+    # downsample = 5
+  )+
+  coord_sf(
+    crs = 2039,
+    expand = F
+  )+
+  scale_x_continuous(
+    breaks = seq(35.58, 35.64, length.out = 3)
+  )+
+  ggspatial::annotation_scale()+
+  scico::scale_fill_scico(
+    direction = -1,
+    palette = "bamako",
+    limits = c(0.05, 0.7),
+    breaks = c(0.05, seq(0.3, 0.7, 0.2)),
+    name = "NDVI",
+    na.value = "aliceblue"
+  )+
+  theme_test()+
+  theme(
+    legend.position = "bottom",
+    legend.key.height = unit(2, "mm"),
+    legend.title = element_text(
+      vjust = 1
+    ),
+    axis.title = element_blank(),
+    axis.text = element_text(
+      size = 8
+    ),
+    axis.text.y = element_text(
+      angle = 90, hjust = 0.5
+    )
+  )
+```
+
+## Visibility across the landscape
+
+```{r}
+vis = st_as_stars(vis)
+```
+
+```{r}
+fig_vis =
+  ggplot()+
+  geom_stars(
+    data = vis,
+    downsample = 9
+  )+
+  coord_sf(
+    crs = 2039,
+    expand = F
+  )+
+  scale_x_continuous(
+    breaks = seq(35.58, 35.64, length.out = 3)
+  )+
+  ggspatial::annotation_scale()+
+  scico::scale_fill_scico(
+    direction = 1,
+    palette = "lapaz",
+    limits = c(0, 1),
+    breaks = seq(0., 1, 0.2),
+    name = "Visibility index"
+  )+
+  theme_test()+
+  theme(
+    legend.position = "bottom",
+    legend.key.height = unit(2, "mm"),
+    legend.title = element_text(
+      vjust = 1
+    ),
+    axis.title = element_blank(),
+    axis.text = element_text(
+      size = 8
+    ),
+    axis.text.y = element_text(
+      angle = 90, hjust = 0.5
+    )
+  )
+```
+
+## Plot landcover
+
+```{r}
+landcover = mutate(
+  landcover,
+  class = if_else(
+    Name %in% c("C", "W"),
+    "W", Name
+  )
+)
+```
+
+
+```{r}
+fig_landcover = 
+  ggplot(landcover)+
+  geom_sf(
+    aes(
+      fill = class
+    ),
+    col = "transparent"
+  )+
+  scico::scale_fill_scico_d(
+    palette = "hawaii",
+    direction = 1,
+    labels = c(
+      "B" = "Settlements",
+      "O" = "Open areas",
+      "R" = "Reedbeds",
+      "T" = "Trees",
+      "W" = "Water"
+    ),
+    name = NULL
+  )+
+  coord_sf(
+    crs = 2039,
+    expand = F
+  )+
+  scale_x_continuous(
+    breaks = seq(35.58, 35.64, length.out = 3)
+  )+
+  ggspatial::annotation_scale()+
+  theme_test()+
+  theme(
+    legend.position = "bottom",
+    legend.key.height = unit(2, "mm"),
+    legend.key.width = unit(2, "mm"),
+    legend.title = element_text(
+      vjust = 1
+    ),
+    legend.text = element_text(
+      size = 6
+    ),
+    panel.background = element_rect(
+      fill = "grey99"
+    ),
+    plot.background = element_blank(),
+    axis.title = element_blank(),
+    axis.text = element_text(
+      size = 8
+    ),
+    axis.text.y = element_text(
+      angle = 90, hjust = 0.5
+    )
+  )+
+  guides(
+    fill = guide_legend(
+      nrow = 2
+    )
+  )
+```
+
+### Merge figures
+
+```{r}
+fig_landscape_maps = wrap_plots(
+   fig_landcover, fig_ndvi, fig_vis
+) + plot_annotation(
+  tag_levels = "A"
+) &
+  theme(
+    plot.tag = element_text(
+      size = 10, face = "bold"
+    )
+  )
+
+# save overall figure
+ggsave(
+  fig_landscape_maps,
+  filename = "figures/fig_spm_02.png",
+  height = 130, width = 195, units = "mm"
+)
+```
+
+
+## Model correlation NDVI and visibility
+
+Reload rasters as terra objects.
+
+```{r}
+# load rasters using terra
+ndvi = rast("data/rasters/raster_hula_ndvi_2039.tif")
+vis = rast("data/rasters/raster_hula_visibility.tif")
+```
+
+
+```{r}
+# make samples
+samples = st_sample(
+  landcover,
+  size = 10000,
+  type = "hexagonal"
+)
+```
+
+```{r}
+# extract data at samples
+vis_samp = terra::extract(
+  vis,
+  vect(samples)
+)
+setDT(vis_samp)
+
+ndvi_samp = extract(
+  ndvi,
+  vect(samples)
+)
+setDT(ndvi_samp)
+
+# lc samples
+lc_samp = extract(
+  vect(
+    dplyr::select(landcover, Name)
+  ),
+  vect(samples)
+)
+setDT(lc_samp)
+
+# merge data
+env_data = merge(vis_samp, ndvi_samp)
+env_data = merge(env_data, lc_samp, by.x = "ID", by.y = "id.x")
+
+# filter for valid values
+env_data = env_data[!is.nan(raster_hula_visibility)]
+env_data = setnames(env_data[, !("ID")], c("vis", "ndvi", "lc"))
+```
+
+```{r}
+# landcover classifications
+# B = settlement
+# C = canal
+# O = agriculture/open
+# R = reedbeds
+# T = trees
+# W = water
+
+# remove water
+env_data = env_data[!lc %in% c("C", "W")]
+
+# set landcover factor levels
+env_data$lc = factor(
+  env_data$lc,
+  levels = c("T", "R", "B", "O")
+)
+```
+
+### Fit a simple GAM
+
+```{r}
+# load library
+library(mgcv)
+
+# fit a bam for large data
+mod = bam(
+  vis ~ s(ndvi, by = lc) +
+    s(lc, bs = "re"),
+  data = env_data
+)
+
+summary(mod)
+
+model_summary = summary(mod)
+
+writeLines(
+  capture.output(model_summary),
+  con = "data/results/model_coefs_vis_ndvi.txt"
+)
+
+gratia::draw(mod, fixed = T)
+```
+
+### Get predicted values
+
+```{r}
+# make prediction table
+pred_data = CJ(
+  lc = factor(unique(env_data$lc),
+                 levels = c("T", "R", "B", "O", "W")),
+  ndvi = seq(0, 1, 0.02)
+)
+
+# get prediction
+pred = predict(mod, newdata = pred_data, allow.new.levels = T, se.fit = T)
+
+pred_data$pred = pred$fit
+pred_data$se = pred$se.fit
+
+fig_vis_ndvi = 
+  ggplot(pred_data)+
+  geom_bin_2d(
+    data = env_data,
+    aes(
+      ndvi, vis,
+      fill = ..density..
+    ),
+    show.legend = F
+  )+
+  geom_ribbon(
+    aes(
+      ndvi, 
+      ymin = pred - se,
+      ymax = pred + se,
+      group = lc
+    ),
+    size = 0.3,
+    col = "grey30",
+    fill = alpha("grey", 0.2)
+  )+
+  geom_line(
+    aes(
+      ndvi, pred
+    ),
+    col = 1
+  )+
+  facet_wrap(
+    facets = vars(lc),
+    labeller = labeller(
+      lc = c(
+        "B" = "Settlements",
+        "O" = "Open areas",
+        "R" = "Reedbeds",
+        "T" = "Trees"
+      )
+    )
+  )+
+  labs(
+    x = "NDVI",
+    y = "Visibility index"
+  )+
+  scico::scale_fill_scico(
+    palette = "lajolla"
+  )+
+  scico::scale_colour_scico_d(
+    palette = "hawaii",
+    direction = 1,
+    limits = c(
+      "B", "O", "R", "T", "W"
+    ),
+    breaks = c("B", "O", "R", "T"),
+    labels = c(
+      "B" = "Settlements",
+      "O" = "Open areas",
+      "R" = "Reedbeds",
+      "T" = "Trees"
+    ),
+    name = NULL
+  )+
+  coord_cartesian(
+    expand = T,
+    ylim = c(0, 1),
+    xlim = c(0, 0.8)
+  )+
+  theme_test()+
+  theme(
+    legend.position = "bottom",
+    legend.justification = 1,
+    legend.margin = margin(rep(0, 4)),
+    legend.key.height = unit(4, "mm"),
+    legend.key.width = unit(5, "mm"),
+    strip.background = element_blank(),
+    strip.text = element_text(
+      face = "bold"
+    )
+  )
+
+# save figure
+ggsave(
+  fig_vis_ndvi,
+  filename = "figures/fig_spm_03.png",
+  height = 90, width = 90, units = "mm"
+)
+```

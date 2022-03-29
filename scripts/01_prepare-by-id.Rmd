@@ -253,7 +253,7 @@ data_tracking_summary_w_rrv = data_tracking_summary_w_rrv[
   , !c("tag_4_digit", "date", "rrv_calc")
 ]
 
-fwrite(data_tracking_summary_w_rrv, 
+fwrite(data_tracking_summary_w_rrv,
        file = "data/results/data_tracking_metrics_rrv.csv")
 
 # join the datasets
@@ -269,3 +269,43 @@ data <- data[, !"trunc_tag"]
 fwrite(data, file = "data/results/data_daily_rrv.csv")
 ```
 
+```{r}
+# summarise some tracking metrics
+data_tracking_summary[, .(all_fixes = sum(nfixes))]
+
+# average positions per day
+data_tracking_summary[, list(avg_fixes = nfixes / days_tracking), by = c("TAG", "sp")][
+  , list(avg_avg_fixes = mean(avg_fixes), sd_avg_fixes = sd(avg_fixes)), by = "sp"
+]
+```
+
+### Summarise wing gap index
+
+```{r}
+# read in wing gap index scores
+wgi = fread("data/results/data_daily_rrv.csv")
+
+# summarise by species and molt status
+wgi_summary = wgi[, list(
+  wgi_mean = mean(RRV, na.rm = TRUE),
+  wgi_sd = sd(RRV, na.rm = TRUE)
+), by = c("treat", "sp")]
+
+# save data
+fwrite(
+  wgi_summary,
+  file = "data/results/data_wgi_summary.csv"
+)
+```
+
+```{r}
+# count individuals by species
+unique(wgi, by = "TAG")[, .N, by = "sp"]
+```
+
+```{r}
+# summarise tracking before pre-processing
+unique(wgi, by = "TAG")[, .(
+  mt = mean(days_tracking), sdt = sd(days_tracking)), 
+  by = "sp"]
+```

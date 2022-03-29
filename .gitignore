@@ -51,6 +51,15 @@ data/rasters/**
 data/results/**
 !data/results/00_placeholder.txt
 
+## ALLOW KEY RESULTS FOR VERSION CONTROL
+!data/results/data_wgi_summary.csv
+!data/results/mod_summary_rrv_movement.txt
+!data/results/data_patch_switch_summary.csv
+!data/results/mod_summary_swallow_movement.txt
+!data/results/data_visibility_steps_summary.csv
+!data/results/mod_summary_rrv_visibility.txt
+!data/results/data_clogit_fit_vis.csv
+
 !data/00_placeholder.txt
 !data/log_preprocessing.log
 
@@ -87,3 +96,6 @@ figures/figures_preprocessing/
 
 # ignore geopackages
 *.gpkg
+
+# all supplement document files
+supplement-text/
