@@ -96,3 +96,6 @@ figures/figures_preprocessing/
 
 # ignore geopackages
 *.gpkg
+
+# all supplement document files
+supplement-text/
