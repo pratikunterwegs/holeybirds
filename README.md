@@ -1,5 +1,5 @@
 
-# Source code and supplementary material for _Direct effects of flight feather molt on bird movement and habitat selection_
+# Source code for _Direct effects of flight feather molt on bird movement and habitat selection_
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 <!-- [![DOI:10.1101/2020.12.15.422876](https://img.shields.io/badge/bioRxiv-doi.org/10.1101/2020.12.15.422876-<COLOR>?style=flat-square)](https://www.biorxiv.org/content/10.1101/2020.12.15.422876v3) -->
@@ -23,96 +23,56 @@ Name: Ran Nathan
 Email: r.nathan@huji.ac.il
 ```
 
-<!-- Cite this repository archived on Zenodo as
-
-```bibtex
-@software{pratik_rajan_gupte_2022_6341440,
-  author       = {Pratik Rajan Gupte and
-                  Gregory F. Albery and
-                  Jakob Gismann and
-                  Amy R. Sweeny and
-                  Franz J. Weissing},
-  title        = {{Source Code and Supplementary Material for "Novel 
-                   pathogen introduction rapidly alters the evolution
-                   of movement, restructuring animal societies"}},
-  month        = mar,
-  year         = 2022,
-  publisher    = {Zenodo},
-  version      = {v1.0.1},
-  doi          = {10.5281/zenodo.6341440},
-  url          = {https://doi.org/10.5281/zenodo.6341440}
-}
-```
- -->
+Cite this repository archived on Zenodo as:
 
 ## Project Data
 
-The data used for this the manuscript are available on Zenodo/Dryad/other at **data DOI**.
+The data used for this the manuscript are available on Zenodo/Dryad/other.
 
 Please cite the project data as:
-<!-- 
-
-```bibtex
-@dataset{pratik_rajan_gupte_2022_6331757,
-  author       = {Pratik Rajan Gupte},
-  title        = {{Reference data from the Pathomove simulation, for 
-                   the manuscript "Novel pathogen introduction
-                   rapidly alters the evolution of movement,
-                   restructuring animal societies"}},
-  month        = mar,
-  year         = 2022,
-  publisher    = {Zenodo},
-  version      = {v1.0},
-  doi          = {10.5281/zenodo.6331757},
-  url          = {https://doi.org/10.5281/zenodo.6331757}
-}
-```
- -->
 
 ---
 
 ## Workflow
 
+In brief, the analysis workflow is to run the files in the `scripts/` folder in numbered order. These create the intermediate outputs (summary data files), and also produce the main text figures.
+
 ### Analysis Source Code
 
-The source code for the analyses reported here can be found in the directory `scripts/`, and are explained briefly here:
+The source code for the analyses reported here can be found in the directory `scripts/` as literate programming `Rmd` files, and are explained briefly here:
 
-- `scripts/01_xx.Rmd`: Process the output, in the form of _Rds_ objects, that result from running _Pathomove_ replicates or parameter combinations.
+- `scripts/00_get-sentinel-ndvi.ipynb`
 
-- `scripts/02_xx.Rmd`: Process the pairwise individual associations logged during the simulation into social networks.
+- `scripts/01_prepare-by-id.Rmd` Separate the raw tracking data, provided as SQL databases, into csv files with one file per individual. Get basic metrics such as total tracking duration for each individual, and link these summary statistics to individuals' daily estimated wing gap index.
 
-- `scripts/03_xx.Rmd`: Run SIR models on the emergent social networks acquired from simulation runs.
+- `scripts/02_preprocess-data.Rmd` Reproducible data pre-processing for tracking data. Pre-processing steps and outcomes for each individual (e.g. data remaining after cleaning), are written to `data/log_preprocessing.log`.
 
-**Add more scripts here**
+- `scripts/03_swallow_movement.Rmd` Quantify the daily distance moved by barn swallows from pre-processed tracking data, and fit a GAM for distance per hour of tracking to wing gap index, and plots this data as main text **Figure 2**.
+
+- `scripts/04_residence-patch.Rmd` Segment-cluster the pre-processed tracking data of white-spectacled bulbuls, house sparrows, and clamorous reed warblers, into residence patches following Gupte et al. (2022) (https://besjournals.onlinelibrary.wiley.com/doi/10.1111/1365-2656.13610).
+
+- `scripts/05_patch_metrics.Rmd` Get environmental covariates - NDVI and visibility index - at the residence patches of bulbuls, sparrows, and reed warblers, and link individual wing gap index data with the patch data (i.e., space-use). Quantify movements between patches per hours of tracking, and fit a GAM of between patch movements in relation to wing gap index. Plot distance moved between patches in relation to wing gap index as main text **Figure 1**.
+
+- `scripts/06_prep-patches-ssf.Rmd` For every individual's daily patch-switch sequence, create a single `amt` _steps_ object. Sample 9 alternative patch centroids for every between patch movement, and sample 15 locations around this centroid. Get the environmental covariates - NDVI and visibility - at each real and alternative patch, and prepare the data for a quasi-step selection analysis.
+
+- `scripts/07_real-alt-patches-vis.Rmd` Model the effect of wing gap index on the visibility of patches actually used by birds using a GAM. Implement a quasi-step selection analysis to compare, for each species, and for each of three moult statuses, the species-level preference for sheltered habitats and vegetation productivity using a logistic regression. Plot the visibility of real and alternative patches in relation to wing gap index as main text **Figure 3**.
+
+- `scripts/spm_01_wing_gap_change.Rmd` Plot the forecasted, per-individual change in wing gap index over the days since measurement. Creates supplementary material **Figure S1**.
+
+- `scripts/spm_02_landscape.Rmd` Plot the landcover classification of the landscape, the NDVI, and the visibility index, as supplementary material **Figure S2**. Model the relationship between vegetation productivity (NDVI) and visibility using a GAM, with landcover class-specific fits. Plot the model fits as supplementary material **Figure S3**.
 
 ---
 
-## Figure Source Code
-
-The source code for the figures in this manuscript is in the directory `figure_scripts/`. These scripts are well commented, and are not explained further.
-
 ### Figures
 
-## Manuscript Text
+Contains the main text and supplementary material figures.
 
-The main text of the manuscript is written in LaTeX and is stored in the (private) submodule, `manuscript`.
-Using the shell scripts provided in `bash/`, the LaTeX files are converted into date-stamped PDFs.
-These are not uploaded here, but the `docs/` folder indicates their storage location.
-
-## Supplementary Material
-
-The supplementary material provided with this manuscript is generated from the `supplement/` directory.
-
-**List supplementary files**
-
-- Other files in this directory are helper files required to format the supplementary material.
+---
 
 ## Other Directories
 
 - `bash/` Some useful shell scripts for output rendering.
 
-## Source Code for Figures and Analyses
+- `renv/` Contains instructions to reproduce the project's R package environment, including version data, for better reproducibility. R package versions are stored in `./renv.lock`. The structure of the `renv` files is automatically created using the `renv` package (see https://rstudio.github.io/renv/articles/renv.html).
 
-### renv/
-
-### scripts/
+  The exact versions used in this project are automatically restored upon opening the project's `holeybirds.Rproj` file in RStudio, or by using `renv::restore()` from the R terminal.
