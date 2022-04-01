@@ -1,6 +1,9 @@
 # script to get NDVI in 2016 from Google Earth Engine
 import os
 import geopandas as gpd
+from rasterio.crs import CRS
+import rioxarray as rxr
+import matplotlib.pyplot as plt
 
 # try loading geemap and ee
 try:
@@ -27,7 +30,7 @@ except Exception as e:
 os.getcwd()
 
 # read in landcover shapefile
-landcover_shp = gpd.read_file("../data/spatial/hula_lc_vector/HulaValley.shp")
+landcover_shp = gpd.read_file("data/spatial/hula_lc_vector/HulaValley.shp")
 # check crs
 landcover_shp.crs
 
@@ -50,12 +53,12 @@ extent = extent.to_crs(epsg=4326)
 extent.crs
 
 # make a folder
-os.makedirs("../data/spatial/extent")
+os.makedirs("data/spatial/extent")
 # save as shapefile to read for GEE
-extent.to_file("../data/spatial/extent/extent.shp")
+extent.to_file("data/spatial/extent/extent.shp")
 
 # first read in shapefile of landcover classes
-extent_file = "../data/spatial/extent/extent.shp"
+extent_file = "data/spatial/extent/extent.shp"
 # transfer to GEE using GMAP
 extent_ee = geemap.shp_to_ee(extent_file)
 
@@ -90,10 +93,26 @@ ndvi_median = sentinel_ndvi.select('ndvi').median()
 ndvi_clip = ndvi_median.clip(extent_ee)
 
 # export ndvi data as an image locally
-out_dir = "../data/rasters/"
-filename = os.path.join(out_dir, 'raster_hula_clip_wgs84.tif')
+out_dir = "data/rasters/"
+filename = os.path.join(out_dir, 'raster_hula_ndvi_wgs84.tif')
 
 geemap.ee_export_image(
     ndvi_clip, filename=filename, scale=10, region=extent_ee.geometry(),
     file_per_band=False
 )
+
+## read raster and transform to israeli grid
+ndvi_wgs84 = rxr.open_rasterio(filename=filename).squeeze()
+ndvi_wgs84.plot.imshow(cmap='viridis')
+plt.show()
+
+ndvi_wgs84.rio.crs
+
+# reproject
+crs_2039 = CRS.from_string("EPSG:2039")
+ndvi_2039 = ndvi_wgs84.rio.reproject(crs_2039)
+ndvi_2039.plot.imshow(vmin=-1, vmax=1)
+plt.show()
+
+# save file
+ndvi_2039.rio.to_raster("data/rasters/raster_hula_ndvi_2039.tif")
