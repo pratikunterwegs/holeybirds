@@ -3,6 +3,8 @@ editor_options:
   chunk_output_type: console
 ---
 
+# Environmental covariates at residence patches
+
 ```{r}
 library(data.table)
 

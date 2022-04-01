@@ -4,7 +4,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Large scale space use for sparrow, bulbul, and warbler
+# Large scale space use for bulbuls, sparrows, and reed warblers
 
 ## Load libraries and prepare files
 

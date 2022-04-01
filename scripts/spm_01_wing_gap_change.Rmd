@@ -30,7 +30,6 @@ wgi[, sp := factor(
 ]
 ```
 
-
 ### WGI progression plot
 
 ```{r}
