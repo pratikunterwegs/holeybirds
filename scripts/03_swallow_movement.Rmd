@@ -3,6 +3,8 @@ editor_options:
   chunk_output_type: console
 ---
 
+# Quantify daily distance travelled by swallows
+
 ```{r}
 library(data.table)
 library(ggplot2)
@@ -136,7 +138,7 @@ pred_data$se = pred$se.fit
 psdf2[, sp := "Hirundo"]
 ```
 
-## Plot movement and utilisation over RRV
+## Plot movement over WGI
 
 ```{r}
 fig_swallow_dist =
@@ -236,38 +238,3 @@ ggsave(
   height = 70, width = 87, units = "mm"
 )
 ```
-
-## Get area and link with NDVI
-
-```{r}
-library(sf)
-# make polygon
-data_swallow_poly = lapply(
-  data, function(df) {
-    dfsf = st_as_sf(
-      df, coords = c("X", "Y"),
-      crs = 2039
-    )
-    dfpoly = st_buffer(
-      dfsf, dist = 25
-    )
-  }
-)
-
-# bind all by id
-data_swallow_poly = dplyr::bind_rows(data_swallow_poly)
-data_swallow_poly = dplyr::group_by(
-  data_swallow_poly,
-  TAG
-) |> 
-  dplyr::summarise(
-    geometry = st_union(geometry)
-  )
-
-# save
-st_write(
-  data_swallow_poly,
-  dsn = "data/spatial/data_swallow_poly.gpkg"
-)
-```
-
