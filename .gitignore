@@ -66,13 +66,14 @@ data/results/**
 data/raw/**
 !data/raw/README.txt
 
+# ignore extent, is flexibly generated
+data/spatial/extent
+
 # ignore dsm
 data/spatial/dsm/**
 data/**/drive-download**
 
-# ignore training data
-*lc_training*
-
+# ignore shapefile data
 *hula_lc_vector*
 *hula_valley*
 
@@ -99,3 +100,6 @@ figures/figures_preprocessing/
 
 # all supplement document files
 supplement-text/
+
+# ignore QGIS files
+*.qgz
