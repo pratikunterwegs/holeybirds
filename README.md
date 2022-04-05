@@ -33,15 +33,31 @@ Please cite the project data as:
 
 ---
 
+## Notes on reproducibility
+
+- The project uses both R and Python code. R is used for most biologically relevant analyses, while Python is used to handle large raster data.
+
+- R package versions are logged using the _renv_ package management paradigm, in the `renv.lock` file. Opening an R session in this directory, or opening the `holeybirds.Rproj` project in RStudio, will automatically prompt restoration of the _renv_ environment. This means downloading and installing specific versions of the packages we used - this may take some time.
+
+  To do this manually, run `renv::retore()` from an R terminal.
+
+- Python 3 package versions are logged using the _conda_ package manager, in the `python_requirements.txt` file. This can be recreated by installing _Anaconda_ or _Miniconda_ and running `conda create --name YOUR_ENV_NAME --file python_requirements.txt` from the shell (not from the Python console). This installs all packages with the versions we used - this may take some time.
+
 ## Workflow
 
 In brief, the analysis workflow is to run the files in the `scripts/` folder in numbered order. These create the intermediate outputs (summary data files), and also produce the main text figures.
 
+### Prepare environmental layers
+
+The code to prepare environmental layers from raw remote sensing data to raster layers that can be used in the analyses is written in Python. This is because (1) we use the Python API for Google Earth Engine, and (2) Python's `rioxarray` package allows quick raster downsampling of the canopy height model.
+
+- `scripts/00_get-sentinel-ndvi.py` Get vegetation productivity in the study area (NDVI; June - October 2016) using the Python API for Google Earth Engine.
+
+- `scripts/00_resample-chm.py` Downsample the manually acquired canopy height model from 50cm resolution to 1m resolution.
+
 ### Analysis Source Code
 
 The source code for the analyses reported here can be found in the directory `scripts/` as literate programming `Rmd` files, and are explained briefly here:
-
-- `scripts/00_get-sentinel-ndvi.ipynb`
 
 - `scripts/01_prepare-by-id.Rmd` Separate the raw tracking data, provided as SQL databases, into csv files with one file per individual. Get basic metrics such as total tracking duration for each individual, and link these summary statistics to individuals' daily estimated wing gap index.
 
@@ -74,5 +90,3 @@ Contains the main text and supplementary material figures.
 - `bash/` Some useful shell scripts for output rendering.
 
 - `renv/` Contains instructions to reproduce the project's R package environment, including version data, for better reproducibility. R package versions are stored in `./renv.lock`. The structure of the `renv` files is automatically created using the `renv` package (see https://rstudio.github.io/renv/articles/renv.html).
-
-  The exact versions used in this project are automatically restored upon opening the project's `holeybirds.Rproj` file in RStudio, or by using `renv::restore()` from the R terminal.
