@@ -127,7 +127,52 @@ patch_switches[, dist_ph := total_dist/tracking_duration]
 
 # remove NA values
 patch_switches = patch_switches[!is.na(rrv_calc)]
+
+# asign sp as factor
+patch_switches[, sp := as.factor(sp)]
 ```
+
+Examine the number of patch switches in relation to RRV.
+
+```{r}
+ggplot(patch_switches)+
+  geom_jitter(
+    aes(
+      rrv_calc, N / tracking_duration,
+      col = treat
+    )
+  )+
+  geom_smooth(
+    aes(
+      rrv_calc, N / tracking_duration
+    ),
+    method = "gam",
+    formula = as.formula(
+      "y ~ s(x, k = 3)"
+    )
+  )+
+  facet_grid(~sp)
+```
+
+### Model patch switches by RRV
+
+```{r}
+# scale patch switches by tracking duration
+patch_switches[, n_per_hr := N / tracking_duration]
+
+# fit gam
+mod_ps = gam(
+  n_per_hr ~ s(rrv_calc, k = 3, by = sp) +
+    s(sp, bs = "re"),
+  data = patch_switches
+)
+
+# visualise gam
+gratia::draw(mod_ps)
+
+summary(mod_ps)
+```
+
 
 ```{r}
 # plot rrv with errors per treatment, and patch distance w/ errors per trt
@@ -352,3 +397,43 @@ ggsave(
   units = "mm"
 )
 ```
+
+## Patch durations in relation to wing gap index
+
+```{r}
+# explore the data
+ggplot(data)+
+  geom_jitter(
+    aes(
+      vis, duration / (3600),
+      col = treat
+    )
+  )+
+  facet_grid(treat~sp)+
+  coord_cartesian(
+    ylim = c(0, 2)
+  )
+```
+
+```{r}
+# handle variable as factor
+data[, sp := as.factor(sp)]
+
+# convert to hours
+data[, duration_hr := duration / (3600)]
+
+# fit a gam with few knots
+mod_duration_rrv = gam(
+  duration_hr ~ s(rrv_calc, by = sp, k = 3) +
+    ndvi + vis +
+    s(sp, bs = "re"),
+  data = data
+)
+
+# plot model
+gratia::draw(mod_duration_rrv)
+
+# examine model summary
+summary(mod_duration_rrv)
+```
+
