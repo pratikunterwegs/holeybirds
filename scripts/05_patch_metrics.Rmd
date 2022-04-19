@@ -12,7 +12,11 @@ library(sf)
 library(terra)
 
 library(ggplot2)
+library(patchwork)
 library(colorspace)
+
+# for gams
+library(mgcv)
 ```
 
 ## Extract environmental covariates at patches
@@ -129,7 +133,9 @@ patch_switches[, dist_ph := total_dist/tracking_duration]
 patch_switches = patch_switches[!is.na(rrv_calc)]
 
 # asign sp as factor
-patch_switches[, sp := as.factor(sp)]
+patch_switches[, sp := factor(sp, levels = c(
+  "Pycnonotus", "Passer", "Acrocephalus"
+))]
 ```
 
 Examine the number of patch switches in relation to RRV.
@@ -171,8 +177,170 @@ mod_ps = gam(
 gratia::draw(mod_ps)
 
 summary(mod_ps)
+
+# write summary to file
+writeLines(
+  capture.output(
+    summary(mod_ps)
+  ),
+  con = "data/results/mod_summary_rrv_n_patches.txt"
+)
 ```
 
+```{r}
+# make prediction table
+pred_data_patches_rrv = CJ(
+  sp = as.factor(unique(data$sp)),
+  id = "new",
+  treat = as.factor(unique(data$treat)),
+  rrv_calc = seq(0, 20, 0.5)
+)
+
+# filter for unrealistic
+pred_data_patches_rrv = pred_data_patches_rrv[(
+  (treat == "NonMoulting" & rrv_calc == 0) |
+    (treat == "Moulting" & between(rrv_calc, 2, 12)) |
+    (treat == "Manipulated" & between(rrv_calc, 12, 20))
+)]
+
+# get prediction
+pred_ps = predict(
+  mod_ps, 
+  newdata = pred_data_patches_rrv, 
+  allow.new.levels = T, se.fit = T
+)
+
+pred_data_patches_rrv$pred = pred_ps$fit
+pred_data_patches_rrv$se = pred_ps$se.fit
+```
+
+### Plot patch switches per hour
+
+```{r}
+# prepare summary statistics for switches per hour and wing gap index
+patch_switches_summary = patch_switches[, unlist(
+  lapply(.SD, function(x) {
+    list(
+      mean = mean(x),
+      sd = sd(x)
+    )
+  }), recursive = FALSE
+), .SDcols = c("rrv_calc", "n_per_hr"), by = c("sp", "treat")]
+```
+
+Plotting code for patch switches per hour of tracking, in relation to wing gap index.
+
+```{r}
+# save as object and write intermediate to file
+fig_patch_switches = 
+  ggplot(patch_switches)+
+  geom_jitter(
+    aes(
+      rrv_calc, n_per_hr,
+      col = treat
+    ),
+    shape = 1
+  )+
+  geom_ribbon(
+    data = pred_data_patches_rrv[!(sp == "Pycnonotus" & rrv_calc > 17) &
+                       !sp == "Acrocephalus"],
+    aes(
+      rrv_calc,
+      ymin = pred - se,
+      ymax = pred + se
+    ),
+    fill = "transparent",
+    col = "grey",
+    lty = 1
+  )+
+  geom_line(
+    data = pred_data_patches_rrv[!(sp == "Pycnonotus" & rrv_calc > 17) &
+                       !sp == "Acrocephalus"],
+    aes(
+      rrv_calc, pred
+    ),
+    col = "indianred"
+  )+
+  geom_linerange(
+    data = patch_switches_summary,
+    aes(
+      rrv_calc.mean,
+      ymin = n_per_hr.mean - n_per_hr.sd,
+      ymax = n_per_hr.mean + n_per_hr.sd
+    )
+  )+
+  geom_linerange(
+    data = patch_switches_summary,
+    aes(
+      rrv_calc.mean, n_per_hr.mean,
+      xmin = rrv_calc.mean - rrv_calc.sd,
+      xmax = rrv_calc.mean + rrv_calc.sd
+    )
+  )+
+  geom_point(
+    data = patch_switches_summary,
+    aes(
+      rrv_calc.mean, n_per_hr.mean,
+      fill = treat
+    ),
+    shape = 21,
+    size = 2
+  )+
+  facet_grid(
+    ~sp
+  )+
+  scale_fill_discrete_sequential(
+    palette = "Batlow",
+    l1 = 30, l2 = 60,
+    breaks = c("NonMoulting", "Moulting", "Manipulated"),
+    labels = c("Non-molting", "Molting", "Manipulated")
+  )+
+  scale_colour_discrete_sequential(
+    palette = "Batlow",
+    l1 = 50, l2 = 50,
+    guide = "none"
+  )+
+  # scale_y_sqrt()+
+  facet_grid(
+    cols = vars(sp),
+    scales = "free",
+    labeller = labeller(
+      sp = c(
+        "Acrocephalus" = "Clamorous\nreed warbler",
+        "Passer" = "House sparrow",
+        "Pycnonotus" = "White-spectacled\nbulbul"
+      )
+    )
+  )+
+  theme_test(
+    base_size = 10,
+    base_family = "Arial"
+  )+
+  theme(
+    legend.position = "top",
+    strip.background = element_blank(),
+    strip.text = element_text(
+      face = "italic"
+    )
+  )+
+  labs(
+    # x = "Wing gap index (More gappy wing →)",
+    x = NULL,
+    y = "Patch switches / hr",
+    fill = NULL
+  )
+
+# save to file
+ggsave(
+  fig_patch_switches,
+  filename = "figures/fig_01.png",
+  width = 114,
+  height = 60,
+  units = "mm"
+)
+```
+
+### Model inter-patch distance per hour
 
 ```{r}
 # plot rrv with errors per treatment, and patch distance w/ errors per trt
@@ -183,13 +351,6 @@ psdf = patch_switches[, unlist(lapply(.SD, function(x) {
   )
 }), recursive = F), 
 .SDcols = c("dist_ph", "rrv_calc"), by = c("sp", "treat")]
-```
-
-### Model patch switches per hour
-
-```{r}
-library(mgcv)
-library(ggplot2)
 ```
 
 ```{r}
@@ -219,23 +380,23 @@ writeLines(
 )
 ```
 
-### Summarise patch switches
+### Summarise between-patch movements
 
 ```{r}
 # summarise patch switches by species and treatments
-patch_switch_summary = patch_switches[treat != "Manipulated" | 
+patch_distance_summary = patch_switches[treat != "Manipulated" | 
                                         (treat == "Manipulated" & rrv_calc > 12), list(
   mean_dist_ph = mean(dist_ph, na.rm = TRUE)
 ), by = c("sp", "treat")]
 
 # save small data
 fwrite(
-  patch_switch_summary,
-  file = "data/results/data_patch_switch_summary.csv"
+  patch_distance_summary,
+  file = "data/results/data_patch_distance_summary.csv"
 )
 ```
 
-## Plot movement per hour over patch switches
+### Plot movement per hour over wing gap index
 
 ```{r}
 # make prediction table
@@ -285,7 +446,6 @@ psdf[, sp := factor(sp, levels = c(
   "Pycnonotus", "Passer", "Acrocephalus"
 ))]
 ```
-
 
 ```{r}
 # plot figure
@@ -344,7 +504,7 @@ ggplot(psdf)+
       fill = treat
     ),
     shape = 21,
-    size = 4
+    size = 2
   )+
   scale_fill_discrete_sequential(
     palette = "Batlow",
@@ -359,7 +519,7 @@ ggplot(psdf)+
   )+
   # scale_y_sqrt()+
   facet_grid(
-    rows = vars(sp),
+    cols = vars(sp),
     scales = "free",
     labeller = labeller(
       sp = c(
@@ -385,15 +545,15 @@ ggplot(psdf)+
   )+
   labs(
     x = "Wing gap index (More gappy wing →)",
-    y = "Distance moved between residence patches (m) / hr",
+    y = "Between-patch distance (m)",
     fill = NULL
   )
 
 ggsave(
   fig_moult_move,
-  filename = "figures/fig_01.png",
-  width = 87,
-  height = 114,
+  filename = "figures/fig_02.png",
+  width = 114,
+  height = 60,
   units = "mm"
 )
 ```
@@ -417,7 +577,9 @@ ggplot(data)+
 
 ```{r}
 # handle variable as factor
-data[, sp := as.factor(sp)]
+data[, sp := factor(sp, levels = c(
+  "Pycnonotus", "Passer", "Acrocephalus"
+))]
 
 # convert to hours
 data[, duration_hr := duration / (3600)]
@@ -425,7 +587,7 @@ data[, duration_hr := duration / (3600)]
 # fit a gam with few knots
 mod_duration_rrv = gam(
   duration_hr ~ s(rrv_calc, by = sp, k = 3) +
-    ndvi + vis +
+    vis + ndvi +
     s(sp, bs = "re"),
   data = data
 )
@@ -436,4 +598,169 @@ gratia::draw(mod_duration_rrv)
 # examine model summary
 summary(mod_duration_rrv)
 ```
+
+```{r}
+# save model summary
+mod_summary_duration = summary(mod_duration_rrv)
+writeLines(
+  capture.output(
+    mod_summary_duration
+  ),
+  con = "data/results/mod_summary_duration_rrv.txt"
+)
+```
+
+### Plot durations in relation to wing gap index
+
+```{r}
+# prepare predictor data
+# make prediction table
+pred_data_duration_rrv = CJ(
+  sp = as.factor(unique(data$sp)),
+  id = "new",
+  treat = as.factor(unique(data$treat)),
+  rrv_calc = seq(0, 20, 0.5),
+  ndvi = 0.4, # taken from the data mean
+  vis = 0.33 # from the data mean
+)
+
+# filter for unrealistic
+pred_data_duration_rrv = pred_data_duration_rrv[(
+  (treat == "NonMoulting" & rrv_calc == 0) |
+    (treat == "Moulting" & between(rrv_calc, 2, 12)) |
+    (treat == "Manipulated" & between(rrv_calc, 12, 20))
+)]
+
+# get prediction
+pred_duration = predict(
+  mod_duration_rrv, 
+  newdata = pred_data_duration_rrv, 
+  allow.new.levels = T, se.fit = T
+)
+
+pred_data_duration_rrv$pred = pred_duration$fit
+pred_data_duration_rrv$se = pred_duration$se.fit
+```
+
+```{r}
+# make summary table
+patch_duration_summary = data[, unlist(
+  lapply(.SD, function(x) {
+    list(
+      mean = mean(x, na.rm = T),
+      sd = sd(x, na.rm = T)
+    )
+  }), recursive = F
+), .SDcols = c("duration_hr", "rrv_calc"), by = c("sp", "treat"), ]
+```
+
+
+```{r}
+# prepare figure
+fig_patch_duration_rrv =
+  ggplot(data)+
+  geom_jitter(
+    aes(
+      rrv_calc,
+      duration_hr,
+      col = treat
+    ),
+    shape = 1,
+    size = 0.5
+  )+
+  geom_ribbon(
+    data = pred_data_duration_rrv[!(sp == "Pycnonotus" & rrv_calc > 17) &
+                       !sp == "Passer"],
+    aes(
+      rrv_calc,
+      ymin = pred - se,
+      ymax = pred + se
+    ),
+    fill = "transparent",
+    col = "grey",
+    lty = 1
+  )+
+  geom_line(
+    data = pred_data_duration_rrv[!(sp == "Pycnonotus" & rrv_calc > 17) &
+                       !sp == "Passer"],
+    aes(
+      rrv_calc, pred
+    ),
+    col = "indianred"
+  )+
+  geom_linerange(
+    data = patch_duration_summary,
+    aes(
+      rrv_calc.mean,
+      ymin = duration_hr.mean - duration_hr.sd,
+      ymax = duration_hr.mean + duration_hr.sd
+    )
+  )+
+  geom_linerange(
+    data = patch_duration_summary,
+    aes(
+      rrv_calc.mean, duration_hr.mean,
+      xmin = rrv_calc.mean - rrv_calc.sd,
+      xmax = rrv_calc.mean + rrv_calc.sd
+    )
+  )+
+  geom_point(
+    data = patch_duration_summary,
+    aes(
+      rrv_calc.mean, duration_hr.mean,
+      fill = treat
+    ),
+    shape = 21,
+    size = 2
+  )+
+  coord_cartesian(
+    ylim = c(0, 5)
+  )+
+  scale_fill_discrete_sequential(
+    palette = "Batlow",
+    l1 = 30, l2 = 60,
+    breaks = c("NonMoulting", "Moulting", "Manipulated"),
+    labels = c("Non-molting", "Molting", "Manipulated")
+  )+
+  scale_colour_discrete_sequential(
+    palette = "Batlow",
+    l1 = 50, l2 = 50,
+    guide = "none"
+  )+
+  # scale_y_sqrt()+
+  facet_grid(
+    cols = vars(sp),
+    scales = "free",
+    labeller = labeller(
+      sp = c(
+        "Acrocephalus" = "Clamorous\nreed warbler",
+        "Passer" = "House sparrow",
+        "Pycnonotus" = "White-spectacled\nbulbul"
+      )
+    )
+  )+
+  theme_test(
+    base_size = 10,
+    base_family = "Arial"
+  )+
+  theme(
+    legend.position = "top",
+    strip.background = element_blank(),
+    strip.text = element_text(
+      face = "italic"
+    )
+  )+
+  labs(
+    x = "Wing gap index (More gappy wing →)",
+    y = "Duration in patch (hrs)",
+    fill = NULL
+  )
+
+ggsave(
+  fig_patch_duration_rrv,
+  filename = "figures/fig_03.png",
+  width = 114, height = 60, units = "mm"
+)
+```
+
 
