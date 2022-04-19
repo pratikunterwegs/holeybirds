@@ -13,9 +13,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Approximate significance of smooth terms:
                              edf Ref.df      F p-value    
-s(rrv_calc):spAcrocephalus 1.000  1.000  0.055  0.8154    
-s(rrv_calc):spPasser       1.923  1.994 11.583   2e-05 ***
 s(rrv_calc):spPycnonotus   1.903  1.991  4.734  0.0102 *  
+s(rrv_calc):spPasser       1.923  1.994 11.583   2e-05 ***
+s(rrv_calc):spAcrocephalus 1.000  1.000  0.055  0.8154    
 s(sp)                      1.965  2.000 72.926  <2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
