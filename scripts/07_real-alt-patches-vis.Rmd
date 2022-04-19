@@ -272,8 +272,7 @@ data_clogit = mutate(
   ),
   # add the z statistic
   label = glue(
-    "z = {round(statistic, 3)}
-    {label}"
+    "ln(RSS) = {round(estimate, 2)}"
   )
 )
 ```
@@ -298,8 +297,8 @@ data_clogit = mutate(
 )
 ```
 
-
 ```{r}
+# make figure selection coefficients
 fig_vis_selection =
 ggplot(sdf)+
   geom_jitter(
@@ -311,7 +310,7 @@ ggplot(sdf)+
       rrv_calc, vis_end
     ),
     col = "lightgrey",
-    shape = 4,
+    shape = 3,
     size = 0.2
   )+
   geom_jitter(
@@ -326,30 +325,6 @@ ggplot(sdf)+
     size = 1,
     shape = 1
   )+
-  # geom_ribbon(
-  #   data = filter(
-  #     pred_data,
-  #     (sp %in% c("Acrocephalus"))
-  #   ),
-  #   aes(
-  #     rrv_calc,
-  #     ymin = pred - se,
-  #     ymax = pred + se
-  #   ),
-  #   fill = "transparent",
-  #   col = "grey",
-  #   lty = 1
-  # )+
-  # geom_line(
-  #   data = filter(
-  #     pred_data,
-  #     (sp %in% c("Acrocephalus"))
-  #   ),
-  #   aes(
-  #     rrv_calc, pred
-  #   ),
-  #   col = "indianred"
-  # )+
   geom_linerange(
     aes(
       x = rrv_calc_mean,
@@ -393,6 +368,8 @@ ggplot(sdf)+
       col = treat,
       hjust = 0.5,
     ),
+    # angle = 90,
+    min.segment.length = 10,
     fontface = "bold",
     size = 3
   )+
@@ -455,14 +432,14 @@ ggplot(sdf)+
     ),
     shape = guide_legend(
       override.aes = list(
-        size = 3
+        size = 2.5
       )
     )
   )
 
 ggsave(
   fig_vis_selection,
-  filename = "figures/fig_03.png",
+  filename = "figures/fig_04.png",
   height = 87,
   width = 178,
   units = "mm"
