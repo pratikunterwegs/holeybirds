@@ -1,0 +1,31 @@
+
+Family: gaussian 
+Link function: identity 
+
+Formula:
+n_per_hr ~ s(rrv_calc, k = 3, by = sp) + s(sp, bs = "re")
+
+Parametric coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   0.7106     0.1592   4.462 1.34e-05 ***
+---
+Signif. codes:  
+0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Approximate significance of smooth terms:
+                             edf Ref.df      F  p-value
+s(rrv_calc):spPycnonotus   1.936  1.996  7.450 0.000865
+s(rrv_calc):spPasser       1.386  1.622  3.515 0.024367
+s(rrv_calc):spAcrocephalus 1.000  1.000  1.038 0.309487
+s(sp)                      1.948  2.000 45.703  < 2e-16
+                              
+s(rrv_calc):spPycnonotus   ***
+s(rrv_calc):spPasser       *  
+s(rrv_calc):spAcrocephalus    
+s(sp)                      ***
+---
+Signif. codes:  
+0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+R-sq.(adj) =   0.37   Deviance explained = 38.9%
+GCV = 0.12761  Scale est. = 0.1232    n = 210
