@@ -53,7 +53,7 @@ data/results/**
 
 ## ALLOW KEY RESULTS FOR VERSION CONTROL
 !data/results/data_wgi_summary.csv
-!data/results/mod_summary_rrv_movement.txt
+!data/results/mod_summary_*.txt
 !data/results/data_patch_switch_summary.csv
 !data/results/mod_summary_swallow_movement.txt
 !data/results/data_visibility_steps_summary.csv
