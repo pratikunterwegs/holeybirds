@@ -56,7 +56,7 @@ points = st_drop_geometry(points)
 setDT(points)
 
 points[, c("ndvi", "vis") := list(
-  ndvi_samp$ndvi,
+  ndvi_samp$raster_hula_ndvi_2039,
   vis_samp$raster_hula_visibility
 )]
 ```
