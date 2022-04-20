@@ -187,6 +187,25 @@ writeLines(
 )
 ```
 
+This code below is only to create clean outputs for the LaTeX supplementary material.
+
+```{r eval=FALSE}
+# get model as tex code for supplement
+texreg::texreg(
+  list(mod_ps),
+  custom.model.names = c("Coefficients"),
+  single.row = T, 
+  dcolumn = T, 
+  custom.coef.names = c(
+    "Intercept", 
+    "WGI - bulbul", "WGI - sparrow", "WGI - warbler", 
+    "Species"
+  ),
+  caption = "Generalised additive model coefficients for residence patch switches."
+)
+```
+
+
 ```{r}
 # make prediction table
 pred_data_patches_rrv = CJ(
@@ -377,6 +396,24 @@ writeLines(
     mod_summary
   ),
   con = "data/results/mod_summary_rrv_movement.txt"
+)
+```
+
+This code below is only to create clean outputs for the LaTeX supplementary material.
+
+```{r eval=FALSE}
+# get model as tex code for supplement
+texreg::texreg(
+  list(mod1),
+  custom.model.names = c("Coefficients"),
+  single.row = T, 
+  dcolumn = T, 
+  custom.coef.names = c(
+    "Intercept", 
+    "WGI - bulbul", "WGI - sparrow", "WGI - warbler", 
+    "Species"
+  ),
+  caption = "Generalised additive model coefficients for distance between residence patches."
 )
 ```
 
@@ -609,6 +646,25 @@ writeLines(
   con = "data/results/mod_summary_duration_rrv.txt"
 )
 ```
+
+This code below is only to create clean outputs for the LaTeX supplementary material.
+
+```{r eval=FALSE}
+# get model as tex code for supplement
+texreg::texreg(
+  list(mod_duration_rrv),
+  custom.model.names = c("Coefficients"),
+  single.row = T, 
+  dcolumn = T, 
+  custom.coef.names = c(
+    "Intercept", "Visibility index", "NDVI",
+    "WGI - bulbul", "WGI - sparrow", "WGI - warbler", 
+    "Species"
+  ),
+  caption = "Generalised additive model coefficients for residence patch duration."
+)
+```
+
 
 ### Plot durations in relation to wing gap index
 
