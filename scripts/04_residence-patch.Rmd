@@ -207,21 +207,3 @@ patch_points = rbindlist(patch_points)
 
 fwrite(patch_points, file = "data/results/data_patch_points_ppa.csv")
 ```
-
-Get residence patch spatials.
-
-```{r}
-# run summary function over each list element
-patch_data = lapply(patch_data, rbindlist) |> rbindlist()
-
-patch_spatials = atl_patch_summary(
-  patch_data = patch_data,
-  which_data = "spatial",
-  buffer_radius = 25
-)
-
-st_write(
-  patch_spatials,
-  dsn = "data/spatial/data_patch_spatials.gpkg"
-)
-```
