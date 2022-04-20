@@ -8,20 +8,20 @@ duration_hr ~ s(rrv_calc, by = sp, k = 3) + vis + ndvi + s(sp,
 
 Parametric coefficients:
             Estimate Std. Error t value Pr(>|t|)    
-(Intercept)  1.23315    0.23945   5.150 2.86e-07 ***
-vis         -0.70314    0.24796  -2.836  0.00462 ** 
-ndvi         0.05606    0.32202   0.174  0.86180    
+(Intercept)  1.15226    0.20292   5.678 1.55e-08 ***
+vis         -0.79728    0.20652  -3.861 0.000117 ***
+ndvi         0.08911    0.26994   0.330 0.741337    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Approximate significance of smooth terms:
                              edf Ref.df      F p-value    
-s(rrv_calc):spPycnonotus   1.975  1.999 18.866 < 2e-16 ***
-s(rrv_calc):spPasser       1.000  1.000  0.023   0.878    
-s(rrv_calc):spAcrocephalus 1.851  1.975 12.854 2.9e-06 ***
-s(sp)                      1.855  2.000 27.881 < 2e-16 ***
+s(rrv_calc):spPycnonotus   1.984  2.000 22.115  <2e-16 ***
+s(rrv_calc):spPasser       1.000  1.000  0.071  0.7903    
+s(rrv_calc):spAcrocephalus 1.820  1.965  3.977  0.0254 *  
+s(sp)                      1.841  2.000 27.319  <2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-R-sq.(adj) =  0.0798   Deviance explained = 8.39%
-GCV = 1.8375  Scale est. = 1.8286    n = 1993
+R-sq.(adj) =  0.0593   Deviance explained = 6.31%
+GCV = 1.5414  Scale est. = 1.5343    n = 2115
