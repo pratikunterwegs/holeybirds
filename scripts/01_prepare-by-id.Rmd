@@ -273,10 +273,14 @@ fwrite(data, file = "data/results/data_daily_rrv.csv")
 # summarise some tracking metrics
 data_tracking_summary[, .(all_fixes = sum(nfixes))]
 
-# average positions per day
-data_tracking_summary[, list(avg_fixes = nfixes / days_tracking), by = c("TAG", "sp")][
-  , list(avg_avg_fixes = mean(avg_fixes), sd_avg_fixes = sd(avg_fixes)), by = "sp"
-]
+# average positions per minute
+data_tracking_summary[, list(avg_fixes = nfixes / 
+                               (days_tracking * 24 * 60)), 
+                      by = c("TAG", "sp")][ , list(
+                        avg_avg_fixes = mean(avg_fixes), 
+                        sd_avg_fixes = sd(avg_fixes)
+                      ), by = "sp"
+                      ]
 ```
 
 ### Summarise wing gap index
