@@ -17,6 +17,8 @@ library(ggplot2)
 library(ggtext)
 library(colorspace)
 library(patchwork)
+
+library(mgcv)
 ```
 
 ```{r}
@@ -69,7 +71,29 @@ data_sel = filter(
   !is.na(treat),
   !is.na(rrv_calc)
 )
+```
 
+Summarise number of fixes in real and alternate patches.
+
+```{r}
+data_sel %>% 
+  group_by(
+    id, treat,
+    case_
+  ) %>% 
+  count() %>% 
+  group_by(
+    case_
+  ) %>% 
+  summarise(
+    across(n, .fns = list(mean = mean, sd = sd))
+  )
+```
+
+
+Prepare data for conditional logistic regression.
+
+```{r}
 # select useful columns
 sdf = filter(
   data_sel
@@ -125,12 +149,11 @@ data_sel = mutate(
 ```
 
 ```{r}
-library(mgcv)
-
+# fit gam
 mod1 = gam(
   vis_end ~ s(rrv_calc, by = sp, k = 3) +
-    s(ndvi_end, k = 5), 
-    # s(sp, bs = "re"),
+    s(ndvi_end, k = 5)+ 
+    s(sp, bs = "re"),
   data = filter(
     data_sel, case_
   )
@@ -148,6 +171,24 @@ writeLines(
     mod_summary
   ),
   con = "data/results/mod_summary_rrv_visibility.txt"
+)
+```
+
+This code below is only to create clean outputs for the LaTeX supplementary material.
+
+```{r eval=FALSE}
+# get model as tex code for supplement
+texreg::texreg(
+  list(mod1),
+  custom.model.names = c("Coefficients"),
+  single.row = T, 
+  dcolumn = T, 
+  custom.coef.names = c(
+    "Intercept", "NDVI",
+    "WGI - bulbul", "WGI - sparrow", "WGI - warbler", 
+    "Species"
+  ),
+  caption = "Generalised additive model coefficients for residence patch visibility."
 )
 ```
 
@@ -272,10 +313,39 @@ data_clogit = mutate(
   ),
   # add the z statistic
   label = glue(
-    "ln(RSS) = {round(estimate, 2)}"
+    "β = {round(estimate, 2)}
+    {label}"
   )
 )
+
+# arrange data by bird name
+data_clogit = arrange(
+  data_clogit,
+  desc(sp)
+)
 ```
+
+Extract model coefficients for supplementary material.
+
+```{r}
+texreg::texreg(
+  data_clogit$mod_fit, 
+  dcolumn = T, 
+  booktabs = T,
+  custom.header = list(
+    "White-spectacled bulbul" = 1:3, 
+    "House sparrow" = 4:6, 
+    "Clamorous reed warbler" = 7:9
+  ), 
+  custom.model.names = rep(
+    c("Non-moulting", "Molting", "Manipulated"),
+    times = 3
+  ),
+  custom.coef.names = c("Visibility index", "NDVI"),
+  caption = "Log relative selection strengths (RSS) for patch visibility and NDVI."
+)
+```
+
 
 ## Plot comparison of real and potential patches visibility
 
@@ -356,21 +426,28 @@ ggplot(sdf)+
       x = c(-1, 1)
     )
   )+
-  ggrepel::geom_text_repel(
+  geom_text(
     data = filter(
       data_clogit,
       term == "vis_end"
+    ) %>% mutate(
+      x_pos = case_when(
+        treat == "NonMoulting" ~ 0,
+        treat == "Moulting" ~ 6,
+        treat == "Manipulated" ~ 12,
+        T ~ NA_real_
+      )
     ),
     aes(
-      x = rrv_calc_mean,
-      y = 1.2,
+      x = x_pos, # manual placement
+      y = 1.1, # manual placement,
       label = label,
-      col = treat,
-      hjust = 0.5,
+      col = treat
     ),
+    hjust = 0,
     # angle = 90,
     min.segment.length = 10,
-    fontface = "bold",
+    fontface = "italic",
     size = 3
   )+
   facet_grid(
@@ -423,6 +500,9 @@ ggplot(sdf)+
     y = "Visibility of residence patches",
     fill = NULL,
     shape = NULL
+  )+
+  coord_cartesian(
+    ylim = c(0, 1.15)
   )+
   guides(
     fill = guide_legend(
