@@ -11,6 +11,7 @@ editor_options:
 # libs for data
 library(data.table)
 library(glue)
+library(dplyr)
 
 library(sf)
 library(terra)
@@ -19,6 +20,7 @@ library(stars)
 
 library(ggplot2)
 library(colorspace)
+library(patchwork)
 ```
 
 ## Load data
@@ -27,6 +29,9 @@ library(colorspace)
 # load rasters using terra
 ndvi = rast("data/rasters/raster_hula_ndvi_2039.tif")
 vis = rast("data/rasters/raster_hula_visibility.tif")
+
+# load the alternative visibility layer
+vis_15 = rast("data/rasters/raster_hula_visibility_15m.tif")
 
 # load land use as sf
 landcover = st_read("data/spatial/hula_lc_vector")
@@ -108,7 +113,53 @@ fig_vis =
     palette = "lapaz",
     limits = c(0, 1),
     breaks = seq(0., 1, 0.2),
-    name = "Visibility index"
+    name = "Vis. index"
+  )+
+  theme_test()+
+  theme(
+    legend.position = "bottom",
+    legend.key.height = unit(2, "mm"),
+    legend.title = element_text(
+      vjust = 1
+    ),
+    axis.title = element_blank(),
+    axis.text = element_text(
+      size = 8
+    ),
+    axis.text.y = element_text(
+      angle = 90, hjust = 0.5
+    )
+  )
+```
+
+### Alternative visibility calculation at 15m
+
+
+```{r}
+vis_15 = st_as_stars(vis_15)
+```
+
+```{r}
+fig_vis_15 =
+  ggplot()+
+  geom_stars(
+    data = vis_15,
+    downsample = 9
+  )+
+  coord_sf(
+    crs = 2039,
+    expand = F
+  )+
+  scale_x_continuous(
+    breaks = seq(35.58, 35.64, length.out = 3)
+  )+
+  ggspatial::annotation_scale()+
+  scico::scale_fill_scico(
+    direction = 1,
+    palette = "lapaz",
+    limits = c(0, 1),
+    breaks = seq(0., 1, 0.2),
+    name = "Vis. index"
   )+
   theme_test()+
   theme(
@@ -130,6 +181,7 @@ fig_vis =
 ## Plot landcover
 
 ```{r}
+# handle water classes
 landcover = mutate(
   landcover,
   class = if_else(
@@ -203,7 +255,7 @@ fig_landcover =
 
 ```{r}
 fig_landscape_maps = wrap_plots(
-   fig_landcover, fig_ndvi, fig_vis
+   fig_landcover, fig_ndvi, fig_vis, fig_vis_15
 ) + plot_annotation(
   tag_levels = "A"
 ) &
@@ -217,7 +269,7 @@ fig_landscape_maps = wrap_plots(
 ggsave(
   fig_landscape_maps,
   filename = "figures/fig_spm_02.png",
-  height = 130, width = 195, units = "mm"
+  height = 200, width = 125, units = "mm"
 )
 ```
 
@@ -334,15 +386,15 @@ pred = predict(mod, newdata = pred_data, allow.new.levels = T, se.fit = T)
 pred_data$pred = pred$fit
 pred_data$se = pred$se.fit
 
-fig_vis_ndvi = 
+fig_vis_ndvi =
   ggplot(pred_data)+
   geom_bin_2d(
     data = env_data,
     aes(
       ndvi, vis,
-      fill = ..density..
+      fill = ..count..
     ),
-    show.legend = F
+    show.legend = T
   )+
   geom_ribbon(
     aes(
@@ -351,15 +403,16 @@ fig_vis_ndvi =
       ymax = pred + se,
       group = lc
     ),
+    show.legend = F,
     size = 0.3,
-    col = "grey30",
-    fill = alpha("grey", 0.2)
+    col = "grey",
+    fill = "transparent"
   )+
   geom_line(
     aes(
       ndvi, pred
     ),
-    col = 1
+    col = "indianred"
   )+
   facet_wrap(
     facets = vars(lc),
@@ -377,22 +430,9 @@ fig_vis_ndvi =
     y = "Visibility index"
   )+
   scico::scale_fill_scico(
-    palette = "lajolla"
-  )+
-  scico::scale_colour_scico_d(
-    palette = "hawaii",
-    direction = 1,
-    limits = c(
-      "B", "O", "R", "T", "W"
-    ),
-    breaks = c("B", "O", "R", "T"),
-    labels = c(
-      "B" = "Settlements",
-      "O" = "Open areas",
-      "R" = "Reedbeds",
-      "T" = "Trees"
-    ),
-    name = NULL
+    palette = "lapaz",
+    direction = -1,
+    name = "# Samples"
   )+
   coord_cartesian(
     expand = T,
@@ -402,13 +442,13 @@ fig_vis_ndvi =
   theme_test()+
   theme(
     legend.position = "bottom",
-    legend.justification = 1,
+    # legend.justification = 1,
     legend.margin = margin(rep(0, 4)),
-    legend.key.height = unit(4, "mm"),
-    legend.key.width = unit(5, "mm"),
+    legend.key.height = unit(2, "mm"),
+    legend.key.width = unit(10, "mm"),
     strip.background = element_blank(),
     strip.text = element_text(
-      face = "bold"
+      face = "italic"
     )
   )
 
