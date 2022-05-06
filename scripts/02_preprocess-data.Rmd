@@ -359,6 +359,12 @@ data_attractors[, hour := hour(as.POSIXct(time, origin = "1970-01-01",
 ))]
 
 data_attractors[, light := fifelse(hour >= 5 & hour < 20, "day", "night")]
+
+# save data on attractprs
+fwrite(
+  data_attractors,
+  file = "data/results/data_attractors.csv"
+)
 ```
 
 ```{r}
@@ -417,4 +423,24 @@ ggsave(
   p_attractor,
   filename = "figures/fig_attractor_locations.png"
 )
+```
+
+### Where were attractor positions removed?
+
+```{r}
+atrac_sf = st_as_sf(data_attractors[, c("sp", "X", "Y")], coords = c("X", "Y"),
+  crs = 2039
+)
+```
+
+```{r}
+lc_attractor = terra::extract(
+  terra::vect(landcover[, c("Name")]), terra::vect(atrac_sf)
+)
+```
+
+```{r}
+# WIP - may need to be processed further - fails due to replicate
+# landcovers from points on boundaries
+data_attractors$lc = lc_attractor$Name
 ```
