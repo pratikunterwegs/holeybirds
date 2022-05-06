@@ -279,3 +279,46 @@ for (file in files) {
 } # for loops ends
 sink()
 ```
+
+
+## Estimate fix Table
+
+```{r}
+# load swallow data preprocessed
+files = list.files(
+  path = "data/processed/data_preprocessed",
+  full.names = TRUE
+)
+```
+
+```{r}
+# read all data and count fixes per hour per calendar day
+data = lapply(files, function(df) {
+  df_ = fread(df)
+
+  df_ = df_[, list(
+    tracking_duration_min = (max(time) - min(time)) / (60), # div by 60 for mins
+    nfixes = length(X)
+  ), by = c("sp", "TAG", "date")]
+
+  df_[, fix_per_min := nfixes / (tracking_duration_min)][]
+
+})
+
+# bind list and split by id and date
+data = rbindlist(data)
+
+# save data to file
+fwrite(data, file = "data/results/data_fix_per_min_daily.csv")
+```
+
+```{r}
+# summarise the data per species
+data_summary_fix_rate = data[, list(
+  mean_fix_pm = mean(fix_per_min, na.rm = T),
+  sd_fix_pm = sd(fix_per_min, na.rm = T)
+), by = c("sp")]
+
+# save to file
+fwrite(data_summary_fix_rate, file = "data/results/data_summary_fix_rate.csv")
+```
