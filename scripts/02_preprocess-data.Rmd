@@ -322,3 +322,99 @@ data_summary_fix_rate = data[, list(
 # save to file
 fwrite(data_summary_fix_rate, file = "data/results/data_summary_fix_rate.csv")
 ```
+
+## Supplementary code to find attractor positions
+
+This code is to find positions returned by ATLAS when it fails to calculate a good localisations.
+
+```{r}
+# find all raw data files
+files <- list.files("data/processed/data_id", full.names = TRUE)
+
+# find attractor locations
+data_attractors = lapply(files, function(file) {
+  # read in file
+  df <- fread(file)
+  
+  tag_id <- unique(df$TAG)
+  species <- unique(df$sp)
+  
+  # add time
+  df[, time := as.integer(as.numeric(TIME) / 1000)]
+  
+  # remove other attractors
+  df[, count := .N, by = c("X", "Y")]
+  df = df[count > 5, ]
+  df
+})
+
+# bind list and plot locations
+data_attractors = rbindlist(data_attractors)
+```
+
+```{r}
+# get time of day - are these sleeping birds?
+data_attractors[, hour := hour(as.POSIXct(time, origin = "1970-01-01",
+  tz = "Asia/Jerusalem"
+))]
+
+data_attractors[, light := fifelse(hour >= 5 & hour < 20, "day", "night")]
+```
+
+```{r}
+(
+    ggplot(data_attractors)+
+    geom_histogram(
+      aes(hour)
+    )+
+    geom_vline(
+      xintercept = c(5, 20),
+      col = "red"
+    )+
+    facet_wrap(~sp)+
+    labs(
+      x = "Hour of day",
+      y = "# Duplicated positions"
+    ) 
+  )|>
+
+  ggsave(
+    filename = "figures/fig_duplicated_positions.png"
+  )
+```
+
+Read in spatial data to plot attractors in correct locations.
+
+```{r}
+# read in spatial data
+library(sf)
+
+landcover = st_read("data/spatial/hula_lc_vector/HulaValley.shp")
+```
+
+```{r}
+p_attractor = ggplot(data_attractors)+
+  geom_sf(
+    data = landcover,
+    fill = "lightgrey"
+  )+
+  geom_point(
+    aes(X, Y, fill = sp, size = count),
+    shape = 21
+  )+
+  scale_size_continuous(
+    range = c(0.1, 10)
+  )+
+  coord_sf(
+    xlim = st_bbox(landcover)[c("xmin", "xmax")],
+    ylim = st_bbox(landcover)[c("ymin", "ymax")]
+  )+
+  facet_wrap(
+    ~light
+  )
+
+ggsave(
+  p_attractor,
+  filename = "figures/fig_attractor_locations.png"
+)
+```
