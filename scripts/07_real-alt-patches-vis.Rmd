@@ -3,14 +3,22 @@ editor_options:
   chunk_output_type: console
 ---
 
+# Selection for sheltered areas by bulbuls, sparrows, and reed warblers
+
 ```{r}
 library(readr)
 library(dplyr)
 library(tidyr)
+library(glue)
+
+library(survival)
 
 library(ggplot2)
+library(ggtext)
 library(colorspace)
 library(patchwork)
+
+library(mgcv)
 ```
 
 ```{r}
@@ -62,7 +70,7 @@ df_cov_lt = filter(
 # filter for high ndvi values
 data_sel = filter(
   data_step_covs,
-  between(ndvi_end, 0.4, 1)
+  between(ndvi_end, 0, 1)
 )
 
 # filter out data without species or rrv
@@ -72,7 +80,30 @@ data_sel = filter(
   !is.na(treat),
   !is.na(rrv_calc)
 )
+```
 
+Summarise number of fixes in real and alternate patches.
+
+```{r}
+data_sel %>% 
+  group_by(
+    id, treat,
+    case_
+  ) %>% 
+  count() %>% 
+  group_by(
+    case_
+  ) %>% 
+  summarise(
+    across(n, .fns = list(mean = mean, sd = sd))
+  )
+```
+
+
+Prepare data for conditional logistic regression.
+
+```{r}
+# select useful columns
 sdf = filter(
   data_sel
 ) |> 
@@ -105,6 +136,12 @@ sdf = sdf |>
   mutate(
     case_ = if_else(case_, "real", "alternate")
   )
+
+# save
+write_csv(
+  sdf,
+  file = "data/results/data_visibility_steps_summary.csv"
+)
 ```
 
 ### Model visibility with RRV
@@ -121,10 +158,10 @@ data_sel = mutate(
 ```
 
 ```{r}
-library(mgcv)
-
+# fit gam
 mod1 = gam(
   vis_end ~ s(rrv_calc, by = sp, k = 3) +
+    s(ndvi_end, k = 5)+ 
     s(sp, bs = "re"),
   data = filter(
     data_sel, case_
@@ -135,6 +172,35 @@ summary(mod1)
 gratia::draw(mod1)
 ```
 
+```{r}
+# save model summary
+mod_summary = summary(mod1)
+writeLines(
+  capture.output(
+    mod_summary
+  ),
+  con = "data/results/mod_summary_rrv_visibility.txt"
+)
+```
+
+This code below is only to create clean outputs for the LaTeX supplementary material.
+
+```{r eval=FALSE}
+# get model as tex code for supplement
+texreg::texreg(
+  list(mod1),
+  custom.model.names = c("Coefficients"),
+  single.row = T, 
+  dcolumn = T, 
+  custom.coef.names = c(
+    "Intercept", "NDVI",
+    "WGI - bulbul", "WGI - sparrow", "WGI - warbler", 
+    "Species"
+  ),
+  caption = "Generalised additive model coefficients for residence patch visibility."
+)
+```
+
 ## Model visibility across RRV
 
 ```{r}
@@ -142,6 +208,7 @@ gratia::draw(mod1)
 pred_data = crossing(
   sp = as.factor(unique(data_sel$sp)),
   id = "new",
+  ndvi_end = 0.3,
   rrv_calc = seq(0, 20, 0.5)
 )
 
@@ -171,9 +238,146 @@ ggplot(data_sel)+
   )
 ```
 
+## Step selection based on visibility
+
+```{r}
+# split the data by species, first making a copy
+data_clogit = data_sel
+
+# fix factor levels
+data_clogit = mutate(
+  data_clogit,
+  treat = factor(
+    treat,
+    levels = c("NonMoulting", "Moulting", "Manipulated")
+  ),
+  vis_end_inv = 1 - vis_end
+)
+
+# now nest the data
+data_clogit = nest(
+  data_clogit, !c("sp", "treat")
+)
+
+# apply a gam over the nested data
+data_clogit = mutate(
+  data_clogit,
+  mod_fit = lapply(
+    data, function(df) {
+      survival::clogit(
+        formula = case_ ~ (vis_end) + ndvi_end +
+          strata(step_id_),
+        method = "approximate",
+        data = df
+      )
+    }
+  )
+)
+
+# get model outputs
+data_clogit = mutate(
+  data_clogit,
+  mod_fit = lapply(mod_fit, broom::tidy)
+)
+
+# unnest model fits
+data_clogit = unnest(
+  data_clogit,
+  cols = "mod_fit"
+)
+
+# mark sig
+data_clogit = mutate(
+  data_clogit,
+  sig = p.value < 0.05
+)
+
+# remove data col and save
+data_clogit = select(data_clogit, -data)
+write_csv(
+  data_clogit,
+  file = "data/results/data_clogit_fit_vis.csv"
+)
+```
+
+```{r}
+# merge rrv mean data and clogit fits
+data_clogit = left_join(
+  data_clogit,
+  filter(sdf, case_ == "real")
+)
+
+# add text label
+data_clogit = mutate(
+  data_clogit,
+  p_val_round = round(p.value, digits = 3),
+  label = glue(
+    "p = {p_val_round}"
+  ),
+  # handle if p is very small
+  label = if_else(
+    p_val_round < 0.0001,
+    glue("p < 0.001"),
+    label
+  ),
+  # add the z statistic
+  label = glue(
+    "β = {round(estimate, 2)}
+    {label}"
+  )
+)
+
+# arrange data by bird name
+data_clogit = arrange(
+  data_clogit,
+  desc(sp)
+)
+```
+
+Extract model coefficients for supplementary material.
+
+```{r}
+texreg::texreg(
+  data_clogit$mod_fit, 
+  dcolumn = T, 
+  booktabs = T,
+  custom.header = list(
+    "White-spectacled bulbul" = 1:3, 
+    "House sparrow" = 4:6, 
+    "Clamorous reed warbler" = 7:9
+  ), 
+  custom.model.names = rep(
+    c("Non-moulting", "Molting", "Manipulated"),
+    times = 3
+  ),
+  custom.coef.names = c("Visibility index", "NDVI"),
+  caption = "Log relative selection strengths (RSS) for patch visibility and NDVI."
+)
+```
+
+
 ## Plot comparison of real and potential patches visibility
 
 ```{r}
+# set factor levels
+sdf = mutate(
+  sdf,
+  sp = factor(sp, levels = c(
+    "Pycnonotus", "Passer", "Acrocephalus"
+  ))
+)
+
+# set factors
+data_clogit = mutate(
+  data_clogit,
+  sp = factor(sp, levels = c(
+    "Pycnonotus", "Passer", "Acrocephalus"
+  ))
+)
+```
+
+```{r}
+# make figure selection coefficients
 fig_vis_selection =
 ggplot(sdf)+
   geom_jitter(
@@ -185,7 +389,7 @@ ggplot(sdf)+
       rrv_calc, vis_end
     ),
     col = "lightgrey",
-    shape = 4,
+    shape = 3,
     size = 0.2
   )+
   geom_jitter(
@@ -197,31 +401,8 @@ ggplot(sdf)+
       rrv_calc, vis_end,
       col = treat,
     ),
+    size = 1,
     shape = 1
-  )+
-  geom_ribbon(
-    data = filter(
-      pred_data,
-      !(sp %in% c("Passer", "Pycnonotus") & rrv_calc > 17)
-    ),
-    aes(
-      rrv_calc,
-      ymin = pred - se,
-      ymax = pred + se
-    ),
-    fill = "transparent",
-    col = "grey",
-    lty = 1
-  )+
-  geom_line(
-    data = filter(
-      pred_data,
-      !(sp %in% c("Passer", "Pycnonotus") & rrv_calc > 17)
-    ),
-    aes(
-      rrv_calc, pred
-    ),
-    col = "indianred"
   )+
   geom_linerange(
     aes(
@@ -255,20 +436,45 @@ ggplot(sdf)+
     )
   )+
   geom_text(
-    data = tibble(
-      x = 0,
-      y = 0.9,
-      l = "NDVI > 0.4"
+    data = filter(
+      data_clogit,
+      term == "vis_end"
+    ) %>% mutate(
+      x_pos = case_when(
+        treat == "NonMoulting" ~ 0,
+        treat == "Moulting" ~ 6,
+        treat == "Manipulated" ~ 12,
+        T ~ NA_real_
+      )
     ),
-    hjust = "inward",
+    aes(
+      x = x_pos, # manual placement
+      y = 1.1, # manual placement,
+      label = label,
+      col = treat
+    ),
+    hjust = 0,
+    # angle = 90,
+    min.segment.length = 10,
     fontface = "italic",
-    aes(x, y, label = l)
+    size = 3
+  )+
+  facet_grid(
+    cols = vars(sp),
+    scales = "free_x",
+    labeller = labeller(
+      sp = c(
+        "Acrocephalus" = "Clamorous\nreed warbler",
+        "Passer" = "House sparrow",
+        "Pycnonotus" = "White-spectacled\nbulbul"
+      )
+    )
   )+
   scale_fill_discrete_sequential(
     palette = "Batlow",
     l1 = 30, l2 = 60,
     breaks = c("NonMoulting", "Moulting", "Manipulated"),
-    labels = c("N. Moulting", "Moulting", "Manipulated")
+    labels = c("Non-molting", "Molting", "Manipulated")
   )+
   scale_colour_discrete_sequential(
     palette = "Batlow",
@@ -284,9 +490,8 @@ ggplot(sdf)+
     # breaks = c("real", "alternate"),
     labels = c("Potential", "Real")
   )+
-  facet_grid(
-    cols = vars(sp),
-    scales = "free_x"
+  scale_y_continuous(
+    breaks = seq(0, 1, 0.25)
   )+
   theme_test(
     base_size = 10,
@@ -300,10 +505,13 @@ ggplot(sdf)+
     )
   )+
   labs(
-    x = "RRV (More ragged wing)",
-    y = "Visibility at next patch",
+    x = "Wing gap index (More gappy wing →)",
+    y = "Visibility of residence patches",
     fill = NULL,
     shape = NULL
+  )+
+  coord_cartesian(
+    ylim = c(0, 1.15)
   )+
   guides(
     fill = guide_legend(
@@ -313,14 +521,14 @@ ggplot(sdf)+
     ),
     shape = guide_legend(
       override.aes = list(
-        size = 3
+        size = 2.5
       )
     )
   )
 
 ggsave(
   fig_vis_selection,
-  filename = "figures/fig_03.png",
+  filename = "figures/fig_04.png",
   height = 87,
   width = 178,
   units = "mm"

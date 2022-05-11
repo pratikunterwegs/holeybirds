@@ -3,10 +3,12 @@ editor_options:
   chunk_output_type: console
 ---
 
+# Quantify daily distance travelled by swallows
+
 ```{r}
 library(data.table)
-library(sf)
-library(ctmm)
+library(ggplot2)
+library(colorspace)
 ```
 
 ```{r}
@@ -47,11 +49,15 @@ data = lapply(
 # cumulative daily distance in kilometres
 data_dist = lapply(data, function(df) {
   df[, list(
-    dist = sum(dist) / 1000
+    dist = sum(dist) / 1000,
+    tracking_time = diff(range(time)) / (60 * 60)
   ), by = c("TAG", "date")]
 }) |> rbindlist()
 
 data_dist$date = as.character(data_dist$date)
+
+# get distance per hour
+data_dist[, dist_ph := dist / tracking_time]
 ```
 
 ### Link with RRV and moult status
@@ -75,13 +81,13 @@ data_dist = merge(
 # sanity check
 ggplot(data_dist)+
   geom_jitter(
-    aes(rrv_calc, dist, col = treat)
+    aes(rrv_calc, dist_ph, col = treat)
   )
 ```
 
 ```{r}
 # speed over rrv summary
-psdf = data_dist
+psdf = copy(data_dist)
 psdf2 = psdf[, unlist(
   lapply(.SD, function(x) {
   list(
@@ -89,7 +95,7 @@ psdf2 = psdf[, unlist(
     sd = sd(x, na.rm = TRUE)
   )
 }), recursive = F), 
-.SDcols = c("dist", "rrv_calc"), by = c("treat")]
+.SDcols = c("dist_ph", "rrv_calc"), by = c("treat")]
 ```
 
 ## Fit GAM movement to data
@@ -98,11 +104,20 @@ psdf2 = psdf[, unlist(
 library(mgcv)
 
 mod1 = gam(
-  dist ~ s(rrv_calc, k = 3),
+  dist_ph ~ s(rrv_calc, k = 3),
   data = psdf
 )
 
 gratia::draw(mod1)
+
+# save model summary
+mod_summary = summary(mod1)
+writeLines(
+  capture.output(
+    mod_summary
+  ),
+  con = "data/results/mod_summary_swallow_movement.txt"
+)
 ```
 
 ```{r}
@@ -118,67 +133,78 @@ pred = predict(mod1, newdata = pred_data, allow.new.levels = T, se.fit = T)
 
 pred_data$pred = pred$fit
 pred_data$se = pred$se.fit
+
+# add species name
+psdf2[, sp := "Hirundo"]
 ```
 
-## Plot movement and utilisation over RRV
+## Plot movement over WGI
 
 ```{r}
-fig_swallow_dist = 
+fig_swallow_dist =
   ggplot(psdf2)+
   geom_jitter(
     data = psdf,
     aes(
-      rrv_calc, dist,
+      rrv_calc, dist_ph,
       col = treat
     ),
     shape = 1
   )+
-  geom_ribbon(
-    data = pred_data[rrv_calc < 15,],
-    aes(
-      rrv_calc,
-      ymin = pred - se,
-      ymax = pred + se
-    ),
-    fill = "transparent",
-    col = "grey",
-    lty = 1
-  )+
-  geom_line(
-    data = pred_data[rrv_calc < 15,],
-    aes(
-      rrv_calc, pred
-    ),
-    col = "indianred"
-  )+
+  # geom_ribbon(
+  #   data = pred_data[rrv_calc < 15,],
+  #   aes(
+  #     rrv_calc,
+  #     ymin = pred - se,
+  #     ymax = pred + se
+  #   ),
+  #   fill = "transparent",
+  #   col = "grey",
+  #   lty = 1
+  # )+
+  # geom_line(
+  #   data = pred_data[rrv_calc < 15,],
+  #   aes(
+  #     rrv_calc, pred
+  #   ),
+  #   col = "indianred"
+  # )+
   geom_linerange(
     aes(
       x = rrv_calc.mean,
-      ymin = dist.mean - dist.sd,
-      ymax = dist.mean + dist.sd
+      ymin = dist_ph.mean - dist_ph.sd,
+      ymax = dist_ph.mean + dist_ph.sd
     )
   )+
   geom_linerange(
     aes(
       x = rrv_calc.mean,
-      y = dist.mean,
+      y = dist_ph.mean,
       xmin = rrv_calc.mean - rrv_calc.sd,
       xmax = rrv_calc.mean + rrv_calc.sd
     )
   )+
   geom_point(
     aes(
-      rrv_calc.mean, dist.mean,
+      rrv_calc.mean, dist_ph.mean,
       fill = treat
     ),
     shape = 21,
     size = 3
   )+
+  facet_grid(
+    rows = vars(sp),
+    labeller = labeller(
+      sp = c(
+        "Hirundo" = "Barn swallow"
+      )
+    )
+  )+
   scale_fill_discrete_sequential(
     palette = "Batlow",
     l1 = 30, l2 = 60,
     breaks = c("NonMoulting", "Moulting", "Manipulated"),
-    labels = c("N. Moulting", "Moulting", "Manipulated")
+    labels = c("Non-molting", "Molting", "Manipulated")
   )+
   scale_colour_discrete_sequential(
     palette = "Batlow",
@@ -200,8 +226,8 @@ fig_swallow_dist =
     )
   )+
   labs(
-    x = "RRV (More ragged wing)",
-    y = "Daily distance moved (km)",
+    x = "Wing gap index (More gappy wing →)",
+    y = "Distance moved (km) / hr",
     fill = NULL
   )
 
@@ -209,41 +235,6 @@ fig_swallow_dist =
 ggsave(
   fig_swallow_dist,
   filename = "figures/fig_02.png",
-  height = 87, width = 87, units = "mm"
+  height = 70, width = 87, units = "mm"
 )
 ```
-
-## Get area and link with NDVI
-
-```{r}
-library(sf)
-# make polygon
-data_swallow_poly = lapply(
-  data, function(df) {
-    dfsf = st_as_sf(
-      df, coords = c("X", "Y"),
-      crs = 2039
-    )
-    dfpoly = st_buffer(
-      dfsf, dist = 25
-    )
-  }
-)
-
-# bind all by id
-data_swallow_poly = dplyr::bind_rows(data_swallow_poly)
-data_swallow_poly = dplyr::group_by(
-  data_swallow_poly,
-  TAG
-) |> 
-  dplyr::summarise(
-    geometry = st_union(geometry)
-  )
-
-# save
-st_write(
-  data_swallow_poly,
-  dsn = "data/spatial/data_swallow_poly.gpkg"
-)
-```
-

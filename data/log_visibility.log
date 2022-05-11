@@ -1,0 +1,2 @@
+
+ALGORITHM|~|2022-01-04 11:33:53|~|processing.run("visibility:visibility_index", {'DEM':'C:/Users/p284074/Documents/holeybirds/data/rasters/raster_hula_dsm_resamp_01m.tif','RADIUS':50,'OBSERVER_HEIGHT':1.5,'SAMPLE':1,'DIRECTION':0,'INTERPOLATE':True,'USE_CURVATURE':False,'REFRACTION':0.13,'OUTPUT':'C:/Users/p284074/Documents/holeybirds/data/rasters/raster_hula_visibility.tif'})

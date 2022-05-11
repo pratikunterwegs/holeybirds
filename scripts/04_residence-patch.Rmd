@@ -4,7 +4,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Large scale space use for sparrow, bulbul, and warbler
+# Large scale space use for bulbuls, sparrows, and reed warblers
 
 ## Load libraries and prepare files
 
@@ -44,7 +44,7 @@ data = lapply(
   files, function(file) {
     # read the file
     df = fread(file)
-    
+
     # select useful columns
     df = df[, c("X", "Y", "time", "TAG", "date")]
     
@@ -88,15 +88,22 @@ data = lapply(
 # residence patch parameters
 buffer_radius_ = 25 # metres
 lim_spat_indep_ = 100 # metres
+
+# smaller lim_spat_indep for warblers
+lim_spat_indep_warbler_ = 25 # metres
+
 lim_time_indep_ = 30 # minutes
 min_fixes_ = 9 # fixes
 ```
 
 
 ```{r}
-# split by date
-patch_data = lapply(
-  data, function(df) {
+# split by date and handle warblers differently
+is_warbler = grepl("Acrocephalus", files)
+
+patch_data = Map(
+  data, is_warbler,
+  f = function(df, is_warbler_) {
     # split by date
     df <- split(df, by = "date")
     
@@ -112,11 +119,17 @@ patch_data = lapply(
       # names to lowercase
       setnames(d_, old = c("X", "Y"), new = c("x", "y"))
       
+      lim_spat_indep_temp_ = if (is_warbler_) {
+         lim_spat_indep_warbler_
+      } else {
+         lim_spat_indep_
+      }
+
       # apply method
       atl_res_patch(
         data = d_,
         buffer_radius = buffer_radius_, 
-        lim_spat_indep = lim_spat_indep_, 
+        lim_spat_indep = lim_spat_indep_temp_, 
         lim_time_indep = lim_time_indep_,
         min_fixes = min_fixes_
       )
@@ -193,22 +206,4 @@ patch_points = lapply(
 patch_points = rbindlist(patch_points)
 
 fwrite(patch_points, file = "data/results/data_patch_points_ppa.csv")
-```
-
-Get residence patch spatials.
-
-```{r}
-# run summary function over each list element
-patch_data = lapply(patch_data, rbindlist) |> rbindlist()
-
-patch_spatials = atl_patch_summary(
-  patch_data = patch_data,
-  which_data = "spatial",
-  buffer_radius = 25
-)
-
-st_write(
-  patch_spatials,
-  dsn = "data/spatial/data_patch_spatials.gpkg"
-)
 ```

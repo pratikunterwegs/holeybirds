@@ -1,0 +1,109 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Wing gap index change over study period
+
+## Load libraries
+
+```{r}
+# libs for data
+library(data.table)
+library(glue)
+
+library(ggplot2)
+library(colorspace)
+```
+
+## Load data
+
+```{r}
+# read data
+wgi = fread("data/results/data_daily_rrv.csv")
+
+# assign species name as ordered factor
+wgi[, sp := factor(
+  sp,
+  levels = c("Pycnonotus", "Passer", "Acrocephalus", "Hirundo")   
+)
+]
+```
+
+### WGI progression plot
+
+```{r}
+# assign first and last day of tracking
+wgi[, day := as.numeric(date - min(date), units = "days") + 1, by = "TAG"]
+
+# remove days beyond 10
+wgi = wgi[day <= 10,]
+
+fig_wing_gap_progression = 
+  ggplot(wgi)+
+  geom_line(
+    aes(
+      day, rrv_calc,
+      col = treat,
+      group = TAG
+    )
+  )+
+  geom_point(
+    aes(
+      day, rrv_calc, group = TAG, 
+      col = treat
+    )
+  )+
+  facet_wrap(
+    facets = vars(sp),
+    scales = "fixed",
+    labeller = labeller(
+      sp = c(
+        "Acrocephalus" = "Clamorous\nreed warbler",
+        "Passer" = "House sparrow",
+        "Pycnonotus" = "White-spectacled\nbulbul",
+        "Hirundo" = "Barn swallow"
+      )
+    )
+  )+
+  scale_x_continuous(
+    breaks = seq(7)
+  )+
+  scale_y_continuous(
+    breaks = seq(0, 20, 5)
+  )+
+  scale_colour_discrete_sequential(
+    palette = "Batlow",
+    l1 = 30, l2 = 60,
+    breaks = c("NonMoulting", "Moulting", "Manipulated"),
+    labels = c("Non-molting", "Molting", "Manipulated"),
+    order = c(1, 2, 3)
+  )+
+  coord_cartesian(
+    xlim = c(NA, 7),
+    ylim = c(0, 20)
+  )+
+  theme_bw(
+    base_size = 10
+  )+
+  theme(
+    legend.position = "top",
+    strip.background = element_blank(),
+    strip.text = element_text(
+      face = "italic"
+    ),
+    legend.margin = margin(rep(0, 4))
+  )+
+  labs(
+    x = "Days since start of tracking",
+    y = "Wing gap index",
+    colour = NULL
+  )
+
+# save figure
+ggsave(
+  fig_wing_gap_progression,
+  filename = "figures/fig_spm_01.png",
+  width = 80, height = 100, units = "mm"
+)
+```

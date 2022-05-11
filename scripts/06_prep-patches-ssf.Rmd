@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Prepare data for SSF
+# Prepare data for selection analysis
 
 Here we prepare the data for SSFs using the `amt` package.
 

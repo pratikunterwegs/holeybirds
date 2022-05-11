@@ -1,29 +1,25 @@
 
-Call:
-glm(formula = vis ~ ndvi * lc, data = env_data)
+Family: gaussian 
+Link function: identity 
 
-Deviance Residuals: 
-     Min        1Q    Median        3Q       Max  
--0.78171  -0.13002   0.03974   0.17229   0.88617  
+Formula:
+vis ~ s(ndvi, by = lc) + s(lc, bs = "re")
 
-Coefficients:
-            Estimate Std. Error t value Pr(>|t|)    
-(Intercept)  0.34264    0.01958  17.500  < 2e-16 ***
-ndvi        -0.38848    0.04992  -7.782 8.03e-15 ***
-lcR          0.21525    0.05133   4.193 2.78e-05 ***
-lcB         -0.04918    0.04082  -1.205   0.2283    
-lcO          0.49093    0.02029  24.199  < 2e-16 ***
-ndvi:lcR    -0.19272    0.11282  -1.708   0.0876 .  
-ndvi:lcB     0.02143    0.13553   0.158   0.8744    
-ndvi:lcO     0.22471    0.05341   4.207 2.61e-05 ***
+Parametric coefficients:
+            Estimate Std. Error t value Pr(>|t|)   
+(Intercept)   0.4152     0.1363   3.046  0.00232 **
 ---
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-(Dispersion parameter for gaussian family taken to be 0.04633919)
+Approximate significance of smooth terms:
+              edf Ref.df        F p-value    
+s(ndvi):lcT 4.690  5.713   24.002 < 2e-16 ***
+s(ndvi):lcR 2.967  3.724   21.165 < 2e-16 ***
+s(ndvi):lcB 1.000  1.000   10.629 0.00112 ** 
+s(ndvi):lcO 6.742  7.862    6.108 < 2e-16 ***
+s(lc)       2.992  3.000 1638.253 < 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-    Null deviance: 885.40  on 8008  degrees of freedom
-Residual deviance: 370.76  on 8001  degrees of freedom
-AIC: -1863.2
-
-Number of Fisher Scoring iterations: 2
-
+R-sq.(adj) =  0.582   Deviance explained = 58.3%
+fREML = -1135.7  Scale est. = 0.045435  n = 9301
