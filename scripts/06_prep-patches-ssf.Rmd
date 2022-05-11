@@ -414,45 +414,6 @@ step_covs = pmap(
     
     as_tibble(df_s)
     
-    # df = select(
-    #   df, 
-    #   patch_start, patch_end,
-    #   step_id_,
-    #   case_,
-    #   log_sl,
-    #   matches(c("ndvi", "vis", "lc")),
-    #   -ndvi, -vis, -lc
-    # )
-    
-    # # join destination data with steps data
-    # df = distinct(
-    #   df
-    # )
-    # 
-    # # sample only half of all points
-    # df = group_by(
-    #   df,
-    #   patch_start,
-    #   patch_end,
-    #   case_
-    # ) |> 
-    #   sample_frac(
-    #     size = 0.5
-    #   )
-    # 
-    # df = mutate(
-    #   df,
-    #   id = id,
-    #   date = date
-    # )
-    # 
-    # fwrite(
-    #   df,
-    #   file = glue::glue(
-    #     "data/processed/data_for_clogit/data_{id}_{date}.csv"
-    #   )
-    # )
-    
   }
 )
 
