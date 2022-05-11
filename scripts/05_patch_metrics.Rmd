@@ -138,6 +138,32 @@ ggsave(
   )
 ```
 
+## Checking for tiSSA requirement
+
+```{r}
+p = ggplot(data)+
+  geom_jitter(
+    aes(
+      duration_bw_patches, dist_bw_patch,
+      col = treat
+    )
+  )+
+  geom_hline(
+    yintercept = 100,
+    lty = 2
+  )+
+  geom_vline(
+    xintercept = 30,
+    lty = 2
+  )+
+  scale_x_sqrt()+
+  scale_y_sqrt()+
+  facet_grid(~sp)
+
+ggsave(
+  p, filename = "figures/fig_distance_duration_bw_patches.png"
+)
+```
 
 ## Movements between patches
 
