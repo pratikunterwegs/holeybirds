@@ -103,3 +103,6 @@ supplement-text/
 
 # ignore QGIS files
 *.qgz
+
+# ignore manuscript
+manuscript/
