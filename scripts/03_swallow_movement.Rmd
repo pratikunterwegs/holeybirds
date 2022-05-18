@@ -13,7 +13,7 @@ library(colorspace)
 
 ```{r}
 # load swallow data preprocessed
-files = list.files(
+files <- list.files(
   path = "data/processed/data_preprocessed",
   pattern = "Hirundo",
   full.names = TRUE
@@ -22,11 +22,11 @@ files = list.files(
 
 ```{r}
 # read all data
-data = lapply(files, fread)
+data <- lapply(files, fread)
 
 # bind list and split by id and date
-data = rbindlist(data)
-data = split(data, by = c("TAG", "date"))
+data <- rbindlist(data)
+data <- split(data, by = c("TAG", "date"))
 ```
 
 ## Calculate distance and area
@@ -38,7 +38,7 @@ library(atlastools)
 ```
 
 ```{r}
-data = lapply(
+data <- lapply(
   data, function(df) {
     df[, dist := atl_simple_dist(df, x = "X", y = "Y")]
     df[, dist := nafill(dist, type = "const", fill = 0)]
@@ -47,14 +47,14 @@ data = lapply(
 )
 
 # cumulative daily distance in kilometres
-data_dist = lapply(data, function(df) {
+data_dist <- lapply(data, function(df) {
   df[, list(
     dist = sum(dist) / 1000,
     tracking_time = diff(range(time)) / (60 * 60)
   ), by = c("TAG", "date")]
 }) |> rbindlist()
 
-data_dist$date = as.character(data_dist$date)
+data_dist$date <- as.character(data_dist$date)
 
 # get distance per hour
 data_dist[, dist_ph := dist / tracking_time]
@@ -64,10 +64,10 @@ data_dist[, dist_ph := dist / tracking_time]
 
 ```{r}
 # read rrv
-rrv = fread("data/results/data_daily_rrv.csv")
-rrv$date = as.character(rrv$date)
+rrv <- fread("data/results/data_daily_rrv.csv")
+rrv$date <- as.character(rrv$date)
 
-data_dist = merge(
+data_dist <- merge(
   data_dist,
   rrv,
   by.x = c("TAG", "date"),
@@ -79,7 +79,7 @@ data_dist = merge(
 
 ```{r}
 # sanity check
-ggplot(data_dist)+
+ggplot(data_dist) +
   geom_jitter(
     aes(rrv_calc, dist_ph, col = treat)
   )
@@ -87,15 +87,18 @@ ggplot(data_dist)+
 
 ```{r}
 # speed over rrv summary
-psdf = copy(data_dist)
-psdf2 = psdf[, unlist(
+psdf <- copy(data_dist)
+psdf2 <- psdf[, unlist(
   lapply(.SD, function(x) {
-  list(
-    mean = mean(x, na.rm = TRUE),
-    sd = sd(x, na.rm = TRUE)
-  )
-}), recursive = F), 
-.SDcols = c("dist_ph", "rrv_calc"), by = c("treat")]
+    list(
+      mean = mean(x, na.rm = TRUE),
+      sd = sd(x, na.rm = TRUE)
+    )
+  }),
+  recursive = F
+),
+.SDcols = c("dist_ph", "rrv_calc"), by = c("treat")
+]
 ```
 
 ## Fit GAM movement to data
@@ -103,7 +106,7 @@ psdf2 = psdf[, unlist(
 ```{r}
 library(mgcv)
 
-mod1 = gam(
+mod1 <- gam(
   dist_ph ~ s(rrv_calc, k = 3),
   data = psdf
 )
@@ -111,7 +114,7 @@ mod1 = gam(
 gratia::draw(mod1)
 
 # save model summary
-mod_summary = summary(mod1)
+mod_summary <- summary(mod1)
 writeLines(
   capture.output(
     mod_summary
@@ -122,17 +125,17 @@ writeLines(
 
 ```{r}
 # make prediction table
-pred_data = CJ(
+pred_data <- CJ(
   sp = as.factor(unique(psdf$sp)),
   id = "new",
   rrv_calc = seq(0, 20, 0.5)
 )
 
 # get prediction
-pred = predict(mod1, newdata = pred_data, allow.new.levels = T, se.fit = T)
+pred <- predict(mod1, newdata = pred_data, allow.new.levels = T, se.fit = T)
 
-pred_data$pred = pred$fit
-pred_data$se = pred$se.fit
+pred_data$pred <- pred$fit
+pred_data$se <- pred$se.fit
 
 # add species name
 psdf2[, sp := "Hirundo"]
@@ -141,8 +144,8 @@ psdf2[, sp := "Hirundo"]
 ## Plot movement over WGI
 
 ```{r}
-fig_swallow_dist =
-  ggplot(psdf2)+
+fig_swallow_dist <-
+  ggplot(psdf2) +
   geom_jitter(
     data = psdf,
     aes(
@@ -150,7 +153,7 @@ fig_swallow_dist =
       col = treat
     ),
     shape = 1
-  )+
+  ) +
   # geom_ribbon(
   #   data = pred_data[rrv_calc < 15,],
   #   aes(
@@ -175,7 +178,7 @@ fig_swallow_dist =
       ymin = dist_ph.mean - dist_ph.sd,
       ymax = dist_ph.mean + dist_ph.sd
     )
-  )+
+  ) +
   geom_linerange(
     aes(
       x = rrv_calc.mean,
@@ -183,7 +186,7 @@ fig_swallow_dist =
       xmin = rrv_calc.mean - rrv_calc.sd,
       xmax = rrv_calc.mean + rrv_calc.sd
     )
-  )+
+  ) +
   geom_point(
     aes(
       rrv_calc.mean, dist_ph.mean,
@@ -191,7 +194,7 @@ fig_swallow_dist =
     ),
     shape = 21,
     size = 3
-  )+
+  ) +
   facet_grid(
     rows = vars(sp),
     labeller = labeller(
@@ -199,34 +202,34 @@ fig_swallow_dist =
         "Hirundo" = "Barn swallow"
       )
     )
-  )+
+  ) +
   scale_fill_discrete_sequential(
     palette = "Batlow",
     l1 = 30, l2 = 60,
     breaks = c("NonMoulting", "Moulting", "Manipulated"),
     labels = c("Non-molting", "Molting", "Manipulated")
-  )+
+  ) +
   scale_colour_discrete_sequential(
     palette = "Batlow",
     l1 = 50, l2 = 50,
     guide = "none"
-  )+
+  ) +
   coord_cartesian(
     # ylim = c(0, NA)
-  )+
+  ) +
   theme_test(
     base_size = 10,
     base_family = "Arial"
-  )+
+  ) +
   theme(
     legend.position = "top",
     strip.background = element_blank(),
     strip.text = element_text(
       face = "italic"
     )
-  )+
+  ) +
   labs(
-    x = "Wing gap index (More gappy wing →)",
+    x = "Wing gap index (More gappy wing <U+2192>)",
     y = "Distance moved (km) / hr",
     fill = NULL
   )

@@ -94,6 +94,7 @@ docs/*.tex
 .Rproj.user
 
 figures/figures_preprocessing/
+figures/figures_extra/
 
 # ignore geopackages
 *.gpkg
@@ -103,3 +104,6 @@ supplement-text/
 
 # ignore QGIS files
 *.qgz
+
+# ignore manuscript
+manuscript/

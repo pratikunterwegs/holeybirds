@@ -20,14 +20,13 @@ library(colorspace)
 
 ```{r}
 # read data
-wgi = fread("data/results/data_daily_rrv.csv")
+wgi <- fread("data/results/data_daily_rrv.csv")
 
 # assign species name as ordered factor
 wgi[, sp := factor(
   sp,
-  levels = c("Pycnonotus", "Passer", "Acrocephalus", "Hirundo")   
-)
-]
+  levels = c("Pycnonotus", "Passer", "Acrocephalus", "Hirundo")
+)]
 ```
 
 ### WGI progression plot
@@ -37,23 +36,24 @@ wgi[, sp := factor(
 wgi[, day := as.numeric(date - min(date), units = "days") + 1, by = "TAG"]
 
 # remove days beyond 10
-wgi = wgi[day <= 10,]
+wgi <- wgi[day <= 10, ]
 
-fig_wing_gap_progression = 
-  ggplot(wgi)+
+fig_wing_gap_progression <-
+  ggplot(wgi) +
   geom_line(
     aes(
       day, rrv_calc,
       col = treat,
       group = TAG
     )
-  )+
+  ) +
   geom_point(
     aes(
-      day, rrv_calc, group = TAG, 
+      day, rrv_calc,
+      group = TAG,
       col = treat
     )
-  )+
+  ) +
   facet_wrap(
     facets = vars(sp),
     scales = "fixed",
@@ -65,27 +65,27 @@ fig_wing_gap_progression =
         "Hirundo" = "Barn swallow"
       )
     )
-  )+
+  ) +
   scale_x_continuous(
     breaks = seq(7)
-  )+
+  ) +
   scale_y_continuous(
     breaks = seq(0, 20, 5)
-  )+
+  ) +
   scale_colour_discrete_sequential(
     palette = "Batlow",
     l1 = 30, l2 = 60,
     breaks = c("NonMoulting", "Moulting", "Manipulated"),
     labels = c("Non-molting", "Molting", "Manipulated"),
     order = c(1, 2, 3)
-  )+
+  ) +
   coord_cartesian(
     xlim = c(NA, 7),
     ylim = c(0, 20)
-  )+
+  ) +
   theme_bw(
     base_size = 10
-  )+
+  ) +
   theme(
     legend.position = "top",
     strip.background = element_blank(),
@@ -93,7 +93,7 @@ fig_wing_gap_progression =
       face = "italic"
     ),
     legend.margin = margin(rep(0, 4))
-  )+
+  ) +
   labs(
     x = "Days since start of tracking",
     y = "Wing gap index",

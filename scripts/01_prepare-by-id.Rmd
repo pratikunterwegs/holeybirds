@@ -58,32 +58,32 @@ Load and assign species and treatment.
 invisible(
   Map(data_files, species, f = function(file, sp) {
     # open connection
-    con = dbConnect(
+    con <- dbConnect(
       drv = SQLite(),
       dbname = file
     )
-    
+
     # list the tables
     table_name <- dbListTables(con)[3] # 3rd table is localisations
-    
+
     # prepare to query all tables
     query <- sprintf('select * from \"%s\"', table_name)
-    
+
     # query the database
     df <- dbGetQuery(conn = con, statement = query)
-    
+
     # disconnect from database
     dbDisconnect(con)
-    
+
     # make data table
     setDT(df)
-    
+
     # assign species
     df[, sp := sp]
 
     # get unique tags
     tags <- unique(df$TAG)
-    
+
     # remove *Z covariance
     df[, c("VARZ", "COVXZ", "COVYZ") := NULL]
 
@@ -195,15 +195,15 @@ cols_to_keep <- c("Group", "ID", "Tag", "RRV", "Day", "Date", "calculated RRV")
 # keep only useful rows and cols
 data <- lapply(
   data, function(df) {
-    df = tibble::as_tibble(df)
+    df <- tibble::as_tibble(df)
 
-    df = tibble::as_tibble(df) |> 
+    df <- tibble::as_tibble(df) |>
       dplyr::select(dplyr::matches(cols_to_keep))
   }
 )
 
 # add col to data element 4, which is long term sparrows
-data[[4]]$`calculated RRV` = NA
+data[[4]]$`calculated RRV` <- NA
 ```
 
 ### Handle date and column names
@@ -212,7 +212,7 @@ data[[4]]$`calculated RRV` = NA
 # first bind rows
 data <- rbindlist(data, use.names = T)
 
-data = data[!is.na(Tag)]
+data <- data[!is.na(Tag)]
 
 # edit names to match previous individual data
 setnames(data,
@@ -239,22 +239,24 @@ data_tracking_summary[, "tag_4_digit" := stri_sub(TAG, -4, -1)]
 # pad the RRV data tag id, ie, make xx01 to 0001
 data[, trunc_tag := stri_pad_left(trunc_tag, width = 4, pad = 0)]
 
-data_treat = unique(data, by = c("trunc_tag", "treat"))
+data_treat <- unique(data, by = c("trunc_tag", "treat"))
 
 # attach treatment data to tracking metrics
-data_tracking_summary_w_rrv =
+data_tracking_summary_w_rrv <-
   merge(
-  data_tracking_summary, data_treat, all = F,
-  by.y = c("trunc_tag"),
-  by.x = c("tag_4_digit")
-)
+    data_tracking_summary, data_treat,
+    all = F,
+    by.y = c("trunc_tag"),
+    by.x = c("tag_4_digit")
+  )
 
-data_tracking_summary_w_rrv = data_tracking_summary_w_rrv[
+data_tracking_summary_w_rrv <- data_tracking_summary_w_rrv[
   , !c("tag_4_digit", "date", "rrv_calc")
 ]
 
 fwrite(data_tracking_summary_w_rrv,
-       file = "data/results/data_tracking_metrics_rrv.csv")
+  file = "data/results/data_tracking_metrics_rrv.csv"
+)
 
 # join the datasets
 data <- merge(data, data_tracking_summary,
@@ -274,23 +276,23 @@ fwrite(data, file = "data/results/data_daily_rrv.csv")
 data_tracking_summary[, .(all_fixes = sum(nfixes))]
 
 # average positions per minute
-data_tracking_summary[, list(avg_fixes = nfixes / 
-                               (days_tracking * 24 * 60)), 
-                      by = c("TAG", "sp")][ , list(
-                        avg_avg_fixes = mean(avg_fixes), 
-                        sd_avg_fixes = sd(avg_fixes)
-                      ), by = "sp"
-                      ]
+data_tracking_summary[, list(avg_fixes = nfixes /
+  (days_tracking * 24 * 60)),
+by = c("TAG", "sp")
+][, list(
+  avg_avg_fixes = mean(avg_fixes),
+  sd_avg_fixes = sd(avg_fixes)
+), by = "sp"]
 ```
 
 ### Summarise wing gap index
 
 ```{r}
 # read in wing gap index scores
-wgi = fread("data/results/data_daily_rrv.csv")
+wgi <- fread("data/results/data_daily_rrv.csv")
 
 # summarise by species and molt status
-wgi_summary = wgi[, list(
+wgi_summary <- wgi[, list(
   wgi_mean = mean(RRV, na.rm = TRUE),
   wgi_sd = sd(RRV, na.rm = TRUE)
 ), by = c("treat", "sp")]
@@ -310,6 +312,8 @@ unique(wgi, by = "TAG")[, .N, by = "sp"]
 ```{r}
 # summarise tracking before pre-processing
 unique(wgi, by = "TAG")[, .(
-  mt = mean(days_tracking), sdt = sd(days_tracking)), 
-  by = "sp"]
+  mt = mean(days_tracking), sdt = sd(days_tracking)
+),
+by = "sp"
+]
 ```

@@ -22,13 +22,13 @@ library(mgcv)
 ## Extract environmental covariates at patches
 
 ```{r}
-data = fread("data/results/data_patch_summary_ppa.csv")
-points = fread("data/results/data_patch_points_ppa.csv")
+data <- fread("data/results/data_patch_summary_ppa.csv")
+points <- fread("data/results/data_patch_points_ppa.csv")
 ```
 
 ```{r}
-points = points[, c("id", "patch", "x", "y", "date")]
-points = st_as_sf(
+points <- points[, c("id", "patch", "x", "y", "date")]
+points <- st_as_sf(
   points,
   coords = c("x", "y"),
   crs = 2039
@@ -37,22 +37,22 @@ points = st_as_sf(
 
 ```{r}
 # load rasters
-ndvi = rast("data/rasters/raster_hula_ndvi_2039.tif")
-vis = rast("data/rasters/raster_hula_visibility.tif")
+ndvi <- rast("data/rasters/raster_hula_ndvi_2039.tif")
+vis <- rast("data/rasters/raster_hula_visibility.tif")
 ```
 
 ```{r}
-ndvi_samp = terra::extract(
+ndvi_samp <- terra::extract(
   ndvi,
   vect(points)
 )
 
-vis_samp = terra::extract(
+vis_samp <- terra::extract(
   vis,
   vect(points)
 )
 
-points = st_drop_geometry(points)
+points <- st_drop_geometry(points)
 setDT(points)
 
 points[, c("ndvi", "vis") := list(
@@ -68,7 +68,7 @@ gc()
 
 ```{r}
 # mean ndvi and vis per patch and date
-points = points[, lapply(.SD, mean), by = c("id", "patch", "date")]
+points <- points[, lapply(.SD, mean), by = c("id", "patch", "date")]
 
 # save
 fwrite(
@@ -81,12 +81,12 @@ fwrite(
 
 ```{r}
 # load data patch summary
-data = fread("data/results/data_patch_summary_ppa.csv")
-patch_env = fread("data/results/data_patch_env.csv")
+data <- fread("data/results/data_patch_summary_ppa.csv")
+patch_env <- fread("data/results/data_patch_env.csv")
 ```
 
 ```{r}
-data = merge(
+data <- merge(
   data,
   patch_env
 )
@@ -94,43 +94,96 @@ data = merge(
 
 ```{r}
 # link rrv
-rrv = fread("data/results/data_daily_rrv.csv")
-rrv$date = as.character(rrv$date)
-data$date = as.character(data$date)
+rrv <- fread("data/results/data_daily_rrv.csv")
+rrv$date <- as.character(rrv$date)
+data$date <- as.character(data$date)
 ```
 
 ```{r}
-data =
+data <-
   merge(
-  data,
-  rrv,
-  by.x = c("id", "date"),
-  by.y = c("TAG", "date"),
-  all.x = T
-)
+    data,
+    rrv,
+    by.x = c("id", "date"),
+    by.y = c("TAG", "date"),
+    all.x = T
+  )
 
 # filter
-data = data[!is.na(sp) & !is.na(treat)]
+data <- data[!is.na(sp) & !is.na(treat)]
+```
+
+## Duration between patches
+
+```{r}
+data[, duration_bw_patches := (
+  (time_start - shift(time_end)) / 60 # in minutes
+), by = c("id", "date")]
+```
+
+```{r}
+# plot histogram of duration between patches
+p <- ggplot(data) +
+  geom_histogram(
+    aes(duration_bw_patches, y = ..density..)
+  ) +
+  facet_grid(sp ~ treat) +
+  labs(
+    x = "duration between patches (mins)"
+  )
+
+ggsave(
+  p,
+  filename = "figures/fig_duration_bw_patches.png"
+)
+```
+
+## Checking for tiSSA requirement
+
+```{r}
+p <- ggplot(data) +
+  geom_jitter(
+    aes(
+      duration_bw_patches, dist_bw_patch,
+      col = treat
+    )
+  ) +
+  geom_hline(
+    yintercept = 100,
+    lty = 2
+  ) +
+  geom_vline(
+    xintercept = 30,
+    lty = 2
+  ) +
+  scale_x_sqrt() +
+  scale_y_sqrt() +
+  facet_grid(~sp)
+
+ggsave(
+  p,
+  filename = "figures/fig_distance_duration_bw_patches.png"
+)
 ```
 
 ## Movements between patches
 
 ```{r}
 # patch switches
-patch_switches = data[, list(
+patch_switches <- data[, list(
   N = .N,
   total_dist = sum(dist_bw_patch, na.rm = T),
   mean_duration = mean(duration) / 3600, # in hours
   tracking_duration = (max(time_end) - min(time_start)) / 3600 # in hours
 ), by = c("id", "date", "sp", "rrv_calc", "treat")]
 
-patch_switches = patch_switches[!is.na(sp)]
+patch_switches <- patch_switches[!is.na(sp)]
 
 # convert to patch switches per hour
-patch_switches[, dist_ph := total_dist/tracking_duration]
+patch_switches[, dist_ph := total_dist / tracking_duration]
 
 # remove NA values
-patch_switches = patch_switches[!is.na(rrv_calc)]
+patch_switches <- patch_switches[!is.na(rrv_calc)]
 
 # asign sp as factor
 patch_switches[, sp := factor(sp, levels = c(
@@ -141,13 +194,13 @@ patch_switches[, sp := factor(sp, levels = c(
 Examine the number of patch switches in relation to RRV.
 
 ```{r}
-ggplot(patch_switches)+
+ggplot(patch_switches) +
   geom_jitter(
     aes(
       rrv_calc, N / tracking_duration,
       col = treat
     )
-  )+
+  ) +
   geom_smooth(
     aes(
       rrv_calc, N / tracking_duration
@@ -156,7 +209,7 @@ ggplot(patch_switches)+
     formula = as.formula(
       "y ~ s(x, k = 3)"
     )
-  )+
+  ) +
   facet_grid(~sp)
 ```
 
@@ -167,7 +220,7 @@ ggplot(patch_switches)+
 patch_switches[, n_per_hr := N / tracking_duration]
 
 # fit gam
-mod_ps = gam(
+mod_ps <- gam(
   n_per_hr ~ s(rrv_calc, k = 3, by = sp) +
     s(sp, bs = "re"),
   data = patch_switches
@@ -194,11 +247,11 @@ This code below is only to create clean outputs for the LaTeX supplementary mate
 texreg::texreg(
   list(mod_ps),
   custom.model.names = c("Coefficients"),
-  single.row = T, 
-  dcolumn = T, 
+  single.row = T,
+  dcolumn = T,
   custom.coef.names = c(
-    "Intercept", 
-    "WGI - bulbul", "WGI - sparrow", "WGI - warbler", 
+    "Intercept",
+    "WGI - bulbul", "WGI - sparrow", "WGI - warbler",
     "Species"
   ),
   caption = "Generalised additive model coefficients for residence patch switches."
@@ -208,7 +261,7 @@ texreg::texreg(
 
 ```{r}
 # make prediction table
-pred_data_patches_rrv = CJ(
+pred_data_patches_rrv <- CJ(
   sp = as.factor(unique(data$sp)),
   id = "new",
   treat = as.factor(unique(data$treat)),
@@ -216,34 +269,35 @@ pred_data_patches_rrv = CJ(
 )
 
 # filter for unrealistic
-pred_data_patches_rrv = pred_data_patches_rrv[(
+pred_data_patches_rrv <- pred_data_patches_rrv[(
   (treat == "NonMoulting" & rrv_calc == 0) |
     (treat == "Moulting" & between(rrv_calc, 2, 12)) |
     (treat == "Manipulated" & between(rrv_calc, 12, 20))
 )]
 
 # get prediction
-pred_ps = predict(
-  mod_ps, 
-  newdata = pred_data_patches_rrv, 
+pred_ps <- predict(
+  mod_ps,
+  newdata = pred_data_patches_rrv,
   allow.new.levels = T, se.fit = T
 )
 
-pred_data_patches_rrv$pred = pred_ps$fit
-pred_data_patches_rrv$se = pred_ps$se.fit
+pred_data_patches_rrv$pred <- pred_ps$fit
+pred_data_patches_rrv$se <- pred_ps$se.fit
 ```
 
 ### Plot patch switches per hour
 
 ```{r}
 # prepare summary statistics for switches per hour and wing gap index
-patch_switches_summary = patch_switches[, unlist(
+patch_switches_summary <- patch_switches[, unlist(
   lapply(.SD, function(x) {
     list(
       mean = mean(x),
       sd = sd(x)
     )
-  }), recursive = FALSE
+  }),
+  recursive = FALSE
 ), .SDcols = c("rrv_calc", "n_per_hr"), by = c("sp", "treat")]
 ```
 
@@ -251,18 +305,18 @@ Plotting code for patch switches per hour of tracking, in relation to wing gap i
 
 ```{r}
 # save as object and write intermediate to file
-fig_patch_switches = 
-  ggplot(patch_switches)+
+fig_patch_switches <-
+  ggplot(patch_switches) +
   geom_jitter(
     aes(
       rrv_calc, n_per_hr,
       col = treat
     ),
     shape = 1
-  )+
+  ) +
   geom_ribbon(
     data = pred_data_patches_rrv[!(sp == "Pycnonotus" & rrv_calc > 17) &
-                       !sp == "Acrocephalus"],
+      !sp == "Acrocephalus"],
     aes(
       rrv_calc,
       ymin = pred - se,
@@ -271,15 +325,15 @@ fig_patch_switches =
     fill = "transparent",
     col = "grey",
     lty = 1
-  )+
+  ) +
   geom_line(
     data = pred_data_patches_rrv[!(sp == "Pycnonotus" & rrv_calc > 17) &
-                       !sp == "Acrocephalus"],
+      !sp == "Acrocephalus"],
     aes(
       rrv_calc, pred
     ),
     col = "indianred"
-  )+
+  ) +
   geom_linerange(
     data = patch_switches_summary,
     aes(
@@ -287,7 +341,7 @@ fig_patch_switches =
       ymin = n_per_hr.mean - n_per_hr.sd,
       ymax = n_per_hr.mean + n_per_hr.sd
     )
-  )+
+  ) +
   geom_linerange(
     data = patch_switches_summary,
     aes(
@@ -295,7 +349,7 @@ fig_patch_switches =
       xmin = rrv_calc.mean - rrv_calc.sd,
       xmax = rrv_calc.mean + rrv_calc.sd
     )
-  )+
+  ) +
   geom_point(
     data = patch_switches_summary,
     aes(
@@ -304,21 +358,21 @@ fig_patch_switches =
     ),
     shape = 21,
     size = 2
-  )+
+  ) +
   facet_grid(
     ~sp
-  )+
+  ) +
   scale_fill_discrete_sequential(
     palette = "Batlow",
     l1 = 30, l2 = 60,
     breaks = c("NonMoulting", "Moulting", "Manipulated"),
     labels = c("Non-molting", "Molting", "Manipulated")
-  )+
+  ) +
   scale_colour_discrete_sequential(
     palette = "Batlow",
     l1 = 50, l2 = 50,
     guide = "none"
-  )+
+  ) +
   # scale_y_sqrt()+
   facet_grid(
     cols = vars(sp),
@@ -330,20 +384,20 @@ fig_patch_switches =
         "Pycnonotus" = "White-spectacled\nbulbul"
       )
     )
-  )+
+  ) +
   theme_test(
     base_size = 10,
     base_family = "Arial"
-  )+
+  ) +
   theme(
     legend.position = "top",
     strip.background = element_blank(),
     strip.text = element_text(
       face = "italic"
     )
-  )+
+  ) +
   labs(
-    # x = "Wing gap index (More gappy wing →)",
+    # x = "Wing gap index (More gappy wing <U+2192>)",
     x = NULL,
     y = "Patch switches / hr",
     fill = NULL
@@ -363,13 +417,14 @@ ggsave(
 
 ```{r}
 # plot rrv with errors per treatment, and patch distance w/ errors per trt
-psdf = patch_switches[, unlist(lapply(.SD, function(x) {
+psdf <- patch_switches[, unlist(lapply(.SD, function(x) {
   list(
     mean = as.numeric(mean(x)),
     sd = sd(x, na.rm = T)
   )
-}), recursive = F), 
-.SDcols = c("dist_ph", "rrv_calc"), by = c("sp", "treat")]
+}), recursive = F),
+.SDcols = c("dist_ph", "rrv_calc"), by = c("sp", "treat")
+]
 ```
 
 ```{r}
@@ -377,10 +432,10 @@ patch_switches[, c("sp", "treat") := lapply(
   .SD, as.factor
 ), .SDcols = c("sp", "treat")]
 
-mod1 = gam(
-  dist_ph ~ s(rrv_calc, by = sp, k = 3)+
+mod1 <- gam(
+  dist_ph ~ s(rrv_calc, by = sp, k = 3) +
     s(sp, bs = "re"),
-    # s(sp, rrv_calc, bs = "re"),
+  # s(sp, rrv_calc, bs = "re"),
   data = patch_switches
 )
 
@@ -390,7 +445,7 @@ gratia::draw(mod1)
 
 ```{r}
 # save model summary
-mod_summary = summary(mod1)
+mod_summary <- summary(mod1)
 writeLines(
   capture.output(
     mod_summary
@@ -406,11 +461,11 @@ This code below is only to create clean outputs for the LaTeX supplementary mate
 texreg::texreg(
   list(mod1),
   custom.model.names = c("Coefficients"),
-  single.row = T, 
-  dcolumn = T, 
+  single.row = T,
+  dcolumn = T,
   custom.coef.names = c(
-    "Intercept", 
-    "WGI - bulbul", "WGI - sparrow", "WGI - warbler", 
+    "Intercept",
+    "WGI - bulbul", "WGI - sparrow", "WGI - warbler",
     "Species"
   ),
   caption = "Generalised additive model coefficients for distance between residence patches."
@@ -421,8 +476,8 @@ texreg::texreg(
 
 ```{r}
 # summarise patch switches by species and treatments
-patch_distance_summary = patch_switches[treat != "Manipulated" | 
-                                        (treat == "Manipulated" & rrv_calc > 12), list(
+patch_distance_summary <- patch_switches[treat != "Manipulated" |
+  (treat == "Manipulated" & rrv_calc > 12), list(
   mean_dist_ph = mean(dist_ph, na.rm = TRUE)
 ), by = c("sp", "treat")]
 
@@ -437,7 +492,7 @@ fwrite(
 
 ```{r}
 # make prediction table
-pred_data = CJ(
+pred_data <- CJ(
   sp = as.factor(unique(data$sp)),
   id = "new",
   treat = as.factor(unique(data$treat)),
@@ -445,20 +500,20 @@ pred_data = CJ(
 )
 
 # filter for unrealistic
-pred_data = pred_data[(
+pred_data <- pred_data[(
   (treat == "NonMoulting" & rrv_calc == 0) |
     (treat == "Moulting" & between(rrv_calc, 2, 12)) |
     (treat == "Manipulated" & between(rrv_calc, 12, 20))
 )]
 
 # get prediction
-pred = predict(mod1, newdata = pred_data, allow.new.levels = T, se.fit = T)
+pred <- predict(mod1, newdata = pred_data, allow.new.levels = T, se.fit = T)
 
-pred_data$pred = pred$fit
-pred_data$se = pred$se.fit
+pred_data$pred <- pred$fit
+pred_data$se <- pred$se.fit
 
 # explore
-ggplot(patch_switches[dist_ph < 900])+
+ggplot(patch_switches[dist_ph < 900]) +
   # geom_jitter(
   #   aes(
   #     rrv_calc, dist_ph,
@@ -471,7 +526,7 @@ ggplot(patch_switches[dist_ph < 900])+
     aes(
       rrv_calc, pred
     )
-  )+
+  ) +
   facet_grid(
     ~sp
   )
@@ -486,13 +541,13 @@ psdf[, sp := factor(sp, levels = c(
 
 ```{r}
 # plot figure
-fig_moult_move =
-ggplot(psdf)+
+fig_moult_move <-
+  ggplot(psdf) +
   geom_hline(
     yintercept = 100,
     col = "grey",
     lty = 2
-  )+
+  ) +
   geom_jitter(
     data = patch_switches[dist_ph < 900],
     aes(
@@ -500,10 +555,10 @@ ggplot(psdf)+
       col = treat
     ),
     shape = 1
-  )+
+  ) +
   geom_ribbon(
     data = pred_data[!(sp == "Pycnonotus" & rrv_calc > 17) &
-                       !sp == "Acrocephalus"],
+      !sp == "Acrocephalus"],
     aes(
       rrv_calc,
       ymin = pred - se,
@@ -512,29 +567,29 @@ ggplot(psdf)+
     fill = "transparent",
     col = "grey",
     lty = 1
-  )+
+  ) +
   geom_line(
     data = pred_data[!(sp == "Pycnonotus" & rrv_calc > 17) &
-                       !sp == "Acrocephalus"],
+      !sp == "Acrocephalus"],
     aes(
       rrv_calc, pred
     ),
     col = "indianred"
-  )+
+  ) +
   geom_linerange(
     aes(
       rrv_calc.mean,
       ymin = dist_ph.mean - dist_ph.sd,
       ymax = dist_ph.mean + dist_ph.sd
     )
-  )+
+  ) +
   geom_linerange(
     aes(
       rrv_calc.mean, dist_ph.mean,
       xmin = rrv_calc.mean - rrv_calc.sd,
       xmax = rrv_calc.mean + rrv_calc.sd
     )
-  )+
+  ) +
   geom_point(
     aes(
       rrv_calc.mean, dist_ph.mean,
@@ -542,18 +597,18 @@ ggplot(psdf)+
     ),
     shape = 21,
     size = 2
-  )+
+  ) +
   scale_fill_discrete_sequential(
     palette = "Batlow",
     l1 = 30, l2 = 60,
     breaks = c("NonMoulting", "Moulting", "Manipulated"),
     labels = c("Non-molting", "Molting", "Manipulated")
-  )+
+  ) +
   scale_colour_discrete_sequential(
     palette = "Batlow",
     l1 = 50, l2 = 50,
     guide = "none"
-  )+
+  ) +
   # scale_y_sqrt()+
   facet_grid(
     cols = vars(sp),
@@ -565,23 +620,23 @@ ggplot(psdf)+
         "Pycnonotus" = "White-spectacled\nbulbul"
       )
     )
-  )+
+  ) +
   coord_cartesian(
     ylim = c(0, NA)
-  )+
+  ) +
   theme_test(
     base_size = 10,
     base_family = "Arial"
-  )+
+  ) +
   theme(
     legend.position = "top",
     strip.background = element_blank(),
     strip.text = element_text(
       face = "italic"
     )
-  )+
+  ) +
   labs(
-    x = "Wing gap index (More gappy wing →)",
+    x = "Wing gap index (More gappy wing <U+2192>)",
     y = "Between-patch distance (m)",
     fill = NULL
   )
@@ -599,14 +654,14 @@ ggsave(
 
 ```{r}
 # explore the data
-ggplot(data)+
+ggplot(data) +
   geom_jitter(
     aes(
       vis, duration / (3600),
       col = treat
     )
-  )+
-  facet_grid(treat~sp)+
+  ) +
+  facet_grid(treat ~ sp) +
   coord_cartesian(
     ylim = c(0, 2)
   )
@@ -622,7 +677,7 @@ data[, sp := factor(sp, levels = c(
 data[, duration_hr := duration / (3600)]
 
 # fit a gam with few knots
-mod_duration_rrv = gam(
+mod_duration_rrv <- gam(
   duration_hr ~ s(rrv_calc, by = sp, k = 3) +
     vis + ndvi +
     s(sp, bs = "re"),
@@ -638,7 +693,7 @@ summary(mod_duration_rrv)
 
 ```{r}
 # save model summary
-mod_summary_duration = summary(mod_duration_rrv)
+mod_summary_duration <- summary(mod_duration_rrv)
 writeLines(
   capture.output(
     mod_summary_duration
@@ -654,11 +709,11 @@ This code below is only to create clean outputs for the LaTeX supplementary mate
 texreg::texreg(
   list(mod_duration_rrv),
   custom.model.names = c("Coefficients"),
-  single.row = T, 
-  dcolumn = T, 
+  single.row = T,
+  dcolumn = T,
   custom.coef.names = c(
     "Intercept", "Visibility index", "NDVI",
-    "WGI - bulbul", "WGI - sparrow", "WGI - warbler", 
+    "WGI - bulbul", "WGI - sparrow", "WGI - warbler",
     "Species"
   ),
   caption = "Generalised additive model coefficients for residence patch duration."
@@ -671,7 +726,7 @@ texreg::texreg(
 ```{r}
 # prepare predictor data
 # make prediction table
-pred_data_duration_rrv = CJ(
+pred_data_duration_rrv <- CJ(
   sp = as.factor(unique(data$sp)),
   id = "new",
   treat = as.factor(unique(data$treat)),
@@ -681,40 +736,41 @@ pred_data_duration_rrv = CJ(
 )
 
 # filter for unrealistic
-pred_data_duration_rrv = pred_data_duration_rrv[(
+pred_data_duration_rrv <- pred_data_duration_rrv[(
   (treat == "NonMoulting" & rrv_calc == 0) |
     (treat == "Moulting" & between(rrv_calc, 2, 12)) |
     (treat == "Manipulated" & between(rrv_calc, 12, 20))
 )]
 
 # get prediction
-pred_duration = predict(
-  mod_duration_rrv, 
-  newdata = pred_data_duration_rrv, 
+pred_duration <- predict(
+  mod_duration_rrv,
+  newdata = pred_data_duration_rrv,
   allow.new.levels = T, se.fit = T
 )
 
-pred_data_duration_rrv$pred = pred_duration$fit
-pred_data_duration_rrv$se = pred_duration$se.fit
+pred_data_duration_rrv$pred <- pred_duration$fit
+pred_data_duration_rrv$se <- pred_duration$se.fit
 ```
 
 ```{r}
 # make summary table
-patch_duration_summary = data[, unlist(
+patch_duration_summary <- data[, unlist(
   lapply(.SD, function(x) {
     list(
       mean = mean(x, na.rm = T),
       sd = sd(x, na.rm = T)
     )
-  }), recursive = F
+  }),
+  recursive = F
 ), .SDcols = c("duration_hr", "rrv_calc"), by = c("sp", "treat"), ]
 ```
 
 
 ```{r}
 # prepare figure
-fig_patch_duration_rrv =
-  ggplot(data)+
+fig_patch_duration_rrv <-
+  ggplot(data) +
   geom_jitter(
     aes(
       rrv_calc,
@@ -723,10 +779,10 @@ fig_patch_duration_rrv =
     ),
     shape = 1,
     size = 0.5
-  )+
+  ) +
   geom_ribbon(
     data = pred_data_duration_rrv[!(sp == "Pycnonotus" & rrv_calc > 17) &
-                       !sp == "Passer"],
+      !sp == "Passer"],
     aes(
       rrv_calc,
       ymin = pred - se,
@@ -735,15 +791,15 @@ fig_patch_duration_rrv =
     fill = "transparent",
     col = "grey",
     lty = 1
-  )+
+  ) +
   geom_line(
     data = pred_data_duration_rrv[!(sp == "Pycnonotus" & rrv_calc > 17) &
-                       !sp == "Passer"],
+      !sp == "Passer"],
     aes(
       rrv_calc, pred
     ),
     col = "indianred"
-  )+
+  ) +
   geom_linerange(
     data = patch_duration_summary,
     aes(
@@ -751,7 +807,7 @@ fig_patch_duration_rrv =
       ymin = duration_hr.mean - duration_hr.sd,
       ymax = duration_hr.mean + duration_hr.sd
     )
-  )+
+  ) +
   geom_linerange(
     data = patch_duration_summary,
     aes(
@@ -759,7 +815,7 @@ fig_patch_duration_rrv =
       xmin = rrv_calc.mean - rrv_calc.sd,
       xmax = rrv_calc.mean + rrv_calc.sd
     )
-  )+
+  ) +
   geom_point(
     data = patch_duration_summary,
     aes(
@@ -768,21 +824,21 @@ fig_patch_duration_rrv =
     ),
     shape = 21,
     size = 2
-  )+
+  ) +
   coord_cartesian(
     ylim = c(0, 5)
-  )+
+  ) +
   scale_fill_discrete_sequential(
     palette = "Batlow",
     l1 = 30, l2 = 60,
     breaks = c("NonMoulting", "Moulting", "Manipulated"),
     labels = c("Non-molting", "Molting", "Manipulated")
-  )+
+  ) +
   scale_colour_discrete_sequential(
     palette = "Batlow",
     l1 = 50, l2 = 50,
     guide = "none"
-  )+
+  ) +
   # scale_y_sqrt()+
   facet_grid(
     cols = vars(sp),
@@ -794,20 +850,20 @@ fig_patch_duration_rrv =
         "Pycnonotus" = "White-spectacled\nbulbul"
       )
     )
-  )+
+  ) +
   theme_test(
     base_size = 10,
     base_family = "Arial"
-  )+
+  ) +
   theme(
     legend.position = "top",
     strip.background = element_blank(),
     strip.text = element_text(
       face = "italic"
     )
-  )+
+  ) +
   labs(
-    x = "Wing gap index (More gappy wing →)",
+    x = "Wing gap index (More gappy wing <U+2192>)",
     y = "Duration in patch (hrs)",
     fill = NULL
   )

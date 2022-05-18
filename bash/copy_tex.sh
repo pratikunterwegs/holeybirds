@@ -8,7 +8,7 @@ cp figures/fig_0*.png manuscript/figures
 cd manuscript
 pdflatex manuscript.tex
 bibtex manuscript.aux
-bibtex manuscript.aux
+pdflatex manuscript.tex
 pdflatex manuscript.tex
 
 cd ..
