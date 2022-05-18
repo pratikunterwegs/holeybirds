@@ -27,41 +27,41 @@ library(patchwork)
 
 ```{r}
 # load rasters using terra
-ndvi = rast("data/rasters/raster_hula_ndvi_2039.tif")
-vis = rast("data/rasters/raster_hula_visibility.tif")
+ndvi <- rast("data/rasters/raster_hula_ndvi_2039.tif")
+vis <- rast("data/rasters/raster_hula_visibility.tif")
 
 # load the alternative visibility layer
-vis_15 = rast("data/rasters/raster_hula_visibility_15m.tif")
+vis_15 <- rast("data/rasters/raster_hula_visibility_15m.tif")
 
 # load land use as sf
-landcover = st_read("data/spatial/hula_lc_vector")
-landcover = st_crop(landcover, vis)
+landcover <- st_read("data/spatial/hula_lc_vector")
+landcover <- st_crop(landcover, vis)
 
 # crop ndvi by vis
-ndvi = crop(ndvi, vis)
+ndvi <- crop(ndvi, vis)
 ```
 
 ## NDVI across the landscape
 
 ```{r}
-ndvi = st_as_stars(ndvi)
+ndvi <- st_as_stars(ndvi)
 ```
 
 ```{r}
-fig_ndvi =
-  ggplot()+
+fig_ndvi <-
+  ggplot() +
   geom_stars(
     data = ndvi,
     # downsample = 5
-  )+
+  ) +
   coord_sf(
     crs = 2039,
     expand = F
-  )+
+  ) +
   scale_x_continuous(
     breaks = seq(35.58, 35.64, length.out = 3)
-  )+
-  ggspatial::annotation_scale()+
+  ) +
+  ggspatial::annotation_scale() +
   scico::scale_fill_scico(
     direction = -1,
     palette = "bamako",
@@ -69,8 +69,8 @@ fig_ndvi =
     breaks = c(0.05, seq(0.3, 0.7, 0.2)),
     name = "NDVI",
     na.value = "aliceblue"
-  )+
-  theme_test()+
+  ) +
+  theme_test() +
   theme(
     legend.position = "bottom",
     legend.key.height = unit(2, "mm"),
@@ -90,32 +90,32 @@ fig_ndvi =
 ## Visibility across the landscape
 
 ```{r}
-vis = st_as_stars(vis)
+vis <- st_as_stars(vis)
 ```
 
 ```{r}
-fig_vis =
-  ggplot()+
+fig_vis <-
+  ggplot() +
   geom_stars(
     data = vis,
     downsample = 9
-  )+
+  ) +
   coord_sf(
     crs = 2039,
     expand = F
-  )+
+  ) +
   scale_x_continuous(
     breaks = seq(35.58, 35.64, length.out = 3)
-  )+
-  ggspatial::annotation_scale()+
+  ) +
+  ggspatial::annotation_scale() +
   scico::scale_fill_scico(
     direction = 1,
     palette = "lapaz",
     limits = c(0, 1),
     breaks = seq(0., 1, 0.2),
     name = "Vis. index"
-  )+
-  theme_test()+
+  ) +
+  theme_test() +
   theme(
     legend.position = "bottom",
     legend.key.height = unit(2, "mm"),
@@ -136,32 +136,32 @@ fig_vis =
 
 
 ```{r}
-vis_15 = st_as_stars(vis_15)
+vis_15 <- st_as_stars(vis_15)
 ```
 
 ```{r}
-fig_vis_15 =
-  ggplot()+
+fig_vis_15 <-
+  ggplot() +
   geom_stars(
     data = vis_15,
     downsample = 9
-  )+
+  ) +
   coord_sf(
     crs = 2039,
     expand = F
-  )+
+  ) +
   scale_x_continuous(
     breaks = seq(35.58, 35.64, length.out = 3)
-  )+
-  ggspatial::annotation_scale()+
+  ) +
+  ggspatial::annotation_scale() +
   scico::scale_fill_scico(
     direction = 1,
     palette = "lapaz",
     limits = c(0, 1),
     breaks = seq(0., 1, 0.2),
     name = "Vis. index"
-  )+
-  theme_test()+
+  ) +
+  theme_test() +
   theme(
     legend.position = "bottom",
     legend.key.height = unit(2, "mm"),
@@ -182,7 +182,7 @@ fig_vis_15 =
 
 ```{r}
 # handle water classes
-landcover = mutate(
+landcover <- mutate(
   landcover,
   class = if_else(
     Name %in% c("C", "W"),
@@ -193,14 +193,14 @@ landcover = mutate(
 
 
 ```{r}
-fig_landcover = 
-  ggplot(landcover)+
+fig_landcover <-
+  ggplot(landcover) +
   geom_sf(
     aes(
       fill = class
     ),
     col = "transparent"
-  )+
+  ) +
   scico::scale_fill_scico_d(
     palette = "hawaii",
     direction = 1,
@@ -212,16 +212,16 @@ fig_landcover =
       "W" = "Water"
     ),
     name = NULL
-  )+
+  ) +
   coord_sf(
     crs = 2039,
     expand = F
-  )+
+  ) +
   scale_x_continuous(
     breaks = seq(35.58, 35.64, length.out = 3)
-  )+
-  ggspatial::annotation_scale()+
-  theme_test()+
+  ) +
+  ggspatial::annotation_scale() +
+  theme_test() +
   theme(
     legend.position = "bottom",
     legend.key.height = unit(2, "mm"),
@@ -243,7 +243,7 @@ fig_landcover =
     axis.text.y = element_text(
       angle = 90, hjust = 0.5
     )
-  )+
+  ) +
   guides(
     fill = guide_legend(
       nrow = 2
@@ -254,8 +254,8 @@ fig_landcover =
 ### Merge figures
 
 ```{r}
-fig_landscape_maps = wrap_plots(
-   fig_landcover, fig_ndvi, fig_vis, fig_vis_15
+fig_landscape_maps <- wrap_plots(
+  fig_landcover, fig_ndvi, fig_vis, fig_vis_15
 ) + plot_annotation(
   tag_levels = "A"
 ) &
@@ -280,14 +280,14 @@ Reload rasters as terra objects.
 
 ```{r}
 # load rasters using terra
-ndvi = rast("data/rasters/raster_hula_ndvi_2039.tif")
-vis = rast("data/rasters/raster_hula_visibility.tif")
+ndvi <- rast("data/rasters/raster_hula_ndvi_2039.tif")
+vis <- rast("data/rasters/raster_hula_visibility.tif")
 ```
 
 
 ```{r}
 # make samples
-samples = st_sample(
+samples <- st_sample(
   landcover,
   size = 10000,
   type = "hexagonal"
@@ -296,20 +296,20 @@ samples = st_sample(
 
 ```{r}
 # extract data at samples
-vis_samp = terra::extract(
+vis_samp <- terra::extract(
   vis,
   vect(samples)
 )
 setDT(vis_samp)
 
-ndvi_samp = extract(
+ndvi_samp <- extract(
   ndvi,
   vect(samples)
 )
 setDT(ndvi_samp)
 
 # lc samples
-lc_samp = extract(
+lc_samp <- extract(
   vect(
     dplyr::select(landcover, Name)
   ),
@@ -318,12 +318,12 @@ lc_samp = extract(
 setDT(lc_samp)
 
 # merge data
-env_data = merge(vis_samp, ndvi_samp)
-env_data = merge(env_data, lc_samp, by.x = "ID", by.y = "id.x")
+env_data <- merge(vis_samp, ndvi_samp)
+env_data <- merge(env_data, lc_samp, by.x = "ID", by.y = "id.x")
 
 # filter for valid values
-env_data = env_data[!is.nan(raster_hula_visibility)]
-env_data = setnames(env_data[, !("ID")], c("vis", "ndvi", "lc"))
+env_data <- env_data[!is.nan(raster_hula_visibility)]
+env_data <- setnames(env_data[, !("ID")], c("vis", "ndvi", "lc"))
 ```
 
 ```{r}
@@ -336,10 +336,10 @@ env_data = setnames(env_data[, !("ID")], c("vis", "ndvi", "lc"))
 # W = water
 
 # remove water
-env_data = env_data[!lc %in% c("C", "W")]
+env_data <- env_data[!lc %in% c("C", "W")]
 
 # set landcover factor levels
-env_data$lc = factor(
+env_data$lc <- factor(
   env_data$lc,
   levels = c("T", "R", "B", "O")
 )
@@ -352,7 +352,7 @@ env_data$lc = factor(
 library(mgcv)
 
 # fit a bam for large data
-mod = bam(
+mod <- bam(
   vis ~ s(ndvi, by = lc) +
     s(lc, bs = "re"),
   data = env_data
@@ -360,7 +360,7 @@ mod = bam(
 
 summary(mod)
 
-model_summary = summary(mod)
+model_summary <- summary(mod)
 
 writeLines(
   capture.output(model_summary),
@@ -374,20 +374,21 @@ gratia::draw(mod, fixed = T)
 
 ```{r}
 # make prediction table
-pred_data = CJ(
+pred_data <- CJ(
   lc = factor(unique(env_data$lc),
-                 levels = c("T", "R", "B", "O", "W")),
+    levels = c("T", "R", "B", "O", "W")
+  ),
   ndvi = seq(0, 1, 0.02)
 )
 
 # get prediction
-pred = predict(mod, newdata = pred_data, allow.new.levels = T, se.fit = T)
+pred <- predict(mod, newdata = pred_data, allow.new.levels = T, se.fit = T)
 
-pred_data$pred = pred$fit
-pred_data$se = pred$se.fit
+pred_data$pred <- pred$fit
+pred_data$se <- pred$se.fit
 
-fig_vis_ndvi =
-  ggplot(pred_data)+
+fig_vis_ndvi <-
+  ggplot(pred_data) +
   geom_bin_2d(
     data = env_data,
     aes(
@@ -395,10 +396,10 @@ fig_vis_ndvi =
       fill = ..count..
     ),
     show.legend = T
-  )+
+  ) +
   geom_ribbon(
     aes(
-      ndvi, 
+      ndvi,
       ymin = pred - se,
       ymax = pred + se,
       group = lc
@@ -407,13 +408,13 @@ fig_vis_ndvi =
     size = 0.3,
     col = "grey",
     fill = "transparent"
-  )+
+  ) +
   geom_line(
     aes(
       ndvi, pred
     ),
     col = "indianred"
-  )+
+  ) +
   facet_wrap(
     facets = vars(lc),
     labeller = labeller(
@@ -424,22 +425,22 @@ fig_vis_ndvi =
         "T" = "Trees"
       )
     )
-  )+
+  ) +
   labs(
     x = "NDVI",
     y = "Visibility index"
-  )+
+  ) +
   scico::scale_fill_scico(
     palette = "lapaz",
     direction = -1,
     name = "# Samples"
-  )+
+  ) +
   coord_cartesian(
     expand = T,
     ylim = c(0, 1),
     xlim = c(0, 0.8)
-  )+
-  theme_test()+
+  ) +
+  theme_test() +
   theme(
     legend.position = "bottom",
     # legend.justification = 1,

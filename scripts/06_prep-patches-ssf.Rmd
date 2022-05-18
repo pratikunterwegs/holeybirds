@@ -30,11 +30,12 @@ library(amt)
 
 ```{r}
 # read data
-data = fread("data/results/data_patch_summary_ppa.csv")
-points = fread("data/results/data_patch_points_ppa.csv")
+data <- fread("data/results/data_patch_summary_ppa.csv")
+points <- fread("data/results/data_patch_points_ppa.csv")
 
 data[, time_median := as.POSIXct(
-  time_median, origin = "1970-01-01", t = "Asia/Jerusalem"
+  time_median,
+  origin = "1970-01-01", t = "Asia/Jerusalem"
 )]
 ```
 
@@ -47,7 +48,7 @@ data[, time_median := as.POSIXct(
 setDF(data)
 
 # select data cols for id
-data = select(
+data <- select(
   data,
   id, patch, date, x_median, y_median, time_median
 )
@@ -60,7 +61,7 @@ tracks <- nest(
 
 # prepare link point data
 setDF(points)
-points = nest(
+points <- nest(
   points,
   data = -matches(c("id", "date"))
 )
@@ -91,19 +92,19 @@ tracks <- mutate(
 
 ```{r}
 # count rows in data
-tracks = mutate(
+tracks <- mutate(
   tracks,
   nrow = map_int(data, nrow)
 )
 
 # remove with fewer than 5 rows
-tracks = filter(
+tracks <- filter(
   tracks,
   nrow >= 5
 )
 
 # make steps
-tracks = mutate(
+tracks <- mutate(
   tracks,
   data = lapply(data, steps, keep_cols = "both")
 )
@@ -141,12 +142,12 @@ save(tracks, file = "data/processed/data_for_ssf.Rds")
 #   tracks,
 #   cols = "data"
 # )
-# 
+#
 # # write
 # fwrite(
 #   data, file = "data/results/data_alternative_patches.csv"
 # )
-# 
+#
 # # make geometry
 # data = mutate(
 #   data,
@@ -156,14 +157,14 @@ save(tracks, file = "data/processed/data_for_ssf.Rds")
 #     )
 #   })
 # )
-# 
+#
 # # make sf
 # data_steps = st_sf(
 #   data,
 #   sf_column_name = "seg",
 #   crs = 2039
 # )
-# 
+#
 # # write
 # st_write(
 #   data_steps,
@@ -175,33 +176,33 @@ save(tracks, file = "data/processed/data_for_ssf.Rds")
 
 ```{r}
 # load("data/processed/data_for_ssf.Rds")
-ndvi = "data/rasters/raster_hula_ndvi_2039.tif"
-vis = "data/rasters/raster_hula_visibility.tif"
+ndvi <- "data/rasters/raster_hula_ndvi_2039.tif"
+vis <- "data/rasters/raster_hula_visibility.tif"
 
 ndvi <- terra::rast(ndvi)
 vis <- terra::rast(vis)
 
 # landcover
-lc = st_read("data/spatial/hula_lc_vector")
-lc = mutate(
+lc <- st_read("data/spatial/hula_lc_vector")
+lc <- mutate(
   lc,
   Name = case_when(
     Name == "C" ~ "W",
     TRUE ~ Name
   )
-) %>% 
+) %>%
   rename(
     lc = Name
   )
 
 # crop  ndvi to lc
-ndvi = terra::crop(
+ndvi <- terra::crop(
   ndvi,
   vect(lc)
 )
 
 # rasterise
-lc = terra::rasterize(
+lc <- terra::rasterize(
   vect(lc),
   ndvi,
   field = "lc"
@@ -210,34 +211,34 @@ lc = terra::rasterize(
 
 ```{r}
 # rename points data
-points = rename(
+points <- rename(
   points,
   points_data = data
 )
 
 # link points data to tracks
-tracks = left_join(
+tracks <- left_join(
   tracks,
   points
 )
 ```
 
 ```{r}
-rand_pts_x = rnorm(15, 0, 20)
-rand_pts_y = rnorm(15, 0, 20)
+rand_pts_x <- rnorm(15, 0, 20)
+rand_pts_y <- rnorm(15, 0, 20)
 ```
 
 ```{r}
-step_covs = pmap(
+step_covs <- pmap(
   tracks,
   function(id, date, data, nrow, points_data) {
     # print message
     # message(sprintf("working on row %i", .y))
-    
+
     #### env values in true patches ####
     # link real patch movements with real patch locations
     # identify the true patches in point data
-    pdf = points_data %>%
+    pdf <- points_data %>%
       select(
         patch, x, y
       )
@@ -254,27 +255,27 @@ step_covs = pmap(
       as.matrix(pdf[, c("x", "y")]),
       fun = mean
     )
-    lc_samp = terra::extract(
+    lc_samp <- terra::extract(
       lc,
       as.matrix(pdf[, c("x", "y")])
     )
-    
+
     # add to real patch points and get summary
-    pdf$ndvi = mean_ndvi$ndvi
-    pdf$vis = mean_vis$raster_hula_visibility
-    pdf$lc = lc_samp$lc
-    
+    pdf$ndvi <- mean_ndvi$ndvi
+    pdf$vis <- mean_vis$raster_hula_visibility
+    pdf$lc <- lc_samp$lc
+
     #### env values of alternative steps ####
-    sim_pts = select(
+    sim_pts <- select(
       data,
       x2_, y2_, case_, patch_end, patch_start
     ) %>%
       filter(
         !case_
       )
-    
+
     # sample around ends of alt steps
-    sim_pts = mutate(
+    sim_pts <- mutate(
       sim_pts,
       spts = pmap(
         list(x2_, y2_),
@@ -287,7 +288,7 @@ step_covs = pmap(
       )
     )
     # unnest samples
-    sim_pts = unnest(
+    sim_pts <- unnest(
       sim_pts,
       cols = "spts"
     )
@@ -303,57 +304,58 @@ step_covs = pmap(
       as.matrix(sim_pts[, c("x2_sim", "y2_sim")]),
       fun = mean
     )
-    lc_samp = terra::extract(
+    lc_samp <- terra::extract(
       lc,
       as.matrix(sim_pts[, c("x2_sim", "y2_sim")])
     )
-    
+
     # assign values to alternative steps
-    sim_pts$ndvi = mean_ndvi$ndvi
-    sim_pts$vis = mean_vis$raster_hula_visibility
-    sim_pts$lc = lc_samp$lc
-    
+    sim_pts$ndvi <- mean_ndvi$ndvi
+    sim_pts$vis <- mean_vis$raster_hula_visibility
+    sim_pts$lc <- lc_samp$lc
+
     #### step start covariates ####
     # these are always from a real patch
-    df = left_join(
+    df <- left_join(
       data,
-      
+
       # drop coords when joining for start locs
       select(
-        ungroup(pdf), 
+        ungroup(pdf),
         patch, ndvi, vis, lc
       ),
-      
       by = c("patch_start" = "patch")
     )
-    df = distinct(df)
-    df = rename(
+    df <- distinct(df)
+    df <- rename(
       df,
       vis_start = vis,
       ndvi_start = ndvi,
       lc_start = lc
     )
-    
+
     #### step end covariates for alternative steps ####
-    df =
+    df <-
       left_join(
-        df, 
-        sim_pts, 
-        by = c("x2_", "y2_", "case_", 
-               "patch_end", "patch_start")
+        df,
+        sim_pts,
+        by = c(
+          "x2_", "y2_", "case_",
+          "patch_end", "patch_start"
+        )
       ) %>%
       rename(
         ndvi_end = ndvi,
         vis_end = vis,
         lc_end = lc
       )
-    
+
     #### step end covariates for real steps ####
-    pdf = mutate(
+    pdf <- mutate(
       pdf,
       case_ = TRUE
     )
-    df = left_join(
+    df <- left_join(
       df,
       pdf,
       by = c(
@@ -372,52 +374,57 @@ step_covs = pmap(
           is.na(lc_end), lc, lc_end
         )
       )
-    
+
     df <- mutate(df, log_sl = log(sl_ + 1e-5)) %>%
       filter(!is.na(log_sl), !is.infinite(log_sl))
-    
+
     # summarise covariates across real and alternative patches
     # return summary for comparison
     setDT(df)
-    df_s = df[, lapply(.SD, mean),
-       .SDcols = c("ndvi_end", "ndvi_start", "vis_end", "vis_start"),
-       by = c("x1_", "y1_", "x2_", "y2_", 
-              "step_id_", "patch_start", "patch_end",
-              "case_")]
-    df_s_lc = df[, .N, 
-                 by =  c(
-                   "x1_", "y1_", "x2_", "y2_",
-                   "step_id_", "patch_start", "patch_end",
-                   "case_", "lc_end"
-                 )
+    df_s <- df[, lapply(.SD, mean),
+      .SDcols = c("ndvi_end", "ndvi_start", "vis_end", "vis_start"),
+      by = c(
+        "x1_", "y1_", "x2_", "y2_",
+        "step_id_", "patch_start", "patch_end",
+        "case_"
+      )
+    ]
+    df_s_lc <- df[, .N,
+      by = c(
+        "x1_", "y1_", "x2_", "y2_",
+        "step_id_", "patch_start", "patch_end",
+        "case_", "lc_end"
+      )
     ]
     df_s_lc[, prop := N / sum(N),
-            by = c("x1_", "y1_", "x2_", "y2_", 
-              "step_id_", "patch_start", "patch_end",
-              "case_")]
-    df_s_lc = dcast(
+      by = c(
+        "x1_", "y1_", "x2_", "y2_",
+        "step_id_", "patch_start", "patch_end",
+        "case_"
+      )
+    ]
+    df_s_lc <- dcast(
       df_s_lc,
       x1_ + y1_ + x2_ + y2_ + step_id_ + patch_start + patch_end + case_ ~ lc_end,
       value.var = "prop", fill = 0
     )
-    
+
     # handle missing names
-    lc_names = c("B", "O", "R", "T")
+    lc_names <- c("B", "O", "R", "T")
     df_s_lc[, c(setdiff(lc_names, names(df_s_lc))) := 0]
-    
+
     # merge with data and return
-    df_s = merge.data.table(
+    df_s <- merge.data.table(
       df_s,
-      df_s_lc, 
+      df_s_lc,
       by = intersect(names(df_s), names(df_s_lc))
     )
-    
+
     as_tibble(df_s)
-    
   }
 )
 
-tracks$step_covs = step_covs
+tracks$step_covs <- step_covs
 
 # remove rasters
 rm(ndvi, vis)
@@ -425,7 +432,7 @@ rm(ndvi, vis)
 
 ```{r}
 # unnest data
-tracks = unnest(
+tracks <- unnest(
   select(
     tracks, -data, -points_data,
   ),
@@ -433,7 +440,7 @@ tracks = unnest(
 )
 
 # remove cols
-tracks = select(
+tracks <- select(
   tracks,
   id,
   date,

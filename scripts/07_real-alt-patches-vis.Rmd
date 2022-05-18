@@ -23,10 +23,10 @@ library(mgcv)
 
 ```{r}
 # read in saved data
-data_step_covs = read_csv("data/results/data_ssf_step_covs.csv")
+data_step_covs <- read_csv("data/results/data_ssf_step_covs.csv")
 
 # remove cols
-data_step_covs = select(
+data_step_covs <- select(
   data_step_covs,
   id,
   date,
@@ -38,17 +38,17 @@ data_step_covs = select(
 )
 
 # read rrv
-rrv = read_csv("data/results/data_daily_rrv.csv")
-rrv$date = as.character(rrv$date)
+rrv <- read_csv("data/results/data_daily_rrv.csv")
+rrv$date <- as.character(rrv$date)
 ```
 
 ```{r}
-data_step_covs = mutate(
+data_step_covs <- mutate(
   data_step_covs,
   date = as.character(date)
 )
 
-data_step_covs = left_join(
+data_step_covs <- left_join(
   data_step_covs,
   rrv,
   by = c("id" = "TAG", "date")
@@ -57,7 +57,7 @@ data_step_covs = left_join(
 
 ```{r}
 # long term tracking
-df_cov_lt = filter(
+df_cov_lt <- filter(
   data_step_covs,
   is.na(rrv_calc),
   sp == "Passer"
@@ -68,13 +68,13 @@ df_cov_lt = filter(
 
 ```{r}
 # filter for high ndvi values
-data_sel = filter(
+data_sel <- filter(
   data_step_covs,
   between(ndvi_end, 0, 1)
 )
 
 # filter out data without species or rrv
-data_sel = filter(
+data_sel <- filter(
   data_sel,
   !is.na(sp),
   !is.na(treat),
@@ -85,15 +85,15 @@ data_sel = filter(
 Summarise number of fixes in real and alternate patches.
 
 ```{r}
-data_sel %>% 
+data_sel %>%
   group_by(
     id, treat,
     case_
-  ) %>% 
-  count() %>% 
+  ) %>%
+  count() %>%
   group_by(
     case_
-  ) %>% 
+  ) %>%
   summarise(
     across(n, .fns = list(mean = mean, sd = sd))
   )
@@ -104,35 +104,35 @@ Prepare data for conditional logistic regression.
 
 ```{r}
 # select useful columns
-sdf = filter(
+sdf <- filter(
   data_sel
-) |> 
+) |>
   select(
     sp, treat, case_,
     rrv_calc,
     matches(c("vis", "ndvi"))
   )
 
-sdf = sdf |> 
+sdf <- sdf |>
   group_by(
     sp, treat, case_
-  ) |> 
+  ) |>
   summarise(
     across(
-      matches(c("vis", "ndvi", "rrv")), 
+      matches(c("vis", "ndvi", "rrv")),
       .fns = list(
-        mean = function(x) mean(x, na.rm=T),
+        mean = function(x) mean(x, na.rm = T),
         sd = function(x) sd(x, na.rm = T)
       )
     ),
     .groups = "keep"
-  )|> 
+  ) |>
   rename(
     vis_mean = vis_end_mean,
     vis_sd = vis_end_sd,
     ndvi_mean = ndvi_end_mean,
     ndvi_sd = ndvi_end_sd
-  ) |> 
+  ) |>
   mutate(
     case_ = if_else(case_, "real", "alternate")
   )
@@ -148,7 +148,7 @@ write_csv(
 
 ```{r}
 # convert sp and treat to factor
-data_sel = mutate(
+data_sel <- mutate(
   data_sel,
   across(
     c(sp, treat, id),
@@ -159,9 +159,9 @@ data_sel = mutate(
 
 ```{r}
 # fit gam
-mod1 = gam(
+mod1 <- gam(
   vis_end ~ s(rrv_calc, by = sp, k = 3) +
-    s(ndvi_end, k = 5)+ 
+    s(ndvi_end, k = 5) +
     s(sp, bs = "re"),
   data = filter(
     data_sel, case_
@@ -174,7 +174,7 @@ gratia::draw(mod1)
 
 ```{r}
 # save model summary
-mod_summary = summary(mod1)
+mod_summary <- summary(mod1)
 writeLines(
   capture.output(
     mod_summary
@@ -190,11 +190,11 @@ This code below is only to create clean outputs for the LaTeX supplementary mate
 texreg::texreg(
   list(mod1),
   custom.model.names = c("Coefficients"),
-  single.row = T, 
-  dcolumn = T, 
+  single.row = T,
+  dcolumn = T,
   custom.coef.names = c(
     "Intercept", "NDVI",
-    "WGI - bulbul", "WGI - sparrow", "WGI - warbler", 
+    "WGI - bulbul", "WGI - sparrow", "WGI - warbler",
     "Species"
   ),
   caption = "Generalised additive model coefficients for residence patch visibility."
@@ -205,7 +205,7 @@ texreg::texreg(
 
 ```{r}
 # make prediction table
-pred_data = crossing(
+pred_data <- crossing(
   sp = as.factor(unique(data_sel$sp)),
   id = "new",
   ndvi_end = 0.3,
@@ -213,13 +213,13 @@ pred_data = crossing(
 )
 
 # get prediction
-pred = predict(mod1, newdata = pred_data, allow.new.levels = T, se.fit = T)
+pred <- predict(mod1, newdata = pred_data, allow.new.levels = T, se.fit = T)
 
-pred_data$pred = pred$fit
-pred_data$se = pred$se.fit
+pred_data$pred <- pred$fit
+pred_data$se <- pred$se.fit
 
 # explore
-ggplot(data_sel)+
+ggplot(data_sel) +
   # geom_jitter(
   #   aes(
   #     rrv_calc, vis_mean_end,
@@ -232,7 +232,7 @@ ggplot(data_sel)+
     aes(
       rrv_calc, pred
     )
-  )+
+  ) +
   facet_grid(
     ~sp
   )
@@ -242,10 +242,10 @@ ggplot(data_sel)+
 
 ```{r}
 # split the data by species, first making a copy
-data_clogit = data_sel
+data_clogit <- data_sel
 
 # fix factor levels
-data_clogit = mutate(
+data_clogit <- mutate(
   data_clogit,
   treat = factor(
     treat,
@@ -255,12 +255,12 @@ data_clogit = mutate(
 )
 
 # now nest the data
-data_clogit = nest(
+data_clogit <- nest(
   data_clogit, !c("sp", "treat")
 )
 
 # apply a gam over the nested data
-data_clogit = mutate(
+data_clogit <- mutate(
   data_clogit,
   mod_fit = lapply(
     data, function(df) {
@@ -275,25 +275,25 @@ data_clogit = mutate(
 )
 
 # get model outputs
-data_clogit = mutate(
+data_clogit <- mutate(
   data_clogit,
   mod_fit = lapply(mod_fit, broom::tidy)
 )
 
 # unnest model fits
-data_clogit = unnest(
+data_clogit <- unnest(
   data_clogit,
   cols = "mod_fit"
 )
 
 # mark sig
-data_clogit = mutate(
+data_clogit <- mutate(
   data_clogit,
   sig = p.value < 0.05
 )
 
 # remove data col and save
-data_clogit = select(data_clogit, -data)
+data_clogit <- select(data_clogit, -data)
 write_csv(
   data_clogit,
   file = "data/results/data_clogit_fit_vis.csv"
@@ -302,13 +302,13 @@ write_csv(
 
 ```{r}
 # merge rrv mean data and clogit fits
-data_clogit = left_join(
+data_clogit <- left_join(
   data_clogit,
   filter(sdf, case_ == "real")
 )
 
 # add text label
-data_clogit = mutate(
+data_clogit <- mutate(
   data_clogit,
   p_val_round = round(p.value, digits = 3),
   label = glue(
@@ -322,13 +322,13 @@ data_clogit = mutate(
   ),
   # add the z statistic
   label = glue(
-    "β = {round(estimate, 2)}
+    "ß = {round(estimate, 2)}
     {label}"
   )
 )
 
 # arrange data by bird name
-data_clogit = arrange(
+data_clogit <- arrange(
   data_clogit,
   desc(sp)
 )
@@ -338,14 +338,14 @@ Extract model coefficients for supplementary material.
 
 ```{r}
 texreg::texreg(
-  data_clogit$mod_fit, 
-  dcolumn = T, 
+  data_clogit$mod_fit,
+  dcolumn = T,
   booktabs = T,
   custom.header = list(
-    "White-spectacled bulbul" = 1:3, 
-    "House sparrow" = 4:6, 
+    "White-spectacled bulbul" = 1:3,
+    "House sparrow" = 4:6,
     "Clamorous reed warbler" = 7:9
-  ), 
+  ),
   custom.model.names = rep(
     c("Non-moulting", "Molting", "Manipulated"),
     times = 3
@@ -360,7 +360,7 @@ texreg::texreg(
 
 ```{r}
 # set factor levels
-sdf = mutate(
+sdf <- mutate(
   sdf,
   sp = factor(sp, levels = c(
     "Pycnonotus", "Passer", "Acrocephalus"
@@ -368,7 +368,7 @@ sdf = mutate(
 )
 
 # set factors
-data_clogit = mutate(
+data_clogit <- mutate(
   data_clogit,
   sp = factor(sp, levels = c(
     "Pycnonotus", "Passer", "Acrocephalus"
@@ -378,8 +378,8 @@ data_clogit = mutate(
 
 ```{r}
 # make figure selection coefficients
-fig_vis_selection =
-ggplot(sdf)+
+fig_vis_selection <-
+  ggplot(sdf) +
   geom_jitter(
     data = filter(
       data_sel,
@@ -391,7 +391,7 @@ ggplot(sdf)+
     col = "lightgrey",
     shape = 3,
     size = 0.2
-  )+
+  ) +
   geom_jitter(
     data = filter(
       data_sel,
@@ -403,7 +403,7 @@ ggplot(sdf)+
     ),
     size = 1,
     shape = 1
-  )+
+  ) +
   geom_linerange(
     aes(
       x = rrv_calc_mean,
@@ -413,7 +413,7 @@ ggplot(sdf)+
     position = position_nudge(
       x = c(-1, 1)
     )
-  )+
+  ) +
   geom_linerange(
     aes(
       x = rrv_calc_mean, y = vis_mean,
@@ -423,7 +423,7 @@ ggplot(sdf)+
     position = position_nudge(
       x = c(-1, 1)
     )
-  )+
+  ) +
   geom_point(
     aes(
       rrv_calc_mean, vis_mean,
@@ -434,7 +434,7 @@ ggplot(sdf)+
     position = position_nudge(
       x = c(-1, 1)
     )
-  )+
+  ) +
   geom_text(
     data = filter(
       data_clogit,
@@ -458,7 +458,7 @@ ggplot(sdf)+
     min.segment.length = 10,
     fontface = "italic",
     size = 3
-  )+
+  ) +
   facet_grid(
     cols = vars(sp),
     scales = "free_x",
@@ -469,50 +469,50 @@ ggplot(sdf)+
         "Pycnonotus" = "White-spectacled\nbulbul"
       )
     )
-  )+
+  ) +
   scale_fill_discrete_sequential(
     palette = "Batlow",
     l1 = 30, l2 = 60,
     breaks = c("NonMoulting", "Moulting", "Manipulated"),
     labels = c("Non-molting", "Molting", "Manipulated")
-  )+
+  ) +
   scale_colour_discrete_sequential(
     palette = "Batlow",
     l1 = 50, l2 = 50,
     guide = "none"
-  )+
+  ) +
   scale_shape_manual(
     values = c(
-      "real" = 21, 
+      "real" = 21,
       "alternate" = 25
     ),
     limits = c("alternate", "real"),
     # breaks = c("real", "alternate"),
     labels = c("Potential", "Real")
-  )+
+  ) +
   scale_y_continuous(
     breaks = seq(0, 1, 0.25)
-  )+
+  ) +
   theme_test(
     base_size = 10,
     base_family = "Arial"
-  )+
+  ) +
   theme(
     legend.position = "top",
     strip.background = element_blank(),
     strip.text = element_text(
       face = "italic"
     )
-  )+
+  ) +
   labs(
-    x = "Wing gap index (More gappy wing →)",
+    x = "Wing gap index (More gappy wing <U+2192>)",
     y = "Visibility of residence patches",
     fill = NULL,
     shape = NULL
-  )+
+  ) +
   coord_cartesian(
     ylim = c(0, 1.15)
-  )+
+  ) +
   guides(
     fill = guide_legend(
       override.aes = list(
@@ -538,7 +538,7 @@ ggsave(
 ### Compare real and potential patches NDVI
 
 ```{r}
-fig_ndvi_selection = ggplot(sdf)+
+fig_ndvi_selection <- ggplot(sdf) +
   geom_jitter(
     data = filter(
       data_sel,
@@ -550,7 +550,7 @@ fig_ndvi_selection = ggplot(sdf)+
     col = "lightgrey",
     shape = 4,
     size = 0.2
-  )+
+  ) +
   geom_jitter(
     data = filter(
       data_sel,
@@ -561,7 +561,7 @@ fig_ndvi_selection = ggplot(sdf)+
       col = treat,
     ),
     shape = 1
-  )+
+  ) +
   geom_linerange(
     aes(
       x = rrv_calc_mean,
@@ -571,7 +571,7 @@ fig_ndvi_selection = ggplot(sdf)+
     position = position_nudge(
       x = c(-1, 1)
     )
-  )+
+  ) +
   geom_linerange(
     aes(
       x = rrv_calc_mean, y = ndvi_mean,
@@ -581,7 +581,7 @@ fig_ndvi_selection = ggplot(sdf)+
     position = position_nudge(
       x = c(-1, 1)
     )
-  )+
+  ) +
   geom_point(
     aes(
       rrv_calc_mean, ndvi_mean,
@@ -592,48 +592,48 @@ fig_ndvi_selection = ggplot(sdf)+
     position = position_nudge(
       x = c(-1, 1)
     )
-  )+
+  ) +
   scale_fill_discrete_sequential(
     palette = "Batlow",
     l1 = 30, l2 = 60,
     breaks = c("NonMoulting", "Moulting", "Manipulated"),
     labels = c("N. Moulting", "Moulting", "Manipulated")
-  )+
+  ) +
   scale_colour_discrete_sequential(
     palette = "Batlow",
     l1 = 50, l2 = 50,
     guide = "none"
-  )+
+  ) +
   scale_shape_manual(
     values = c(
-      "real" = 21, 
+      "real" = 21,
       "alternate" = 25
     ),
     limits = c("alternate", "real"),
     # breaks = c("real", "alternate"),
     labels = c("Potential", "Real")
-  )+
+  ) +
   facet_grid(
     cols = vars(sp),
     scales = "free_x"
-  )+
+  ) +
   theme_test(
     base_size = 10,
     base_family = "Arial"
-  )+
+  ) +
   theme(
     legend.position = "top",
     strip.background = element_blank(),
     strip.text = element_text(
       face = "italic"
     )
-  )+
+  ) +
   labs(
     x = "RRV (More ragged wing)",
     y = "NDVI at next patch",
     fill = NULL,
     shape = NULL
-  )+
+  ) +
   guides(
     fill = guide_legend(
       override.aes = list(
@@ -661,9 +661,9 @@ ggsave(
 ```{r}
 df_cov_lt
 
-sdf = filter(
+sdf <- filter(
   df_cov_lt
-) |> 
+) |>
   select(
     sp, treat, case_,
     date, id,
@@ -671,55 +671,55 @@ sdf = filter(
     matches(c("vis", "ndvi"))
   )
 
-sdf = mutate(
+sdf <- mutate(
   sdf,
   date = as.Date(date)
-) |> 
+) |>
   group_by(
     id
-  ) |> 
+  ) |>
   mutate(
     days = as.numeric(date - min(date))
   )
 
-sdf = sdf |> 
+sdf <- sdf |>
   group_by(
     treat, case_, RRV, days, id
-  ) |> 
+  ) |>
   summarise(
     across(
-      matches(c("vis", "ndvi")), 
+      matches(c("vis", "ndvi")),
       .fns = list(
-        mean = function(x) mean(x, na.rm=T),
+        mean = function(x) mean(x, na.rm = T),
         sd = function(x) sd(x, na.rm = T)
       )
     ),
     .groups = "keep"
-  )|> 
+  ) |>
   rename(
     vis_mean = vis_end_mean,
     vis_sd = vis_end_sd,
     ndvi_mean = ndvi_end_mean,
     ndvi_sd = ndvi_end_sd
-  ) |> 
+  ) |>
   mutate(
     case_ = if_else(case_, "real", "alternate")
   )
 ```
 
 ```{r}
-ggplot(sdf)+
+ggplot(sdf) +
   stat_summary(
     aes(
-      plyr::round_any(days, 3), 
+      plyr::round_any(days, 3),
       ndvi_mean,
       col = as.factor(RRV),
       shape = case_
     )
-  )+
+  ) +
   scale_color_viridis_d(
     option = "H"
-  )+
+  ) +
   facet_wrap(
     ~id
   )
