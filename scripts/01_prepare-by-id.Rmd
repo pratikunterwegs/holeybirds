@@ -273,10 +273,25 @@ fwrite(data, file = "data/results/data_daily_rrv.csv")
 
 ```{r}
 # summarise some tracking metrics
-data_tracking_summary[, .(all_fixes = sum(nfixes))]
+data_tracking_summary_w_rrv[, .(all_fixes = sum(nfixes))]
+
+# average days tracking
+data_tracking_summary_w_rrv[, unlist(
+  lapply(.SD, function(x) {
+  list(
+    mean = mean(x),
+    sd = sd(x)
+  )
+}),recursive = F), .SDcols = "days_tracking", by = c("sp")]
+
+# average postions per day
+data_tracking_summary_w_rrv[, list(
+  mean(nfixes / days_tracking)
+),by="sp"]
+#[,list(mean(V1))]
 
 # average positions per minute
-data_tracking_summary[, list(avg_fixes = nfixes /
+data_tracking_summary_w_rrv[, list(avg_fixes = nfixes /
   (days_tracking * 24 * 60)),
 by = c("TAG", "sp")
 ][, list(
