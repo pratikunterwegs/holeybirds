@@ -478,7 +478,8 @@ texreg::texreg(
 # summarise patch switches by species and treatments
 patch_distance_summary <- patch_switches[treat != "Manipulated" |
   (treat == "Manipulated" & rrv_calc > 12), list(
-  mean_dist_ph = mean(dist_ph, na.rm = TRUE)
+  mean_dist_ph = mean(dist_ph, na.rm = TRUE),
+  sd_dist_ph = sd(dist_ph, na.rm = TRUE)
 ), by = c("sp", "treat")]
 
 # save small data

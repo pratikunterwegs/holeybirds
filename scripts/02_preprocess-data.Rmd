@@ -281,6 +281,16 @@ for (file in files) {
 sink()
 ```
 
+## Observations after preprocessing
+
+```{r}
+files <- list.files(
+  path = "data/processed/data_preprocessed",
+  full.names = TRUE
+)
+
+npos = lapply(files, fread) |> sapply(nrow) |> sum()
+```
 
 ## Estimate fix Table
 
@@ -305,12 +315,34 @@ data <- lapply(files, function(df) {
   df_[, fix_per_min := nfixes / (tracking_duration_min)][]
 })
 
+# read WGI and attach beacause we onyl want metrics for birds we
+# actually use, ie with rrv score
+
+# attach to rrv data
+wgi = fread("data/results/data_tracking_metrics_rrv.csv")
+
 # bind list and split by id and date
 data <- rbindlist(data)
+data = merge(
+  data,
+  wgi, by = c("TAG", "sp")
+)
+
+# how many birds with preprocessed data and rrv
+length(unique(data$TAG))
 
 # save data to file
 fwrite(data, file = "data/results/data_fix_per_min_daily.csv")
 ```
+
+Check data remaining.
+
+```{r}
+# read all preprocesed data nd merge
+data_preproc = lapply(files, fread) |> rbindlist()
+data_preproc[TAG %in% wgi$TAG,][, list(n_id = length(unique(TAG))), by = "sp"]
+```
+
 
 ```{r}
 # summarise the data per species
