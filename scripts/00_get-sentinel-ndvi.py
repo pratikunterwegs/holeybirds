@@ -4,6 +4,7 @@ import geopandas as gpd
 from rasterio.crs import CRS
 import rioxarray as rxr
 import matplotlib.pyplot as plt
+from shapely.geometry import box
 
 # try loading geemap and ee
 try:
@@ -42,6 +43,8 @@ extent = landcover_buffer.total_bounds
 extent = box(*extent)
 extent = gpd.GeoSeries(extent)
 
+extent.plot()
+
 # make geodataframe and set correct crs
 extent = gpd.GeoDataFrame.from_features(extent)
 extent.crs = landcover_shp.crs
@@ -65,7 +68,7 @@ extent_ee = geemap.shp_to_ee(extent_file)
 # show on map if possible
 Map = geemap.Map()
 Map.addLayer(extent_ee, {}, 'extent')
-Map ## uncomment to see map
+# Map ## uncomment to see map
 
 # define start and end date june and dec 2016
 start_date = '2016-06-01'
