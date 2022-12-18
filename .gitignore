@@ -110,3 +110,11 @@ manuscript/
 
 # ignore local data archive
 archive*
+
+# ignore anaconda files
+.conda
+envs/*
+.idea/
+
+# data files
+*.zip
