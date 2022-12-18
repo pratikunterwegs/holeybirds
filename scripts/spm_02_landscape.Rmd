@@ -87,6 +87,46 @@ fig_ndvi <-
   )
 ```
 
+## Long term NDVI
+
+```{r}
+# load files from csv
+ndvi_mean_longterm = fread("data/rasters/ndvi_long_term/ndvi_week_mean_20100101.csv")
+ndvi_sd_longterm = fread("data/rasters/ndvi_long_term/ndvi_week_sd_20100101.csv")
+
+ndvi_stats = Map(
+  list(ndvi_mean_longterm, ndvi_sd_longterm), list("ndvi_mean", "ndvi_sd"),
+  f = function(df, val) {
+    melt(
+      df[, -c("system:index")],
+      id = c("OBJECTID", "SHAPE_Leng", "SHAPE_Area", "Name"),
+      variable = "date", value = val
+    )[, date := as.Date(stringr::str_extract(date, "\\d+"), format="%Y%m%d")]
+  }
+)
+ndvi_stats = Reduce(x = ndvi_stats, f = merge.data.table)
+
+# save NDVI stats and track them
+fwrite(ndvi_stats, "data/results/ndvi_stats_longterm.csv")
+```
+
+Plot for supplementary material.
+
+```{r}
+ggplot(ndvi_stats) +
+  stat_summary(
+    aes(
+      week(date), ndvi_mean,
+      group = Name,
+      col = Name
+    ),
+    geom = "line"
+  ) +
+  facet_wrap(
+    ~Name
+  )
+```
+
 ## Visibility across the landscape
 
 ```{r}
