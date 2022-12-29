@@ -172,6 +172,10 @@ patch_summaries <- lapply(
 # bind all individual level data frames together
 patch_summaries <- rbindlist(patch_summaries)
 
+# join with species and treatment data
+id_data = fread("data/results/data_tracking_metrics_rrv.csv")
+patch_summaries = merge(patch_summaries, id_data, by.x = "id", by.y = "TAG")
+
 fwrite(patch_summaries, file = "data/results/data_patch_summary_ppa.csv")
 ```
 
@@ -207,6 +211,17 @@ patch_points <- lapply(
 
 # bind all individual level data frames together
 patch_points <- rbindlist(patch_points)
+patch_points = merge(patch_points, id_data, by.x = "id", by.y = "TAG")
 
 fwrite(patch_points, file = "data/results/data_patch_points_ppa.csv")
+
+# save by species
+patch_points = split(patch_points, by = "sp")
+Map(
+  patch_points, names(patch_points),
+  f = function(sp_df, name) {
+    fwrite(sp_df, file = sprintf("data/results/data_patch_points_%s.csv", name))
+  }
+)
+
 ```
