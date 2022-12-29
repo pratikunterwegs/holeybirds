@@ -108,23 +108,151 @@ ndvi_stats = Reduce(x = ndvi_stats, f = merge.data.table)
 
 # save NDVI stats and track them
 fwrite(ndvi_stats, "data/results/ndvi_stats_longterm.csv")
+
+# summary ndvi stats by landcover and weighted by area
+# remove water areas
+ndvi_stats_summary = ndvi_stats[, week := week(date)][, list(
+    ndvi_mean = weighted.mean(ndvi_mean, SHAPE_Area, na.rm = TRUE),
+    ndvi_sd = weighted.mean(ndvi_sd, SHAPE_Area, na.rm = TRUE),
+    # artificial date for plotting
+    date = as.Date(paste(2016, week, 1, sep="-"), "%Y-%U-%u")
+  ), by = c("Name", "week")]
+ndvi_stats_summary = ndvi_stats_summary[!Name %in% c("W", "C"),]
+
+# ndvi stats for 2016
+ndvi_stats_2016 = ndvi_stats[year(date) == 2016, ]
+ndvi_stats_2016 = ndvi_stats_2016[, week := week(date)][, list(
+    ndvi_mean = weighted.mean(ndvi_mean, SHAPE_Area, na.rm = TRUE),
+    ndvi_sd = weighted.mean(ndvi_sd, SHAPE_Area, na.rm = TRUE),
+    # artificial date for plotting
+    date = as.Date(paste(2016, week, 1, sep="-"), "%Y-%U-%u")
+  ), by = c("Name", "week")]
+ndvi_stats_2016 = ndvi_stats_2016[!Name %in% c("W", "C"),]
+
+fwrite(ndvi_stats_2016, "data/results/ndvi_stats_2016_summary.csv")
 ```
+
+```{r}
+# Read in study duration
+id_data =  fread("data/results/data_tracking_metrics_rrv.csv")
+min_tracking = min(id_data$start_tracking)
+max_tracking = max(id_data$end_tracking)
+
+id_data = id_data[, list(min_tracking = min(start_tracking),
+               max_tracking = max(start_tracking)),
+        by = c("sp", "treat")]
+```
+
 
 Plot for supplementary material.
 
 ```{r}
-ggplot(ndvi_stats) +
-  stat_summary(
-    aes(
-      week(date), ndvi_mean,
-      group = Name,
-      col = Name
-    ),
-    geom = "line"
-  ) +
-  facet_wrap(
-    ~Name
-  )
+id_data = split(id_data[sp != "Hirundo", ], by = "sp")
+
+plots_ndvi_tracking = Map(
+  id_data, names(id_data),
+  f = function(df, sp) {
+    ggplot() +
+      geom_ribbon(
+        data = ndvi_stats_summary,
+        aes(
+          date,
+          ymin = ndvi_mean - ndvi_sd,
+          ymax = ndvi_mean + ndvi_sd,
+          group = Name
+        ),
+        fill = "grey90"
+      ) +
+      geom_line(
+        data = ndvi_stats_summary,
+        aes(
+          date, ndvi_mean,
+          group = Name
+        ),
+        colour = "grey"
+      ) +
+      geom_pointrange(
+        data = ndvi_stats_2016,
+        aes(
+          x = date, y = ndvi_mean,
+          ymin = ndvi_mean - ndvi_sd,
+          ymax = ndvi_mean + ndvi_sd,
+          group = Name
+        ),
+        colour = "grey60",
+        stroke = 0.2
+      ) +
+      geom_rect(
+        data = df,
+        aes(
+          xmin = as.Date(min_tracking),
+          xmax = as.Date(max_tracking),
+          ymin = -1, ymax = 1,
+          fill = treat,
+          col = treat
+        ),
+        alpha = 0.6
+      ) +
+      scale_x_date(
+        date_breaks = "2 month",
+        date_labels = "%b"
+      ) +
+      scale_fill_discrete_sequential(
+        name = NULL,
+        palette = "Batlow",
+        l1 = 30, l2 = 60,
+        breaks = c("NonMoulting", "Moulting", "Manipulated"),
+        labels = c("Non-molting", "Molting", "Manipulated")
+      ) +
+      scale_colour_discrete_sequential(
+        name = NULL,
+        palette = "Batlow",
+        l1 = 50, l2 = 50,
+        guide = "none"
+      ) +
+      facet_grid(
+        rows = vars(treat),
+        cols = vars(Name),
+        labeller = labeller(
+          Name = c(
+            "B" = "Settlements",
+            "O" = "Open areas",
+            "R" = "Reedbeds",
+            "T" = "Trees"
+          )
+        )
+      ) +
+      coord_cartesian(
+        xlim = as.Date(c("2016-06-01", "2016-12-01")),
+        ylim = c(0, 0.6),
+        expand = TRUE
+      ) +
+      labs(
+        x = NULL,
+        y = "NDVI",
+        title = sp
+      ) +
+      theme_test(
+        base_size = 10,
+        base_family = "Arial"
+      ) +
+      theme(
+        legend.position = "top",
+        strip.background = element_blank(),
+        title = element_text(
+          face = "italic"
+        )
+      )
+  }
+)
+
+Map(
+  plots_ndvi_tracking, names(plots_ndvi_tracking),
+  f = function(gg, sp) {
+    ggsave(gg, filename = sprintf("figures/fig_tracking_ndvi_%s.png", sp),
+           height = 5, width = 6)
+  }
+)
 ```
 
 ## Visibility across the landscape
