@@ -103,7 +103,7 @@ figures/figures_extra/
 supplement-text/
 
 # ignore QGIS files
-*.qgz
+# *.qgz
 
 # ignore manuscript
 manuscript/
