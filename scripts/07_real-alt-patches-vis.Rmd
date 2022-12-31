@@ -34,7 +34,7 @@ data_step_covs <- select(
   matches(c("ndvi", "vis")),
   case_, step_id_,
   B, O, R, `T`, W,
-  -X22
+  -`...1`
 )
 
 # read rrv
@@ -256,7 +256,7 @@ data_clogit <- mutate(
 
 # now nest the data
 data_clogit <- nest(
-  data_clogit, !c("sp", "treat")
+  data_clogit, data = !c("sp", "treat")
 )
 
 # apply a gam over the nested data
@@ -454,8 +454,6 @@ fig_vis_selection <-
       col = treat
     ),
     hjust = 0,
-    # angle = 90,
-    min.segment.length = 10,
     fontface = "italic",
     size = 3
   ) +
@@ -528,9 +526,9 @@ fig_vis_selection <-
 
 ggsave(
   fig_vis_selection,
-  filename = "figures/fig_04.png",
-  height = 87,
-  width = 178,
+  filename = "figures/fig_vis_selection.png",
+  height = 90,
+  width = 180,
   units = "mm"
 )
 ```

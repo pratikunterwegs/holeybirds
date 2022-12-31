@@ -100,12 +100,13 @@ data$date <- as.character(data$date)
 ```
 
 ```{r}
+# change name of TAG to id in RRV
+setnames(rrv, "TAG", "id")
 data <-
   merge(
     data,
     rrv,
-    by.x = c("id", "date"),
-    by.y = c("TAG", "date"),
+    by = intersect(colnames(rrv), colnames(data)),
     all.x = T
   )
 
@@ -117,7 +118,7 @@ data <- data[!is.na(sp) & !is.na(treat)]
 
 ```{r}
 data[, duration_bw_patches := (
-  (time_start - shift(time_end)) / 60 # in minutes
+  (time_start - data.table::shift(time_end)) / 60 # in minutes
 ), by = c("id", "date")]
 ```
 
@@ -131,6 +132,8 @@ p <- ggplot(data) +
   labs(
     x = "duration between patches (mins)"
   )
+p +
+  scale_x_log10()
 
 ggsave(
   p,
@@ -373,7 +376,6 @@ fig_patch_switches <-
     l1 = 50, l2 = 50,
     guide = "none"
   ) +
-  # scale_y_sqrt()+
   facet_grid(
     cols = vars(sp),
     scales = "free",
@@ -397,8 +399,8 @@ fig_patch_switches <-
     )
   ) +
   labs(
-    # x = "Wing gap index (More gappy wing <U+2192>)",
-    x = NULL,
+    x = "Wing gap index (More gappy wing <U+2192>)",
+    # x = NULL,
     y = "Patch switches / hr",
     fill = NULL
   )
@@ -406,9 +408,9 @@ fig_patch_switches <-
 # save to file
 ggsave(
   fig_patch_switches,
-  filename = "figures/fig_01.png",
-  width = 114,
-  height = 60,
+  filename = "figures/fig_patch_switches.png",
+  width = 120,
+  height = 70,
   units = "mm"
 )
 ```
@@ -644,9 +646,9 @@ fig_moult_move <-
 
 ggsave(
   fig_moult_move,
-  filename = "figures/fig_02.png",
-  width = 114,
-  height = 60,
+  filename = "figures/fig_moult_move.png",
+  width = 120,
+  height = 70,
   units = "mm"
 )
 ```
@@ -871,8 +873,8 @@ fig_patch_duration_rrv <-
 
 ggsave(
   fig_patch_duration_rrv,
-  filename = "figures/fig_03.png",
-  width = 114, height = 60, units = "mm"
+  filename = "figures/fig_patch_duration_rrv.png",
+  width = 120, height = 70, units = "mm"
 )
 ```
 
