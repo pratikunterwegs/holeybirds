@@ -503,7 +503,7 @@ fig_vis_selection <-
     )
   ) +
   labs(
-    x = "Wing gap index (More gappy wing <U+2192>)",
+    x = "Wing gap index (More gappy wing →)",
     y = "Visibility of residence patches",
     fill = NULL,
     shape = NULL
