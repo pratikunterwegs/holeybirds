@@ -229,7 +229,7 @@ fig_swallow_dist <-
     )
   ) +
   labs(
-    x = "Wing gap index (More gappy wing <U+2192>)",
+    x = "Wing gap index (More gappy wing →)",
     y = "Distance moved (km) / hr",
     fill = NULL
   )

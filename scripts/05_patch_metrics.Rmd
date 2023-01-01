@@ -399,7 +399,7 @@ fig_patch_switches <-
     )
   ) +
   labs(
-    x = "Wing gap index (More gappy wing <U+2192>)",
+    x = "Wing gap index (More gappy wing →)",
     # x = NULL,
     y = "Patch switches / hr",
     fill = NULL
@@ -639,7 +639,7 @@ fig_moult_move <-
     )
   ) +
   labs(
-    x = "Wing gap index (More gappy wing <U+2192>)",
+    x = "Wing gap index (More gappy wing →)",
     y = "Between-patch distance (m)",
     fill = NULL
   )
@@ -866,7 +866,7 @@ fig_patch_duration_rrv <-
     )
   ) +
   labs(
-    x = "Wing gap index (More gappy wing <U+2192>)",
+    x = "Wing gap index (More gappy wing →)",
     y = "Duration in patch (hrs)",
     fill = NULL
   )
@@ -877,5 +877,3 @@ ggsave(
   width = 120, height = 70, units = "mm"
 )
 ```
-
-
