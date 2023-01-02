@@ -30,9 +30,6 @@ library(patchwork)
 ndvi <- rast("data/rasters/raster_hula_ndvi_2039.tif")
 vis <- rast("data/rasters/raster_hula_visibility.tif")
 
-# load the alternative visibility layer
-vis_15 <- rast("data/rasters/raster_hula_visibility_15m.tif")
-
 # load land use as sf
 landcover <- st_read("data/spatial/hula_lc_vector")
 landcover <- st_crop(landcover, vis)
@@ -266,7 +263,7 @@ fig_vis <-
   ggplot() +
   geom_stars(
     data = vis,
-    downsample = 9
+    downsample = 3
   ) +
   coord_sf(
     crs = 2039,
@@ -278,53 +275,7 @@ fig_vis <-
   ggspatial::annotation_scale() +
   scico::scale_fill_scico(
     direction = 1,
-    palette = "lapaz",
-    limits = c(0, 1),
-    breaks = seq(0., 1, 0.2),
-    name = "Vis. index"
-  ) +
-  theme_test() +
-  theme(
-    legend.position = "bottom",
-    legend.key.height = unit(2, "mm"),
-    legend.title = element_text(
-      vjust = 1
-    ),
-    axis.title = element_blank(),
-    axis.text = element_text(
-      size = 8
-    ),
-    axis.text.y = element_text(
-      angle = 90, hjust = 0.5
-    )
-  )
-```
-
-### Alternative visibility calculation at 15m
-
-
-```{r}
-vis_15 <- st_as_stars(vis_15)
-```
-
-```{r}
-fig_vis_15 <-
-  ggplot() +
-  geom_stars(
-    data = vis_15,
-    downsample = 9
-  ) +
-  coord_sf(
-    crs = 2039,
-    expand = F
-  ) +
-  scale_x_continuous(
-    breaks = seq(35.58, 35.64, length.out = 3)
-  ) +
-  ggspatial::annotation_scale() +
-  scico::scale_fill_scico(
-    direction = 1,
-    palette = "lapaz",
+    palette = "davos",
     limits = c(0, 1),
     breaks = seq(0., 1, 0.2),
     name = "Vis. index"
@@ -423,7 +374,7 @@ fig_landcover <-
 
 ```{r}
 fig_landscape_maps <- wrap_plots(
-  fig_landcover, fig_ndvi, fig_vis, fig_vis_15
+  fig_landcover, fig_ndvi, fig_vis
 ) + plot_annotation(
   tag_levels = "A"
 ) &
@@ -436,11 +387,10 @@ fig_landscape_maps <- wrap_plots(
 # save overall figure
 ggsave(
   fig_landscape_maps,
-  filename = "figures/fig_spm_02.png",
-  height = 200, width = 125, units = "mm"
+  filename = "figures/fig_landscape_maps.png",
+  height = 125, width = 200, units = "mm"
 )
 ```
-
 
 ## Model correlation NDVI and visibility
 
