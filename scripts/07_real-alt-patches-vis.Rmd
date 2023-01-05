@@ -199,6 +199,20 @@ texreg::texreg(
   ),
   caption = "Generalised additive model coefficients for residence patch visibility."
 )
+
+texreg::wordreg(
+  list(mod1),
+  file = "docs/model_patch_vis.docx",
+  custom.model.names = c("Coefficients"),
+  single.row = T,
+  dcolumn = T,
+  custom.coef.names = c(
+    "Intercept", "NDVI",
+    "WGI - bulbul", "WGI - sparrow", "WGI - warbler",
+    "Species"
+  ),
+  caption = "Generalised additive model coefficients for residence patch visibility."
+)
 ```
 
 ## Model visibility across RRV
@@ -273,7 +287,49 @@ data_clogit <- mutate(
     }
   )
 )
+```
 
+
+Extract model coefficients for supplementary material.
+
+```{r}
+texreg::texreg(
+  l = data_clogit$mod_fit,
+  dcolumn = T,
+  booktabs = T,
+  custom.header = list(
+    "White-spectacled bulbul" = 1:3,
+    "House sparrow" = 4:6,
+    "Clamorous reed warbler" = 7:9
+  ),
+  custom.model.names = rep(
+    c("Non-moulting", "Molting", "Manipulated"),
+    times = 3
+  ),
+  custom.coef.names = c("Visibility index", "NDVI"),
+  caption = "Log relative selection strengths (RSS) for patch visibility and NDVI."
+)
+
+texreg::wordreg(
+  data_clogit$mod_fit,
+  file = "docs/model_ssf.docx",
+  dcolumn = T,
+  booktabs = T,
+  custom.header = list(
+    "White-spectacled bulbul" = 1:3,
+    "House sparrow" = 4:6,
+    "Clamorous reed warbler" = 7:9
+  ),
+  custom.model.names = rep(
+    c("Non-moulting", "Molting", "Manipulated"),
+    times = 3
+  ),
+  custom.coef.names = c("Visibility index", "NDVI"),
+  caption = "Log relative selection strengths (RSS) for patch visibility and NDVI."
+)
+```
+
+```{r}
 # get model outputs
 data_clogit <- mutate(
   data_clogit,
@@ -333,28 +389,6 @@ data_clogit <- arrange(
   desc(sp)
 )
 ```
-
-Extract model coefficients for supplementary material.
-
-```{r}
-texreg::texreg(
-  data_clogit$mod_fit,
-  dcolumn = T,
-  booktabs = T,
-  custom.header = list(
-    "White-spectacled bulbul" = 1:3,
-    "House sparrow" = 4:6,
-    "Clamorous reed warbler" = 7:9
-  ),
-  custom.model.names = rep(
-    c("Non-moulting", "Molting", "Manipulated"),
-    times = 3
-  ),
-  custom.coef.names = c("Visibility index", "NDVI"),
-  caption = "Log relative selection strengths (RSS) for patch visibility and NDVI."
-)
-```
-
 
 ## Plot comparison of real and potential patches visibility
 
