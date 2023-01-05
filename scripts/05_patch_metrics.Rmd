@@ -106,7 +106,7 @@ data <-
   merge(
     data,
     rrv,
-    by = intersect(colnames(rrv), colnames(data)),
+    by = c("id", "date"),
     all.x = T
   )
 
@@ -249,6 +249,21 @@ This code below is only to create clean outputs for the LaTeX supplementary mate
 # get model as tex code for supplement
 texreg::texreg(
   list(mod_ps),
+  custom.model.names = c("Coefficients"),
+  single.row = T,
+  dcolumn = T,
+  custom.coef.names = c(
+    "Intercept",
+    "WGI - bulbul", "WGI - sparrow", "WGI - warbler",
+    "Species"
+  ),
+  caption = "Generalised additive model coefficients for residence patch switches."
+)
+
+# for word file
+texreg::wordreg(
+  l = list(mod_ps),
+  file = "docs/model_patch_switches.docx",
   custom.model.names = c("Coefficients"),
   single.row = T,
   dcolumn = T,
@@ -462,6 +477,21 @@ This code below is only to create clean outputs for the LaTeX supplementary mate
 # get model as tex code for supplement
 texreg::texreg(
   list(mod1),
+  custom.model.names = c("Coefficients"),
+  single.row = T,
+  dcolumn = T,
+  custom.coef.names = c(
+    "Intercept",
+    "WGI - bulbul", "WGI - sparrow", "WGI - warbler",
+    "Species"
+  ),
+  caption = "Generalised additive model coefficients for distance between residence patches."
+)
+
+# for word file
+texreg::wordreg(
+  list(mod1),
+  file = "docs/model_patch_distances.docx",
   custom.model.names = c("Coefficients"),
   single.row = T,
   dcolumn = T,
@@ -711,6 +741,21 @@ This code below is only to create clean outputs for the LaTeX supplementary mate
 # get model as tex code for supplement
 texreg::texreg(
   list(mod_duration_rrv),
+  custom.model.names = c("Coefficients"),
+  single.row = T,
+  dcolumn = T,
+  custom.coef.names = c(
+    "Intercept", "Visibility index", "NDVI",
+    "WGI - bulbul", "WGI - sparrow", "WGI - warbler",
+    "Species"
+  ),
+  caption = "Generalised additive model coefficients for residence patch duration."
+)
+
+# for word file
+texreg::wordreg(
+  list(mod_duration_rrv),
+  file = "docs/model_patch_duration.docx",
   custom.model.names = c("Coefficients"),
   single.row = T,
   dcolumn = T,
