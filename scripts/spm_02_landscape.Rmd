@@ -88,65 +88,68 @@ fig_ndvi <-
 
 ```{r}
 # load files from csv
-ndvi_mean_longterm = fread("data/rasters/ndvi_long_term/ndvi_week_mean_20100101.csv")
-ndvi_sd_longterm = fread("data/rasters/ndvi_long_term/ndvi_week_sd_20100101.csv")
+ndvi_mean_longterm <- fread("data/rasters/ndvi_long_term/ndvi_week_mean_20100101.csv")
+ndvi_sd_longterm <- fread("data/rasters/ndvi_long_term/ndvi_week_sd_20100101.csv")
 
-ndvi_stats = Map(
+ndvi_stats <- Map(
   list(ndvi_mean_longterm, ndvi_sd_longterm), list("ndvi_mean", "ndvi_sd"),
   f = function(df, val) {
     melt(
       df[, -c("system:index")],
       id = c("OBJECTID", "SHAPE_Leng", "SHAPE_Area", "Name"),
       variable = "date", value = val
-    )[, date := as.Date(stringr::str_extract(date, "\\d+"), format="%Y%m%d")]
+    )[, date := as.Date(stringr::str_extract(date, "\\d+"), format = "%Y%m%d")]
   }
 )
-ndvi_stats = Reduce(x = ndvi_stats, f = merge.data.table)
+ndvi_stats <- Reduce(x = ndvi_stats, f = merge.data.table)
 
 # save NDVI stats and track them
 fwrite(ndvi_stats, "data/results/ndvi_stats_longterm.csv")
 
 # summary ndvi stats by landcover and weighted by area
 # remove water areas
-ndvi_stats_summary = ndvi_stats[, week := week(date)][, list(
-    ndvi_mean = weighted.mean(ndvi_mean, SHAPE_Area, na.rm = TRUE),
-    ndvi_sd = weighted.mean(ndvi_sd, SHAPE_Area, na.rm = TRUE),
-    # artificial date for plotting
-    date = as.Date(paste(2016, week, 1, sep="-"), "%Y-%U-%u")
-  ), by = c("Name", "week")]
-ndvi_stats_summary = ndvi_stats_summary[!Name %in% c("W", "C"),]
+ndvi_stats_summary <- ndvi_stats[, week := week(date)][, list(
+  ndvi_mean = weighted.mean(ndvi_mean, SHAPE_Area, na.rm = TRUE),
+  ndvi_sd = weighted.mean(ndvi_sd, SHAPE_Area, na.rm = TRUE),
+  # artificial date for plotting
+  date = as.Date(paste(2016, week, 1, sep = "-"), "%Y-%U-%u")
+), by = c("Name", "week")]
+ndvi_stats_summary <- ndvi_stats_summary[!Name %in% c("W", "C"), ]
 
 # ndvi stats for 2016
-ndvi_stats_2016 = ndvi_stats[year(date) == 2016, ]
-ndvi_stats_2016 = ndvi_stats_2016[, week := week(date)][, list(
-    ndvi_mean = weighted.mean(ndvi_mean, SHAPE_Area, na.rm = TRUE),
-    ndvi_sd = weighted.mean(ndvi_sd, SHAPE_Area, na.rm = TRUE),
-    # artificial date for plotting
-    date = as.Date(paste(2016, week, 1, sep="-"), "%Y-%U-%u")
-  ), by = c("Name", "week")]
-ndvi_stats_2016 = ndvi_stats_2016[!Name %in% c("W", "C"),]
+ndvi_stats_2016 <- ndvi_stats[year(date) == 2016, ]
+ndvi_stats_2016 <- ndvi_stats_2016[, week := week(date)][, list(
+  ndvi_mean = weighted.mean(ndvi_mean, SHAPE_Area, na.rm = TRUE),
+  ndvi_sd = weighted.mean(ndvi_sd, SHAPE_Area, na.rm = TRUE),
+  # artificial date for plotting
+  date = as.Date(paste(2016, week, 1, sep = "-"), "%Y-%U-%u")
+), by = c("Name", "week")]
+ndvi_stats_2016 <- ndvi_stats_2016[!Name %in% c("W", "C"), ]
 
 fwrite(ndvi_stats_2016, "data/results/ndvi_stats_2016_summary.csv")
 ```
 
 ```{r}
 # Read in study duration
-id_data =  fread("data/results/data_tracking_metrics_rrv.csv")
-min_tracking = min(id_data$start_tracking)
-max_tracking = max(id_data$end_tracking)
+id_data <- fread("data/results/data_tracking_metrics_rrv.csv")
+min_tracking <- min(id_data$start_tracking)
+max_tracking <- max(id_data$end_tracking)
 
-id_data = id_data[, list(min_tracking = min(start_tracking),
-               max_tracking = max(start_tracking)),
-        by = c("sp", "treat")]
+id_data <- id_data[, list(
+  min_tracking = min(start_tracking),
+  max_tracking = max(start_tracking)
+),
+by = c("sp", "treat")
+]
 ```
 
 
 Plot for supplementary material.
 
 ```{r}
-id_data = split(id_data[sp != "Hirundo", ], by = "sp")
+id_data <- split(id_data[sp != "Hirundo", ], by = "sp")
 
-plots_ndvi_tracking = Map(
+plots_ndvi_tracking <- Map(
   id_data, names(id_data),
   f = function(df, sp) {
     ggplot() +
@@ -246,8 +249,10 @@ plots_ndvi_tracking = Map(
 Map(
   plots_ndvi_tracking, names(plots_ndvi_tracking),
   f = function(gg, sp) {
-    ggsave(gg, filename = sprintf("figures/fig_tracking_ndvi_%s.png", sp),
-           height = 5, width = 6)
+    ggsave(gg,
+      filename = sprintf("figures/fig_tracking_ndvi_%s.png", sp),
+      height = 5, width = 6
+    )
   }
 )
 ```

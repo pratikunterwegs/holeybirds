@@ -28,61 +28,65 @@ library(patchwork)
 
 ```{r}
 # get patch summary and points data
-patch_summary = fread("data/results/data_patch_summary_ppa.csv")
-patch_points = fread("data/results/data_patch_points_ppa.csv")
+patch_summary <- fread("data/results/data_patch_summary_ppa.csv")
+patch_points <- fread("data/results/data_patch_points_ppa.csv")
 
 # get id data with treatments
-id_data = fread("data/results/data_tracking_metrics_rrv.csv")
+id_data <- fread("data/results/data_tracking_metrics_rrv.csv")
 setnames(id_data, "TAG", "id")
 ```
 
 ```{r}
 # read in sampled, alternative patches
-altpatches = fread("data/results/data_alternative_patches.csv")
+altpatches <- fread("data/results/data_alternative_patches.csv")
 ```
 
 ```{r}
 # read in visibility layer and convert to stars
 vis <- rast("data/rasters/raster_hula_visibility.tif")
 vis <- st_as_stars(vis)
-bbox = st_bbox(vis)
+bbox <- st_bbox(vis)
 ```
 
 ## Prepare sequential maps
 
 ```{r}
 # prepare tag ids
-bulbul_id = 1004001390
-warbler_id = 1004001459
-sparrow_id = 1004001525
+bulbul_id <- 1004001390
+warbler_id <- 1004001459
+sparrow_id <- 1004001525
 
 # prepare representative tag dates
-bulbul_date = "2016-08-05"
-warbler_date = "2016-08-27"
-sparrow_date = "2016-09-07"
+bulbul_date <- "2016-08-05"
+warbler_date <- "2016-08-27"
+sparrow_date <- "2016-09-07"
 ```
 
 ```{r}
 # get cleaned preprocessed data for each id and date
-data_preproc = Map(
+data_preproc <- Map(
   list(bulbul_id, warbler_id, sparrow_id),
   list(bulbul_date, warbler_date, sparrow_date),
   list("Pycnonotus", "Acrocephalus", "Passer"),
   f = function(id_, date_, sp_) {
-    path = sprintf("data/processed/data_preprocessed/data_preproc_%s_%i.csv",
-                   sp_, id_)
-    
+    path <- sprintf(
+      "data/processed/data_preprocessed/data_preproc_%s_%i.csv",
+      sp_, id_
+    )
+
     # get preproc data
-    preproc = fread(path)[date == date_, ][X > bbox[["xmin"]]]
+    preproc <- fread(path)[date == date_, ][X > bbox[["xmin"]]]
     # get patch data
-    patch_points_ = patch_points[id == id_ & date == date_, ][x > bbox[["xmin"]]]
+    patch_points_ <- patch_points[id == id_ & date == date_, ][x > bbox[["xmin"]]]
     # get patch summary
-    patch_summary_ = patch_summary[id == id_ & date == date_, ][
-      x_median > bbox[["xmin"]]]
+    patch_summary_ <- patch_summary[id == id_ & date == date_, ][
+      x_median > bbox[["xmin"]]
+    ]
     # get alternative patches
-    alt_patches_ = altpatches[id == id_ & date == date_, ][
-      x2_ > bbox[["xmin"]]]
-    
+    alt_patches_ <- altpatches[id == id_ & date == date_, ][
+      x2_ > bbox[["xmin"]]
+    ]
+
     list(
       preproc = preproc, patch_points = patch_points_,
       patch_summary = patch_summary_, alt_patches = alt_patches_
@@ -91,7 +95,7 @@ data_preproc = Map(
 )
 
 # names for data
-names(data_preproc) = c("Pycnonotus", "Acrocephalus", "Passer")
+names(data_preproc) <- c("Pycnonotus", "Acrocephalus", "Passer")
 ```
 
 Prepare palette.
@@ -102,15 +106,15 @@ pal <- RColorBrewer::brewer.pal(5, "Accent")
 
 
 ```{r}
-plots_points_to_patch = Map(
+plots_points_to_patch <- Map(
   data_preproc, names(data_preproc),
   f = function(le, name) {
-    data_preproc_ = le[["preproc"]]
-    data_patch_points_ = le[["patch_points"]]
-    
-    range_x = range(le[["preproc"]]$X)
-    range_y = range(le[["preproc"]]$Y)
-    
+    data_preproc_ <- le[["preproc"]]
+    data_patch_points_ <- le[["patch_points"]]
+
+    range_x <- range(le[["preproc"]]$X)
+    range_y <- range(le[["preproc"]]$Y)
+
     ggplot() +
       geom_path(
         data = data_preproc_,
@@ -161,15 +165,15 @@ wrap_plots(plots_points_to_patch, guides = "collect")
 ```
 
 ```{r}
-plots_patch_summary = Map(
+plots_patch_summary <- Map(
   data_preproc, names(data_preproc),
   f = function(le, name) {
-    data_patch_points_ = le[["patch_points"]]
-    data_patch_summary_ = le[["patch_summary"]]
-    
-    range_x = range(le[["preproc"]]$X)
-    range_y = range(le[["preproc"]]$Y)
-    
+    data_patch_points_ <- le[["patch_points"]]
+    data_patch_summary_ <- le[["patch_summary"]]
+
+    range_x <- range(le[["preproc"]]$X)
+    range_y <- range(le[["preproc"]]$Y)
+
     ggplot() +
       geom_point(
         data = data_patch_points_,
@@ -180,13 +184,15 @@ plots_patch_summary = Map(
       geom_path(
         data = data_patch_summary_,
         aes(
-          x_median, y_median, col = "summary"
+          x_median, y_median,
+          col = "summary"
         )
       ) +
       geom_point(
         data = data_patch_summary_,
         aes(
-          x_median, y_median, size = duration / 3600,
+          x_median, y_median,
+          size = duration / 3600,
           fill = "summary"
         ),
         shape = 21, alpha = 0.8
@@ -231,15 +237,15 @@ wrap_plots(plots_patch_summary, guides = "collect")
 ```
 
 ```{r}
-plot_ssf = Map(
+plot_ssf <- Map(
   data_preproc, names(data_preproc),
   f = function(le, name) {
-    data_patch_summary_ = le[["patch_summary"]]
-    altpatches_ = le[["alt_patches"]]
-    
-    range_x = range(le[["preproc"]]$X)
-    range_y = range(le[["preproc"]]$Y)
-    
+    data_patch_summary_ <- le[["patch_summary"]]
+    altpatches_ <- le[["alt_patches"]]
+
+    range_x <- range(le[["preproc"]]$X)
+    range_y <- range(le[["preproc"]]$Y)
+
     ggplot() +
       geom_segment(
         data = altpatches_,
@@ -260,7 +266,8 @@ plot_ssf = Map(
       geom_path(
         data = data_patch_summary_,
         aes(
-          x_median, y_median, col = "summary"
+          x_median, y_median,
+          col = "summary"
         )
       ) +
       geom_point(
@@ -323,109 +330,111 @@ pal2 <- RColorBrewer::brewer.pal(5, "Set1")
 ```
 
 ```{r}
-plot_vis_index = 
+plot_vis_index <-
   Map(
-  data_preproc, names(data_preproc),
-  f = function(le, name) {
-    data_patch_summary_ = le[["patch_summary"]]
-    altpatches_ = le[["alt_patches"]]
-    
-    range_x = range(le[["preproc"]]$X)
-    range_y = range(le[["preproc"]]$Y)
-    
-    ggplot() +
-      geom_stars(
-        data = vis,
-        downsample = 3, 
-        alpha = 0.3
-      ) +
-      geom_point(
-        data = altpatches_,
-        aes(
-          x = x2_, y = y2_,
-          col = "alt", shape = "alt"
+    data_preproc, names(data_preproc),
+    f = function(le, name) {
+      data_patch_summary_ <- le[["patch_summary"]]
+      altpatches_ <- le[["alt_patches"]]
+
+      range_x <- range(le[["preproc"]]$X)
+      range_y <- range(le[["preproc"]]$Y)
+
+      ggplot() +
+        geom_stars(
+          data = vis,
+          downsample = 3,
+          alpha = 0.3
+        ) +
+        geom_point(
+          data = altpatches_,
+          aes(
+            x = x2_, y = y2_,
+            col = "alt", shape = "alt"
+          )
+        ) +
+        geom_point(
+          data = data_patch_summary_,
+          aes(
+            x_median, y_median,
+            col = "summary", shape = "summary"
+          ), size = 2
+        ) +
+        scale_colour_manual(
+          values = c(
+            alt = pal2[5],
+            summary = pal2[4]
+          ),
+          labels = c(
+            alt = "Alternative patches",
+            summary = "True patches"
+          ),
+          name = NULL
+        ) +
+        scico::scale_fill_scico(
+          direction = -1,
+          palette = "grayC",
+          limits = c(0, 1),
+          # breaks = seq(0., 1, 0.2),
+          name = "Vis. index"
+        ) +
+        scale_shape_manual(
+          values = c(
+            alt = 2,
+            summary = 16
+          ),
+          labels = c(
+            alt = "Alternative patches",
+            summary = "True patches"
+          ),
+          name = NULL
+        ) +
+        scale_size(
+          limits = c(0.01, 4)
+        ) +
+        theme_custom_maps +
+        annotation_scale(
+          bar_cols = c("grey50", "white"),
+          height = unit(1, units = "mm")
+        ) +
+        guides(
+          colour = "none", shape = "none",
+          fill = guide_colorbar(
+            override.aes = list(
+              alpha = 1.0
+            ),
+            frame.colour = "black"
+          )
+        ) +
+        coord_sf(
+          crs = 2039,
+          xlim = range_x,
+          ylim = range_y
         )
-      ) +
-      geom_point(
-        data = data_patch_summary_,
-        aes(
-          x_median, y_median,
-          col = "summary", shape = "summary"
-        ), size = 2
-      ) +
-      scale_colour_manual(
-        values = c(
-          alt = pal2[5],
-          summary = pal2[4]
-        ),
-        labels = c(
-          alt = "Alternative patches",
-          summary = "True patches"
-        ),
-        name = NULL
-      ) +
-      scico::scale_fill_scico(
-        direction = -1,
-        palette = "grayC",
-        limits = c(0, 1),
-        # breaks = seq(0., 1, 0.2),
-        name = "Vis. index"
-      ) +
-      scale_shape_manual(
-        values = c(
-          alt = 2,
-          summary = 16
-        ),
-        labels = c(
-          alt = "Alternative patches",
-          summary = "True patches"
-        ),
-        name = NULL
-      ) +
-      scale_size(
-        limits = c(0.01, 4)
-      ) +
-      theme_custom_maps +
-      annotation_scale(
-        bar_cols = c("grey50", "white"),
-        height = unit(1, units = "mm")
-      ) +
-      guides(
-        colour = "none", shape = "none",
-        fill = guide_colorbar(
-          override.aes = list(
-            alpha = 1.0
-          ), 
-          frame.colour = "black"
-        )
-      ) +
-      coord_sf(
-        crs = 2039,
-        xlim = range_x,
-        ylim = range_y
-      )
-  }
-)
-  
+    }
+  )
+
 wrap_plots(plot_vis_index, guides = "collect")
 ```
 
 ```{r}
-fig_patch_summary = wrap_plots(
+fig_patch_summary <- wrap_plots(
   wrap_plots(plots_points_to_patch, guides = "collect") &
     theme(legend.position = "bottom"),
   wrap_plots(plots_patch_summary, guides = "collect") &
     theme(legend.position = "bottom"),
   wrap_plots(plot_ssf, guides = "collect") &
-    theme(legend.position = "bottom"), 
+    theme(legend.position = "bottom"),
   wrap_plots(plot_vis_index, guides = "collect") &
     theme(legend.position = "bottom"),
   ncol = 1
 ) +
   plot_annotation(
     tag_levels = list(
-      c("A1", "B1", "C1", "A2", "B2", "C2",
-        "A3", "B3", "C3", "A4", "B4", "C4")
+      c(
+        "A1", "B1", "C1", "A2", "B2", "C2",
+        "A3", "B3", "C3", "A4", "B4", "C4"
+      )
     )
   ) &
   theme(

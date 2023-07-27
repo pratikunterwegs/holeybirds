@@ -93,7 +93,6 @@ invisible(
     # looping over tag ID, write to file
     invisible(
       Map(df, tags, f = function(dt, tag) {
-
         # write to file
         fwrite(
           x = dt,
@@ -278,17 +277,19 @@ data_tracking_summary_w_rrv[, .(all_fixes = sum(nfixes))]
 # average days tracking
 data_tracking_summary_w_rrv[, unlist(
   lapply(.SD, function(x) {
-  list(
-    mean = mean(x),
-    sd = sd(x)
-  )
-}),recursive = F), .SDcols = "days_tracking", by = c("sp")]
+    list(
+      mean = mean(x),
+      sd = sd(x)
+    )
+  }),
+  recursive = F
+), .SDcols = "days_tracking", by = c("sp")]
 
 # average postions per day
 data_tracking_summary_w_rrv[, list(
   mean(nfixes / days_tracking)
-),by="sp"]
-#[,list(mean(V1))]
+), by = "sp"]
+# [,list(mean(V1))]
 
 # average positions per minute
 data_tracking_summary_w_rrv[, list(avg_fixes = nfixes /
