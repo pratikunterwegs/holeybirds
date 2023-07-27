@@ -110,7 +110,6 @@ patch_data <- Map(
 
     # apply the residence patch method
     patches <- lapply(df, function(d) {
-
       # make a copy --- slower but safer
       d_ <- data.table::copy(d)
 
@@ -146,7 +145,6 @@ Get residence patch summaries.
 patch_summaries <- lapply(
   # running over individuals
   patch_data, function(l) {
-
     # running over dates within individuals
     ps_df <- Map(
       l, names(l),
@@ -173,8 +171,8 @@ patch_summaries <- lapply(
 patch_summaries <- rbindlist(patch_summaries)
 
 # join with species and treatment data
-id_data = fread("data/results/data_tracking_metrics_rrv.csv")
-patch_summaries = merge(patch_summaries, id_data, by.x = "id", by.y = "TAG")
+id_data <- fread("data/results/data_tracking_metrics_rrv.csv")
+patch_summaries <- merge(patch_summaries, id_data, by.x = "id", by.y = "TAG")
 
 fwrite(patch_summaries, file = "data/results/data_patch_summary_ppa.csv")
 ```
@@ -186,7 +184,6 @@ Get patch points.
 patch_points <- lapply(
   # running over individuals
   patch_data, function(l) {
-
     # running over dates within individuals
     ps_df <- Map(
       l, names(l),
@@ -211,17 +208,16 @@ patch_points <- lapply(
 
 # bind all individual level data frames together
 patch_points <- rbindlist(patch_points)
-patch_points = merge(patch_points, id_data, by.x = "id", by.y = "TAG")
+patch_points <- merge(patch_points, id_data, by.x = "id", by.y = "TAG")
 
 fwrite(patch_points, file = "data/results/data_patch_points_ppa.csv")
 
 # save by species
-patch_points = split(patch_points, by = "sp")
+patch_points <- split(patch_points, by = "sp")
 Map(
   patch_points, names(patch_points),
   f = function(sp_df, name) {
     fwrite(sp_df, file = sprintf("data/results/data_patch_points_%s.csv", name))
   }
 )
-
 ```

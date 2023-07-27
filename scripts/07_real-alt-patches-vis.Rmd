@@ -270,7 +270,8 @@ data_clogit <- mutate(
 
 # now nest the data
 data_clogit <- nest(
-  data_clogit, data = !c("sp", "treat")
+  data_clogit,
+  data = !c("sp", "treat")
 )
 
 # apply a gam over the nested data

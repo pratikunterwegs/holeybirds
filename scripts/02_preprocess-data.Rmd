@@ -167,7 +167,6 @@ for (file in files) {
 
     # first calculate speeds and turning angles, handle 0 angles
     df_l <- lapply(df_l, function(le) {
-
       # check if filtering works
       le[, c("speed_in", "speed_out", "angle") := list(
         atl_get_speed(data = le, x = "X", y = "Y", time = "time", type = "in"),
@@ -289,7 +288,9 @@ files <- list.files(
   full.names = TRUE
 )
 
-npos = lapply(files, fread) |> sapply(nrow) |> sum()
+npos <- lapply(files, fread) |>
+  sapply(nrow) |>
+  sum()
 ```
 
 ## Estimate fix Table
@@ -319,13 +320,14 @@ data <- lapply(files, function(df) {
 # actually use, ie with rrv score
 
 # attach to rrv data
-wgi = fread("data/results/data_tracking_metrics_rrv.csv")
+wgi <- fread("data/results/data_tracking_metrics_rrv.csv")
 
 # bind list and split by id and date
 data <- rbindlist(data)
-data = merge(
+data <- merge(
   data,
-  wgi, by = c("TAG", "sp")
+  wgi,
+  by = c("TAG", "sp")
 )
 
 # how many birds with preprocessed data and rrv
@@ -339,8 +341,8 @@ Check data remaining.
 
 ```{r}
 # read all preprocesed data nd merge
-data_preproc = lapply(files, fread) |> rbindlist()
-data_preproc[TAG %in% wgi$TAG,][, list(n_id = length(unique(TAG))), by = "sp"]
+data_preproc <- lapply(files, fread) |> rbindlist()
+data_preproc[TAG %in% wgi$TAG, ][, list(n_id = length(unique(TAG))), by = "sp"]
 ```
 
 
